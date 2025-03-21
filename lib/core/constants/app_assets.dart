@@ -1,0 +1,23 @@
+class AppAssets {
+  static const String baseUrlAssets = "assets/images";
+  static const String baseUrlPng = "$baseUrlAssets/png";
+  static const String baseUrlSvg = "$baseUrlAssets/svg",
+   onboard1 = "$baseUrlSvg/onbosrd_1.svg",
+   faceLogo="$baseUrlSvg/face_log.svg",
+   tickCircle="$baseUrlSvg/tick_circle.svg",
+   scanIllustration="$baseUrlSvg/scan_inlutration.svg",
+   onboarding="$baseUrlPng/onboard1.png",
+   scan="$baseUrlSvg/scan.svg",
+   backButton="$baseUrlSvg/back_button.svg",
+   logout="$baseUrlSvg/logout.svg",
+   userIcon="$baseUrlSvg/user_icon.svg",
+   history="$baseUrlSvg/history.svg",
+   notification="$baseUrlSvg/notification.svg",
+   heartRate="$baseUrlSvg/heart_rate.svg",
+   share="$baseUrlSvg/share.svg",
+   back="$baseUrlSvg/back.svg",
+   editIcon="$baseUrlSvg/edit_icon.svg",
+   downloadIcon="$baseUrlSvg/download_icon.svg",
+   stressLevel="$baseUrlSvg/stress_level.svg",
+   homeMenu="$baseUrlSvg/home_menu.svg";
+}
