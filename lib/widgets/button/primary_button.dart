@@ -25,7 +25,7 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: AppDimensions.width(128),
+      width: AppDimensions.width(140),
       height: AppDimensions.height(50),
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed, // Disable button when loading
@@ -34,20 +34,26 @@ class PrimaryButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
-          padding: EdgeInsets.symmetric(vertical: padding, horizontal: padding * 2),
+          padding: EdgeInsets.symmetric(
+            vertical: padding,
+            horizontal: padding * 2,
+          ),
           shadowColor: Colors.black26,
           elevation: 4,
         ),
-        child: isLoading
-            ? const CircularProgressIndicator(color: AppColors.primary) // Show loader when loading
-            : Text(
-                text,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+        child:
+            isLoading
+                ? const CircularProgressIndicator(
+                  color: AppColors.primary,
+                ) // Show loader when loading
+                : Text(
+                  text,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
       ),
     );
   }

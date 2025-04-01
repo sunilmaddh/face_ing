@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/auth/widgets/otp_field_widget.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
@@ -12,17 +13,32 @@ class OtpForgotScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: PrimaryButton(text: "Verify", onPressed: () {}),
+      floatingActionButton: Obx(
+        () => PrimaryButton(
+          isLoading: _authController.isLoading.value,
+          text: "Verify",
+          onPressed: () {
+            if (_authController.otp.value.length != 4) {
+              AppSnackbar.show(
+                title: "Incorrect OTP",
+                message: "Please enter correct otp",
+              );
+            } else {
+              _authController.verifyForgotOtp();
+            }
+          },
+        ),
+      ),
       appBar: CustomAppBar(title: "Otp screen"),
       body: OtpFieldWidget(
         title: "Enter OTP",
-        onVerify: () {
-          _authController.verifyForgotOtp();
+
+        onResend: () {
+          _authController.getForgetOtp();
         },
-        onResend: () {},
         otp: _authController.otp,
-        isResendEnabled: false.obs,
-        timerSeconds: 0.obs,
+        isResendEnabled: _authController.isResendEnabled,
+        timerSeconds: _authController.timerSeconds,
       ),
     );
   }

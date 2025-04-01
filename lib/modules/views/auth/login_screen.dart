@@ -12,10 +12,18 @@ import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _authController = Get.find<AuthController>();
+
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +67,7 @@ class LoginScreen extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       CommonDialog().showFullWidthDialog(
+                        isLoading: _authController.isLoading,
                         title: "Forgot password",
                         textController: _authController.emailSignController,
                         onPressed: () {
@@ -129,5 +138,12 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _authController.clearData();
+    super.dispose();
   }
 }

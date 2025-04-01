@@ -2,15 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/widgets/common_list_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class ProfilePageData extends StatelessWidget {
-  ProfilePageData({super.key, required this.text, required this.list});
+  ProfilePageData({
+    super.key,
+    required this.text,
+    required this.list,
+    required this.id,
+    required this.question,
+  });
 
   final String text;
   final List<dynamic> list;
-  final RxInt currentIndex = (-1).obs; // Make currentIndex reactive
+  final RxInt currentIndex = (-1).obs;
+  final String id;
+  final String question;
+  // Make currentIndex reactive
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +43,14 @@ class ProfilePageData extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                 onTap: () {
-                  currentIndex.value = index; // Update reactive value
+                  currentIndex.value = index;
+                  AppMethods.storeQuestionAnswer(id, question, list[index]);
                 },
                 child: CommonListCard(
-                      text: list[index],
-                      index: index.obs, // Convert to RxInt
-                      currentIndex: currentIndex, // Pass reactive currentIndex
-                    
-                    ),
+                  text: list[index],
+                  index: index.obs, // Convert to RxInt
+                  currentIndex: currentIndex, // Pass reactive currentIndex
+                ),
               ),
             );
           },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/onboard/onboarding_page_view.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -49,20 +50,20 @@ class CustomOnboardingScreen extends StatelessWidget {
                   builder: (context, currentIndex, child) {
                     return PrimaryButton(
                       onPressed: () {
-                        AppNavigation.to(AppRoutes.loginScreen);
+                        if (currentIndex == pages.length - 1) {
+                          StorageHelper.write("isWalkThrough", true);
+                          AppNavigation.to(AppRoutes.loginScreen);
+                        } else {
+                          _pageController.nextPage(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.ease,
+                          );
+                        }
                       },
-                      // currentIndex == pages.length - 1
-                      //     ? () {
 
-                      //         Navigator.pushReplacementNamed(context, '/home');
-                      //       }
-                      //     : () {
-                      //         _pageController.nextPage(
-                      //             duration: Duration(milliseconds: 500), curve: Curves.ease);
-                      //       },
                       text:
                           currentIndex == pages.length - 1
-                              ? 'Get Started'
+                              ? 'Get started'
                               : 'Next',
                     );
                   },

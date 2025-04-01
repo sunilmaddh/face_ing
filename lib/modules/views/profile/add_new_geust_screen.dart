@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/auth/widgets/terms_checkbox_widget.dart';
 import 'package:ntt_data/modules/views/profile/widgets/gender_widget.dart';
@@ -42,21 +43,29 @@ class AddNewGuestScreen extends StatelessWidget {
                         SizedBox(height: 15),
                         GenderWidget(),
                         SizedBox(height: 15),
+
                         /// Date of Birth Picker
                         InkWell(
                           onTap: () {
-                            _authController.selectDate(context);
+                            CommonDialog.selectDate(
+                              context: context,
+                              dateController: _authController.dateController,
+                            );
                           },
                           child: CustomFormField(
                             enable: false,
                             readOnly: true,
-                            suffixIcon: const Icon(Icons.date_range, color: AppColors.primary),
+                            suffixIcon: const Icon(
+                              Icons.date_range,
+                              color: AppColors.primary,
+                            ),
                             label: AppConstents.dob,
                             hint: "Select your date of birth",
                             controller: _authController.dateController,
                           ),
                         ),
                         SizedBox(height: 15),
+
                         /// Weight Field
                         CustomFormField(
                           label: AppConstents.weight,
@@ -64,6 +73,7 @@ class AddNewGuestScreen extends StatelessWidget {
                           controller: _authController.weightController,
                         ),
                         SizedBox(height: 15),
+
                         /// Height Field
                         CustomFormField(
                           label: AppConstents.height,
@@ -90,15 +100,14 @@ class AddNewGuestScreen extends StatelessWidget {
                     children: [
                       TermsCheckboxWidget(
                         authController: _authController,
-                        message: "I have read and agree with the Terms & Conditions",
+                        message:
+                            "I have read and agree with the Terms & Conditions",
                       ),
                       Align(
                         alignment: Alignment.bottomRight,
                         child: SizedBox(
                           width: AppDimensions.width(193),
-                          child: ScanButton(
-                            onPressed: () {},
-                          ),
+                          child: ScanButton(onPressed: () {}),
                         ),
                       ),
                     ],

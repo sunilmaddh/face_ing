@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/controllers.dart/profile_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
+import 'package:ntt_data/core/utils/common_dialog.dart';
+import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
 import 'package:ntt_data/modules/views/profile/vitals_data_screen.dart';
@@ -86,9 +87,9 @@ class GeustUserHistoryScreen extends StatelessWidget {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  _profileController.showDeleteUserDialog(
-                                    context,
-                                    () {},
+                                  CommonDialog().showDeleteUserDialog(
+                                    context: context,
+                                    onConfirm: () {},
                                   );
                                 },
                                 child: CustomCircularAvatar(

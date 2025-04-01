@@ -7,7 +7,7 @@ import 'package:pinput/pinput.dart';
 
 class OtpFieldWidget extends StatelessWidget {
   final String title;
-  final VoidCallback onVerify;
+
   final VoidCallback onResend;
   final RxString otp;
   final RxBool isResendEnabled;
@@ -16,7 +16,7 @@ class OtpFieldWidget extends StatelessWidget {
   const OtpFieldWidget({
     super.key,
     required this.title,
-    required this.onVerify,
+
     required this.onResend,
     required this.otp,
     required this.isResendEnabled,

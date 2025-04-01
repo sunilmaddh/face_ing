@@ -26,29 +26,33 @@ class CustomRadioButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () => onChanged(value.value),
-      child: Obx(
-        () {
-          bool isSelected = value.value == groupValue.value; // Corrected comparison
+      child: Obx(() {
+        bool isSelected =
+            value.value == groupValue.value; // Corrected comparison
 
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: size,
-                height: size,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isSelected ? activeColor : borderColor,
-                    width: borderWidth,
-                  ),
-                  color: isSelected ? activeColor.withOpacity(0.2) : Colors.transparent,
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              width: size,
+              height: size,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? activeColor : borderColor,
+                  width: borderWidth,
                 ),
-                child: isSelected
-                    ? Center(
+                color:
+                    isSelected
+                        ? activeColor.withOpacity(0.2)
+                        : Colors.transparent,
+              ),
+              child:
+                  isSelected
+                      ? Center(
                         child: Container(
                           width: size / 2,
                           height: size / 2,
@@ -58,18 +62,21 @@ class CustomRadioButton extends StatelessWidget {
                           ),
                         ),
                       )
-                    : null,
+                      : null,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: AppColors.radioTextColor,
+                fontFamily: "Gilroy-Medium",
               ),
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400,
-                color: AppColors.radioTextColor,fontFamily: "Gilroy-Medium"),
-              ),
-            ],
-          );
-        },
-      ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

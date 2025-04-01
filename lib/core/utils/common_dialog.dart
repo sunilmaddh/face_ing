@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
@@ -11,21 +13,22 @@ class CommonDialog {
     required String title,
     required VoidCallback onPressed,
     required TextEditingController textController,
+    RxBool? isLoading,
   }) {
-    final formKey = GlobalKey<FormState>(); // Defined inside function
+    final formKey = GlobalKey<FormState>();
+    final RxBool loading =
+        isLoading ?? false.obs; // Ensure proper RxBool handling
 
     Get.dialog(
       Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ), // Optional: Rounded corners
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
-          width: Get.width, // 🔥 Full-width
+          width: Get.width,
           padding: const EdgeInsets.all(20),
           child: Form(
             key: formKey,
             child: Column(
-              mainAxisSize: MainAxisSize.min, // Adjust based on content
+              mainAxisSize: MainAxisSize.min,
               children: [
                 CommonText.text(
                   title,
@@ -47,20 +50,23 @@ class CommonDialog {
                 ),
                 const SizedBox(height: 70),
                 Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween, // Align buttons properly
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
                       onPressed: () => Get.back(),
                       child: const Text("Close"),
                     ),
-                    PrimaryButton(
-                      text: 'Get OTP',
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          onPressed(); // Call function correctly
-                        }
-                      },
+                    Obx(
+                      () => PrimaryButton(
+                        isLoading: loading.value,
+                        text: 'Get OTP',
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            loading.value = true; // Show loading state
+                            onPressed();
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -69,6 +75,103 @@ class CommonDialog {
           ),
         ),
       ),
+      barrierDismissible: false, // Prevent accidental closure
+    );
+  }
+
+  static void selectDate({
+    required BuildContext context,
+    required TextEditingController dateController,
+  }) async {
+    DateTime currentDate = DateTime.now();
+    DateTime minDate = DateTime(1900, 1, 1);
+    DateTime maxDate = DateTime(2100, 12, 31);
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: currentDate.isBefore(maxDate) ? currentDate : maxDate,
+      firstDate: minDate,
+      lastDate: maxDate,
+    );
+
+    if (pickedDate != null) {
+      String formattedDate = DateFormat('yyyy/MM/dd').format(pickedDate);
+      dateController.text = formattedDate;
+      print("Selected Date: $formattedDate");
+    }
+  }
+
+  // Show delete confirmation dialog
+  void showDeleteUserDialog({
+    required BuildContext context,
+    required VoidCallback onConfirm,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: CommonText.text(
+            "Want to Remove the Guest?",
+            maxLines: 2,
+            fontSize: AppDimensions.font(18),
+            fontWeight: FontWeight.w400,
+            fontFamily: "Gilroy-Bold",
+          ),
+          content: CommonText.text(
+            "Are you sure you want to remove? This action cannot be undone",
+            maxLines: 2,
+            fontSize: AppDimensions.font(15),
+            fontWeight: FontWeight.w400,
+            fontFamily: "Gilroy-Medium",
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: AppDimensions.height(40),
+                  width: AppDimensions.width(125),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close dialog
+                      onConfirm(); // Execute delete action
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    child: CommonText.text("Delete", color: AppColors.btntext),
+                  ),
+                ),
+                SizedBox(width: AppDimensions.width(2)),
+                SizedBox(
+                  height: AppDimensions.height(40),
+                  width: AppDimensions.width(125),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close dialog
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                        side: BorderSide(color: AppColors.deleteDesColor),
+                      ),
+                    ),
+                    child: CommonText.text(
+                      "Cancel",
+                      color: AppColors.backArrowColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

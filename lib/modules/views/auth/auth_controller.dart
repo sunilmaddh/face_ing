@@ -2,20 +2,26 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/error_response.dart';
+import 'package:ntt_data/data/models/medical_question_model.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
-import 'package:ntt_data/services/auth_services.dart';
+import 'package:ntt_data/data/repository/services/auth_services.dart';
 
 class AuthController extends GetxController {
   final _authServices = Get.put(AuthServices());
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
+  Rx<MedicalQuestionListModel> medicalQuestionListModel =
+      MedicalQuestionListModel().obs;
   RxString userId = "".obs;
+
   RxString otp = "".obs;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final emailSignController = TextEditingController();
+  RxString emailId = ''.obs;
   final passwordSignController = TextEditingController();
   final dateController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -74,27 +80,6 @@ class AuthController extends GetxController {
     super.onClose();
   }
 
-  void selectDate(BuildContext context) async {
-    DateTime currentDate = DateTime.now();
-    DateTime minDate = DateTime(1900, 1, 1);
-    DateTime maxDate = DateTime(2100, 12, 31); // ✅ Set a valid future max date
-
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate:
-          currentDate.isBefore(maxDate)
-              ? currentDate
-              : maxDate, // ✅ Ensure within range
-      firstDate: minDate,
-      lastDate: maxDate,
-    );
-
-    if (pickedDate != null) {
-      dateController.text = pickedDate.toString();
-      print("Selected Date: $pickedDate");
-    }
-  }
-
   Future<void> getSingUpOtp() async {
     isLoading(true);
     var data = {
@@ -126,7 +111,7 @@ class AuthController extends GetxController {
         errorResponse.value = result;
         AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
       } else {
-        AppSnackbar.show(title: "Error", message: "Something went wrong");
+        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -157,12 +142,13 @@ class AuthController extends GetxController {
           message: errorResponse.value.message!,
         );
         AppNavigation.to(AppRoutes.createAccount);
-      } else if (statusCode == 405) {
+        clearData();
+      } else if (statusCode == 500) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;
         AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
       } else {
-        AppSnackbar.show(title: "Error", message: "Something went wrong");
+        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -190,15 +176,26 @@ class AuthController extends GetxController {
           title: "Success",
           message: errorResponse.value.message!,
         );
-        if (errorResponse.value.success == true) {
-          AppNavigation.to(AppRoutes.homeScreen);
+
+        StorageHelper.write("userID", errorResponse.value.userId);
+        StorageHelper.write("emailId", errorResponse.value.emailId);
+        if (errorResponse.value.success == true &&
+            errorResponse.value.onBoarded == false) {
+          AppNavigation.to(
+            AppRoutes.createAccount,
+            arguments: {"userId": errorResponse.value.userId},
+          );
+          clearData();
+        } else {
+          StorageHelper.write("isOnboard", errorResponse.value.onBoarded);
+          AppNavigation.off(AppRoutes.homeScreen);
         }
       } else if (statusCode == 405) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;
         AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
       } else {
-        AppSnackbar.show(title: "Error", message: "Something went wrong");
+        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -219,9 +216,11 @@ class AuthController extends GetxController {
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
+        startTimer();
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;
         AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
+        AppNavigation.back();
         if (errorResponse.value.success == true) {
           AppNavigation.back();
           AppNavigation.to(AppRoutes.otpForgotScreen);
@@ -246,7 +245,7 @@ class AuthController extends GetxController {
     var data = {
       "emailId": emailSignController.text,
       "otp": otp.value,
-      "userId": userId.value,
+      "userId": errorResponse.value.userId,
     };
     debugPrint(data.toString());
     try {
@@ -258,9 +257,12 @@ class AuthController extends GetxController {
       if (statusCode == 200) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;
-        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
+        AppSnackbar.show(
+          title: "Success",
+          message: errorResponse.value.message!,
+        );
         if (errorResponse.value.success == true) {
-          AppNavigation.to(AppRoutes.loginScreen);
+          AppNavigation.to(AppRoutes.resetPassword);
         }
       } else if (statusCode == 405) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
@@ -275,5 +277,94 @@ class AuthController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  Future<void> resetPassword() async {
+    isLoading(true);
+    var data = {
+      "emailId": emailSignController.text,
+      "password": passwordController.text,
+      "confirmPassword": confirmPasswordController.text,
+      "userId": errorResponse.value.userId,
+    };
+    debugPrint(data.toString());
+    try {
+      Map<String, dynamic> response = await _authServices.resetPassword(
+        data: data,
+      );
+      debugPrint(response["responseBody"].toString());
+      int statusCode = response['statusCode'];
+      if (statusCode == 200) {
+        var result = ErrorResponse.fromJson(response["responseBody"]);
+        errorResponse.value = result;
+        AppSnackbar.show(
+          title: "Success",
+          message: errorResponse.value.message!,
+        );
+        if (errorResponse.value.success == true) {
+          AppNavigation.to(AppRoutes.loginScreen);
+        }
+        clearData();
+      } else if (statusCode == 405) {
+        var result = ErrorResponse.fromJson(response["responseBody"]);
+        errorResponse.value = result;
+        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
+      } else {
+        AppSnackbar.show(title: "Error", message: "Something went wrong");
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      AppSnackbar.show(title: "Exception", message: e.toString());
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> getMedicalQuestionList() async {
+    isLoading(true);
+    // var data = {
+    //   "emailId": emailSignController.text,
+    //   "otp": otp.value,
+    //   "userId": userId.value,
+    // };
+    // debugPrint(data.toString());
+    try {
+      Map<String, dynamic> response = await _authServices
+          .getMedicalQeustionList(data: "");
+      debugPrint(response["responseBody"].toString());
+      int statusCode = response['statusCode'];
+      if (statusCode == 200) {
+        var result = MedicalQuestionListModel.fromJson(
+          response["responseBody"],
+        );
+        medicalQuestionListModel.value = result;
+        // AppSnackbar.show(title: "Success", message: errorResponse.value.message!);
+        if (errorResponse.value.success == true) {
+          clearData();
+          AppNavigation.offAll(AppRoutes.loginScreen);
+        }
+      } else if (statusCode == 405) {
+        var result = ErrorResponse.fromJson(response["responseBody"]);
+        errorResponse.value = result;
+        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
+      } else {
+        AppSnackbar.show(title: "Error", message: "Something went wrong");
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      AppSnackbar.show(title: "Exception", message: e.toString());
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  clearData() {
+    emailController.clear();
+    emailSignController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+    isChecked.value = false;
+    otp.value = "";
+    // errorResponse.value = ErrorResponse();
   }
 }

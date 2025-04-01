@@ -20,7 +20,7 @@ class OtpSignupScreen extends StatelessWidget {
       appBar: CustomAppBar(title: "Otp screen"),
       body: OtpFieldWidget(
         title: "Enter OTP",
-        onVerify: () {},
+
         onResend: () {
           _authController.getSingUpOtp();
         },

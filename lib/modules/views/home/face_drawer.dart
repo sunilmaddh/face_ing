@@ -5,6 +5,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -28,8 +29,16 @@ class FaceDrawer extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          leading: SvgPicture.asset(icon, width: AppDimensions.width(20), height: AppDimensions.height(20)),
-          title: CommonText.text(title, fontSize: AppDimensions.font(16), fontWeight: FontWeight.w600),
+          leading: SvgPicture.asset(
+            icon,
+            width: AppDimensions.width(20),
+            height: AppDimensions.height(20),
+          ),
+          title: CommonText.text(
+            title,
+            fontSize: AppDimensions.font(16),
+            fontWeight: FontWeight.w600,
+          ),
           subtitle: subtitle != null ? CommonText.text(subtitle) : null,
           trailing: trailing,
           onTap: onTap,
@@ -79,8 +88,7 @@ class FaceDrawer extends StatelessWidget {
                       SizedBox(
                         width: AppDimensions.width(90),
                         child: Stack(
-                        
-                   children: [
+                          children: [
                             CustomCircularAvatar(),
                             Align(
                               alignment: Alignment.topRight,
@@ -141,7 +149,7 @@ class FaceDrawer extends StatelessWidget {
             _buildListTile(
               icon: AppAssets.logout,
               title: "Logout",
-              onTap: () => Get.toNamed('/home'),
+              onTap: () => AppMethods().logout(),
             ),
 
             Spacer(),
@@ -150,7 +158,13 @@ class FaceDrawer extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CommonText.text("Powered BY", color: AppColors.powerBy, fontSize: AppDimensions.font(20), fontWeight: FontWeight.w700, fontFamily: "Open Sans"),
+                CommonText.text(
+                  "Powered BY",
+                  color: AppColors.powerBy,
+                  fontSize: AppDimensions.font(20),
+                  fontWeight: FontWeight.w700,
+                  fontFamily: "Open Sans",
+                ),
                 CommonAssets.svgAsset(AppAssets.faceLogo),
               ],
             ),
