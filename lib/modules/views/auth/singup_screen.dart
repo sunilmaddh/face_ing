@@ -3,10 +3,9 @@ import 'package:get/get.dart';
 
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/auth/widgets/terms_checkbox_widget.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart' show AppRoutes;
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
@@ -73,34 +72,47 @@ class SignupScreen extends StatelessWidget {
                     controller: _authController.confirmPasswordController,
                   ),
                   SizedBox(height: AppDimensions.height(10)),
-                  TermsCheckboxWidget(authController: _authController, message: "Accept to the legal terms by clicking on the check box to be able to provide services"),
+                  TermsCheckboxWidget(
+                    authController: _authController,
+                    message:
+                        "Accept to the legal terms by clicking on the check box to be able to provide services",
+                  ),
                 ],
               ),
             ),
-          Obx(()=>  Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                height: AppDimensions.height(100),
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: PrimaryButton(
-                        isLoading: _authController.isLoading.value,
-                        text: AppConstents.signUp,
-                        onPressed: () {
-                          // AppNavigation.to(AppRoutes.otpFieldWidget);
-                          if (_formKey.currentState!.validate()) {
-                            _authController.getSingUpOtp();
-                          }
-                        },
+            Obx(
+              () => Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  height: AppDimensions.height(100),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: PrimaryButton(
+                          isLoading: _authController.isLoading.value,
+                          text: AppConstents.signUp,
+                          onPressed: () {
+                            // AppNavigation.to(AppRoutes.otpFieldWidget);
+                            if (_formKey.currentState!.validate()) {
+                              if (_authController.isChecked.value) {
+                                _authController.getSingUpOtp();
+                              } else {
+                                AppSnackbar.show(
+                                  title: "Term & Conditons",
+                                  message: "Please select term & conditions",
+                                );
+                              }
+                            }
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(height: AppDimensions.height(20)),
-                  ],
+                      SizedBox(height: AppDimensions.height(20)),
+                    ],
+                  ),
                 ),
               ),
-          ))
+            ),
           ],
         ),
       ),

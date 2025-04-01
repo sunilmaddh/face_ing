@@ -1,29 +1,46 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:ntt_data/core/utils/api_endpoints.dart';
 import 'package:ntt_data/services/base_api_services.dart';
 
-class AuthServices {
+class AuthServices extends BaseApiService {
   final apiEndpoints=ApiEndpoints();
-  static final BaseClient _baseClient = BaseClient();
 
-  static Future<Map<String, dynamic>> getSignUpOtp({required var data}) async {
-    // int mobileNum = int.parse(mobileNumber);
-    // var data = {"Mobile": mobileNumber};
-    http.Response? response = await _baseClient
-        .postData(ApiEndpoints.signUp,data: data);
-    debugPrint(
-        "ResponseCode: ${response!.statusCode}= ResponseBody${response.body}");
-    Map<String, dynamic> responseData = {
-      'responseCode': response.statusCode,
-      'responseBody': response.body
-    };
-    if (response.statusCode == 200) {
-      var resjson = response.body;
-   
-    }
-    return responseData;
+   Future<Map<String, dynamic>> getSignUpOtp({required var data})async{
+    return await postRequest(ApiEndpoints.signUp,data: data);  
   }
+  Future<Map<String, dynamic>> verifySignUpOtp({required var data})async{
+    return await postRequest(ApiEndpoints.verifySignUpOtp,data: data);  
+  }
+   Future<Map<String, dynamic>> profileCreation({required var data})async{
+    return await postRequest(ApiEndpoints.continueSignUp,data: data);  
+  }
+   Future<Map<String, dynamic>> userLogin({required var data})async{
+    return await postRequest(ApiEndpoints.login,data: data);  
+  }
+   Future<Map<String, dynamic>> getForgotOtp({required var data})async{
+    return await postRequest(ApiEndpoints.getforgetOtp,data: data);  
+  }
+   Future<Map<String, dynamic>> verifyForgotOtp({required var data})async{
+    return await postRequest(ApiEndpoints.verifyForgotOtp,data: data);  
+  }
+  // static final BaseClient _baseClient = BaseClient();
+
+  // static Future<Map<String, dynamic>> getSignUpOtp({required var data}) async {
+  //   // int mobileNum = int.parse(mobileNumber);
+  //   // var data = {"Mobile": mobileNumber};
+  //   http.Response? response = await _baseClient
+  //       .postData(ApiEndpoints.signUp,data: data);
+  //   debugPrint(
+  //       "ResponseCode: ${response!.statusCode}= ResponseBody${response.body}");
+  //   Map<String, dynamic> responseData = {
+  //     'responseCode': response.statusCode,
+  //     'responseBody': response.body
+  //   };
+  //   if (response.statusCode == 200) {
+  //     var resjson = response.body;
+   
+  //   }
+  //   return responseData;
+  // }
 
 //   static Future<Map<String, dynamic>> getMyCropsList(int mobileNumber) async {
 //     var data = {"Mobile": mobileNumber};
@@ -217,23 +234,6 @@ class AuthServices {
 //     return responseData;
 //   }
 
-  // Future<Map<String, dynamic>> getSignUpOtp({required var data})async{
-  //   return await postRequest(ApiEndpoints.signUp,data: data);  
-  // }
-  // Future<Map<String, dynamic>> verifySignUpOtp({required var data})async{
-  //   return await postRequest(ApiEndpoints.verifySignUpOtp,data: data);  
-  // }
-  //  Future<Map<String, dynamic>> profileCreation({required var data})async{
-  //   return await postRequest(ApiEndpoints.continueSignUp,data: data);  
-  // }
-  //  Future<Map<String, dynamic>> userLogin({required var data})async{
-  //   return await postRequest(ApiEndpoints.login,data: data);  
-  // }
-  //  Future<Map<String, dynamic>> getForgotOtp({required var data})async{
-  //   return await postRequest(ApiEndpoints.getforgetOtp,data: data);  
-  // }
-  //  Future<Map<String, dynamic>> verifyForgotOtp({required var data})async{
-  //   return await postRequest(ApiEndpoints.verifyForgotOtp,data: data);  
-  // }
+ 
 
 }
