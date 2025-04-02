@@ -85,7 +85,7 @@ class OtpFieldWidget extends StatelessWidget {
                 isResendEnabled.value == false
                     ? Center(
                       child: CommonText.text(
-                        timerSeconds.value.toString(),
+                        "${timerSeconds.value.toString()}s",
                         fontSize: AppDimensions.font(18),
                         fontWeight: FontWeight.w500,
                         color: AppColors.primary,

@@ -135,6 +135,11 @@ class AuthController extends GetxController {
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
+        var header = response["header"];
+        var accessToken = header["accessToken"];
+        var refereshToken = header["refreshToken"];
+        StorageHelper.write("access-token", accessToken);
+        StorageHelper.write("refresh-token", refereshToken);
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;
         AppSnackbar.show(
@@ -170,6 +175,11 @@ class AuthController extends GetxController {
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
+        var header = response["header"];
+        var accessToken = header["accessToken"];
+        var refereshToken = header["refreshToken"];
+        StorageHelper.write("access-token", accessToken);
+        StorageHelper.write("refresh-token", refereshToken);
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;
         AppSnackbar.show(
@@ -177,8 +187,8 @@ class AuthController extends GetxController {
           message: errorResponse.value.message!,
         );
 
-        StorageHelper.write("userID", errorResponse.value.userId);
-        StorageHelper.write("emailId", errorResponse.value.emailId);
+        StorageHelper.write("userID", errorResponse.value.userId!);
+        StorageHelper.write("emailId", errorResponse.value.emailId!);
         if (errorResponse.value.success == true &&
             errorResponse.value.onBoarded == false) {
           AppNavigation.to(
@@ -187,7 +197,10 @@ class AuthController extends GetxController {
           );
           clearData();
         } else {
-          StorageHelper.write("isOnboard", errorResponse.value.onBoarded);
+          StorageHelper.write(
+            "isOnboard",
+            errorResponse.value.onBoarded.toString(),
+          );
           AppNavigation.off(AppRoutes.homeScreen);
         }
       } else if (statusCode == 405) {
