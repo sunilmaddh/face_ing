@@ -10,7 +10,7 @@ import 'package:ntt_data/widgets/face_progress_indicator.dart';
 class ProfilePageViewBuilder extends StatelessWidget {
   final PageController _pageController = PageController();
   final ValueNotifier<int> _currentIndex = ValueNotifier<int>(0);
-  List<MedicalQuestionListModel> pages;
+  List<dynamic> pages;
   final ProfileController profileController;
 
   ProfilePageViewBuilder({
