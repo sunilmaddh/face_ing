@@ -136,10 +136,15 @@ class AuthController extends GetxController {
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
         var header = response["header"];
-        var accessToken = header["accessToken"];
-        var refereshToken = header["refreshToken"];
+        var accessToken = header["accesstoken"];
+        var refereshToken = header["refreshtoken"];
+        debugPrint(accessToken);
+        debugPrint(refereshToken);
         StorageHelper.write("access-token", accessToken);
         StorageHelper.write("refresh-token", refereshToken);
+        var data = await StorageHelper.read("access-token");
+
+        debugPrint("Access token $data");
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;
         AppSnackbar.show(

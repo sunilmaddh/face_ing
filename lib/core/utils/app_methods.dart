@@ -45,10 +45,10 @@ class AppMethods {
   }
 
   void logout() async {
-    StorageHelper.remove("userId");
-    StorageHelper.remove("isOnboard");
-    StorageHelper.remove("authToken"); // If you store an auth token
-    StorageHelper.remove("userProfile"); // Any other stored user data
-    AppNavigation.offAll(AppRoutes.loginScreen);
+    // StorageHelper.remove("userId");
+    // StorageHelper.remove("isOnboard");
+    // StorageHelper.remove("authToken"); // If you store an auth token
+    // StorageHelper.remove("userProfile"); // Any other stored user data
+    // AppNavigation.offAll(AppRoutes.loginScreen);
   }
 }

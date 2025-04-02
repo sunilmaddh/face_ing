@@ -20,10 +20,11 @@ abstract class BaseApiService {
     String endpoint, {
     required Map<String, dynamic> data,
   }) async {
-    var accessToken = StorageHelper.read("access-token");
+    var accessToken = await StorageHelper.read("access-token");
+    debugPrint("Access toke $accessToken");
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
-
+    debugPrint("Access token $accessToken");
     try {
       final response = await http.post(
         uri,
@@ -33,8 +34,9 @@ abstract class BaseApiService {
         },
         body: jsonEncode(data),
       );
-
+      debugPrint("Access toke $accessToken");
       debugPrint(response.body.toString());
+      debugPrint(response.headers.toString());
       return _processResponse(response);
     } catch (e) {
       throw Exception("Error: $e");
@@ -45,10 +47,20 @@ abstract class BaseApiService {
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
     try {
+      var accessToken = await StorageHelper.read("access-token");
+      debugPrint("Access toke $accessToken");
+      Uri uri = Uri.http(baseUrl, endpoint);
       debugPrint(uri.toString());
+      debugPrint("Access token $accessToken");
+      debugPrint(uri.toString());
+      var header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $accessToken",
+      };
+      debugPrint(header.toString());
       final response = await http.post(
         uri,
-        headers: {"Content-Type": "application/json"},
+        headers: header,
         // body: jsonEncode(data),
       );
       debugPrint(response.headers.toString());
