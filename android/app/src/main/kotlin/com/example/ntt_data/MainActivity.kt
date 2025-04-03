@@ -1,10 +1,13 @@
+package com.example.ntt_data
 import android.util.Log
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 
-class MainActivity : FlutterActivity() {
+
+class MainActivity : FlutterActivity()
+// {
 //    private val CHANNEL = "com.example/anura_sdk"
 //
 //    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -41,4 +44,4 @@ class MainActivity : FlutterActivity() {
 //            Log.e("AnuraSDK", "Error stopping Anura SDK: ${e.message}")
 //        }
 //    }
-}
+//}

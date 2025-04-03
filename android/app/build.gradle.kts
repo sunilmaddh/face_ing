@@ -5,8 +5,8 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+     id("kotlin-parcelize")
 }
-
 android {
     namespace = "com.example.ntt_data"
     compileSdk = flutter.compileSdkVersion
