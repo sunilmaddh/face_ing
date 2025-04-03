@@ -17,10 +17,9 @@ class ProfilePageData extends StatelessWidget {
 
   final String text;
   final List<dynamic> list;
-  final RxInt currentIndex = (-1).obs;
+  final RxList<int> selectedIndices = <int>[].obs; // Track multiple selections
   final String id;
   final String question;
-  // Make currentIndex reactive
 
   @override
   Widget build(BuildContext context) {
@@ -41,17 +40,28 @@ class ProfilePageData extends StatelessWidget {
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  currentIndex.value = index;
-                  AppMethods.storeQuestionAnswer(id, question, list[index]);
-                },
-                child: CommonListCard(
-                  text: list[index],
-                  index: index.obs, // Convert to RxInt
-                  currentIndex: currentIndex, // Pass reactive currentIndex
-                ),
-              ),
+              child: Obx(() {
+                bool isSelected = selectedIndices.contains(index);
+                return InkWell(
+                  onTap: () {
+                    if (isSelected) {
+                      selectedIndices.remove(index);
+                    } else {
+                      selectedIndices.add(index);
+                    }
+                    AppMethods.storeQuestionAnswer(
+                      id,
+                      question,
+                      selectedIndices.map((i) => list[i]).toList(),
+                    );
+                  },
+                  child: CommonListCard(
+                    text: list[index],
+                    index: index, // Pass normal int instead of RxInt
+                    selectedIndices: selectedIndices, // Pass the RxList
+                  ),
+                );
+              }),
             );
           },
         ),

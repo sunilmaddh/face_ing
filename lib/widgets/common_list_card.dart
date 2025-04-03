@@ -7,32 +7,33 @@ import 'package:ntt_data/widgets/fields/common_text.dart';
 class CommonListCard extends StatelessWidget {
   const CommonListCard({
     super.key,
-    this.text = "",
-  
+    required this.text,
     required this.index,
-    required this.currentIndex,
+    required this.selectedIndices,
   });
 
   final String text;
-  
-  final RxInt index;
-  final RxInt currentIndex;
+  final int index;
+  final RxList<int> selectedIndices; // Track multiple selected items
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Container(
+    return Obx(() {
+      bool isSelected = selectedIndices.contains(index);
+      return Container(
         alignment: Alignment.center,
         width: MediaQuery.of(context).size.width,
         height: AppDimensions.height(48),
         decoration: BoxDecoration(
-          color: index.value == currentIndex.value ? AppColors.primary : Colors.white,
+          color: isSelected ? AppColors.primary : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: AppColors.textFieldColor, width: 1),
         ),
-        child: CommonText.text(text,color: index.value == currentIndex.value ? AppColors.btntext : AppColors.blackColor
+        child: CommonText.text(
+          text,
+          color: isSelected ? AppColors.btntext : AppColors.blackColor,
         ),
-      ),
-    );
+      );
+    });
   }
 }

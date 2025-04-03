@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
 
@@ -8,55 +9,53 @@ class ImagePickerBottomsheet {
     required VoidCallback onCameraTap,
   }) {
     CustomBottomSheet.show(
-      title: "Image type",
+      title: "Choose an option",
       content: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Space evenly
           children: [
-            Text(
-              "Choose an option",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(height: 10),
-
             // Gallery Card
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              elevation: 3,
-              child: ListTile(
-                leading: Icon(Icons.image, color: Colors.blue),
-                title: Text("Gallery"),
-                onTap: () {
-                  AppNavigation.back; // Close bottom sheet
-                  onGalleryTap(); // Call gallery function
-                },
+            Expanded(
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                elevation: 3,
+                child: ListTile(
+                  leading: Icon(Icons.image, color: Colors.blue),
+                  title: Text("Gallery"),
+                  onTap: () {
+                    Get.back(); // Close bottom sheet
+                    onGalleryTap(); // Call gallery function
+                  },
+                ),
               ),
             ),
-            SizedBox(height: 10),
 
+            SizedBox(width: 10), // Horizontal spacing
             // Camera Card
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              elevation: 3,
-              child: ListTile(
-                leading: Icon(Icons.camera_alt, color: Colors.green),
-                title: Text("Camera"),
-                onTap: () {
-                  AppNavigation.back;
-                  onCameraTap(); // Call camera function
-                },
+            Expanded(
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                elevation: 3,
+                child: ListTile(
+                  leading: Icon(Icons.camera_alt, color: Colors.green),
+                  title: Text("Camera"),
+                  onTap: () {
+                    Get.back(); // Close bottom sheet
+                    onCameraTap(); // Call camera function
+                  },
+                ),
               ),
             ),
-            SizedBox(height: 10),
           ],
         ),
       ),
     );
+
     // showModalBottomSheet(
     //   context: context,
     //   shape: RoundedRectangleBorder(

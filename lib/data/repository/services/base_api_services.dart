@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
 
 abstract class BaseApiService {
@@ -19,16 +20,23 @@ abstract class BaseApiService {
     String endpoint, {
     required Map<String, dynamic> data,
   }) async {
+    var accessToken = await StorageHelper.read("access-token");
+    debugPrint("Access toke $accessToken");
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
+    debugPrint("Access token $accessToken");
     try {
-      debugPrint(uri.toString());
       final response = await http.post(
         uri,
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $accessToken",
+        },
         body: jsonEncode(data),
       );
+      debugPrint("Access toke $accessToken");
       debugPrint(response.body.toString());
+      debugPrint(response.headers.toString());
       return _processResponse(response);
     } catch (e) {
       throw Exception("Error: $e");
@@ -39,12 +47,23 @@ abstract class BaseApiService {
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
     try {
+      var accessToken = await StorageHelper.read("access-token");
+      debugPrint("Access toke $accessToken");
+      Uri uri = Uri.http(baseUrl, endpoint);
       debugPrint(uri.toString());
+      debugPrint("Access token $accessToken");
+      debugPrint(uri.toString());
+      var header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $accessToken",
+      };
+      debugPrint(header.toString());
       final response = await http.post(
         uri,
-        headers: {"Content-Type": "application/json"},
+        headers: header,
         // body: jsonEncode(data),
       );
+      debugPrint(response.headers.toString());
       debugPrint(response.body.toString());
       return _processResponse(response);
     } catch (e) {
@@ -84,9 +103,8 @@ abstract class BaseApiService {
       case 201:
         return {
           "statusCode": response.statusCode,
-          "responseBody": jsonDecode(
-            response.body,
-          ), // Ensure it's parsed as JSON
+          "responseBody": jsonDecode(response.body),
+          "header": response.headers,
         };
       case 400:
         return {
@@ -99,9 +117,8 @@ abstract class BaseApiService {
       case 403:
         return {
           "statusCode": response.statusCode,
-          "responseBody": jsonDecode(
-            response.body,
-          ), // Ensure it's parsed as JSON
+          "responseBody": jsonDecode(response.body),
+          // Ensure it's parsed as JSON
         };
       case 404:
         return {

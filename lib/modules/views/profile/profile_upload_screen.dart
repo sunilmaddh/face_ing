@@ -6,6 +6,8 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/views/profile/widgets/image_picker_bottomsheet.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -28,7 +30,6 @@ class ProfileUploadScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Align(
-                    alignment: Alignment.centerRight,
                     child: CommonText.text(
                       AppConstents.uploadPhotoHeading,
                       color: AppColors.profileTitleColor,
@@ -66,21 +67,9 @@ class ProfileUploadScreen extends StatelessWidget {
                               ImagePickerBottomsheet.showImagePickerBottomSheet(
                                 onGalleryTap: () {
                                   _profileController.uploadProfileFromGallery();
-                                  // CommonUtils.uploadProfileFromGallery(
-                                  //   profileUrl: _profileController.profileUrl,
-                                  //   uploadService:
-                                  //       ProfileUploadService()
-                                  //           .pickImageFromGallery(),
-                                  // );
                                 },
                                 onCameraTap: () {
                                   _profileController.uploadProfileFromCamera();
-                                  // CommonUtils.uploadProfileFromGallery(
-                                  //   profileUrl: _profileController.profileUrl,
-                                  //   uploadService:
-                                  //       ProfileUploadService()
-                                  //           .pickImageFromCamera(),
-                                  // );
                                 },
                               );
                             },
