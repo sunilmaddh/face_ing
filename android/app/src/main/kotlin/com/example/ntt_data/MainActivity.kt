@@ -1,7 +1,8 @@
 package com.example.ntt_data
 import android.content.Intent
 import android.util.Log
-import com.example.ntt_data.mesuerment.AnuraExampleMeasurementActivity
+import com.example.ntt_data.measurement.AnuraExampleMeasurementActivity
+import com.example.ntt_data.measurement.ExampleStartActivity
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -30,8 +31,9 @@ class MainActivity : FlutterActivity(){
 
     private fun startAnura() {
         try {
-            startActivity(Intent(this, AnuraExampleMeasurementActivity::class.java))
-
+            Log.d("AnuraSDK", "Anura SDK Started")
+            val intent = Intent(this, ExampleStartActivity::class.java)
+            startActivity(intent)
             // Initialize and start Anura SDK (replace with actual Anura SDK implementation)
             Log.d("AnuraSDK", "Anura SDK Started")
         } catch (e: Exception) {

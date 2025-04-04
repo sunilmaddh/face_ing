@@ -13,10 +13,7 @@
  *      NURALOGIX CORP SOFTWARE LICENSE AGREEMENT.
  */
 
-package com.example.ntt_data.mesuerment
-
-
-
+package com.example.ntt_data.measurement
 import ai.nuralogix.anuracream.ui.views.MeasurementView
 import ai.nuralogix.anuracream.utils.DisplayUtil.maximizeScreenBrightness
 import ai.nuralogix.anuracream.utils.DisplayUtil.resumeScreenBrightness
@@ -203,10 +200,10 @@ class AnuraExampleMeasurementActivity :
         if (!this::core.isInitialized) {
             return
         }
-        var measurementQuestionnaire = MeasurementQuestionnaire()
+//        var measurementQuestionnaire = MeasurementQuestionnaire()
         val status = measurementPipeline.startMeasurement(
-           measurementQuestionnaire ,BuildConfig.DFX_STUDY_ID,
-            "3"
+           ExampleStartActivity.measurementQuestionnaire ,BuildConfig.DFX_STUDY_ID,
+            ExampleStartActivity.PARTNER_ID
         )
 
         if (status == AnuraError.Core.OK) {

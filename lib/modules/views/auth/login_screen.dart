@@ -99,7 +99,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: AppConstents.login,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            _authController.userLogin();
+                            // _authController.userLogin();
+                            AppNavigation.to(AppRoutes.homeScreen);
                           }
 
                           // AppNavigation.to(AppRoutes.homeScreen);

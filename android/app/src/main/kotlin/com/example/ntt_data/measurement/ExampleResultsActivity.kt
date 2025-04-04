@@ -1,4 +1,4 @@
-package com.example.ntt_data.mesuerment
+package com.example.ntt_data.measurement
 
 import ai.nuralogix.anura.sample.ui.measurement.ExampleResultsAdapter
 import com.example.ntt_data.utils.KEY_MEASUREMENT_RESULTS

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/error_response.dart';
+import 'package:ntt_data/data/models/login_response_model.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -13,6 +14,7 @@ import 'package:ntt_data/data/repository/services/auth_services.dart';
 class AuthController extends GetxController {
   final _authServices = Get.put(AuthServices());
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
+  Rx<LoginResponseModel> loginResponseModel = LoginResponseModel().obs;
   Rx<MedicalQuestionListModel> medicalQuestionListModel =
       MedicalQuestionListModel().obs;
   RxString userId = "".obs;
@@ -185,26 +187,25 @@ class AuthController extends GetxController {
         var refereshToken = header["refreshToken"];
         StorageHelper.write("access-token", accessToken);
         StorageHelper.write("refresh-token", refereshToken);
-        var result = ErrorResponse.fromJson(response["responseBody"]);
-        errorResponse.value = result;
+        var result = LoginResponseModel.fromJson(response["responseBody"]);
+        loginResponseModel.value = result;
         AppSnackbar.show(
           title: "Success",
-          message: errorResponse.value.message!,
+          message: loginResponseModel.value.message!,
         );
-
-        StorageHelper.write("userID", errorResponse.value.userId!);
-        StorageHelper.write("emailId", errorResponse.value.emailId!);
-        if (errorResponse.value.success == true &&
-            errorResponse.value.onBoarded == false) {
+        StorageHelper.write("userID", loginResponseModel.value.userId!);
+        StorageHelper.write("emailId", loginResponseModel.value.emailId!);
+        if (loginResponseModel.value.success == true &&
+            loginResponseModel.value.onBoarded == false) {
           AppNavigation.to(
             AppRoutes.createAccount,
-            arguments: {"userId": errorResponse.value.userId},
+            arguments: {"userId": loginResponseModel.value.userId},
           );
           clearData();
         } else {
           StorageHelper.write(
             "isOnboard",
-            errorResponse.value.onBoarded.toString(),
+            loginResponseModel.value.onBoarded.toString(),
           );
           AppNavigation.off(AppRoutes.homeScreen);
         }
