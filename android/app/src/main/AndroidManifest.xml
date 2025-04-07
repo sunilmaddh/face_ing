@@ -12,11 +12,12 @@
 
     <application
         android:label="ntt_data"
-        android:name="${applicationName}"
+        android:name=".MainApplication"
         android:supportsRtl="true"
         android:allowBackup="true"
         tools:replace="android:label"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        tools:ignore="MissingClass">
 
         <activity
             android:name=".MainActivity"
@@ -46,7 +47,15 @@
             android:name=".measurement.ExampleStartActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:exported="true" />
-
+             <activity
+            android:name=".measurement.ExampleResultsActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:exported="true" />
+            <activity
+            android:name="io.flutter.embedding.android.FlutterActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+s
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

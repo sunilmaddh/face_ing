@@ -68,7 +68,13 @@ class HomeScreen extends StatelessWidget {
               ScanButton(
                 width: 193,
                 onPressed: () {
-                  NativeCaller.startFaceScan();
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    NativeCaller.startFaceScan();
+                  });
+                  // .then((v) {
+                  //   AppNavigation.to(AppRoutes.analyzingHealthData);
+                  // });
+
                   // AppNavigation.to(AppRoutes.analyzingHealthData);
                   //  AppNavigation.to(AppRoutes.scanScreen);
                 },

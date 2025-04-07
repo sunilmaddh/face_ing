@@ -27,11 +27,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.example.ntt_data.databinding.ActivityMainBinding
@@ -94,14 +96,17 @@ class ExampleStartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initialize()
-        setupUserProfileInputUI()
+        supportActionBar?.hide()
+
 
         /**
          * Check if the application has been configured with a DeepAffex License Key and Study ID
          */
         if (checkEmbeddedDeepAffexLicenseAndStudyID()) {
+            binding.progressBar.visibility= View.VISIBLE
             requestCameraAccessPermission()
             lifecycleScope.launch {
+
                 /**
                  * Before launching [AnuraExampleMeasurementActivity], we need to ensure that the
                  * application has a valid DeepAffex Cloud access token. The application also needs
@@ -109,6 +114,7 @@ class ExampleStartActivity : AppCompatActivity() {
                  * initialize DeepAffex Extraction Library
                  */
                 exampleStartViewModel.verifyDeepAffexTokenAndStudyFile()
+                launchAnuraExampleMeasurementActivity()
             }
         } else {
 
@@ -135,6 +141,7 @@ class ExampleStartActivity : AppCompatActivity() {
                     measurementQuestionnaire.toString() +
                     "partnerID=$PARTNER_ID"
         )
+        binding.progressBar.visibility=View.GONE
         startActivity(Intent(this, AnuraExampleMeasurementActivity::class.java))
     }
 
@@ -142,18 +149,18 @@ class ExampleStartActivity : AppCompatActivity() {
      * Initialization code for various aspects of this example activity
      */
     private fun initialize() {
-        setContentView(binding.root)
+      setContentView(binding.root)
         SharedPreferencesHelper.initialize(application)
         AnuLogUtil.setShowLog(BuildConfig.DEBUG)
 
-        exampleStartViewModel.readyToMeasure.observe(this) { handleTokenVerified(it) }
+//        exampleStartViewModel.readyToMeasure.observe(this) { handleTokenVerified(it) }
         exampleStartViewModel.error.observe(this) { handleError(it) }
     }
 
     /**
      * Setup the user profile questionnaire UI
      */
-    private fun setupUserProfileInputUI() {
+//    private fun setupUserProfileInputUI() {
 //        binding.userHeightEt.addTextChangedListener { text ->
 //            userProfileHeight = text.toString()
 //        }
@@ -169,8 +176,8 @@ class ExampleStartActivity : AppCompatActivity() {
 //        binding.partnerIdEt.addTextChangedListener { text ->
 //            PARTNER_ID = text.toString()
 //        }
-        binding.goMeasuremntBtn.setOnClickListener {
-            launchAnuraExampleMeasurementActivity()
+//        binding.goMeasuremntBtn.setOnClickListener {
+//            launchAnuraExampleMeasurementActivity()
 //            if (userProfileHeight.isNotBlank()
 //                || userProfileWeight.isNotBlank()
 //                || userProfileAge.isNotBlank()
@@ -180,8 +187,8 @@ class ExampleStartActivity : AppCompatActivity() {
 //            } else {
 //                launchAnuraExampleMeasurementActivity()
 //            }
-        }
-    }
+//        }
+//    }
 
     /**
      * Use the [MeasurementQuestionnaire] to validate and persist the user
@@ -243,9 +250,9 @@ class ExampleStartActivity : AppCompatActivity() {
     /**
      * Activates the "Start Measurement" button when the DeepAffex cloud access token and s
      */
-    private fun handleTokenVerified(isTokenVerified: Boolean) {
-        binding.goMeasuremntBtn.isEnabled = isTokenVerified
-    }
+//    private fun handleTokenVerified(isTokenVerified: Boolean) {
+//        binding.goMeasuremntBtn.isEnabled = isTokenVerified
+//    }
 
     /**
      * Generic method to handle errors. Your application is responsible for gracefully handling
