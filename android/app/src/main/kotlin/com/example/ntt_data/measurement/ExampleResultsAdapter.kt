@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ntt_data.R
 
 /**
  * A [RecyclerView] adapter to display results from a [MeasurementResults] instance. This adapter
@@ -45,7 +46,7 @@ class ExampleResultsAdapter(private val results: MeasurementResults) :
         val view = LayoutInflater
             .from(parent.context)
             .inflate(
-                android.R.layout.two_line_list_item,
+                R.layout.view_report_card,
                 parent,
                 false)
 
@@ -64,7 +65,7 @@ class ExampleResultsAdapter(private val results: MeasurementResults) :
     }
 
     inner class ResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvSignalName: TextView = itemView.findViewById(android.R.id.text1)
-        val tvSignalResult: TextView = itemView.findViewById(android.R.id.text2)
+        val tvSignalName: TextView = itemView.findViewById(R.id.tv_title)
+        val tvSignalResult: TextView = itemView.findViewById(R.id.rv_results)
     }
 }

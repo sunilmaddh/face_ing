@@ -25,7 +25,6 @@ import ai.nuralogix.anurasdk.core.Core
 import ai.nuralogix.anurasdk.core.MeasurementPipeline
 import ai.nuralogix.anurasdk.core.MeasurementPipelineListener
 import ai.nuralogix.anurasdk.core.VideoFormat
-import ai.nuralogix.anurasdk.core.entity.MeasurementQuestionnaire
 import ai.nuralogix.anurasdk.core.result.MeasurementResults
 import ai.nuralogix.anurasdk.core.states.MeasurementState
 import ai.nuralogix.anurasdk.error.AnuraError
@@ -50,7 +49,6 @@ import android.os.Looper
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -63,7 +61,6 @@ import com.example.ntt_data.utils.KEY_MEASUREMENT_RESULTS
 import com.example.ntt_data.utils.SharedPreferencesHelper
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngineCache
-import io.flutter.plugin.common.MethodChannel
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.math.max
@@ -191,35 +188,29 @@ class AnuraExampleMeasurementActivity :
          */
 //        FlutterActivity.withNewEngine().initialRoute("/analyzing_health_data")
 
-        val flutterEngine = FlutterEngineCache.getInstance().get("my_engine_id")
-
-        // Start Flutter UI
-        val intent = FlutterActivity
-            .withCachedEngine("my_engine_id").build(this)
-//            ini("/results") // You can use this to navigate in Flutter
-//            .build(this)
-        startActivity(intent)
-
-
-
-        val app = applicationContext as MainApplication
-                Handler(Looper.getMainLooper()).postDelayed({
-            app.sendResultsToFlutter(results.toString())
-        }, 300)
-
-//        flutterEngine?.dartExecutor?.let {
-//            it.binaryMessenger .let { it1 ->
-//                MethodChannel(it1, "com.example.channel")
-//                    .invokeMethod("navigateToResults", results.toString())
-//            }
-//        }
-
-
-
-//        Log.d(TAG, "results=$results")
-//        val intent = Intent(this, ExampleResultsActivity::class.java)
-//        intent.putExtra(KEY_MEASUREMENT_RESULTS, results)
+//        val flutterEngine = FlutterEngineCache.getInstance().get("my_engine_id")
+//
+//        // Start Flutter UI
+//        val intent = FlutterActivity
+//            .withCachedEngine("my_engine_id").build(this)
+////            ini("/results") // You can use this to navigate in Flutter
+////            .build(this)
 //        startActivity(intent)
+//
+////        Log.d(TAG, "results=$results")
+//        val app = applicationContext as MainApplication
+//                Handler(Looper.getMainLooper()).postDelayed({
+//            app.sendResultsToFlutter(results.toString())
+//        }, 300)
+
+
+
+
+
+        Log.d(TAG, "results=$results")
+        val intent = Intent(this, ExampleResultsActivity::class.java)
+        intent.putExtra(KEY_MEASUREMENT_RESULTS, results)
+        startActivity(intent)
     }
 
     /**

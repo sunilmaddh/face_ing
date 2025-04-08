@@ -1,6 +1,5 @@
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:get_storage/get_storage.dart';
-import 'dart:convert'; // For JSON encoding/decoding
+// For JSON encoding/decoding
 
 class StorageHelper {
   static final _box = GetStorage();

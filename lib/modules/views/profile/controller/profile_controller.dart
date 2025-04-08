@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
@@ -24,6 +25,8 @@ class ProfileController extends GetxController {
   final TextEditingController weightController = TextEditingController();
   final TextEditingController heightController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
+  Rx<AnlyzeHealthDataResponseModel> anlyzeHealthDataResponseModel =
+      AnlyzeHealthDataResponseModel().obs;
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
   RxList<MedicalQuestionListModel> medicalQuestionListModel =
       <MedicalQuestionListModel>[].obs;

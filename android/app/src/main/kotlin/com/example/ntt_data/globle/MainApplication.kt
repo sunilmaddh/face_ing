@@ -1,9 +1,11 @@
 package com.example.ntt_data
 
+import ai.nuralogix.anurasdk.core.result.MeasurementResults
 import android.app.Application
 import android.content.Intent
 import android.util.Log
 import com.example.ntt_data.measurement.ExampleStartActivity
+import com.google.gson.Gson
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.plugin.common.MethodChannel
@@ -47,14 +49,19 @@ class MainApplication : Application() {
 
     // This will be used from Native to send data to Flutter
     fun sendResultsToFlutter(results: String) {
+        Log.d("jsonString Sunil", results.toString())
+          val gson = Gson()
+           val jsonString = gson.toJson(results)
+        Log.d("jsonString Sunil", jsonString)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL_RESULT)
-            .invokeMethod("navigateToResults", results)
+            .invokeMethod("navigateToResults", jsonString)
     }
 
     private fun startAnura() {
         try {
             Log.d("AnuraSDK", "Anura SDK Started")
             val intent = Intent(this, ExampleStartActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             // Initialize and start Anura SDK (replace with actual Anura SDK implementation)
             Log.d("AnuraSDK", "Anura SDK Started")

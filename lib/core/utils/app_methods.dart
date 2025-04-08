@@ -20,17 +20,8 @@ class AppMethods {
         orElse: () => {},
       );
 
-      if (existingEntry != null) {
-        // If entry exists, update the answers for that question
-        existingEntry["answer"] = selectedAnswers;
-      } else {
-        // If entry does not exist, add a new entry with the selected answers
-        dataList.add({
-          "id": id,
-          "question": question,
-          "answer": selectedAnswers,
-        });
-      }
+      // If entry exists, update the answers for that question
+      existingEntry["answer"] = selectedAnswers;
     } else {
       // If answers are empty, remove the question from the dataList
       dataList.removeWhere((element) => element["question"] == question);
