@@ -65,7 +65,7 @@ class ExampleResultsAdapter(private val results: MeasurementResults) :
     }
 
     inner class ResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvSignalName: TextView = itemView.findViewById(R.id.tv_title)
-        val tvSignalResult: TextView = itemView.findViewById(R.id.rv_results)
+        val tvSignalName: TextView = itemView.findViewById(R.id.tv_value)
+        val tvSignalResult: TextView = itemView.findViewById(R.id.tv_title)
     }
 }

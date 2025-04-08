@@ -10,6 +10,7 @@ import android.view.Window
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ntt_data.R
@@ -40,6 +41,7 @@ class ExampleResultsActivity : AppCompatActivity() {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_results)
         val topAppBar = findViewById<MaterialToolbar>(R.id.topAppBar)
+        topAppBar.setNavigationIcon(R.drawable.baseline_arrow_back_24)
         topAppBar.setNavigationOnClickListener {
             finish()
         }
@@ -61,13 +63,13 @@ class ExampleResultsActivity : AppCompatActivity() {
      */
     private fun setupResultsView(measurementResults: MeasurementResults?) {
         val rvResults = findViewById<RecyclerView>(R.id.rv_results)
-        val tvTitle = findViewById<TextView>(R.id.tv_title)
+//        val tvTitle = findViewById<TextView>(R.id.tv_title)
 
         /**
          * Make sure that the results are valid before displaying them
          */
         if (measurementResults != null && measurementResults.isSNRGood) {
-            rvResults.layoutManager = LinearLayoutManager(this@ExampleResultsActivity)
+            rvResults.layoutManager = GridLayoutManager(this@ExampleResultsActivity,2)
             rvResults.adapter = ExampleResultsAdapter(measurementResults)
             rvResults.addItemDecoration(
                 DividerItemDecoration(
@@ -79,14 +81,14 @@ class ExampleResultsActivity : AppCompatActivity() {
             /**
              * Show the Measurement ID in the title
              */
-            tvTitle.text = measurementResults.measurementID
+//            tvTitle.text = measurementResults.measurementID
         } else {
             /**
              * If results are not available, show a "Measurement Cancelled" message
              */
-            tvTitle.text = resources.getString(R.string.MEASUREMENT_CANCELED)
-                .plus("\n MeasurementID: ${measurementResults?.measurementID}")
-                .plus("\n SNR: ${measurementResults?.snr}")
+//            tvTitle.text = resources.getString(R.string.MEASUREMENT_CANCELED)
+//                .plus("\n MeasurementID: ${measurementResults?.measurementID}")
+//                .plus("\n SNR: ${measurementResults?.snr}")
         }
     }
 }

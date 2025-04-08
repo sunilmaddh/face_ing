@@ -18,14 +18,13 @@
         android:paddingBottom="26dp">
 
         <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_value"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:maxLines="2" />
+            android:text="Value"
+            android:textColor="#0066CC"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <!-- Optional Image Section -->
         <!--
@@ -44,14 +43,16 @@
             android:orientation="vertical"
             android:layout_marginTop="20dp">
 
+
             <TextView
-                android:id="@+id/tv_value"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Value"
-                android:textColor="#0066CC"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:text="Title"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="2" />
 
             <TextView
                 android:id="@+id/tv_mass"

@@ -203,10 +203,6 @@ class AnuraExampleMeasurementActivity :
 //            app.sendResultsToFlutter(results.toString())
 //        }, 300)
 
-
-
-
-
         Log.d(TAG, "results=$results")
         val intent = Intent(this, ExampleResultsActivity::class.java)
         intent.putExtra(KEY_MEASUREMENT_RESULTS, results)
