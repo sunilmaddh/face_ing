@@ -142,7 +142,11 @@ class ExampleStartActivity : AppCompatActivity() {
                     "partnerID=$PARTNER_ID"
         )
         binding.progressBar.visibility=View.GONE
-        startActivity(Intent(this, AnuraExampleMeasurementActivity::class.java))
+        val intent = Intent(this, AnuraExampleMeasurementActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
+//        startActivity(Intent(this, AnuraExampleMeasurementActivity::class.java))
     }
 
     /**

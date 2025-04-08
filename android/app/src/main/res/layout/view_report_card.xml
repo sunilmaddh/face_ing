@@ -58,7 +58,7 @@
                 android:id="@+id/tv_mass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mass"
+                android:text=""
                 android:textColor="#000000"
                 android:textSize="14sp" />
         </LinearLayout>

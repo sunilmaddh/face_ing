@@ -207,6 +207,7 @@ class AnuraExampleMeasurementActivity :
         val intent = Intent(this, ExampleResultsActivity::class.java)
         intent.putExtra(KEY_MEASUREMENT_RESULTS, results)
         startActivity(intent)
+        finish()
     }
 
     /**
