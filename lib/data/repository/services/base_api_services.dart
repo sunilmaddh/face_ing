@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
+import 'package:http_parser/http_parser.dart';
 
 abstract class BaseApiService {
   final String baseUrl = ApiEndpoints.baseUrl;
@@ -47,7 +50,7 @@ abstract class BaseApiService {
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
     try {
-      var accessToken = await StorageHelper.read("access-token");
+      var accessToken = "";
       debugPrint("Access toke $accessToken");
       Uri uri = Uri.http(baseUrl, endpoint);
       debugPrint(uri.toString());
@@ -138,4 +141,63 @@ abstract class BaseApiService {
         throw Exception("Unknown Error: ${response.statusCode}");
     }
   }
+
+  Future<http.Response?> uploadImage(
+    String endpoint,
+    filepath,
+    String userID,
+  ) async {
+    Uri uri = Uri.http(baseUrl, endpoint);
+    debugPrint('URL  $uri');
+    debugPrint('File  $filepath');
+    String endP = "$endpoint/$userID";
+    var request = http.MultipartRequest('PUT', Uri.http(baseUrl, endP));
+
+    request.files.add(await http.MultipartFile.fromPath('file', filepath));
+    request.fields["isSignup"] = "true";
+    request.headers.addAll({'Content-Type': 'application/json'});
+    debugPrint(request.toString());
+    var response = await request.send();
+    http.Response responses = await http.Response.fromStream(response);
+    print(response.statusCode);
+    // response.stream.transform(utf8.decoder).listen((value) {
+    //   print(value);
+    // });
+    return responses;
+  }
+
+  // Future<void> sendFormDataWithImage(String endpoint, filepath) async {
+  //   Uri uri = Uri.http(baseUrl, endpoint);
+  //   debugPrint('URL  $uri');
+  //   debugPrint('File  $filepath');
+  //   String endP = "$endpoint/${"1000000001"}";
+  //   final request = http.MultipartRequest('POST', Uri.http(baseUrl, endP));
+
+  //   // Add regular form fields
+  //   request.fields['isSignup'] = 'true';
+
+  //   // Detect MIME type (e.g., image/jpeg)
+  //   final mimeType = lookupMimeType(filepath.path);
+  //   final mimeSplit = mimeType?.split('/') ?? ['application', 'octet-stream'];
+
+  //   // Add image with proper Content-Type
+  //   request.files.add(
+  //     await http.MultipartFile.fromPath(
+  //       'file', // <-- your backend expects this field
+  //       filepath.path,
+  //       contentType: MediaType(mimeSplit[0], mimeSplit[1]),
+  //       // filename: basename(imageFile.path),
+  //     ),
+  //   );
+
+  //   // // Optional: headers like auth
+  //   // request.headers['Authorization'] = 'Bearer your_token';
+
+  //   // Send request
+  //   final response = await request.send();
+
+  //   final responseBody = await response.stream.bytesToString();
+  //   print('Status code: ${response.statusCode}');
+  //   print('Response body: $responseBody');
+  // }
 }

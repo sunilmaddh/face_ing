@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/response/response.dart' as http;
+import 'package:http/src/response.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
 import 'package:ntt_data/data/repository/services/base_api_services.dart';
 
@@ -231,21 +236,24 @@ class AuthServices extends BaseApiService {
   //     return responseData;
   //   }
 
-  //   static Future<Map<String, dynamic>> uploadDocument(
-  //     File? imagePath,
-  //   ) async {
-  //     http.Response? response = await _baseClient.uploadImage(
-  //         AppApiEndpoints.UPLOAD_IMAGE, imagePath!.path);
-  //     debugPrint(
-  //         "ResponseCode: ${response!.statusCode}= ResponseBody${response.body}");
-  //     Map<String, dynamic> responseData = {
-  //       'responseCode': response.statusCode,
-  //     };
-  //     if (response.statusCode == 200) {
-  //       var resjson = response.body;
-  //       responseData.putIfAbsent(
-  //           'response', () => agroUploadImageFromJson(resjson));
-  //     }
-  //     return responseData;
-  //   }
+  Future<Map<String, dynamic>> uploadDocument(
+    File? imagePath,
+    String userID,
+  ) async {
+    Response? response = await uploadImage(
+      ApiEndpoints.profileUpload,
+      imagePath!.path,
+      userID,
+    );
+    debugPrint(
+      "ResponseCode: ${response!.statusCode}= ResponseBody${response.body}",
+    );
+    Map<String, dynamic> responseData = {'responseCode': response.statusCode};
+    // if (response.statusCode == 200) {
+    //   var resjson = response.body;
+    //   responseData.putIfAbsent(
+    //       'response', () => agroUploadImageFromJson(resjson));
+    // }
+    return responseData;
+  }
 }

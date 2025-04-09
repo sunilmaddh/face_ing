@@ -7,8 +7,9 @@ class ApiEndpoints {
 
   ApiEndpoints._internal();
 
-  static const String baseUrl = "192.168.1.234:8085";
-  //  "192.168.1.114:8085";
+  static const String baseUrl =
+      // "192.168.1.234:8085";
+      "192.168.1.114:8085";
   // "192.168.1.234:8085";
 
   static const String login = '/login',
@@ -18,5 +19,6 @@ class ApiEndpoints {
       getforgetOtp = '/forgotPassword',
       verifyForgotOtp = '/verifyForGetPasOtp',
       medicalQuestionList = '/sendAllOnboardingQuestions',
-      resetPassword = '/resetPassword';
+      resetPassword = '/resetPassword',
+      profileUpload = '/editProfile';
 }

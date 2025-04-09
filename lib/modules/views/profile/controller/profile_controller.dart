@@ -6,6 +6,7 @@ import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
+import 'package:ntt_data/data/repository/services/auth_services.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -123,6 +124,10 @@ class ProfileController extends GetxController {
     var imageUrl = await _uploadService.pickImageFromCamera();
     if (imageUrl != null) {
       profileUrl.value = File(imageUrl.path);
+      AuthServices().uploadDocument(
+        profileUrl.value,
+        _authController.userId.value,
+      );
     } else {
       Get.snackbar("Upload Failed", "Please try again");
     }
