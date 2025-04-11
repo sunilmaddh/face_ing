@@ -51,6 +51,10 @@
             android:name=".measurement.ExampleResultsActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:exported="true" />
+             <activity
+            android:name=".ui.HealthResultActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:exported="true" />
             <activity
             android:name="io.flutter.embedding.android.FlutterActivity"
             android:exported="true"

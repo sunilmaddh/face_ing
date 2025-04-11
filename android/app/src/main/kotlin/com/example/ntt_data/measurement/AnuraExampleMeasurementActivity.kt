@@ -56,6 +56,7 @@ import androidx.lifecycle.LiveData
 import com.example.ntt_data.BuildConfig
 import com.example.ntt_data.MainApplication
 import com.example.ntt_data.R
+import com.example.ntt_data.ui.HealthResultActivity
 import com.example.ntt_data.utils.KEY_DFX_EXTRACTION_LIBRARY_STUDY_CONFIG
 import com.example.ntt_data.utils.KEY_MEASUREMENT_RESULTS
 import com.example.ntt_data.utils.SharedPreferencesHelper
@@ -204,7 +205,7 @@ class AnuraExampleMeasurementActivity :
 //        }, 300)
 
         Log.d(TAG, "results=$results")
-        val intent = Intent(this, ExampleResultsActivity::class.java)
+        val intent = Intent(this, HealthResultActivity::class.java)
         intent.putExtra(KEY_MEASUREMENT_RESULTS, results)
         startActivity(intent)
         finish()

@@ -5,10 +5,14 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("dev.flutter.flutter-gradle-plugin") // Flutter plugin must be last
+    id("dev.flutter.flutter-gradle-plugin")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"// Flutter plugin must be last
 }
 
 android {
+    buildFeatures {
+        compose= true
+    }
     namespace = "com.example.ntt_data"
     compileSdk = flutter?.compileSdkVersion ?: 33
     ndkVersion = "27.0.12077973"
@@ -93,15 +97,30 @@ android {
         implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0") // Fixed version
 
         // AndroidX and UI Dependencies
-        implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-        implementation("androidx.appcompat:appcompat:1.6.1")
-        implementation("com.google.android.material:material:1.9.0")
-        implementation("androidx.activity:activity-ktx:1.7.2")
-        implementation("androidx.fragment:fragment-ktx:1.6.0")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
-        implementation("androidx.recyclerview:recyclerview:1.3.0")
+        implementation("androidx.constraintlayout:constraintlayout:2.2.1")
+        implementation("androidx.appcompat:appcompat:1.7.0")
+        implementation("com.google.android.material:material:1.12.0")
+        implementation("androidx.activity:activity-ktx:1.10.1")
+        implementation("androidx.fragment:fragment-ktx:1.8.6")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+        implementation("androidx.recyclerview:recyclerview:1.4.0")
+        implementation("androidx.activity:activity-compose")
+        implementation("androidx.compose.material3:material3")
+        implementation("androidx.compose.material3:material3-android:1.3.2")
+        implementation("androidx.compose.ui:ui")
+        implementation("androidx.compose.ui:ui-tooling-preview")
+        implementation(platform("androidx.compose:compose-bom:2025.04.00"))
+        implementation("androidx.activity:activity-compose")
     }
 }
+dependencies {
+    implementation("androidx.compose.material3:material3-android:1.3.2")
+}
+//dependencies {
+//    implementation("androidx.compose.runtime:runtime-android:1.7.8")
+//    implementation("androidx.compose.material3:material3-android:1.3.2")
+//
+//}
 
 flutter {
     source = "../.."
