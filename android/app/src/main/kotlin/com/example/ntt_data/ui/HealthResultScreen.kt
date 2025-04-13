@@ -24,9 +24,10 @@ fun HealthResultScreen(
     val contents = listOf<@Composable () -> Unit>(
 
         {
-            HealthGridFormAllResult(
-                results = measurementResults!!
-            )
+         HealthDataList()
+//            HealthGridFormAllResult(
+//                results = measurementResults!!
+//            )
         },
         {
             Text("Vital Content", modifier = Modifier.fillMaxSize())
@@ -54,7 +55,8 @@ fun HealthResultScreen(
             )
         }
     ) { innerPadding ->
-        if (measurementResults != null && measurementResults.isSNRGood) {
+//        && !measurementResults?.isSNRGood
+     if (measurementResults == null ) {
             // 👇 Proper padding to avoid being hidden by the top app bar
             Box(modifier = Modifier
                 .fillMaxSize()
