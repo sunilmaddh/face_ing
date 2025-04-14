@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/response/response.dart' as http;
 import 'package:http/src/response.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
 import 'package:ntt_data/data/repository/services/base_api_services.dart';

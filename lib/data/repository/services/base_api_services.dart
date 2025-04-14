@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mime/mime.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
-import 'package:http_parser/http_parser.dart';
 
 abstract class BaseApiService {
   final String baseUrl = ApiEndpoints.baseUrl;

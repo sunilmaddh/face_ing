@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
