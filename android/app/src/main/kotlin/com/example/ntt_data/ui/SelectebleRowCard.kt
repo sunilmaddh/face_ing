@@ -33,8 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SelectableCardRow() {
-    var selectedIndex by remember { mutableIntStateOf(2) }
+fun SelectableCardRow(
+    index:Int
+) {
+    var selectedIndex by remember { mutableIntStateOf(index) }
 
     val colors = listOf(
         Color(0xFF0072BC), // Blue

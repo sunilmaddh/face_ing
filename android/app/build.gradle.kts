@@ -115,6 +115,7 @@ android {
 }
 dependencies {
     implementation("androidx.compose.material3:material3-android:1.3.2")
+    implementation("androidx.media3:media3-common-ktx:1.6.0")
 }
 //dependencies {
 //    implementation("androidx.compose.runtime:runtime-android:1.7.8")

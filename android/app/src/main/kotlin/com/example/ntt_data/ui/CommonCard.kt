@@ -1,5 +1,6 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,15 +35,18 @@ fun CommonCard(
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .width(170.dp)
-            .height(142.dp)
+            .height(165.dp)
             .padding(8.dp)
     ) {
         Column(
 //            horizontalAlignment = Alignment.CenterHorizontally,
+//            verticalArrangement = Arrangement.spacedBy(space = 3.dp,),
+
+            verticalArrangement = Arrangement.SpaceBetween,
 
             modifier = Modifier.fillMaxSize().padding(8.dp)
         ) {
@@ -56,22 +60,26 @@ fun CommonCard(
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xff0072BC),
-                fontWeight = FontWeight.W400,
-                fontSize = 24.sp,
 
-                )
-            Text(
-                text = mass,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Black,
-                fontWeight = FontWeight.W700,
-                fontSize = 14.sp,
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xff0072BC),
+                    fontWeight = FontWeight.W700,
+                    textAlign = TextAlign.End,
+                    fontSize = 24.sp,
 
-                )
+                    )
+                Text(
+                    text = mass,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Black,
+                    fontWeight = FontWeight.W700,
+                    fontSize = 14.sp,
+
+                    )
+
+
 
             // Subtitle with background image
 //            Box(

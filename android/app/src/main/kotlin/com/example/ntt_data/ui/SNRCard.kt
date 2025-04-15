@@ -29,13 +29,11 @@ fun SNRCard(
     title: String,
     subtitle: String,
     imageRes: Int,
-    isWidget:Boolean=false,
-    isWidgetWithText:Boolean=false,
     modifier: Modifier = Modifier
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
 
@@ -44,14 +42,16 @@ fun SNRCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(top = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.W600
+                ,
+                fontSize = 16.sp
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -59,19 +59,20 @@ fun SNRCard(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color(0xff0072BC),
-                fontWeight = FontWeight.W400,
+                fontWeight = FontWeight.W700,
                 fontSize = 24.sp,
             )
             Spacer(modifier = Modifier.height(12.dp))
             Image(
+                alignment = Alignment.BottomCenter,
                 painter = painterResource(id = imageRes),
                 contentDescription = null,
-//                modifier = Modifier
-//                    .height(80.dp)
-//                    .fillMaxWidth(),
-//                contentScale = ContentScale.Fit
+                modifier = Modifier
+                    .height(120.dp)
+                    .width(400.dp),
+                contentScale = ContentScale.Fit
             )
-            Spacer(modifier = Modifier.height(12.dp))
+//            Spacer(modifier = Modifier.height(12.dp))
 
             }
 

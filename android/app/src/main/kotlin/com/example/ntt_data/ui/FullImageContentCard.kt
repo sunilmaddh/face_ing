@@ -35,9 +35,9 @@ fun FullImageContentCard(
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = modifier
-            .width(170.dp).height(287.dp)
+            .width(170.dp).height(330.dp)
             .padding(8.dp)
     ) {
         Column(
@@ -49,8 +49,8 @@ fun FullImageContentCard(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.W700,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W600,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(8.dp)
@@ -62,30 +62,31 @@ fun FullImageContentCard(
                     painter = painterResource(id = imageRes),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
+
                     modifier = Modifier
-                        .fillMaxWidth().align(alignment = Alignment.BottomCenter)
+                        .fillMaxWidth().align(alignment = Alignment.BottomCenter).height(250.dp)
 
                 )
-                Text(
+                Column( modifier = Modifier
+                    .padding(16.dp).align(alignment = Alignment.BottomStart)) {  Text(
                     text = centerText,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xff0072BC),
                     fontWeight = FontWeight.W700,
                     fontSize = 24.sp,
-                    modifier = Modifier
-                        .padding(16.dp).align(alignment = Alignment.BottomStart)
+
                 )
 
-                Text(
-                    text = mass,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Black,
-                    fontWeight = FontWeight.W400,
-                    fontSize = 14.sp,
-                    modifier = Modifier
-                        .padding(16.dp).align(alignment = Alignment.BottomStart)
+                    Text(
+                        text = mass,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Black,
+                        fontWeight = FontWeight.W400,
+                        fontSize = 14.sp,
 
-                    )
+
+                    ) }
+
             }
 
 

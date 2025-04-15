@@ -144,6 +144,7 @@ abstract class BaseApiService {
     filepath,
     String userID,
   ) async {
+    var accessToken = await StorageHelper.read("access-token");
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint('URL  $uri');
     debugPrint('File  $filepath');
@@ -152,7 +153,11 @@ abstract class BaseApiService {
 
     request.files.add(await http.MultipartFile.fromPath('file', filepath));
     request.fields["isSignup"] = "true";
-    request.headers.addAll({'Content-Type': 'application/json'});
+
+    request.headers.addAll({
+      'Content-Type': 'application/json',
+      "Authorization": "Bearer $accessToken",
+    });
     debugPrint(request.toString());
     var response = await request.send();
     http.Response responses = await http.Response.fromStream(response);

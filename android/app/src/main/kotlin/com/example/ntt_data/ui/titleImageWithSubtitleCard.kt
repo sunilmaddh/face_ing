@@ -1,5 +1,6 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,22 +34,24 @@ fun TitleWithImageSubtitleCard(
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .width(170.dp)
-            .height(142.dp)
+            .height(173.dp)
             .padding(8.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
+
             modifier = Modifier.fillMaxSize()
         ) {
             // Title
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.W700,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -58,9 +61,9 @@ fun TitleWithImageSubtitleCard(
             // Subtitle with background image
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .align(Alignment.CenterHorizontally).padding(12.dp)
+                    .width(137.dp)
+                    .height(80.dp).padding(bottom = 10.dp)
+
             ) {
                 Image(
                     painter = painterResource(id = imageRes),

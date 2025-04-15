@@ -53,7 +53,7 @@ fun CustomTabBar(
                                 pagerState.animateScrollToPage(index)
                             }
                         },
-                        modifier = Modifier.padding(4.dp).clip(RoundedCornerShape(24.dp)).background(if (pagerState.currentPage==index)Color.Blue else Color.Transparent),
+                        modifier = Modifier.padding(4.dp).clip(RoundedCornerShape(24.dp)).background(if (pagerState.currentPage==index)Color(0xFF0072BC) else Color.Transparent),
                         selectedContentColor =Color.White,
                         unselectedContentColor = Color.Gray,
                         text = {

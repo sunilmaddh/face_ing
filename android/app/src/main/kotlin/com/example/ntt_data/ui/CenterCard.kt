@@ -28,15 +28,19 @@ import com.example.ntt_data.ui.SeamlessCircularProgressIndicator
 fun CenteredContentCard(
     title: String,
     subtitle: String="",
-    imageRes: Int,
+    imageRes: Int=0,
+    maxProgress: Float = 100f,
     mass:String="",
+    value:Double=0.0,
+    borderColor:Color=Color.Transparent,
+    drawArcColor:Color=Color.Transparent,
     isWidget:Boolean=false,
     isWidgetWithText:Boolean=false,
     modifier: Modifier = Modifier
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .width(170.dp)
@@ -48,21 +52,23 @@ fun CenteredContentCard(
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.W600,
+                fontSize = 16.sp
+
             )
 
             Spacer(modifier = Modifier.height(12.dp))
         if(isWidget){
-              SeamlessCircularProgressIndicator(0.6f)
+              SeamlessCircularProgressIndicator(value.toFloat(),maxProgress=maxProgress, borderColor = borderColor, drawArcColor = drawArcColor, age = value)
         }else{
             if(isWidgetWithText){
                 Box(Modifier.width(80.dp).height(80.dp)){
-                    SeamlessCircularProgressIndicator(0.5f)
+                    SeamlessCircularProgressIndicator(value.toFloat(),maxProgress=maxProgress, borderColor = borderColor, drawArcColor = drawArcColor, age = value)
 
                 }
             }else{
@@ -80,14 +86,14 @@ fun CenteredContentCard(
                     text = subtitle,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xff0072BC),
-                    fontWeight = FontWeight.W400,
+                    fontWeight = FontWeight.W700,
                     fontSize = 24.sp,
                 )
                 Text(
                     text = mass,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Black,
-                    fontWeight = FontWeight.W700,
+                    fontWeight = FontWeight.W400,
                     fontSize = 14.sp,
 
                     )

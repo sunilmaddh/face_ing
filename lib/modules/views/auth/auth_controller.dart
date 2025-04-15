@@ -90,6 +90,8 @@ class AuthController extends GetxController {
       "confirmPassword": confirmPasswordController.text,
     };
     debugPrint(data.toString());
+    StorageHelper.write("access-token", "");
+    StorageHelper.write("refresh-token", "");
     try {
       Map<String, dynamic> response = await _authServices.getSignUpOtp(
         data: data,
