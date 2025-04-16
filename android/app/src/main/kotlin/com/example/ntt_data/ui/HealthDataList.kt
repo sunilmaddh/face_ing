@@ -91,7 +91,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
         }
         dynamicMap["BP_SYSTOLIC"]?.let {InfoCard(
             title = "Blood Pressure (Systolic/Diastolic)",
-            subtitle = it,
+            subtitle = "${it}/${dynamicMap["BP_DIASTOLIC"]}",
             mass = "mmHg",
             imageRes = R.drawable.mask_group
         )}
