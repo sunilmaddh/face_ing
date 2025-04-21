@@ -5,9 +5,11 @@
     android:layout_height="match_parent">
 
     <ai.nuralogix.anuracream.ui.views.MeasurementView
+        app:showAnuraIcon="false"
         android:id="@+id/measurement_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -9,7 +9,7 @@ import 'package:ntt_data/routes/app_pages.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized(); // ✅ Required before anything native-related
+  WidgetsFlutterBinding.ensureInitialized();
   AppBindings().dependencies();
   NativeCaller().setupResultListener();
 

@@ -28,7 +28,7 @@ fun CustomTabBar(
             .padding(start = 15.dp, end = 15.dp, top = 10.dp)
             .fillMaxSize()
     ) {
-        Surface(modifier = Modifier.padding(16.dp).clip(RoundedCornerShape(24.dp)).background(Color.Gray), tonalElevation = 4.dp) {
+        Surface(modifier = Modifier.padding(4.dp).clip(RoundedCornerShape(24.dp)).background(Color.Gray), tonalElevation = 4.dp) {
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
                 containerColor = Color.Transparent,
@@ -38,7 +38,7 @@ fun CustomTabBar(
                     Box(
                         Modifier
                             .tabIndicatorOffset(tabPositions[pagerState.currentPage])
-                            .padding(horizontal = 5.dp)
+                            .padding(horizontal = 1.dp)
                             .fillMaxHeight()
                             .background(Color.Transparent).height(36.dp)
                     )
@@ -53,14 +53,15 @@ fun CustomTabBar(
                                 pagerState.animateScrollToPage(index)
                             }
                         },
-                        modifier = Modifier.padding(4.dp).clip(RoundedCornerShape(24.dp)).background(if (pagerState.currentPage==index)Color(0xFF0072BC) else Color.Transparent),
+                        modifier = Modifier.padding(top = 4.dp, bottom = 4.dp, start = 2.dp, end = 2.dp).clip(RoundedCornerShape(24.dp)).background(if (pagerState.currentPage==index)Color(0xFF0072BC) else Color.Transparent),
                         selectedContentColor =Color.White,
                         unselectedContentColor = Color.Gray,
                         text = {
                             Text(
                                 text = title,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.W400,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.W700,
+                                maxLines = 1
 
 //                        fontFamily = FontFamily(Font(R.font.gilroy_medium))
                             )

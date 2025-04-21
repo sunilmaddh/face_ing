@@ -26,7 +26,7 @@ fun HealthResultScreen(
     measurementResults: MeasurementResults?,
     onBackPressed: () -> Unit
 ) {
-    val tabs = listOf("All", "Vital", "Tab 3", "Tab 4")
+    val tabs = listOf("All", "Vital", "Wellness", "Additional")
 
     val contents = listOf<@Composable () -> Unit>(
 
@@ -35,15 +35,19 @@ fun HealthResultScreen(
 
         },
         {
-                        HealthGridFormAllResult(
+                        VitalScreen(
                 results = measurementResults!!
             )
         },
         {
-            Text("Tab 3 Content", modifier = Modifier.fillMaxSize())
+            WellnessScreen(
+                results = measurementResults!!
+            )
         },
         {
-            Text("Tab 4 Content", modifier = Modifier.fillMaxSize())
+            AdditionalScreen(
+                results = measurementResults!!
+            )
         }
     )
 
@@ -51,16 +55,16 @@ fun HealthResultScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Measurement Results", textAlign = TextAlign.Center) },
-                actions = {
-                    IconButton(onClick ={
-                        
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
+//                actions = {
+//                    IconButton(onClick ={
+//
+//                    }) {
+//                        Icon(
+//                            imageVector = Icons.Default.KeyboardArrowDown,
+//                            contentDescription = "Back"
+//                        )
+//                    }
+//                },
                 navigationIcon = {
 
 

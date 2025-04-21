@@ -29,8 +29,10 @@ import com.example.ntt_data.R
 import com.example.ntt_data.measurement.AnuraExampleMeasurementActivity.Companion.TAG
 
 
+
 @Composable
-fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
+fun VitalScreen(results: MeasurementResults,modifier: Modifier = Modifier) {
+
     val scrollState = rememberScrollState()
     val sortedSignalIDs = remember(results) { results.allResults.keys.sorted() }
     val dynamicMap = mutableMapOf<String, String>()
@@ -146,7 +148,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                 value = it.toDouble(),
                 maxProgress = 100f
 
-                )}
+            )}
 
         }
 
@@ -159,7 +161,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                 value = it.toDouble(),
                 maxProgress = 100f
 
-                )}
+            )}
 
             dynamicMap["MENTAL_SCORE"]?.let {      CenteredContentCard(
                 title = "Mental Wellness Score",
@@ -169,7 +171,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                 isWidgetWithText = true,
                 maxProgress = 5f
 
-                )}
+            )}
 
 
         }
@@ -222,5 +224,6 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
         }
 
     } }
+
 
 }
