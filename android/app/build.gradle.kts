@@ -41,7 +41,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.ntt_data"
-        minSdk = 25
+        minSdk = 27
         targetSdk = flutter?.targetSdkVersion ?: 33
         versionCode = flutter?.versionCode ?: 1
         versionName = flutter?.versionName ?: "1.0.0"

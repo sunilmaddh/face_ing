@@ -10,6 +10,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  biosensesignal_flutter_sdk:
+    path: ./biosensesignalsdk
+
+  cupertino_icons: ^1.0.2
+  permission_handler: ^11.0.1
+  focus_detector: ^2.0.1
+  wakelock_plus: ^1.2.8
+  provider: ^6.0.1
+  
 
   flutter_screenutil: ^5.9.3
   get: ^4.7.2
@@ -19,7 +28,7 @@ dependencies:
   dotted_border: ^2.1.0
   get_storage: ^2.1.1
   flutter_svg: ^2.0.17
-  cached_network_image: ^3.4.1
+  cached_network_image: ^3.3.1
   date_picker_plus: ^4.1.0
   image_picker: ^1.1.2
   lottie: ^3.3.1
@@ -34,11 +43,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+dependency_overrides:
+  wakelock_windows: any
+  win32: any
 flutter:
 
   uses-material-design: true
 
   assets:
+      - assets/images/
       - assets/images/png/
       - assets/images/svg/
       - assets/images/lottie/
