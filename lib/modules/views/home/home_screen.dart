@@ -5,6 +5,8 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
@@ -66,7 +68,9 @@ class HomeScreen extends StatelessWidget {
               ScanButton(
                 width: 193,
                 onPressed: () {
-                  NativeCaller.startFaceScan();
+                  AppNavigation.to(AppRoutes.mesurementScreen);
+
+                  // NativeCaller.startFaceScan();
                   // WidgetsBinding.instance.addPostFrameCallback((_) {
                   //  en((v) {
                   //   AppNavigation.to(AppRoutes.analyzingHealthData);

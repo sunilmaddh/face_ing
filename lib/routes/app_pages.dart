@@ -1,4 +1,5 @@
 import 'package:get/route_manager.dart';
+import 'package:ntt_data/binah/mesurement_screen.dart';
 import 'package:ntt_data/modules/views/auth/otp_forgot_screen.dart';
 import 'package:ntt_data/modules/views/auth/otp_signup_screen.dart';
 import 'package:ntt_data/modules/views/health_data/analyzing_health_data.dart';
@@ -46,5 +47,6 @@ class AppPages {
     GetPage(name: AppRoutes.otpForgotScreen, page: () => OtpForgotScreen()),
     GetPage(name: AppRoutes.addNewGeustScreen, page: () => AddNewGuestScreen()),
     GetPage(name: AppRoutes.scanScreen, page: () => ScanningScreen()),
+    GetPage(name: AppRoutes.mesurementScreen, page: () => MeasurementScreen()),
   ];
 }

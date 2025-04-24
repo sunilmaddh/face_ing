@@ -1,14 +1,12 @@
 <manifest xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ntt_data"
     xmlns:android="http://schemas.android.com/apk/res/android">
+ <uses-permission android:name="android.permission.CAMERA"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-feature android:name="android.hardware.camera.front" android:required="true"/>
+<uses-feature android:name="android.hardware.camera" android:required="true"/>
 
     <application
         android:label="ntt_data"
@@ -17,6 +15,7 @@
         android:allowBackup="true"
         tools:replace="android:label"
         android:icon="@mipmap/ic_launcher"
+         android:enableOnBackInvokedCallback="true"
         tools:ignore="MissingClass">
 
         <activity

@@ -15,5 +15,6 @@ class AppRoutes {
       otpSignupScreen = '/otp_signup_screen',
       otpForgotScreen = '/otp_forgot_screen',
       addNewGeustScreen = '/add_new_guest_screen',
+      mesurementScreen = "/measurement_model",
       analyzingHealthData = '/analyzing_health_data';
 }

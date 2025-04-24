@@ -35,7 +35,11 @@ android {
 //            storePassword = "android"
 //        }
 //    }
+ 
     packagingOptions {
+          jniLibs {
+            useLegacyPackaging = true
+        }
         pickFirst("lib/arm64-v8a/libc++_shared.so")
     }
 
