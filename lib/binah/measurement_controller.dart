@@ -152,7 +152,6 @@ class MeasurementController extends GetxController
         "N/A";
 
     vitalsResults.value = finalResults;
-
     finalResultsString.value =
         "Pulse Rate: $pulseRateValue\nMean RRi: $meanRriValue";
     debugPrint(
