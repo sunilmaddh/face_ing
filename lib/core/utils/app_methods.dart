@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AppMethods {
@@ -30,6 +31,16 @@ class AppMethods {
 
   static List<Map<String, dynamic>> getstoreQuestionAnswer() {
     return dataList;
+  }
+
+  late AnimationController animationController;
+  AnimationController storeController() {
+    return animationController;
+  }
+
+  AnimationController sendController(AnimationController controller) {
+    animationController = controller;
+    return animationController;
   }
 
   void logout() async {

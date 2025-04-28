@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/binah/face_detaction_test_page.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -30,10 +32,12 @@ import 'package:biosensesignal_flutter_sdk/alerts/alert_codes.dart';
 import 'package:biosensesignal_flutter_sdk/health_monitor_exception.dart';
 
 class MeasurementController extends GetxController
-    with StateMixin
+    with StateMixin, GetTickerProviderStateMixin
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
   final licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
-  final measurementDuration = 60;
+  final measurementDuration = 30;
+
+  late AnimationController animationController;
 
   Session? _session;
 
@@ -57,6 +61,18 @@ class MeasurementController extends GetxController
     // });
 
     // Show toast on warning
+
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 30),
+    );
+
+    animationController.addListener(() {
+      progress.value = animationController.value;
+      if (animationController.isCompleted) {
+        isStarted.value = false;
+      }
+    });
     ever<String?>(warning, (value) {
       if (value != null && value.isNotEmpty) {
         Fluttertoast.showToast(
@@ -103,6 +119,7 @@ class MeasurementController extends GetxController
   }
 
   void startStopButtonClicked() {
+    // startProgress(30, animationController);
     showImageValidity.value = false;
     final state = sessionState.value;
     if (state == SessionState.ready) {
@@ -205,7 +222,6 @@ class MeasurementController extends GetxController
   void onSessionStateChange(SessionState sessionState) {
     debugPrint(sessionState.toString());
     this.sessionState.value = sessionState;
-
     switch (sessionState) {
       case SessionState.ready:
         WakelockPlus.enable();
@@ -234,7 +250,8 @@ class MeasurementController extends GetxController
           .withImageDataListener(this)
           .withVitalSignsListener(this)
           .withSessionInfoListener(this)
-          .build(LicenseDetails(licenseKey));
+          .build(LicenseDetails(licenseKey))
+          .then((v) {});
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";
     }
@@ -244,6 +261,7 @@ class MeasurementController extends GetxController
     try {
       _reset();
       await _session?.start(measurementDuration);
+      // startProgress(seconds: 30);
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";
     }
@@ -272,6 +290,66 @@ class MeasurementController extends GetxController
   Future<bool> _requestCameraPermission() async {
     final result = await Permission.camera.request();
     return result.isGranted;
+  }
+
+  // var progress = 0.0.obs; // Reactive progress
+  // var isStarted = false.obs; // Reactive flag for animation start
+
+  // // Method to start progress animation
+  // void startProgress(
+  //   int durationInSeconds,
+  //   AnimationController animationController,
+  // ) {
+  //   isStarted.value = true; // Mark animation as started
+
+  //   animationController.addListener(() {
+  //     progress.value = animationController.value; // Update the progress value
+  //   });
+
+  //   animationController.forward(); // Start the animation
+  // }
+  var progress = 0.0.obs;
+  var isStarted = false.obs;
+
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   // Initialize with a dummy value (you can update later)
+  //   animationController = AnimationController(
+  //     vsync: this,
+  //     duration: const Duration(seconds: 30),
+  //   );
+
+  //   animationController.addListener(() {
+  //     progress.value = animationController.value;
+  //     if (animationController.isCompleted) {
+  //       isStarted.value = false;
+  //     }
+  //   });
+  // }
+
+  void startProgress({required int seconds}) {
+    animationController.duration = Duration(seconds: seconds);
+    animationController.reset();
+    isStarted.value = true;
+    animationController.forward();
+  }
+
+  void stopProgress() {
+    animationController.stop();
+    isStarted.value = false;
+  }
+
+  void resetProgress() {
+    animationController.reset();
+    progress.value = 0.0;
+    isStarted.value = false;
+  }
+
+  @override
+  void onClose() {
+    animationController.dispose();
+    super.onClose();
   }
 }
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:biosensesignal_flutter_sdk/ui/camera_preview_view.dart';
+import 'package:ntt_data/binah/face_detaction_test_page.dart';
 import 'package:ntt_data/binah/face_detection_view.dart';
 import 'package:ntt_data/binah/widget_size.dart';
+import 'package:ntt_data/test_main.dart';
 
 class CameraPreview extends StatefulWidget {
   const CameraPreview({super.key});
@@ -20,11 +22,14 @@ class _CameraPreviewState extends State<CameraPreview> {
       child: SizedBox(
         width: double.infinity,
         child: AspectRatio(
-          aspectRatio: 0.75,
+          aspectRatio: 0.40,
           child: Stack(
             children: [
               const CameraPreviewView(),
-              Image.asset('assets/images/rppg_video_mask.png'),
+              Align(
+                alignment: Alignment.center,
+                child: FaceDetectionCircleWidget(),
+              ),
               FaceDetectionView(size: size),
             ],
           ),

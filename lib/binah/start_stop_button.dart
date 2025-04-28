@@ -15,19 +15,22 @@ class StartStopButton extends StatelessWidget {
 
       return Opacity(
         opacity:
-            (state == SessionState.ready || state == SessionState.processing)
+            (controller.sessionState.value == SessionState.ready ||
+                    controller.sessionState.value == SessionState.processing)
                 ? 1.0
                 : 0.5,
         child: InkWell(
           onTap: controller.startStopButtonClicked,
           child: Container(
-            width: 100,
+            width: 300,
             height: 60,
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 20),
             color: const Color(0xFF6200EE),
             child: Text(
-              state == SessionState.processing ? "STOP" : "START",
+              controller.sessionState.value != SessionState.processing
+                  ? "STOP ${controller.sessionState.value}"
+                  : "START",
               style: const TextStyle(color: Colors.white),
             ),
           ),

@@ -16,22 +16,17 @@ class AllReportScreen extends StatelessWidget {
   final _mesurementController = Get.find<MeasurementController>();
 
   final List<Map<String, dynamic>> reports = [
-    {
-      "title": "Respiration Rate",
-      "value": "54.55",
-      "mass": "kcal",
-      "image": "",
-    },
-    {"title": "Heart Rate", "value": "78.20", "mass": "bpm", "image": ""},
+    {"title": "Respiration Rate", "value": "54.55", "mass": "", "image": ""},
+    {"title": "Heart Rate", "value": "78.20", "mass": "", "image": ""},
     {
       "title": "Blood Pressure",
       "value": "120/80",
-      "mass": "mmHg",
+      "mass": "",
       "image": AppAssets.heartRate,
     },
     {"title": "Stress Level", "value": "510.43", "mass": "kcal", "image": ""},
-    {"title": "Oxygen Level", "value": "98%", "mass": "SpO2", "image": ""},
-    {"title": "Stress Level", "value": "424", "mass": "SpO2", "image": ""},
+    {"title": "Oxygen Level", "value": "98%", "mass": "", "image": ""},
+    {"title": "Stress Level", "value": "424", "mass": "", "image": ""},
   ];
 
   @override
@@ -94,19 +89,17 @@ class AllReportScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               ReportCard(
-                                title: reports[0]["value"],
+                                title: "Pluse Rate",
 
                                 value:
                                     _mesurementController.vitalsResults.value
                                         .getResult(VitalSignTypes.pulseRate)!
                                         .value
                                         .toString(),
-                                mass: reports[0]["mass"],
-                                image: reports[0]["image"],
                               ),
                               const SizedBox(height: 15),
                               ReportCard(
-                                title: reports[1]["title"],
+                                title: "Blood Pressure",
                                 value:
                                     _mesurementController.vitalsResults.value
                                         .getResult(
@@ -114,8 +107,6 @@ class AllReportScreen extends StatelessWidget {
                                         )!
                                         .value
                                         .toString(),
-                                mass: reports[1]["mass"],
-                                image: reports[1]["image"],
                               ),
                             ],
                           ),
@@ -123,19 +114,39 @@ class AllReportScreen extends StatelessWidget {
                         const SizedBox(width: 15),
 
                         // Single Large ReportCard
-                        Expanded(
-                          flex: 1,
-                          child: ReportCard(
-                            title: reports[2]["title"],
-                            value:
-                                _mesurementController.vitalsResults.value
-                                    .getResult(VitalSignTypes.bloodPressure)!
-                                    .value
-                                    .toString(),
-                            mass: reports[2]["mass"],
-                            image: reports[2]["image"],
-                          ),
+                        Column(
+                          children: [
+                            ReportCard(
+                              title: "Hemoglobin",
+                              value:
+                                  _mesurementController.vitalsResults.value
+                                      .getResult(VitalSignTypes.hemoglobin)!
+                                      .value
+                                      .toString(),
+                            ),
+                            ReportCard(
+                              title: "PRQ",
+                              value:
+                                  _mesurementController.vitalsResults.value
+                                      .getResult(VitalSignTypes.prq)!
+                                      .value
+                                      .toString(),
+                            ),
+                          ],
                         ),
+                        // Expanded(
+                        //   flex: 1,
+                        //   child: ReportCard(
+                        //     title: "Hemoglobin",
+                        //     value:
+                        //         _mesurementController.vitalsResults.value
+                        //             .getResult(VitalSignTypes.hemoglobin)!
+                        //             .value
+                        //             .toString(),
+                        //     mass: reports[2]["mass"],
+                        //     image: reports[2]["image"],
+                        //   ),
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 15),
@@ -145,23 +156,23 @@ class AllReportScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ReportCard(
-                            title: reports[3]["title"],
+                            title: "Stress level",
                             value:
                                 _mesurementController.vitalsResults.value
                                     .getResult(VitalSignTypes.stressLevel)!
                                     .value
                                     .toString(),
-                            mass: reports[3]["mass"],
-                            image: reports[3]["image"],
                           ),
                         ),
                         const SizedBox(width: 15),
                         Expanded(
                           child: ReportCard(
-                            title: reports[4]["title"],
-                            value: reports[4]["value"],
-                            mass: reports[4]["mass"],
-                            image: reports[4]["image"],
+                            title: "Stress Index",
+                            value:
+                                _mesurementController.vitalsResults.value
+                                    .getResult(VitalSignTypes.stressIndex)!
+                                    .value
+                                    .toString(),
                           ),
                         ),
                       ],
@@ -170,10 +181,12 @@ class AllReportScreen extends StatelessWidget {
 
                     Expanded(
                       child: ReportCard(
-                        title: reports[4]["title"],
-                        value: reports[4]["value"],
-                        mass: reports[4]["mass"],
-                        image: reports[4]["image"],
+                        title: "Respiration Rate",
+                        value:
+                            _mesurementController.vitalsResults.value
+                                .getResult(VitalSignTypes.respirationRate)!
+                                .value
+                                .toString(),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -183,19 +196,23 @@ class AllReportScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ReportCard(
-                            title: reports[3]["title"],
-                            value: reports[3]["value"],
-                            mass: reports[3]["mass"],
-                            image: reports[3]["image"],
+                            title: "SDN",
+                            value:
+                                _mesurementController.vitalsResults.value
+                                    .getResult(VitalSignTypes.sdnn)!
+                                    .value
+                                    .toString(),
                           ),
                         ),
                         const SizedBox(width: 15),
                         Expanded(
                           child: ReportCard(
-                            title: reports[4]["title"],
-                            value: reports[4]["value"],
-                            mass: reports[4]["mass"],
-                            image: reports[4]["image"],
+                            title: "Wellness Index",
+                            value:
+                                _mesurementController.vitalsResults.value
+                                    .getResult(VitalSignTypes.wellnessIndex)!
+                                    .value
+                                    .toString(),
                           ),
                         ),
                       ],
@@ -204,10 +221,12 @@ class AllReportScreen extends StatelessWidget {
                     Expanded(
                       child: ReportCard(
                         isCenter: true,
-                        title: reports[4]["title"],
-                        value: reports[4]["value"],
-                        mass: reports[4]["mass"],
-                        image: reports[4]["image"],
+                        title: "Wellness level",
+                        value:
+                            _mesurementController.vitalsResults.value
+                                .getResult(VitalSignTypes.wellnessLevel)!
+                                .value
+                                .toString(),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -217,19 +236,23 @@ class AllReportScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ReportCard(
-                            title: reports[3]["title"],
-                            value: reports[3]["value"],
-                            mass: reports[3]["mass"],
-                            image: reports[3]["image"],
+                            title: "SNS Index",
+                            value:
+                                _mesurementController.vitalsResults.value
+                                    .getResult(VitalSignTypes.snsIndex)!
+                                    .value
+                                    .toString(),
                           ),
                         ),
                         const SizedBox(width: 15),
                         Expanded(
                           child: ReportCard(
-                            title: reports[4]["title"],
-                            value: reports[4]["value"],
-                            mass: reports[4]["mass"],
-                            image: reports[4]["image"],
+                            title: "Oxygen Saturation",
+                            value:
+                                _mesurementController.vitalsResults.value
+                                    .getResult(VitalSignTypes.oxygenSaturation)!
+                                    .value
+                                    .toString(),
                           ),
                         ),
                       ],
