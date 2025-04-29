@@ -83,54 +83,34 @@ class AllReportScreen extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Column of Two ReportCards
                         Expanded(
                           flex: 1,
                           child: Column(
                             children: [
                               ReportCard(
                                 title: "Pluse Rate",
-
-                                value:
-                                    _mesurementController.vitalsResults.value
-                                        .getResult(VitalSignTypes.pulseRate)!
-                                        .value
-                                        .toString(),
+                                value: getVitalValue(VitalSignTypes.pulseRate),
                               ),
                               const SizedBox(height: 15),
                               ReportCard(
                                 title: "Blood Pressure",
-                                value:
-                                    _mesurementController.vitalsResults.value
-                                        .getResult(
-                                          VitalSignTypes.bloodPressure,
-                                        )!
-                                        .value
-                                        .toString(),
+                                value: getVitalValue(
+                                  VitalSignTypes.bloodPressure,
+                                ),
                               ),
                             ],
                           ),
                         ),
                         const SizedBox(width: 15),
-
-                        // Single Large ReportCard
                         Column(
                           children: [
                             ReportCard(
                               title: "Hemoglobin",
-                              value:
-                                  _mesurementController.vitalsResults.value
-                                      .getResult(VitalSignTypes.hemoglobin)!
-                                      .value
-                                      .toString(),
+                              value: getVitalValue(VitalSignTypes.hemoglobin),
                             ),
                             ReportCard(
                               title: "PRQ",
-                              value:
-                                  _mesurementController.vitalsResults.value
-                                      .getResult(VitalSignTypes.prq)!
-                                      .value
-                                      .toString(),
+                              value: getVitalValue(VitalSignTypes.prq),
                             ),
                           ],
                         ),
@@ -150,69 +130,44 @@ class AllReportScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 15),
-
-                    // Second Row: Two ReportCards Side by Side
                     Row(
                       children: [
                         Expanded(
                           child: ReportCard(
                             title: "Stress level",
-                            value:
-                                _mesurementController.vitalsResults.value
-                                    .getResult(VitalSignTypes.stressLevel)!
-                                    .value
-                                    .toString(),
+                            value: getVitalValue(VitalSignTypes.stressLevel),
                           ),
                         ),
                         const SizedBox(width: 15),
                         Expanded(
                           child: ReportCard(
                             title: "Stress Index",
-                            value:
-                                _mesurementController.vitalsResults.value
-                                    .getResult(VitalSignTypes.stressIndex)!
-                                    .value
-                                    .toString(),
+                            value: getVitalValue(VitalSignTypes.stressIndex),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 15),
-
                     Expanded(
                       child: ReportCard(
                         title: "Respiration Rate",
-                        value:
-                            _mesurementController.vitalsResults.value
-                                .getResult(VitalSignTypes.respirationRate)!
-                                .value
-                                .toString(),
+                        value: getVitalValue(VitalSignTypes.respirationRate),
                       ),
                     ),
                     const SizedBox(height: 15),
-
-                    // Second Row: Two ReportCards Side by Side
                     Row(
                       children: [
                         Expanded(
                           child: ReportCard(
                             title: "SDN",
-                            value:
-                                _mesurementController.vitalsResults.value
-                                    .getResult(VitalSignTypes.sdnn)!
-                                    .value
-                                    .toString(),
+                            value: getVitalValue(VitalSignTypes.sdnn),
                           ),
                         ),
                         const SizedBox(width: 15),
                         Expanded(
                           child: ReportCard(
                             title: "Wellness Index",
-                            value:
-                                _mesurementController.vitalsResults.value
-                                    .getResult(VitalSignTypes.wellnessIndex)!
-                                    .value
-                                    .toString(),
+                            value: getVitalValue(VitalSignTypes.wellnessIndex),
                           ),
                         ),
                       ],
@@ -222,37 +177,25 @@ class AllReportScreen extends StatelessWidget {
                       child: ReportCard(
                         isCenter: true,
                         title: "Wellness level",
-                        value:
-                            _mesurementController.vitalsResults.value
-                                .getResult(VitalSignTypes.wellnessLevel)!
-                                .value
-                                .toString(),
+                        value: getVitalValue(VitalSignTypes.wellnessLevel),
                       ),
                     ),
                     const SizedBox(height: 15),
-
-                    // Second Row: Two ReportCards Side by Side
                     Row(
                       children: [
                         Expanded(
                           child: ReportCard(
                             title: "SNS Index",
-                            value:
-                                _mesurementController.vitalsResults.value
-                                    .getResult(VitalSignTypes.snsIndex)!
-                                    .value
-                                    .toString(),
+                            value: getVitalValue(VitalSignTypes.snsIndex),
                           ),
                         ),
                         const SizedBox(width: 15),
                         Expanded(
                           child: ReportCard(
                             title: "Oxygen Saturation",
-                            value:
-                                _mesurementController.vitalsResults.value
-                                    .getResult(VitalSignTypes.oxygenSaturation)!
-                                    .value
-                                    .toString(),
+                            value: getVitalValue(
+                              VitalSignTypes.oxygenSaturation,
+                            ),
                           ),
                         ),
                       ],
@@ -265,5 +208,10 @@ class AllReportScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String getVitalValue(int type) {
+    final result = _mesurementController.vitalsResults.value.getResult(type);
+    return result?.value?.toString() ?? "null";
   }
 }
