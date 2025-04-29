@@ -152,8 +152,10 @@ class MeasurementController extends GetxController
         "N/A";
 
     vitalsResults.value = finalResults;
-    finalResultsString.value =
-        "Pulse Rate: $pulseRateValue\nMean RRi: $meanRriValue";
+    debugPrint("vitalsResults  ${vitalsResults.toString()}");
+
+    finalResultsString.value = pulseRateValue.toString();
+
     debugPrint(
       "pulseRate: ${finalResults.getResult(VitalSignTypes.pulseRate)},bloodPressure: ${finalResults.getResult(VitalSignTypes.bloodPressure)},heartAge: ${finalResults.getResult(VitalSignTypes.heartAge)}",
     );

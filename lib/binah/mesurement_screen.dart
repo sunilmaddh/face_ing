@@ -52,8 +52,8 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                       children: [
                         ImageValidityScan(),
                         SizedBox(height: 30),
-                        PulseRate(),
-                        SizedBox(height: 30),
+                        // Text("Wait for 60 sec"),
+                        // SizedBox(height: 30),
                         StartStopButton(),
                       ],
                     ),

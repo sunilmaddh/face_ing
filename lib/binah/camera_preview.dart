@@ -20,7 +20,7 @@ class _CameraPreviewState extends State<CameraPreview> {
       child: SizedBox(
         width: double.infinity,
         child: AspectRatio(
-          aspectRatio: 0.75,
+          aspectRatio: 0.30,
           child: Stack(
             children: [
               const CameraPreviewView(),
