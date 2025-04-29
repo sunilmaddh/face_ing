@@ -95,10 +95,9 @@ class MeasurementController extends GetxController
 
     // Show final results
     ever<String?>(finalResultsString, (value) {
-      if (value != null && value.isNotEmpty) {
+      if (vitalsResults.value != [] && value!.isNotEmpty) {
         Future.delayed(Duration.zero, () {
           AppNavigation.to(AppRoutes.analyzingHealthData);
-          // showAlert(Get.context!, "Final Results", value);
         });
       }
     });
@@ -122,29 +121,64 @@ class MeasurementController extends GetxController
     // startProgress(30, animationController);
     showImageValidity.value = false;
     final state = sessionState.value;
+    debugPrint("Start scanning $state");
     if (state == SessionState.ready) {
       debugPrint("Start scanning");
       _startMeasuring();
+      debugPrint("Start scanning $state");
     } else if (state == SessionState.processing) {
       _stopMeasuring();
     }
   }
 
+  // @override
+  // void onImageData(sdk_image_data.ImageData imageData) {
+  //   this.imageData.value = imageData;
+
+  //   if (imageData.imageValidity != ImageValidity.valid) {
+  //     showImageValidity.value = true;
+  //     imageValidityString.value = switch (imageData.imageValidity) {
+  //       ImageValidity.invalidDeviceOrientation => "Invalid Orientation",
+  //       ImageValidity.invalidRoi => "Face Not Detected",
+  //       ImageValidity.tiltedHead => "Tilted Head",
+  //       ImageValidity.faceTooFar => "You are Too Far",
+  //       ImageValidity.unevenLight => "Uneven Lighting",
+  //       _ => "",
+  //     };
+  //   } else {
+  //     showImageValidity.value = false;
+  //   }
+  // }
   @override
   void onImageData(sdk_image_data.ImageData imageData) {
     this.imageData.value = imageData;
-    if (imageData.imageValidity != ImageValidity.valid) {
-      showImageValidity.value = true;
-      imageValidityString.value = switch (imageData.imageValidity) {
-        ImageValidity.invalidDeviceOrientation => "Invalid Orientation",
-        ImageValidity.invalidRoi => "Face Not Detected",
-        ImageValidity.tiltedHead => "Tilted Head",
-        ImageValidity.faceTooFar => "You are Too Far",
-        ImageValidity.unevenLight => "Uneven Lighting",
-        _ => "",
-      };
-    } else {
-      showImageValidity.value = false;
+    debugPrint(imageData.imageValidity.toString());
+    showImageValidity.value = false;
+    switch (imageData.imageValidity) {
+      case ImageValidity.valid:
+        imageValidityString.value = "Perfect! Please hold it.";
+        startProgress(seconds: 30);
+        break;
+      case ImageValidity.invalidDeviceOrientation:
+        imageValidityString.value = "Invalid Orientation";
+        stopProgress();
+        break;
+      case ImageValidity.invalidRoi:
+        imageValidityString.value = "Please little Closer";
+        stopProgress();
+        break;
+      case ImageValidity.tiltedHead:
+        imageValidityString.value = "Titled Head";
+        stopProgress();
+        break;
+      case ImageValidity.faceTooFar:
+        imageValidityString.value = "Please little Closer";
+        stopProgress();
+        break;
+      case ImageValidity.unevenLight:
+        imageValidityString.value = "Uneven Lighting";
+        stopProgress();
+        break;
     }
   }
 
@@ -203,12 +237,10 @@ class MeasurementController extends GetxController
   @override
   void onWarning(WarningData warningData) {
     if (warning.value != null) return;
-
     if (warningData.code ==
         AlertCodes.measurementCodeMisdetectionDurationExceedsLimitWarning) {
       pulseRate.value = "";
     }
-
     warning.value = "Warning: ${warningData.code}";
     Future.delayed(const Duration(seconds: 1), () => warning.value = null);
   }
@@ -220,8 +252,8 @@ class MeasurementController extends GetxController
 
   @override
   void onSessionStateChange(SessionState sessionState) {
-    debugPrint(sessionState.toString());
     this.sessionState.value = sessionState;
+    debugPrint(sessionState.toString());
     switch (sessionState) {
       case SessionState.ready:
         WakelockPlus.enable();
@@ -250,8 +282,7 @@ class MeasurementController extends GetxController
           .withImageDataListener(this)
           .withVitalSignsListener(this)
           .withSessionInfoListener(this)
-          .build(LicenseDetails(licenseKey))
-          .then((v) {});
+          .build(LicenseDetails(licenseKey));
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";
     }
@@ -261,6 +292,7 @@ class MeasurementController extends GetxController
     try {
       _reset();
       await _session?.start(measurementDuration);
+
       // startProgress(seconds: 30);
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";

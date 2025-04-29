@@ -50,11 +50,66 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ImageValidityScan(),
+                        Obx(
+                          () => Container(
+                            color: const Color(0xFF3D3734),
+                            padding: const EdgeInsets.all(5.0),
+                            width: 180,
+                            child: Column(
+                              children: [
+                                const Text(
+                                  "Image Validity",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  controller.imageValidityString.value,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                         SizedBox(height: 30),
-                        PulseRate(),
-                        SizedBox(height: 30),
-                        StartStopButton(),
+                        Obx(() {
+                          final state = controller.sessionState.value;
+
+                          return Opacity(
+                            opacity:
+                                (controller.sessionState.value ==
+                                            SessionState.ready ||
+                                        controller.sessionState.value ==
+                                            SessionState.processing)
+                                    ? 1.0
+                                    : 0.5,
+                            child: InkWell(
+                              onTap: controller.startStopButtonClicked,
+                              child: Container(
+                                width: 300,
+                                height: 60,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 20,
+                                ),
+                                color: const Color(0xFF6200EE),
+                                child: Text(
+                                  controller.sessionState.value ==
+                                          SessionState.processing
+                                      ? "STOP ${controller.sessionState.value}"
+                                      : "START",
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),

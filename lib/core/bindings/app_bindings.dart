@@ -15,5 +15,6 @@ class AppBindings extends Bindings {
       () => MeasurementController(),
       fenix: true,
     );
+    Get.put(MeasurementController());
   }
 }
