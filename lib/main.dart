@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/bindings/app_bindings.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart';

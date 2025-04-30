@@ -81,7 +81,7 @@ class ImageValidityScan extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  controller.imageValidityString.value ?? "ggg",
+                  controller.imageValidityString.value,
                   style: const TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ],

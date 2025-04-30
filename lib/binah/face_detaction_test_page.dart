@@ -19,12 +19,6 @@ class FaceDetectionCircleWidget extends StatelessWidget {
             progress: progressController.progress.value,
             isStarted: progressController.isStarted.value,
           ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     progressController.startProgress(seconds: 30);
-          //   },
-          //   child: const Text("Start"),
-          // ),
         ],
       );
     });
