@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
@@ -12,7 +14,7 @@ import 'package:ntt_data/widgets/fields/common_text.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  final controller = Get.find<MeasurementController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +69,10 @@ class HomeScreen extends StatelessWidget {
               ScanButton(
                 width: 193,
                 onPressed: () {
-                  AppNavigation.to(AppRoutes.mesurementScreen);
+                  AppNavigation.to(AppRoutes.analyzingHealthData);
+                  // controller.screenInFocus().whenComplete(() {
+                  //   AppNavigation.to(AppRoutes.analyzingHealthData);
+                  // });
 
                   // NativeCaller.startFaceScan();
                   // WidgetsBinding.instance.addPostFrameCallback((_) {

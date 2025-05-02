@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
 
 class FaceDetectionCircleWidget extends StatelessWidget {
   const FaceDetectionCircleWidget({super.key});
@@ -51,10 +52,10 @@ class FaceDetectionCircle extends StatelessWidget {
                   DottedBorder(
                     borderType: BorderType.values.last,
                     dashPattern: [6, 4],
-                    color: Colors.blueAccent,
+                    color: Colors.white,
                     strokeWidth: 3,
                     padding: EdgeInsets.zero,
-                    child: Container(width: width, height: height),
+                    child: SizedBox(width: width, height: height),
                   ),
                   SizedBox(
                     width: width + 10,
@@ -63,7 +64,7 @@ class FaceDetectionCircle extends StatelessWidget {
                       value: progress,
                       strokeWidth: 6,
                       backgroundColor: Colors.transparent,
-                      color: Colors.blueAccent,
+                      color: AppColors.primary,
                     ),
                   ),
                 ],
@@ -71,10 +72,10 @@ class FaceDetectionCircle extends StatelessWidget {
               : DottedBorder(
                 borderType: BorderType.values.last,
                 dashPattern: [6, 4],
-                color: Colors.blueAccent,
+                color: Colors.white,
                 strokeWidth: 3,
                 padding: EdgeInsets.zero,
-                child: Container(width: width, height: height),
+                child: SizedBox(width: width, height: height),
               ),
     );
   }

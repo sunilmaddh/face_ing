@@ -32,17 +32,15 @@ class MeasurementController extends GetxController
     with StateMixin, GetTickerProviderStateMixin, ProgressHandlerMixin
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
   final licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
-  final measurementDuration = 30;
-
-  // late AnimationController animationController;
-
+  final measurementDuration = 60;
   Session? _session;
-
   final Rx<SessionState?> sessionState = Rx<SessionState?>(null);
   final RxnString error = RxnString();
   final RxnString warning = RxnString();
   final RxnString pulseRate = RxnString();
   final RxnString finalResultsString = RxnString();
+  RxBool isMeasurementCanceled = false.obs;
+  @override
   final RxBool showImageValidity = false.obs;
   Rx<VitalSignsResults> vitalsResults = VitalSignsResults().obs;
   // final RxString imageValidityString = ''.obs;
@@ -51,11 +49,11 @@ class MeasurementController extends GetxController
   );
   @override
   void onInit() {
-    createSession();
+    // screenInFocus();
     super.onInit();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 30),
+      duration: const Duration(seconds: 60),
     );
     animationController.addListener(() {
       progress.value = animationController.value;
@@ -76,40 +74,47 @@ class MeasurementController extends GetxController
     // Show alert on error
     ever<String?>(error, (value) {
       if (value != null && value.isNotEmpty) {
-        // Delay needed to wait until context is available
         Future.delayed(Duration.zero, () {
+          isMeasurementCanceled.value = true;
           showAlert(Get.context!, null, value);
+          resetProgress();
+          stopProgress();
+          startStopButtonClicked();
         });
       }
     });
   }
 
-  screenInFocus(bool focus) {
-    if (focus) {
-      _requestCameraPermission().then((granted) {
-        if (granted) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            createSession();
-          });
-        }
-      });
-    } else {
-      _terminateSession();
-    }
+  Future<void> screenInFocus() async {
+    _requestCameraPermission().then((granted) {
+      if (granted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await createSession();
+        });
+      }
+    });
   }
 
-  void startStopButtonClicked() {
-    // startProgress(30, animationController);
+  Future<void> startStopButtonClicked() async {
     showImageValidity.value = false;
     final state = sessionState.value;
     debugPrint("Start scanning $state");
-    if (state == SessionState.ready) {
-      debugPrint("Start scanning");
-      _startMeasuring();
-      debugPrint("Start scanning $state");
-    } else if (state == SessionState.processing) {
-      _stopMeasuring();
-    }
+    Future.delayed(Duration(seconds: 5), () {
+      if (sessionState.value == SessionState.ready) {
+        isMeasurementCanceled.value = false;
+        _startMeasuring().then((v) {
+          startProgress(seconds: 60);
+        });
+        // debugPrint("Start scanning");
+        // _startMeasuring().then((v) {
+        //   startProgress(seconds: 60);
+        // });
+
+        debugPrint("Start scanning $state");
+      } else if (state == SessionState.processing) {
+        _stopMeasuring();
+      }
+    });
   }
 
   @override
@@ -117,12 +122,9 @@ class MeasurementController extends GetxController
     this.imageData.value = imageData;
     debugPrint("Image validity: ${imageData.imageValidity}");
 
-    showImageValidity.value = imageData.imageValidity != ImageValidity.valid;
-
     switch (imageData.imageValidity) {
       case ImageValidity.valid:
         handleValid("Perfect! Please hold it.");
-        // _startMeasuring();
         break;
 
       case ImageValidity.invalidDeviceOrientation:
@@ -160,10 +162,7 @@ class MeasurementController extends GetxController
     debugPrint(finalResults.getResults().toString());
     vitalsResults.value = finalResults;
     debugPrint("vitalsResults  ${vitalsResults.toString()}");
-    if (sessionState.value == SessionState.processing) {
-      _stopMeasuring();
-    }
-    _stopMeasuring();
+    startStopButtonClicked();
     AppNavigation.off(AppRoutes.analyzingHealthData);
   }
 
@@ -194,10 +193,18 @@ class MeasurementController extends GetxController
       case SessionState.terminating:
         WakelockPlus.disable();
         break;
-
       default:
         break;
     }
+  }
+
+  cloase() {
+    resetProgress();
+    stopProgress();
+    closeProgress();
+    _stopMeasuring();
+    _terminateSession();
+    _reset();
   }
 
   @override
@@ -207,10 +214,10 @@ class MeasurementController extends GetxController
   void onLicenseInfo(LicenseInfo licenseInfo) {}
 
   Future<void> createSession() async {
-    if (_session != null) {
-      await _terminateSession();
-    }
-    _reset();
+    // if (_session != null) {
+    //   await _terminateSession();
+    // }
+    // _reset();
     try {
       _session = await FaceSessionBuilder()
           .withImageDataListener(this)

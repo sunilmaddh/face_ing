@@ -127,7 +127,7 @@ class FaceDetectionCircle extends StatelessWidget {
                     color: Colors.blueAccent,
                     strokeWidth: 3,
                     padding: EdgeInsets.zero,
-                    child: Container(width: width, height: height),
+                    child: SizedBox(width: width, height: height),
                   ),
                   // Circular progress indicator
                   SizedBox(
@@ -150,7 +150,7 @@ class FaceDetectionCircle extends StatelessWidget {
                 color: Colors.blueAccent,
                 strokeWidth: 3,
                 padding: EdgeInsets.zero,
-                child: Container(width: width, height: height),
+                child: SizedBox(width: width, height: height),
               ),
     );
   }

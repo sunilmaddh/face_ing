@@ -105,13 +105,18 @@ class AllReportScreen extends StatelessWidget {
                         Column(
                           children: [
                             ReportCard(
-                              title: "Hemoglobin",
-                              value: getVitalValue(VitalSignTypes.hemoglobin),
+                              title: "Pluse Rate",
+                              value: getVitalValue(VitalSignTypes.pulseRate),
+                              image: AppAssets.heartRate,
                             ),
-                            ReportCard(
-                              title: "PRQ",
-                              value: getVitalValue(VitalSignTypes.prq),
-                            ),
+                            // ReportCard(
+                            //   title: "Hemoglobin",
+                            //   value: getVitalValue(VitalSignTypes.hemoglobin),
+                            // ),
+                            // ReportCard(
+                            //   title: "PRQ",
+                            //   value: getVitalValue(VitalSignTypes.prq),
+                            // ),
                           ],
                         ),
                         // Expanded(

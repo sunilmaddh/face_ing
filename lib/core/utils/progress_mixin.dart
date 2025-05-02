@@ -33,13 +33,13 @@ mixin ProgressHandlerMixin on GetxController {
 
   void handleValid(String message, {int durationSeconds = 30}) {
     imageValidityString.value = message;
-    resetProgress();
-    startProgress(seconds: durationSeconds);
+    // resetProgress();
+    // startProgress(seconds: durationSeconds);
   }
 
   void handleInvalid(String message) {
     imageValidityString.value = message;
-    closeProgress();
+    // closeProgress();
   }
 
   @override
