@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
@@ -10,75 +11,197 @@ class ReportCard extends StatelessWidget {
   const ReportCard({
     super.key,
     this.width = 143,
+    this.height = 160,
     required this.title,
     this.value = "",
     this.mass = "",
     this.image = "",
+    this.isHeartRate = false,
     this.isCenter = false,
+    this.bigImage = "",
+    this.centerImage = "",
   });
   final String title;
   final String value;
   final String mass;
   final String image;
+  final bool isHeartRate;
   final double width;
+  final double height;
   final bool isCenter;
+  final String centerImage;
+  final String bigImage;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: AppDimensions.width(width),
-      child: CommonCard(
-        radius: AppDimensions.radius(18),
-        widget: Padding(
-          padding: EdgeInsets.only(top: AppDimensions.height(10)),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment:
-                    isCenter == false
-                        ? CrossAxisAlignment.center
-                        : CrossAxisAlignment.start,
+    return CommonCard(
+      radius: AppDimensions.radius(18),
+      widget: SizedBox(
+        width: AppDimensions.width(width),
+        height: AppDimensions.height(height),
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              right: 0,
+              child: IconButton(
+                padding: EdgeInsets.all(0),
+                onPressed: () {},
+                icon: Icon(Icons.info_outline),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppDimensions.height(10),
+                vertical: AppDimensions.height(30),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   CommonText.text(
-                    maxLines: 2,
+                    maxLines: 4,
+                    textAlign: TextAlign.center,
                     title,
                     fontSize: AppDimensions.font(16),
                     fontWeight: FontWeight.w600,
                     color: AppColors.blackColor,
                   ),
+                  SizedBox(height: AppDimensions.height(10)),
 
+                  if (centerImage.isNotEmpty) SvgPicture.asset(centerImage),
                   SizedBox(height: AppDimensions.height(20)),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      CommonText.text(
-                        value,
-                        fontSize: AppDimensions.font(24),
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
-                      ),
-                      CommonText.text(
-                        mass,
-                        fontSize: AppDimensions.font(14),
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.blackColor,
-                      ),
-                    ],
-                  ),
+                  if (image.isEmpty)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: value,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+
+                              TextSpan(
+                                text: " $mass", // Replace with appropriate unit
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.blackColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                 ],
               ),
-              SizedBox(height: 20.h),
-              image.isNotEmpty
-                  ? Container(
-                    padding: EdgeInsets.only(top: 100),
-                    width: AppDimensions.width(width),
-                    height: 150,
-                    alignment: Alignment.bottomCenter,
-                    child: SvgPicture.asset(image, fit: BoxFit.contain),
-                  )
-                  : SizedBox(),
-            ],
-          ),
+            ),
+
+            if (bigImage.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: AppDimensions.height(80)),
+                child: Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: Expanded(
+                    child: SvgPicture.asset(
+                      bigImage,
+                      fit: BoxFit.fitWidth,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                  ),
+                ),
+              ),
+
+            // Positioned(
+            //   bottom: 10,
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(horizontal: 10),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       mainAxisSize: MainAxisSize.max,
+            //       children: [
+            //         CommonText.text(
+            //           value,
+            //           fontSize: AppDimensions.font(24),
+            //           fontWeight: FontWeight.w700,
+            //           color: AppColors.primary,
+            //         ),
+            //         CommonText.text(
+            //           mass,
+            //           fontSize: AppDimensions.font(14),
+            //           fontWeight: FontWeight.w400,
+            //           color: AppColors.blackColor,
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            if (image.isNotEmpty)
+              Container(
+                padding: EdgeInsets.only(top: 30, bottom: 15),
+                width: AppDimensions.width(width),
+                height: 320,
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SvgPicture.asset(image, fit: BoxFit.contain),
+
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: value,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primary,
+                            ),
+                          ),
+
+                          TextSpan(
+                            text: " $mass", // Replace with appropriate unit
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.blackColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 10),
+                    //   child: CommonText.text(
+                    //     value,
+                    //     fontSize: AppDimensions.font(24),
+                    //     fontWeight: FontWeight.w700,
+                    //     color: AppColors.primary,
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                    //   child: CommonText.text(
+                    //     mass,
+                    //     fontSize: AppDimensions.font(14),
+                    //     fontWeight: FontWeight.w400,
+                    //     color: AppColors.blackColor,
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+          ],
         ),
       ),
     );

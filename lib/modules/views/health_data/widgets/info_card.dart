@@ -12,7 +12,7 @@ class InfoCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
-    required this.imageAsset,
+    this.imageAsset = "",
     this.mass = "",
     this.padding = const EdgeInsets.all(8.0),
   });

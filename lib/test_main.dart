@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Face Detection Circle',
-      home: FaceDetectionTestPage(),
+      // home: FaceDetectionTestPage(),
     );
   }
 }
@@ -39,8 +39,8 @@ class ProgressController extends GetxController {
 }
 
 class FaceDetectionTestPage extends StatefulWidget {
-  const FaceDetectionTestPage({super.key});
-
+  const FaceDetectionTestPage({super.key, required this.widget});
+  final Widget widget;
   @override
   _FaceDetectionTestPageState createState() => _FaceDetectionTestPageState();
 }
@@ -79,6 +79,7 @@ class _FaceDetectionTestPageState extends State<FaceDetectionTestPage>
               return FaceDetectionCircle(
                 progress: progressController.progress.value,
                 isStarted: progressController.isStarted.value,
+                widget: widget,
               );
             }),
             const SizedBox(height: 20),
@@ -101,10 +102,12 @@ class _FaceDetectionTestPageState extends State<FaceDetectionTestPage>
 class FaceDetectionCircle extends StatelessWidget {
   final double progress; // 0.0 to 1.0
   final bool isStarted;
+  final Widget widget;
   const FaceDetectionCircle({
     super.key,
     required this.progress,
     required this.isStarted,
+    required this.widget,
   });
 
   @override
@@ -127,7 +130,11 @@ class FaceDetectionCircle extends StatelessWidget {
                     color: Colors.blueAccent,
                     strokeWidth: 3,
                     padding: EdgeInsets.zero,
-                    child: SizedBox(width: width, height: height),
+                    child: SizedBox(
+                      width: width,
+                      height: height,
+                      child: widget,
+                    ),
                   ),
                   // Circular progress indicator
                   SizedBox(

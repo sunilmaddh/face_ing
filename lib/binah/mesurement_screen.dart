@@ -24,7 +24,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // controller.startStopButtonClicked();
+    controller.startStopButtonClicked();
     return Scaffold(
       appBar: CustomAppBar(title: ""),
       body: Column(

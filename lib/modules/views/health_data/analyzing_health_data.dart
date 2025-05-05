@@ -11,25 +11,35 @@ import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 
 // ignore: must_be_immutable
 class AnalyzingHealthData extends StatelessWidget {
-   AnalyzingHealthData({super.key});
+  AnalyzingHealthData({super.key});
 
-  List<Widget> tabWidgets=[Tab(text: "All",),
-                  Tab(text: "Vitals"),
-                  Tab(text: "Wellness"),
-                  Tab(text: "Additional"),];
-                   List<Widget> barWidgets=[ AllReportScreen(),
-                  VitalScreen(),
-                  WellnessScreen(),
-                  AdditionalScreen(),];
+  List<Widget> tabWidgets = [
+    Tab(text: "All"),
+    Tab(text: "Vitals"),
+    Tab(text: "Wellness"),
+    Tab(text: "Additional"),
+  ];
+  List<Widget> barWidgets = [
+    AllReportScreen(),
+    VitalScreen(),
+    WellnessScreen(),
+    AdditionalScreen(),
+  ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CustomAppBar(
-      isCenterTitle: false,
-      title: "Analyzing health data",textColor: AppColors.blackColor,actions: [Padding(
-        padding: const EdgeInsets.only(right: 10.0),
-        child: CommonAssets.svgAsset(AppAssets.downloadIcon),
-      )],),
-    body: CustomTabBarView(tabBarWidgets: barWidgets,tabWidgets: tabWidgets,),
+    return Scaffold(
+      appBar: CustomAppBar(
+        isCenterTitle: false,
+        title: "Analyzing health data",
+        textColor: AppColors.blackColor,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: CommonAssets.svgAsset(AppAssets.downloadIcon),
+          ),
+        ],
+      ),
+      body: AllReportScreen(),
     );
   }
 }
