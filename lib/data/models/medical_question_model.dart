@@ -8,18 +8,18 @@ import 'dart:convert';
 //
 //     final medicalQuestionListModel = medicalQuestionListModelFromJson(jsonString);
 
-MedicalQuestionModel medicalQuestionListModelFromJson(String str) =>
-    MedicalQuestionModel.fromJson(json.decode(str));
+MedicalQuestionModels medicalQuestionListModelFromJson(String str) =>
+    MedicalQuestionModels.fromJson(json.decode(str));
 
-class MedicalQuestionModel {
+class MedicalQuestionModels {
   String? message;
   List<MedicalQuestionListModel>? list;
   bool? success;
 
-  MedicalQuestionModel({this.message, this.list, this.success});
+  MedicalQuestionModels({this.message, this.list, this.success});
 
-  factory MedicalQuestionModel.fromJson(Map<String, dynamic> json) =>
-      MedicalQuestionModel(
+  factory MedicalQuestionModels.fromJson(Map<String, dynamic> json) =>
+      MedicalQuestionModels(
         message: json["message"] ?? "",
         list:
             json["list"] == null

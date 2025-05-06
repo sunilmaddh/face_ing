@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       CommonDialog().showFullWidthDialog(
                         isLoading: _authController.isLoading,
                         title: "Forgot password",
-                        textController: _authController.emailSignController,
+                        textController: _authController.forgotEmailController,
                         onPressed: () {
                           _authController.getForgetOtp();
                         },
@@ -98,39 +98,40 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: PrimaryButton(
                         text: AppConstents.login,
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            // _authController.userLogin();
-                            AppNavigation.to(AppRoutes.homeScreen);
-                          }
+                          AppNavigation.to(AppRoutes.homeScreen);
+                          // if (_formKey.currentState!.validate()) {
+                          //   // _authController.userLogin();
+                          //   AppNavigation.to(AppRoutes.homeScreen);
+                          // }
 
                           // AppNavigation.to(AppRoutes.homeScreen);
                         },
                       ),
                     ),
-                    SizedBox(height: AppDimensions.height(20)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CommonText.text(
-                          AppConstents.donThaveAccoount,
-                          fontSize: AppDimensions.font(16),
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.blackColor,
-                        ),
-                        SizedBox(width: AppDimensions.width(5)),
-                        InkWell(
-                          onTap: () {
-                            AppNavigation.to(AppRoutes.singnUp);
-                          },
-                          child: CommonText.text(
-                            AppConstents.signUp,
-                            color: AppColors.primary,
-                            fontSize: AppDimensions.font(16),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
+                    // SizedBox(height: AppDimensions.height(20)),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     CommonText.text(
+                    //       AppConstents.donThaveAccoount,
+                    //       fontSize: AppDimensions.font(16),
+                    //       fontWeight: FontWeight.w400,
+                    //       color: AppColors.blackColor,
+                    //     ),
+                    //     SizedBox(width: AppDimensions.width(5)),
+                    //     InkWell(
+                    //       onTap: () {
+                    //         AppNavigation.to(AppRoutes.createAccount);
+                    //       },
+                    //       child: CommonText.text(
+                    //         AppConstents.signUp,
+                    //         color: AppColors.primary,
+                    //         fontSize: AppDimensions.font(16),
+                    //         fontWeight: FontWeight.w500,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

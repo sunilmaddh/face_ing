@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/views/profile/widgets/profile_page_data.dart';
 import 'package:ntt_data/widgets/button/rounded_button.dart';
@@ -10,12 +11,12 @@ class ProfilePageViewBuilder extends StatelessWidget {
   final PageController _pageController = PageController();
   final ValueNotifier<int> _currentIndex = ValueNotifier<int>(0);
   List<dynamic> pages;
-  final ProfileController profileController;
+  final AuthController authController;
 
   ProfilePageViewBuilder({
     super.key,
     required this.pages,
-    required this.profileController,
+    required this.authController,
   });
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class ProfilePageViewBuilder extends StatelessWidget {
                     if (currentIndex == pages.length - 1) {
                       var data = AppMethods.getstoreQuestionAnswer();
                       debugPrint(data.toString());
-                      profileController.profileCreation(dataList: data);
+                      authController.profileCreation(dataList: data);
                       // AppNavigation.to(AppRoutes.congratulationsScreen);
                     } else {
                       _pageController.nextPage(

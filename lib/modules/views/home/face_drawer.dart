@@ -126,7 +126,7 @@ class FaceDrawer extends StatelessWidget {
               icon: AppAssets.userIcon,
               title: "Guest User",
               subtitle: "Guest user data",
-              onTap: () => Get.toNamed('/home'),
+              onTap: () => Get.toNamed(AppRoutes.geustUserHistory),
             ),
             _buildListTile(
               icon: AppAssets.history,

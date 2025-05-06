@@ -19,5 +19,7 @@ class ApiEndpoints {
       verifyForgotOtp = '/verifyForGetPasOtp',
       medicalQuestionList = '/sendAllOnboardingQuestions',
       resetPassword = '/resetPassword',
+      geustHistoryList = "/perGuestHistory",
+      addGeust = "/addGuest",
       profileUpload = '/editProfile';
 }

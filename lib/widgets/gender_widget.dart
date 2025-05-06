@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/widgets/button/custom_radio_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class GenderWidget extends StatelessWidget {
-  GenderWidget({super.key});
-  final _profileController = Get.put(ProfileController());
+  GenderWidget({super.key, required this.controller});
+  GenderStateMixin controller;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,21 +24,19 @@ class GenderWidget extends StatelessWidget {
           children: [
             CustomRadioButton(
               value: "Male".obs,
-              groupValue:
-                  _profileController.selectionType, // Use without .value
+              groupValue: controller.selectionType, // Use without .value
               label: "Male",
               onChanged: (v) {
-                _profileController.selectionType.value = v;
+                controller.selectionType.value = v;
               },
             ),
             SizedBox(width: AppDimensions.width(25)),
             CustomRadioButton(
               value: "Female".obs,
-              groupValue:
-                  _profileController.selectionType, // Use without .value
+              groupValue: controller.selectionType, // Use without .value
               label: "Female",
               onChanged: (v) {
-                _profileController.selectionType.value = v;
+                controller.selectionType.value = v;
               },
             ),
           ],

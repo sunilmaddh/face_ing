@@ -25,5 +25,6 @@ class AppAssets {
       snsImage = "$baseUrlSvg/sns.svg",
       wellnessImage = "$baseUrlSvg/wellness.svg",
       homoglobin = "$baseUrlSvg/homeoglobin.svg",
+      upload = "$baseUrlSvg/upload.svg",
       homeMenu = "$baseUrlSvg/home_menu.svg";
 }

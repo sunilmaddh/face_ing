@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 
 class TermsCheckboxWidget extends StatelessWidget {
-  final AuthController authController;
-
+  final CheckboxStateMixin controller;
   final String message;
+
   const TermsCheckboxWidget({
     super.key,
-    required this.authController,
+    required this.controller,
     required this.message,
   });
 
@@ -23,21 +23,15 @@ class TermsCheckboxWidget extends StatelessWidget {
         children: [
           Checkbox(
             focusColor: AppColors.btntext,
-            value: authController.isChecked.value,
-            onChanged: (value) => authController.toggleCheckbox(),
+            value: controller.isChecked.value,
+            onChanged: (_) => controller.toggleCheckbox(),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
-            // fillColor: MaterialStateProperty.all(AppColors.btntext), // Background color
-            checkColor: AppColors.primary, // Tick color
-            side: BorderSide(
-              color: AppColors.checkBoxBorderColor,
-              width: 1,
-            ), // Border color
+            checkColor: AppColors.primary,
+            side: BorderSide(color: AppColors.checkBoxBorderColor, width: 1),
           ),
-
           Flexible(
-            // Ensures text does not overflow
             child: Padding(
               padding: EdgeInsets.only(top: AppDimensions.padding(11)),
               child: Text(
@@ -47,7 +41,7 @@ class TermsCheckboxWidget extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: AppColors.termColor,
                 ),
-                softWrap: true, // Ensures text wraps instead of overflowing
+                softWrap: true,
               ),
             ),
           ),
