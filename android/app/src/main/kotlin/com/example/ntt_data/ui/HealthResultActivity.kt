@@ -22,7 +22,8 @@ class HealthResultActivity : ComponentActivity() {
             intent.getParcelableExtra(KEY_MEASUREMENT_RESULTS)
         }
         val dynamicMap = mutableMapOf<String, String>()
-
+        Log.d(TAG, "resultData: $results")
+        Log.d(TAG, "resultData ALL: ${results?.allResults}")
         dynamicMap
         if (results != null) {
 

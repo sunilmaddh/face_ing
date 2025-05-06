@@ -120,6 +120,12 @@ android {
 dependencies {
     implementation("androidx.compose.material3:material3-android:1.3.2")
     implementation("androidx.media3:media3-common-ktx:1.6.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // Lifecycle ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 }
 //dependencies {
 //    implementation("androidx.compose.runtime:runtime-android:1.7.8")
