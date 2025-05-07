@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
+import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -31,6 +32,7 @@ import 'package:biosensesignal_flutter_sdk/health_monitor_exception.dart';
 class MeasurementController extends GetxController
     with StateMixin, GetTickerProviderStateMixin, ProgressHandlerMixin
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
+  final _geustController = Get.find<GeustController>();
   final licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
   final measurementDuration = 60;
   Session? _session;
@@ -163,7 +165,9 @@ class MeasurementController extends GetxController
     vitalsResults.value = finalResults;
     debugPrint("vitalsResults  ${vitalsResults.toString()}");
     startStopButtonClicked();
-    AppNavigation.off(AppRoutes.analyzingHealthData);
+    _geustController.addGuest(vitalsResults.value).whenComplete(() {
+      AppNavigation.off(AppRoutes.analyzingHealthData);
+    });
   }
 
   @override

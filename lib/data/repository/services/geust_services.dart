@@ -13,4 +13,8 @@ class GeustServices extends BaseApiService {
   Future<Map<String, dynamic>> addGeustService({required var data}) {
     return postRequest(ApiEndpoints.addGeust, data: data);
   }
+
+  Future<Map<String, dynamic>> deleteGuest({required var data}) {
+    return postRequest(ApiEndpoints.deleteGuest, data: data);
+  }
 }

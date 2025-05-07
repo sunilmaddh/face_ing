@@ -64,6 +64,7 @@ class AuthController extends GetxController
         );
         StorageHelper.write("userID", loginResponseModel.value.userId!);
         StorageHelper.write("emailId", loginResponseModel.value.emailId!);
+        AppNavigation.to(AppRoutes.homeScreen);
         if (loginResponseModel.value.success == true &&
             loginResponseModel.value.onBoarded == false) {
           AppNavigation.to(
