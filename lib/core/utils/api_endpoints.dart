@@ -21,5 +21,9 @@ class ApiEndpoints {
       resetPassword = '/resetPassword',
       geustHistoryList = "/perGuestHistory",
       addGeust = "/addGuest",
+      listOfGeust = "/listOfGuest",
+      searchGeust = "/searchGuest",
+      deleteGuest = "/removeGuest",
+      storeSdkDataForUser = "/userSDKData",
       profileUpload = '/editProfile';
 }

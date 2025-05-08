@@ -57,7 +57,7 @@ class MeasurmentRepository {
             risksScore = dataMap["RISKS_SCORE"]?.toString()
             sNR = dataMap["SNR"]?.toString()
         }
-        var tokens ="Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAzc3VuaWxtYWRkaGVzaXlhNDI4QGdtYWlsLmNvbSIsImlhdCI6MTc0NjY5Nzk2NywiZXhwIjoxNzQ2Nzg0MzY3fQ.jk7yHfHijqz27KkzfaIc0Fd1WyKfONEUr-UtAYigtg4";
+        var tokens ="Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAxYWJjQGdtYWlsLmNvbSIsImlhdCI6MTc0NjcwNzc2MiwiZXhwIjoxNzQ2Nzk0MTYyfQ.7KEhC0SSYIgK0AZzOHUqsZesft8m5NuOHdLJOLXI4jU";
         val token="Bearer" +GlobalData.token
         Log.d("API", "Request failed: ${guest.dob} ${anuraDetails.mentalScore} $token")
 

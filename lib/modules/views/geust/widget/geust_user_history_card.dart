@@ -15,6 +15,7 @@ class GeustUserHistoryCard extends StatelessWidget {
     required this.height,
     required this.weight,
     required this.time,
+    required this.gender,
     required this.onTop,
     required this.onDelete,
   });
@@ -22,6 +23,7 @@ class GeustUserHistoryCard extends StatelessWidget {
   final String name;
   final String height;
   final String weight;
+  final String gender;
   final String time;
   final VoidCallback onTop;
   final VoidCallback onDelete;
@@ -46,7 +48,17 @@ class GeustUserHistoryCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomCircularAvatar(radius: AppDimensions.padding(24.0)),
+                      CustomCircularAvatar(
+                        widget: CommonText.text(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          name.isNotEmpty
+                              ? name.substring(0, 1).toUpperCase()
+                              : "",
+                          color: AppColors.btntext,
+                        ),
+                        radius: AppDimensions.padding(24.0),
+                      ),
                       SizedBox(height: 10),
                       CommonText.text(
                         name,
@@ -73,7 +85,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                       ),
                       SizedBox(height: 15),
                       CommonText.text(
-                        "Riya Bhaumik",
+                        gender,
                         fontSize: AppDimensions.font(16),
                         fontWeight: FontWeight.w700,
                       ),
@@ -152,13 +164,13 @@ class GeustUserHistoryCard extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CommonText.text(
-                                  "$height cm",
+                                  "Height",
                                   fontSize: AppDimensions.font(14),
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 CommonText.text(
-                                  height,
+                                  "$height cm",
                                   fontSize: AppDimensions.font(14),
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
@@ -172,7 +184,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: onTop,
                                   // onTap: () {
                                   //   CustomBottomSheet.show(
                                   //     title: "19 March, 2025",

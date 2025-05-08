@@ -11,7 +11,7 @@ class SeamlessCircularProgressIndicator extends StatefulWidget {
   final double baseStrokeWidth;
 
   const SeamlessCircularProgressIndicator({
-    Key? key,
+    super.key,
     required this.progress,
     this.maxProgress = 100,
     required this.age,
@@ -19,7 +19,7 @@ class SeamlessCircularProgressIndicator extends StatefulWidget {
     required this.drawArcColor,
     this.size = 100,
     this.baseStrokeWidth = 8,
-  }) : super(key: key);
+  });
 
   @override
   State<SeamlessCircularProgressIndicator> createState() =>

@@ -6,6 +6,8 @@ import 'package:ntt_data/core/utils/api_endpoints.dart';
 
 abstract class BaseApiService {
   final String baseUrl = ApiEndpoints.baseUrl;
+  var accessToken =
+      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAxYWJjQGdtYWlsLmNvbSIsImlhdCI6MTc0NjcwNzc2MiwiZXhwIjoxNzQ2Nzk0MTYyfQ.7KEhC0SSYIgK0AZzOHUqsZesft8m5NuOHdLJOLXI4jU";
 
   Future<Map<String, dynamic>> getRequest(String endpoint) async {
     try {
@@ -20,7 +22,7 @@ abstract class BaseApiService {
     String endpoint, {
     required Map<String, dynamic> data,
   }) async {
-    var accessToken = await StorageHelper.read("access-token");
+    // var accessToken = await StorageHelper.read("access-token");
     debugPrint("Access toke $accessToken");
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
