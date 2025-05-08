@@ -3,7 +3,10 @@ package com.example.ntt_data
 import ai.nuralogix.anurasdk.core.result.MeasurementResults
 import android.app.Application
 import android.content.Intent
+import android.nfc.Tag
 import android.util.Log
+import com.example.ntt_data.globle.GlobalData
+import com.example.ntt_data.measurement.AnuraExampleMeasurementActivity.Companion.TAG
 import com.example.ntt_data.measurement.ExampleStartActivity
 import com.example.ntt_data.ui.HealthResultActivity
 import com.google.gson.Gson
@@ -19,6 +22,7 @@ class MainApplication : Application() {
 
     lateinit var flutterEngine: FlutterEngine
 
+
     override fun onCreate() {
         super.onCreate()
 
@@ -33,6 +37,20 @@ class MainApplication : Application() {
             .setMethodCallHandler { call, result ->
                 when (call.method) {
                     "startAnura" -> {
+                        val data = call.arguments as? Map<*, *>
+                        Log.d(TAG, "Data from flutter: ${data}")
+                        if (data != null) {
+                            GlobalData.guestName = data["name"].toString()
+                            GlobalData.userId = data["userId"].toString()
+                            GlobalData.gender = data["gender"].toString()
+                            GlobalData.dob = data["dob"].toString()
+                            GlobalData.weight = data["weight"].toString()
+                            GlobalData.guestHeight = data["height"].toString()
+                            GlobalData.emailId = data["emailId"].toString()
+                            GlobalData.token = data["token"].toString()
+                        }
+
+                        Log.d(TAG, "Data from flutter: $data ${GlobalData.dob}")
                         startAnura()
                         result.success("Anura SDK Started")
                     }

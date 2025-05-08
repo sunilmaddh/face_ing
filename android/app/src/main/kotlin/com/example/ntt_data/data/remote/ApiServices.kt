@@ -1,8 +1,15 @@
 package com.example.ntt_data.data.remote
+import GuestRequest
+import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.Header
+import retrofit2.http.POST
 
-import retrofit2.http.GET
 
 interface ApiService {
-//    @GET("users/1")
-//    suspend fun getUser(): User
+
+    @POST("/addGuest")
+    fun addGuest(
+        @Header("Authorization") token:String,
+        @Body request: GuestRequest?): Call<Void>
 }

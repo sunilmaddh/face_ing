@@ -14,9 +14,9 @@ class NativeCaller {
   );
 
   /// Starts the native Anura face scan
-  static Future<void> startFaceScan() async {
+  static Future<void> startFaceScan(Map<String, dynamic> data) async {
     try {
-      await _channel.invokeMethod('startAnura');
+      await _channel.invokeMethod('startAnura', data);
     } on PlatformException catch (e) {
       // Log the error or handle it gracefully
       print("PlatformException in startFaceScan: ${e.message}");

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart';
-import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/auth/widgets/terms_checkbox_widget.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
@@ -146,7 +146,7 @@ class AddNewGuestScreen extends StatelessWidget {
                             child: SizedBox(
                               width: AppDimensions.width(193),
                               child: ScanButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     if (_geustController
                                         .selectionType
@@ -166,7 +166,38 @@ class AddNewGuestScreen extends StatelessWidget {
                                             "Please accept term and conditions",
                                       );
                                     } else {
-                                      NativeCaller.startFaceScan();
+                                      var accessToken =
+                                          "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAzc3VuaWxtYWRkaGVzaXlhNDI4QGdtYWlsLmNvbSIsImlhdCI6MTc0NjY5ODgxMCwiZXhwIjoxNzQ2Nzg1MjEwfQ.77fVLLy1ha1zdWOnNCZOX6vgHTMMjZXXGXrFnixBpbc";
+                                      // await StorageHelper.read(
+                                      //   "access-token",
+                                      // );
+                                      Map<String, dynamic> data = {
+                                        "userId": "1000000003",
+                                        "name":
+                                            _geustController
+                                                .nameTextController
+                                                .text,
+                                        "gender":
+                                            _geustController.genderType.value,
+                                        "dob":
+                                            _geustController
+                                                .dobTextController
+                                                .text, // Keep as string unless using DateTime
+                                        "weight":
+                                            _geustController
+                                                .weightTextController
+                                                .text,
+                                        "height":
+                                            _geustController
+                                                .heightTextController
+                                                .text,
+                                        "emailId":
+                                            _geustController
+                                                .dobTextController
+                                                .text,
+                                        "token": accessToken,
+                                      };
+                                      NativeCaller.startFaceScan(data);
                                     }
                                   }
                                 },
