@@ -1,7 +1,7 @@
 // class GuestRequest{
-//     val guestDao: GuestDao = TODO()
-//     val anuraDetails: AnuraDetails
-//     val binahDetails: () -> Unit
+//     var guestDao: GuestDao = TODO()
+//     var anuraDetails: AnuraDetails
+//     var binahDetails: () -> Unit
 //
 // }
 
@@ -18,19 +18,12 @@ class GuestDao{
 }
 
 class AnuraDetails{
-    var age: Int=0
-    var gender: String?=null
-    var height: String?=null
-    var waistCircum: String?=null
-    var bMICalc: String?=null
-    var aBSI: String?=null
+    var age: String?=null
     var hRBPM: String?=null
     var bPSystolic: String?=null
     var hRVSDNN: String?=null
     var bPRPP: String?=null
     var bPTau: String?=null
-    var bPBPM: String?=null
-    var tHBCount: String?=null
     var healthScore: String?=null
     var mentalScore: String?=null
     var vitalScore: String?=null
@@ -41,37 +34,49 @@ class AnuraDetails{
     var bPCVD: String?=null
     var risksScore: String?=null
     var sNR: String?=null
+    var bRBPM: String?=null
+    var bpDiastolic: String?=null
+    var iHBCount: String?=null
+    var hBA1CRiskProb: String?=null
+    var mFBGRiskProb: String?=null
+    var dBTRiskProb: String?=null
+    var fLDRiskProb: String?=null
+    var hDLTCRiskProb: String?=null
+    var hPTRiskProb: String?=null
+    var overallMetabolicRiskProb: String?=null
+    var tGRiskProb: String?=null
+    var physioScore: String?=null
 }
 
 class BinahDetails{
-    val pulseRate: Int=0
-    val respirationRate: String?=null
-    val oxygenSaturation: String?=null
-    val sdnn: String?=null
-    val stressLevel: String?=null
-    val rri: String?=null
-    val bloodPressure: String?=null
-    val stressIndex: String?=null
-    val meanRri: String?=null
-    val rmssd: String?=null
-    val sd1: String?=null
-    val sd2: String?=null
-    val prq: String?=null
-    val pnsIndex: String?=null
-    val pnsZone: String?=null
-    val snsIndex: String?=null
-    val snsZone: String?=null
-    val wellnessIndex: String?=null
-    val wellnessLevel: String?=null
-    val lfhf: String?=null
-    val hemoglobin: String?=null
-    val hemoglobinA1C: String?=null
-    val highHemoglobinA1CRisk: String?=null
-    val highBloodPressureRisk: String?=null
-    val ascvdRisk: String?=null
-    val normalizedStressIndex: String?=null
-    val heartAge: String?=null
-    val highTotalCholesterolRisk: String?=null
-    val highFastingGlucoseRisk: String?=null
-    val lowHemoglobinRisk: Int=0
+    var pulseRate: Int=0
+    var respirationRate: String?=null
+    var oxygenSaturation: String?=null
+    var sdnn: String?=null
+    var stressLevel: String?=null
+    var rri: String?=null
+    var bloodPressure: String?=null
+    var stressIndex: String?=null
+    var meanRri: String?=null
+    var rmssd: String?=null
+    var sd1: String?=null
+    var sd2: String?=null
+    var prq: String?=null
+    var pnsIndex: String?=null
+    var pnsZone: String?=null
+    var snsIndex: String?=null
+    var snsZone: String?=null
+    var wellnessIndex: String?=null
+    var wellnessLevel: String?=null
+    var lfhf: String?=null
+    var hemoglobin: String?=null
+    var hemoglobinA1C: String?=null
+    var highHemoglobinA1CRisk: String?=null
+    var highBloodPressureRisk: String?=null
+    var ascvdRisk: String?=null
+    var normalizedStressIndex: String?=null
+    var heartAge: String?=null
+    var highTotalCholesterolRisk: String?=null
+    var highFastingGlucoseRisk: String?=null
+    var lowHemoglobinRisk: Int=0
 }

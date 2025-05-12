@@ -63,7 +63,7 @@ class CircleProgressCard extends StatelessWidget {
                 children: [
                   SvgPicture.asset(centerImage),
                   Positioned(
-                    bottom: 0,
+                    bottom: 20,
                     left: AppDimensions.height(leftPadding),
                     child: CommonText.text(
                       value,

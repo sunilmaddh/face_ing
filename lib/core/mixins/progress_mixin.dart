@@ -6,6 +6,7 @@ mixin ProgressHandlerMixin on GetxController {
   final RxBool isStarted = false.obs;
   final RxDouble progress = 0.0.obs;
   final RxString imageValidityString = "".obs;
+  RxString scanType = "".obs;
   final RxBool showImageValidity = false.obs;
 
   void startProgress({required int seconds}) {

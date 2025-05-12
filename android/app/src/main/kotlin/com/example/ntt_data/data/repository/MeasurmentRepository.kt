@@ -29,23 +29,19 @@ class MeasurmentRepository {
             height = GlobalData.guestHeight
             emailId = GlobalData.emailId
         }
-        Log.d("API", "Request failed: ${guest.dob} ${GlobalData.guestName} ")
+        Log.d("API", "Request failed: ${guest.dob} ${GlobalData.guestName} ${GlobalData.userId} ")
 
 
         val anuraDetails = AnuraDetails().apply {
-            age = (dataMap["AGE"] as? Double)?.toInt() ?: 0
-            gender = dataMap["GENDER"]?.toString()
-            height = dataMap["HEIGHT"]?.toString()
-            waistCircum = dataMap["WAIST_CIRCUM"]?.toString()
-            bMICalc = dataMap["BMI_CALC"]?.toString()
-            aBSI = dataMap["ABSI"]?.toString()
+            // Assign if available
+            Log.d("API", "Request failed: ${dataMap["AGE"]}")
+
+            age = (dataMap["AGE"]?.toString())
             hRBPM = dataMap["HR_BPM"]?.toString()
             bPSystolic = dataMap["BP_SYSTOLIC"]?.toString()
             hRVSDNN = dataMap["HRV_SDNN"]?.toString()
             bPRPP = dataMap["BP_RPP"]?.toString()
             bPTau = dataMap["BP_TAU"]?.toString()
-            bPBPM = dataMap["BP_DIASTOLIC"]?.toString()
-            tHBCount = dataMap["IHB_COUNT"]?.toString()
             healthScore = dataMap["HEALTH_SCORE"]?.toString()
             mentalScore = dataMap["MENTAL_SCORE"]?.toString()
             vitalScore = dataMap["VITAL_SCORE"]?.toString()
@@ -56,14 +52,50 @@ class MeasurmentRepository {
             bPCVD = dataMap["BP_CVD"]?.toString()
             risksScore = dataMap["RISKS_SCORE"]?.toString()
             sNR = dataMap["SNR"]?.toString()
+            bRBPM = dataMap["BR_BPM"]?.toString()
+            bpDiastolic = dataMap["BP_DIASTOLIC"]?.toString()
+            iHBCount = dataMap["IHB_COUNT"]?.toString()
+            hBA1CRiskProb = dataMap["HBA1C_RISK_PROB"]?.toString()
+            mFBGRiskProb = dataMap["MFBG_RISK_PROB"]?.toString()
+            dBTRiskProb = dataMap["DBT_RISK_PROB"]?.toString()
+            fLDRiskProb = dataMap["FLD_RISK_PROB"]?.toString()
+            hDLTCRiskProb = dataMap["HDLTC_RISK_PROB"]?.toString()
+            hPTRiskProb = dataMap["HPT_RISK_PROB"]?.toString()
+            overallMetabolicRiskProb = dataMap["OVERALL_METABOLIC_RISK_PROB"]?.toString()
+            tGRiskProb = dataMap["TG_RISK_PROB"]?.toString()
+            physioScore = dataMap["PHYSIO_SCORE"]?.toString()
+
+//            age = (dataMap["AGE"] as? Double)?.toInt() ?: 0
+//            gender = dataMap["GENDER"]?.toString()
+//            height = dataMap["HEIGHT"]?.toString()
+//            waistCircum = dataMap["WAIST_CIRCUM"]?.toString()
+//            bMICalc = dataMap["BMI_CALC"]?.toString()
+//            aBSI = dataMap["ABSI"]?.toString()
+//            hRBPM = dataMap["HR_BPM"]?.toString()
+//            bPSystolic = dataMap["BP_SYSTOLIC"]?.toString()
+//            hRVSDNN = dataMap["HRV_SDNN"]?.toString()
+//            bPRPP = dataMap["BP_RPP"]?.toString()
+//            bPTau = dataMap["BP_TAU"]?.toString()
+//            bPBPM = dataMap["BP_DIASTOLIC"]?.toString()
+//            tHBCount = dataMap["IHB_COUNT"]?.toString()
+//            healthScore = dataMap["HEALTH_SCORE"]?.toString()
+//            mentalScore = dataMap["MENTAL_SCORE"]?.toString()
+//            vitalScore = dataMap["VITAL_SCORE"]?.toString()
+//            physicalScore = dataMap["PHYSICAL_SCORE"]?.toString()
+//            mSI = dataMap["MSI"]?.toString()
+//            bpHeartAttack = dataMap["BP_HEART_ATTACK"]?.toString()
+//            bPStroke = dataMap["BP_STROKE"]?.toString()
+//            bPCVD = dataMap["BP_CVD"]?.toString()
+//            risksScore = dataMap["RISKS_SCORE"]?.toString()
+//            sNR = dataMap["SNR"]?.toString()
         }
         var tokens ="Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAxYWJjQGdtYWlsLmNvbSIsImlhdCI6MTc0NjcwNzc2MiwiZXhwIjoxNzQ2Nzk0MTYyfQ.7KEhC0SSYIgK0AZzOHUqsZesft8m5NuOHdLJOLXI4jU";
-        val token="Bearer" +GlobalData.token
-        Log.d("API", "Request failed: ${guest.dob} ${anuraDetails.mentalScore} $token")
+        val token="Bearer " +GlobalData.token
+        Log.d("API", "Request failed: ${guest.dob} ${anuraDetails.age} $token")
 
 
         val request = GuestRequest(guestDao = guest, anuraDetails = anuraDetails, binahDetails = BinahDetails())
-        apiService.addGuest(token = tokens,request).enqueue(object : Callback<Void> {
+        apiService.addGuest(token = token,request).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     onSuccess()

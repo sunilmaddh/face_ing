@@ -14,10 +14,10 @@ class LoginResponseModel {
   String? emailId;
   List<dynamic>? sdkInfo;
   CommonUserDetailsDao? commonUserDetailsDao;
-  bool? success;
-  bool? onBoarded;
-  bool? otpverified;
-  bool? blocked;
+  String? success;
+  String? onBoarded;
+  String? otpverified;
+  String? blocked;
 
   LoginResponseModel({
     this.message,
@@ -54,14 +54,14 @@ class LoginResponseModel {
 }
 
 class CommonUserDetailsDao {
-  int? userId;
+  String? userId;
   String? userEmail;
-  int? userPersonalDetailId;
+  String? userPersonalDetailId;
   String? userName;
   String? userGender;
   String? userDob;
-  double? userWeight;
-  double? userHeight;
+  String? userWeight;
+  String? userHeight;
   String? userImage;
 
   CommonUserDetailsDao({
@@ -78,14 +78,14 @@ class CommonUserDetailsDao {
 
   factory CommonUserDetailsDao.fromJson(Map<String?, dynamic> json) =>
       CommonUserDetailsDao(
-        userId: json["userId"] ?? 0,
+        userId: json["userId"] ?? "",
         userEmail: json["userEmail"] ?? "",
-        userPersonalDetailId: json["userPersonalDetailId"] ?? 0,
+        userPersonalDetailId: json["userPersonalDetailId"] ?? "",
         userName: json["userName"] ?? "",
         userGender: json["userGender"] ?? "",
         userDob: json["userDOB"] ?? "",
-        userWeight: json["userWeight"] ?? 0.0,
-        userHeight: json["userHeight"] ?? 0.0,
+        userWeight: json["userWeight"] ?? "",
+        userHeight: json["userHeight"] ?? "",
         userImage: json["userImage"] ?? "",
       );
 }

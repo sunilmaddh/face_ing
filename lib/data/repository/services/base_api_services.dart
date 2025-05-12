@@ -6,8 +6,8 @@ import 'package:ntt_data/core/utils/api_endpoints.dart';
 
 abstract class BaseApiService {
   final String baseUrl = ApiEndpoints.baseUrl;
-  var accessToken =
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAxYWJjQGdtYWlsLmNvbSIsImlhdCI6MTc0NjcwNzc2MiwiZXhwIjoxNzQ2Nzk0MTYyfQ.7KEhC0SSYIgK0AZzOHUqsZesft8m5NuOHdLJOLXI4jU";
+  // var accessToken =
+  //     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAxYWJjQGdtYWlsLmNvbSIsImlhdCI6MTc0NjcwNzc2MiwiZXhwIjoxNzQ2Nzk0MTYyfQ.7KEhC0SSYIgK0AZzOHUqsZesft8m5NuOHdLJOLXI4jU";
 
   Future<Map<String, dynamic>> getRequest(String endpoint) async {
     try {
@@ -22,7 +22,7 @@ abstract class BaseApiService {
     String endpoint, {
     required Map<String, dynamic> data,
   }) async {
-    // var accessToken = await StorageHelper.read("access-token");
+    var accessToken = await StorageHelper.read("access-token");
     debugPrint("Access toke $accessToken");
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
@@ -39,6 +39,35 @@ abstract class BaseApiService {
       debugPrint("Access toke $accessToken");
       debugPrint(response.body.toString());
       debugPrint(response.headers.toString());
+
+      return _processResponse(response);
+    } catch (e) {
+      throw Exception("Error: $e");
+    }
+  }
+
+  Future<Map<String, dynamic>> loginPostRequest(
+    String endpoint, {
+    required Map<String, dynamic> data,
+  }) async {
+    var accessToken = await StorageHelper.read("access-token");
+    debugPrint("Access toke $accessToken");
+    Uri uri = Uri.http(baseUrl, endpoint);
+    debugPrint(uri.toString());
+    debugPrint("Access token $accessToken");
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          "Content-Type": "application/json",
+          // "Authorization": "Bearer $accessToken",
+        },
+        body: jsonEncode(data),
+      );
+      debugPrint("Access toke $accessToken");
+      debugPrint(response.body.toString());
+      debugPrint(response.headers.toString());
+
       return _processResponse(response);
     } catch (e) {
       throw Exception("Error: $e");
@@ -92,6 +121,7 @@ abstract class BaseApiService {
   Future<dynamic> deleteRequest(String endpoint) async {
     try {
       final response = await http.delete(Uri.parse('$baseUrl$endpoint'));
+      debugPrint(response.headers["accessToken"]);
       return _processResponse(response);
     } catch (e) {
       throw Exception("Error: $e");

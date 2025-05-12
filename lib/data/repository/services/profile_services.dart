@@ -9,4 +9,7 @@ class ProfileServices extends BaseApiService {
   Future<Map<String, dynamic>> profileCreation({required var data}) async {
     return await postRequest(ApiEndpoints.continueSignUp, data: data);
   }
+  Future<Map<String, dynamic>> storeUserHealthDataService({required var data}) async {
+    return await postRequest(ApiEndpoints.storeSdkDataForUser, data: data);
+  }
 }

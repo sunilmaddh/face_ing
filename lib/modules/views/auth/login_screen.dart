@@ -98,11 +98,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: PrimaryButton(
                         text: AppConstents.login,
                         onPressed: () {
-                          AppNavigation.to(AppRoutes.homeScreen);
-                          // if (_formKey.currentState!.validate()) {
-                          //   // _authController.userLogin();
-                          //   AppNavigation.to(AppRoutes.homeScreen);
-                          // }
+                          // AppNavigation.to(AppRoutes.homeScreen);
+                          if (_formKey.currentState!.validate()) {
+                            _authController.userLogin();
+                            // AppNavigation.to(AppRoutes.homeScreen);
+                          }
 
                           // AppNavigation.to(AppRoutes.homeScreen);
                         },

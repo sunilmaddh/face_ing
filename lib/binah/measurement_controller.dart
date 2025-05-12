@@ -164,10 +164,21 @@ class MeasurementController extends GetxController
     debugPrint(finalResults.getResults().toString());
     vitalsResults.value = finalResults;
     debugPrint("vitalsResults  ${vitalsResults.toString()}");
+    debugPrint(
+      "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
+    );
     startStopButtonClicked();
-    _geustController.addGuest(vitalsResults.value).whenComplete(() {
-      AppNavigation.off(AppRoutes.analyzingHealthData);
-    });
+    if (scanType.value == "guest") {
+      _geustController.addGuest(vitalsResults.value).whenComplete(() {
+        AppNavigation.off(AppRoutes.analyzingHealthData);
+      });
+    } else {
+      _geustController
+          .storeBinahHealthForUser(vitalsResults.value)
+          .whenComplete(() {
+            AppNavigation.off(AppRoutes.analyzingHealthData);
+          });
+    }
   }
 
   @override

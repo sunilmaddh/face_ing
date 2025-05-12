@@ -12,8 +12,10 @@ class ReportCard extends StatelessWidget {
     this.height = 160,
     required this.title,
     this.value = "",
+    this.valueCenter = "",
     this.mass = "",
     this.image = "",
+    this.leftPadding = 0.0,
     this.isHeartRate = false,
     this.isCenter = false,
     this.bigImage = "",
@@ -21,9 +23,11 @@ class ReportCard extends StatelessWidget {
   });
   final String title;
   final String value;
+  final String valueCenter;
   final String mass;
   final String image;
   final bool isHeartRate;
+  final double leftPadding;
   final double width;
   final double height;
   final bool isCenter;
@@ -54,11 +58,10 @@ class ReportCard extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   CommonText.text(
                     maxLines: 4,
-                    textAlign: TextAlign.center,
                     title,
                     fontSize: AppDimensions.font(16),
                     fontWeight: FontWeight.w600,
@@ -66,9 +69,24 @@ class ReportCard extends StatelessWidget {
                   ),
                   SizedBox(height: AppDimensions.height(10)),
 
-                  if (centerImage.isNotEmpty) SvgPicture.asset(centerImage),
+                  if (centerImage.isNotEmpty)
+                    Stack(
+                      children: [
+                        SvgPicture.asset(centerImage),
+                        Positioned(
+                          bottom: 20,
+                          left: AppDimensions.height(leftPadding),
+                          child: CommonText.text(
+                            valueCenter,
+                            fontSize: AppDimensions.font(14),
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                      ],
+                    ),
                   SizedBox(height: AppDimensions.height(20)),
-                  if (image.isEmpty)
+                  if (image.isEmpty && leftPadding == 0.0)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
@@ -104,7 +122,7 @@ class ReportCard extends StatelessWidget {
 
             if (bigImage.isNotEmpty)
               Padding(
-                padding: EdgeInsets.only(top: AppDimensions.height(80)),
+                padding: EdgeInsets.only(top: AppDimensions.height(140)),
                 child: Positioned(
                   bottom: 0,
                   right: 0,

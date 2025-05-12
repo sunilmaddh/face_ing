@@ -17,4 +17,10 @@ class GeustServices extends BaseApiService {
   Future<Map<String, dynamic>> deleteGuest({required var data}) {
     return postRequest(ApiEndpoints.deleteGuest, data: data);
   }
+
+  Future<Map<String, dynamic>> storeBinahHealthForUserService({
+    required var data,
+  }) {
+    return postRequest(ApiEndpoints.storeSdkDataForUser, data: data);
+  }
 }

@@ -52,4 +52,11 @@ class ProfileController extends GetxController with GenderStateMixin {
       isLoading(false);
     }
   }
+
+  Future<void> storeHealthData() async {
+    var data = {};
+
+    Map<String, dynamic> responseData = await ProfileServices()
+        .storeUserHealthDataService(data: data);
+  }
 }

@@ -37,7 +37,7 @@ fun FullImageContentCard(
         shape = RoundedCornerShape(16.dp),
 //        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = modifier
-            .width(170.dp).height(330.dp)
+            .width(170.dp).height(373.dp)
             .padding(8.dp)
     ) {
         Column(
@@ -64,7 +64,7 @@ fun FullImageContentCard(
                     contentScale = ContentScale.Crop,
 
                     modifier = Modifier
-                        .fillMaxWidth().align(alignment = Alignment.BottomCenter).height(250.dp)
+                        .fillMaxWidth().align(alignment = Alignment.BottomCenter).height(330.dp)
 
                 )
                 Column( modifier = Modifier

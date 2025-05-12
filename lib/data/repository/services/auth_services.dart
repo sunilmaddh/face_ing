@@ -21,7 +21,7 @@ class AuthServices extends BaseApiService {
   }
 
   Future<Map<String, dynamic>> userLogin({required var data}) async {
-    return await postRequest(ApiEndpoints.login, data: data);
+    return await loginPostRequest(ApiEndpoints.login, data: data);
   }
 
   Future<Map<String, dynamic>> getForgotOtp({required var data}) async {

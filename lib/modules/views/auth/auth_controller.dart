@@ -44,6 +44,7 @@ class AuthController extends GetxController
     var data = {
       "emailId": emailController.text,
       "password": passwordController.text,
+      "sDKType": "BINAH",
     };
     debugPrint(data.toString());
     try {
@@ -52,8 +53,9 @@ class AuthController extends GetxController
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
         var header = response["header"];
-        var accessToken = header["accessToken"];
-        var refereshToken = header["refreshToken"];
+        var accessToken = header["accesstoken"];
+        var refereshToken = header["refreshtoken"];
+        debugPrint("Access token ${header["accesstoken"]}");
         StorageHelper.write("access-token", accessToken);
         StorageHelper.write("refresh-token", refereshToken);
         var result = LoginResponseModel.fromJson(response["responseBody"]);
@@ -65,20 +67,21 @@ class AuthController extends GetxController
         StorageHelper.write("userID", loginResponseModel.value.userId!);
         StorageHelper.write("emailId", loginResponseModel.value.emailId!);
         AppNavigation.to(AppRoutes.homeScreen);
-        if (loginResponseModel.value.success == true &&
-            loginResponseModel.value.onBoarded == false) {
-          AppNavigation.to(
-            AppRoutes.createAccount,
-            arguments: {"userId": loginResponseModel.value.userId},
-          );
-          clearData();
-        } else {
-          StorageHelper.write(
-            "isOnboard",
-            loginResponseModel.value.onBoarded.toString(),
-          );
-          AppNavigation.off(AppRoutes.homeScreen);
-        }
+        clearData();
+        // if (loginResponseModel.value.success == true &&
+        //     loginResponseModel.value.onBoarded == false) {
+        //   AppNavigation.off(
+        //     AppRoutes.homeScreen,
+        //     arguments: {"userId": loginResponseModel.value.userId},
+        //   );
+        //   clearData();
+        // } else {
+        //   StorageHelper.write(
+        //     "isOnboard",
+        //     loginResponseModel.value.onBoarded.toString(),
+        //   );
+        //   AppNavigation.off(AppRoutes.homeScreen);
+        // }
       } else if (statusCode == 405) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;

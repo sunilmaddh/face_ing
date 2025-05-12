@@ -40,39 +40,7 @@ class AllReportScreen extends StatelessWidget {
           color: AppColors.cardBackgroundColor,
           widget: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-            child:
-            // Column(
-            //   children: [
-            //     ListView.builder(
-            //       shrinkWrap: true,
-            //       itemBuilder: (context, index) {
-            //         var entries =
-            //             _profileController
-            //                 .anlyzeHealthDataResponseModel
-            //                 .value
-            //                 .channels!
-            //                 .entries
-            //                 .toList();
-            //         final key = entries[index].key;
-            //         final channel = entries[index].value;
-            //         final value =
-            //             (channel.dataList != null &&
-            //                     channel.dataList!.isNotEmpty)
-            //                 ? channel.dataList!.first.toStringAsFixed(2)
-            //                 : 'N/A';
-            //         return Expanded(
-            //           child: ReportCard(
-            //             title: key,
-            //             value: value,
-            //             mass: "", // or set dynamically if available
-            //             image: "", // or set dynamically if available
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ],
-            // ),
-            Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Scrollable Content
@@ -90,12 +58,15 @@ class AllReportScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               ReportCard(
+                                height: 190,
                                 isCenter: true,
-                                title: "Stress Level",
+                                centerImage: AppAssets.wellnessImage,
+                                title: "Wellness Index",
                                 value: getVitalValue(
-                                  VitalSignTypes.stressLevel,
+                                  VitalSignTypes.wellnessIndex,
                                 ),
                               ),
+
                               const SizedBox(height: 20),
                               ReportCard(
                                 isCenter: true,
@@ -113,7 +84,7 @@ class AllReportScreen extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: ReportCard(
-                            height: 330,
+                            height: 365,
                             title: "Heart Rate",
                             value: getVitalValue(VitalSignTypes.pulseRate),
                             mass: "bpm",
@@ -132,21 +103,25 @@ class AllReportScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: ReportCard(
-                              height: 165,
-                              title: "Heart Rate Variability",
-                              value: getVitalValue(VitalSignTypes.rmssd),
-                              mass: "ms",
+                            child: CircleProgressCard(
+                              progress: getVitalValueInt(VitalSignTypes.prq),
+                              age: getVitalValueInt(VitalSignTypes.prq),
+                              borderColor: Color(0xFF0072BC).withOpacity(0.2),
+                              drawArcColor: Color(0xFF0072BC),
+                              title: 'Pulse Respiration Quotient (PRQ)',
                             ),
                           ),
+
                           const SizedBox(width: 20),
                           Expanded(
                             child: ReportCard(
-                              height: 165,
+                              height: 235,
                               isCenter: true,
-                              title: "Mean R-R Interval",
-                              value: getVitalValue(VitalSignTypes.meanRri),
-                              mass: "ms",
+                              title: "Oxygen Saturation",
+                              value: getVitalValue(
+                                VitalSignTypes.oxygenSaturation,
+                              ),
+                              mass: "%",
                             ),
                           ),
                         ],
@@ -155,6 +130,7 @@ class AllReportScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Expanded(
                       child: ReportCard(
+                        height: 210,
                         title: "Blood Pressure",
                         value: getVitalValue(VitalSignTypes.bloodPressure),
                         mass: "mmHg",
@@ -163,16 +139,6 @@ class AllReportScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    // Expanded(
-                    //   child: ReportCard(
-                    //     title:
-                    //         "RMSSD (Root Mean Square of Successive Differences - HRV metric)",
-                    //     value: getVitalValue(VitalSignTypes.rmssd),
-                    //     mass: "ms",
-                    //     bigImage: AppAssets.stressLevel,
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 20),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -188,10 +154,63 @@ class AllReportScreen extends StatelessWidget {
                         const SizedBox(width: 15),
                         Expanded(
                           child: ReportCard(
-                            height: 165,
-                            title: "LF/HF Ratio ",
-                            centerImage: AppAssets.lhRatioImage,
-                            value: getVitalValue(VitalSignTypes.lfhf),
+                            height: 240,
+                            title: "HemoglobinA1C",
+                            centerImage: AppAssets.homoglobin,
+                            value: getVitalValue(VitalSignTypes.hemoglobinA1C),
+                            mass: "%",
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Expanded(
+                      child: CircleProgressCard(
+                        bottomImage: AppAssets.goodImage,
+                        value: getVitalValue(VitalSignTypes.ascvdRisk),
+                        borderColor: Color(0xFFFFFDDF),
+                        drawArcColor: Color(0xFFF7D100),
+                        title:
+                            'ASCVD Risk (Atherosclerotic Cardiovascular Disease Risk)',
+                        mass: "%",
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Expanded(
+                      child: CircleProgressCard(
+                        bottomImage: AppAssets.heartAge,
+                        value: getVitalValue(VitalSignTypes.heartAge),
+                        borderColor: Color(0xFFFFFDDF),
+                        drawArcColor: Color(0xFFF7D100),
+                        title: 'Heart Age (biological heart age estimation)',
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: ReportCard(
+                            height: 215,
+                            isCenter: true,
+                            title:
+                                "High Blood Pressure Risk (Hypertension Risk)",
+                            value: getVitalValue(
+                              VitalSignTypes.highBloodPressureRisk,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(width: 15),
+                        Expanded(
+                          child: ReportCard(
+                            height: 215,
+                            isCenter: true,
+                            title: "High Hemoglobin A1C Risk",
+                            value: getVitalValue(
+                              VitalSignTypes.highHemoglobinA1CRisk,
+                            ),
                           ),
                         ),
                       ],
@@ -202,25 +221,56 @@ class AllReportScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: CircleProgressCard(
-                            progress: VitalSignTypes.prq,
-                            age: VitalSignTypes.prq,
-                            borderColor: Color(0xFF0072BC).withOpacity(0.2),
-                            drawArcColor: Color(0xFF0072BC),
-                            title: 'Pulse Respiration Quotient (PRQ)',
+                          child: ReportCard(
+                            height: 215,
+                            isCenter: true,
+                            title: "High Fasting Glucose Risk",
+                            value: getVitalValue(
+                              VitalSignTypes.highBloodPressureRisk,
+                            ),
                           ),
                         ),
+
                         const SizedBox(width: 15),
                         Expanded(
-                          child: CircleProgressCard(
-                            progress: VitalSignTypes.pnsIndex,
-
-                            age: VitalSignTypes.pnsIndex,
-
-                            borderColor: Color(0xFF0072BC).withOpacity(0.2),
-                            drawArcColor: Color(0xFF0072BC),
-                            title: 'Parasympathetic Nervous System Index',
+                          child: ReportCard(
+                            height: 215,
+                            isCenter: true,
+                            title: "High Total Cholesterol Risk",
+                            value: getVitalValue(
+                              VitalSignTypes.highTotalCholesterolRisk,
+                            ),
                           ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Expanded(
+                      child: ReportCard(
+                        height: 165,
+                        isCenter: true,
+                        title: "Low Hemoglobin Risk (anemia risk)",
+                        value: getVitalValue(VitalSignTypes.lowHemoglobinRisk),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ReportCard(
+                          width: 164,
+                          isCenter: true,
+                          title: "Stress Level",
+                          value: getVitalValue(VitalSignTypes.stressLevel),
+                        ),
+                        const SizedBox(height: 20),
+                        ReportCard(
+                          width: 164,
+                          isCenter: true,
+
+                          title: "Stress Index",
+                          value: getVitalValue(VitalSignTypes.stressIndex),
                         ),
                       ],
                     ),
@@ -228,6 +278,54 @@ class AllReportScreen extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ReportCard(
+                          width: 164,
+                          height: 165,
+                          isCenter: true,
+                          title: "Normalized Stress Index",
+                          value: getVitalValue(
+                            VitalSignTypes.normalizedStressIndex,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ReportCard(
+                          width: 164,
+                          height: 165,
+
+                          isCenter: true,
+
+                          title: "HRV SDNN ",
+                          value: getVitalValue(VitalSignTypes.sdnn),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ReportCard(
+                          width: 164,
+                          height: 165,
+                          isCenter: true,
+                          title: "Mean R-R Interval",
+                          value: getVitalValue(VitalSignTypes.meanRri),
+                        ),
+                        const SizedBox(height: 20),
+                        ReportCard(
+                          width: 164,
+                          height: 165,
+                          isCenter: true,
+
+                          title: "RMSSD",
+                          value: getVitalValue(VitalSignTypes.rmssd),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: CircleProgressCard(
@@ -243,36 +341,11 @@ class AllReportScreen extends StatelessWidget {
                         const SizedBox(width: 15),
                         Expanded(
                           child: CircleProgressCard(
-                            centerImage: AppAssets.snsImage,
-                            value: getVitalValue(VitalSignTypes.snsIndex),
+                            centerImage: AppAssets.pnsImage,
+                            value: getVitalValue(VitalSignTypes.pnsIndex),
                             borderColor: Color(0xFF0072BC).withOpacity(0.2),
                             drawArcColor: Color(0xFF0072BC),
-                            title: 'Sympathetic Nervous System (SNS) Index',
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ReportCard(
-                            height: 165,
-                            title: "LF/HF Ratio ",
-                            centerImage: AppAssets.lhRatioImage,
-                            value: getVitalValue(VitalSignTypes.lfhf),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: ReportCard(
-                            height: 165,
-                            isCenter: true,
-                            centerImage: AppAssets.wellnessImage,
-
-                            title: "Wellness Index",
-                            value: getVitalValue(VitalSignTypes.wellnessIndex),
+                            title: 'PNS Index (Parasympathetic Nervous System)',
                           ),
                         ),
                       ],
@@ -280,6 +353,41 @@ class AllReportScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Expanded(
                       child: ReportCard(
+                        height: 180,
+                        leftPadding: 30,
+                        valueCenter: getVitalValue(VitalSignTypes.pnsZone),
+                        centerImage: AppAssets.snsImage,
+                        title: 'Sympathetic Nervous System (SNS) Index',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CircleProgressCard(
+                            progress: getVitalValueInt(VitalSignTypes.sd1),
+                            age: getVitalValueInt(VitalSignTypes.sd1),
+                            borderColor: Color(0xFF0072BC).withOpacity(0.2),
+                            drawArcColor: Color(0xFF0072BC),
+                            title: 'Standard Deviation 1 - HRV metric',
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: CircleProgressCard(
+                            progress: getVitalValueInt(VitalSignTypes.sd2),
+                            age: getVitalValueInt(VitalSignTypes.sd2),
+                            borderColor: Color(0xFF0072BC).withOpacity(0.2),
+                            drawArcColor: Color(0xFF0072BC),
+                            title: 'Standard Deviation 2 - HRV metric',
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Expanded(
+                      child: ReportCard(
+                        height: 210,
                         title: "SNS Zone (level of sympathetic activity)",
                         value: getVitalValue(VitalSignTypes.snsZone),
                         bigImage: AppAssets.stressLevel,
@@ -288,138 +396,12 @@ class AllReportScreen extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: ReportCard(
-                            height: 170,
-                            title: "Standard Deviation 1 - HRV metric",
-                            value: getVitalValue(VitalSignTypes.sd1),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: CircleProgressCard(
-                            progress: VitalSignTypes.sd2,
-
-                            age: VitalSignTypes.sd2,
-
-                            mass: "ms",
-                            borderColor: Color(0xFFFFFDDF),
-                            drawArcColor: Color(0xFFF7D100),
-                            title: 'Standard Deviation 2 - HRV metric',
-                          ),
-                        ),
-                        // Expanded(
-                        //   child: ReportCard(
-                        //     height: 170,
-                        //     isCenter: true,
-
-                        //     title: "HemoglobinA1C",
-                        //     value: getVitalValue(VitalSignTypes.hemoglobinA1C),
-                        //     mass: "%",
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Expanded(
-                      child: CircleProgressCard(
-                        bottomImage: AppAssets.goodImage,
-                        value: getVitalValue(
-                          VitalSignTypes.highHemoglobinA1CRisk,
-                        ),
-                        borderColor: Color(0xFFFFFDDF),
-                        drawArcColor: Color(0xFFF7D100),
-                        title: 'High Hemoglobin A1C Risk',
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ReportCard(
-                            title: "Blood Pressure",
-                            value: getVitalValue(VitalSignTypes.bloodPressure),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: ReportCard(
-                            isCenter: true,
-                            title: "Respiration Rate",
-                            value: getVitalValue(
-                              VitalSignTypes.respirationRate,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ReportCard(
-                            height: 194,
-                            title:
-                                "High Blood Pressure Risk (Hypertension Risk)",
-                            value: getVitalValue(
-                              VitalSignTypes.highBloodPressureRisk,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: ReportCard(
-                            height: 194,
-                            isCenter: true,
-                            title: "Normalized Stress Index",
-                            value: getVitalValue(
-                              VitalSignTypes.normalizedStressIndex,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Expanded(
-                      child: CircleProgressCard(
-                        bottomImage: AppAssets.goodImage,
-                        value: getVitalValue(VitalSignTypes.ascvdRisk),
-                        borderColor: Color(0xFFFFFDDF),
-                        drawArcColor: Color(0xFFF7D100),
-                        title:
-                            'ASCVD Risk (Atherosclerotic Cardiovascular Disease Risk)',
-                        mass: "%",
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ReportCard(
-                            title: "High Total Cholesterol Risk",
-                            value: getVitalValue(
-                              VitalSignTypes.highTotalCholesterolRisk,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: ReportCard(
-                            isCenter: true,
-
-                            title: "High Fasting Glucose Risk",
-                            value: getVitalValue(
-                              VitalSignTypes.highFastingGlucoseRisk,
-                            ),
-                          ),
+                        ReportCard(
+                          height: 165,
+                          title: "LF/HF Ratio ",
+                          centerImage: AppAssets.lhRatioImage,
+                          value: getVitalValue(VitalSignTypes.lfhf),
                         ),
                       ],
                     ),
@@ -441,5 +423,16 @@ class AllReportScreen extends StatelessWidget {
   double getVitalValueD(int type) {
     final result = _mesurementController.vitalsResults.value.getResult(type);
     return result?.value ?? 0.0;
+  }
+
+  // int getVitalValueInt(int type) {
+  //   final result = _mesurementController.vitalsResults.value.getResult(type);
+  //   return result?.value ?? 0;
+  // }
+  int getVitalValueInt(int type) {
+    final result = _mesurementController.vitalsResults.value.getResult(type);
+    final val = result?.value;
+    if (val == null) return 0;
+    return val is int ? val : val.toInt();
   }
 }

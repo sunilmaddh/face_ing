@@ -1,71 +1,52 @@
 // To parse this JSON data, do
 //
-//     final guestHistoryDetailsModel = guestHistoryDetailsModelFromJson(jsonString?);
+//     final guestHistoryDetailsModel = guestHistoryDetailsModelFromJson(jsonString??);
 
 import 'dart:convert';
 
-GuestHistoryDetailsModel guestHistoryDetailsModelFromJson(String? str) =>
-    GuestHistoryDetailsModel.fromJson(json.decode(str!));
-
-String? guestHistoryDetailsModelToJson(GuestHistoryDetailsModel data) =>
-    json.encode(data.toJson());
+GuestHistoryDetailsModel guestHistoryDetailsModelFromJson(String str) =>
+    GuestHistoryDetailsModel.fromJson(json.decode(str));
 
 class GuestHistoryDetailsModel {
   String? msg;
-  GuestPersonalDetail? guestPersonalDetail;
+
   GuestHealthAnuraHistory? guestHealthAnuraHistory;
-  dynamic guestHealthBinahHistory;
+  GuestHealthBinahHistory? guestHealthBinahHistory;
   String? success;
 
   GuestHistoryDetailsModel({
     this.msg,
-    this.guestPersonalDetail,
+
     this.guestHealthAnuraHistory,
     this.guestHealthBinahHistory,
     this.success,
   });
 
-  factory GuestHistoryDetailsModel.fromJson(Map<String?, dynamic> json) =>
-      GuestHistoryDetailsModel(
-        msg: json["msg"] ?? "",
-        guestPersonalDetail:
-            json["guestPersonalDetail"] != null
-                ? GuestPersonalDetail.fromJson(json["guestPersonalDetail"])
-                : GuestPersonalDetail(),
-        guestHealthAnuraHistory:
-            json["guestHealthAnuraHistory"] != null
-                ? GuestHealthAnuraHistory.fromJson(
-                  json["guestHealthAnuraHistory"],
-                )
-                : GuestHealthAnuraHistory(),
-        guestHealthBinahHistory: json["guestHealthBinahHistory"] ?? "",
-        success: json["success"] ?? "",
-      );
+  factory GuestHistoryDetailsModel.fromJson(
+    Map<String, dynamic> json,
+  ) => GuestHistoryDetailsModel(
+    msg: json["msg"] ?? "",
 
-  Map<String?, dynamic> toJson() => {
-    "msg": msg,
-    "guestPersonalDetail": guestPersonalDetail!.toJson(),
-    "guestHealthAnuraHistory": guestHealthAnuraHistory!.toJson(),
-    "guestHealthBinahHistory": guestHealthBinahHistory,
-    "success": success,
-  };
+    guestHealthAnuraHistory:
+        json["guestHealthAnuraHistory"] != null
+            ? GuestHealthAnuraHistory.fromJson(json["guestHealthAnuraHistory"])
+            : GuestHealthAnuraHistory(),
+    guestHealthBinahHistory:
+        json["guestHealthBinahHistory"] != null
+            ? GuestHealthBinahHistory.fromJson(json["guestHealthBinahHistory"])
+            : GuestHealthBinahHistory(),
+    success: json["success"] ?? "",
+  );
 }
 
 class GuestHealthAnuraHistory {
-  dynamic userEmail;
+  String? userEmail;
   String? age;
-  String? gender;
-  String? height;
-  String? waistCircum;
-  String? bMiCalc;
-  String? aBsi;
   String? hRbpm;
   String? bPSystolic;
   String? hRvsdnn;
   String? bPrpp;
   String? bPTau;
-  String? bPbpm;
-  String? tHbCount;
   String? healthScore;
   String? mentalScore;
   String? vitalScore;
@@ -76,22 +57,27 @@ class GuestHealthAnuraHistory {
   String? bPcvd;
   String? risksScore;
   String? sNr;
+  String? bRbpm;
+  String? bpDiastolic;
+  String? iHbCount;
+  String? hBa1CRiskProb;
+  String? mFbgRiskProb;
+  String? dBtRiskProb;
+  String? fLdRiskProb;
+  String? hDltcRiskProb;
+  String? hPtRiskProb;
+  String? overallMetabolicRiskProb;
+  String? tGRiskProb;
+  String? physioScore;
 
   GuestHealthAnuraHistory({
     this.userEmail,
     this.age,
-    this.gender,
-    this.height,
-    this.waistCircum,
-    this.bMiCalc,
-    this.aBsi,
     this.hRbpm,
     this.bPSystolic,
     this.hRvsdnn,
     this.bPrpp,
     this.bPTau,
-    this.bPbpm,
-    this.tHbCount,
     this.healthScore,
     this.mentalScore,
     this.vitalScore,
@@ -102,24 +88,29 @@ class GuestHealthAnuraHistory {
     this.bPcvd,
     this.risksScore,
     this.sNr,
+    this.bRbpm,
+    this.bpDiastolic,
+    this.iHbCount,
+    this.hBa1CRiskProb,
+    this.mFbgRiskProb,
+    this.dBtRiskProb,
+    this.fLdRiskProb,
+    this.hDltcRiskProb,
+    this.hPtRiskProb,
+    this.overallMetabolicRiskProb,
+    this.tGRiskProb,
+    this.physioScore,
   });
 
-  factory GuestHealthAnuraHistory.fromJson(Map<String?, dynamic> json) =>
+  factory GuestHealthAnuraHistory.fromJson(Map<String, dynamic> json) =>
       GuestHealthAnuraHistory(
         userEmail: json["userEmail"] ?? "",
         age: json["age"] ?? "",
-        gender: json["gender"] ?? "",
-        height: json["height"] ?? "",
-        waistCircum: json["waistCircum"] ?? "",
-        bMiCalc: json["bMICalc"] ?? "",
-        aBsi: json["aBSI"] ?? "",
         hRbpm: json["hRBPM"] ?? "",
         bPSystolic: json["bPSystolic"] ?? "",
         hRvsdnn: json["hRVSDNN"] ?? "",
         bPrpp: json["bPRPP"] ?? "",
         bPTau: json["bPTau"] ?? "",
-        bPbpm: json["bPBPM"] ?? "",
-        tHbCount: json["tHBCount"] ?? "",
         healthScore: json["healthScore"] ?? "",
         mentalScore: json["mentalScore"] ?? "",
         vitalScore: json["vitalScore"] ?? "",
@@ -130,90 +121,120 @@ class GuestHealthAnuraHistory {
         bPcvd: json["bPCVD"] ?? "",
         risksScore: json["risksScore"] ?? "",
         sNr: json["sNR"] ?? "",
+        bRbpm: json["bRBPM"] ?? "",
+        bpDiastolic: json["bpDiastolic"] ?? "",
+        iHbCount: json["iHBCount"] ?? "",
+        hBa1CRiskProb: json["hBA1CRiskProb"] ?? "",
+        mFbgRiskProb: json["mFBGRiskProb"] ?? "",
+        dBtRiskProb: json["dBTRiskProb"] ?? "",
+        fLdRiskProb: json["fLDRiskProb"] ?? "",
+        hDltcRiskProb: json["hDLTCRiskProb"] ?? "",
+        hPtRiskProb: json["hPTRiskProb"] ?? "",
+        overallMetabolicRiskProb: json["overallMetabolicRiskProb"] ?? "",
+        tGRiskProb: json["tGRiskProb"] ?? "",
+        physioScore: json["physioScore"] ?? "",
       );
-
-  Map<String?, dynamic> toJson() => {
-    "userEmail": userEmail,
-    "age": age,
-    "gender": gender,
-    "height": height,
-    "waistCircum": waistCircum,
-    "bMICalc": bMiCalc,
-    "aBSI": aBsi,
-    "hRBPM": hRbpm,
-    "bPSystolic": bPSystolic,
-    "hRVSDNN": hRvsdnn,
-    "bPRPP": bPrpp,
-    "bPTau": bPTau,
-    "bPBPM": bPbpm,
-    "tHBCount": tHbCount,
-    "healthScore": healthScore,
-    "mentalScore": mentalScore,
-    "vitalScore": vitalScore,
-    "physicalScore": physicalScore,
-    "mSI": mSi,
-    "bpHeartAttack": bpHeartAttack,
-    "bPStroke": bPStroke,
-    "bPCVD": bPcvd,
-    "risksScore": risksScore,
-    "sNR": sNr,
-  };
 }
 
-class GuestPersonalDetail {
-  String? email;
-  String? name;
-  String? gender;
-  String? dob;
-  String? weight;
-  String? height;
-  String? termCond;
-  int? userId;
-  String? guestId;
-  String? scannedDate;
-  String? age;
+class GuestHealthBinahHistory {
+  String? userEmail;
+  String? pulseRate;
+  String? respirationRate;
+  String? oxygenSaturation;
+  String? sdnn;
+  String? stressLevel;
+  // String? rri;
+  String? bloodPressure;
+  String? stressIndex;
+  String? meanRri;
+  String? rmssd;
+  String? sd1;
+  String? sd2;
+  String? prq;
+  String? pnsIndex;
+  String? pnsZone;
+  String? snsIndex;
+  String? snsZone;
+  String? wellnessIndex;
+  String? wellnessLevel;
+  String? lfhf;
+  String? hemoglobin;
+  String? hemoglobinA1C;
+  String? highHemoglobinA1CRisk;
+  String? highBloodPressureRisk;
+  String? ascvdRisk;
+  String? normalizedStressIndex;
+  String? heartAge;
+  String? highTotalCholesterolRisk;
+  String? highFastingGlucoseRisk;
+  String? lowHemoglobinRisk;
 
-  GuestPersonalDetail({
-    this.email,
-    this.name,
-    this.gender,
-    this.dob,
-    this.weight,
-    this.height,
-    this.termCond,
-
-    this.userId,
-    this.guestId,
-    this.scannedDate,
-    this.age,
+  GuestHealthBinahHistory({
+    this.userEmail,
+    this.pulseRate,
+    this.respirationRate,
+    this.oxygenSaturation,
+    this.sdnn,
+    this.stressLevel,
+    // this.rri,
+    this.bloodPressure,
+    this.stressIndex,
+    this.meanRri,
+    this.rmssd,
+    this.sd1,
+    this.sd2,
+    this.prq,
+    this.pnsIndex,
+    this.pnsZone,
+    this.snsIndex,
+    this.snsZone,
+    this.wellnessIndex,
+    this.wellnessLevel,
+    this.lfhf,
+    this.hemoglobin,
+    this.hemoglobinA1C,
+    this.highHemoglobinA1CRisk,
+    this.highBloodPressureRisk,
+    this.ascvdRisk,
+    this.normalizedStressIndex,
+    this.heartAge,
+    this.highTotalCholesterolRisk,
+    this.highFastingGlucoseRisk,
+    this.lowHemoglobinRisk,
   });
 
-  factory GuestPersonalDetail.fromJson(Map<String?, dynamic> json) =>
-      GuestPersonalDetail(
-        email: json["email"] ?? "" ?? "",
-        name: json["name"] ?? "" ?? "",
-        gender: json["gender"] ?? "" ?? "",
-        dob: json["dob"] ?? "" ?? "",
-        weight: json["weight"] ?? "" ?? "",
-        height: json["height"] ?? "" ?? "",
-        termCond: json["termCond"] ?? "" ?? "",
-        userId: json["userId"] ?? "" ?? 0,
-        guestId: json["guestId"] ?? "" ?? "",
-        scannedDate: json["scannedDate"] ?? "" ?? "",
-        age: json["age"] ?? "" ?? "",
+  factory GuestHealthBinahHistory.fromJson(Map<String, dynamic> json) =>
+      GuestHealthBinahHistory(
+        userEmail: json["userEmail"] ?? "",
+        pulseRate: json["pulseRate"] ?? "",
+        respirationRate: json["respirationRate"] ?? "",
+        oxygenSaturation: json["oxygenSaturation"] ?? "",
+        sdnn: json["sdnn"] ?? "",
+        stressLevel: json["stressLevel"] ?? "",
+        // rri: json["rri"] ?? "",
+        bloodPressure: json["bloodPressure"] ?? "",
+        stressIndex: json["stressIndex"] ?? "",
+        meanRri: json["meanRri"] ?? "",
+        rmssd: json["rmssd"] ?? "",
+        sd1: json["sd1"] ?? "",
+        sd2: json["sd2"] ?? "",
+        prq: json["prq"] ?? "",
+        pnsIndex: json["pnsIndex"] ?? "",
+        pnsZone: json["pnsZone"] ?? "",
+        snsIndex: json["snsIndex"] ?? "",
+        snsZone: json["snsZone"] ?? "",
+        wellnessIndex: json["wellnessIndex"] ?? "",
+        wellnessLevel: json["wellnessLevel"] ?? "",
+        lfhf: json["lfhf"] ?? "",
+        hemoglobin: json["hemoglobin"] ?? "",
+        hemoglobinA1C: json["hemoglobinA1C"] ?? "",
+        highHemoglobinA1CRisk: json["highHemoglobinA1CRisk"] ?? "",
+        highBloodPressureRisk: json["highBloodPressureRisk"] ?? "",
+        ascvdRisk: json["ascvdRisk"] ?? "",
+        normalizedStressIndex: json["normalizedStressIndex"] ?? "",
+        heartAge: json["heartAge"] ?? "",
+        highTotalCholesterolRisk: json["highTotalCholesterolRisk"] ?? "",
+        highFastingGlucoseRisk: json["highFastingGlucoseRisk"] ?? "",
+        lowHemoglobinRisk: json["lowHemoglobinRisk"] ?? "",
       );
-
-  Map<String?, dynamic> toJson() => {
-    "email": email,
-    "name": name,
-    "gender": gender,
-    "dob": dob,
-    "weight": weight,
-    "height": height,
-    "termCond": termCond,
-    "userId": userId,
-    "guestId": guestId,
-    "scannedDate": scannedDate,
-    "age": age,
-  };
 }
