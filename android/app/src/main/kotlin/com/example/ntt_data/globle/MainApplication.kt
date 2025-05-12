@@ -48,6 +48,7 @@ class MainApplication : Application() {
                             GlobalData.guestHeight = data["height"].toString()
                             GlobalData.emailId = data["emailId"].toString()
                             GlobalData.token = data["token"].toString()
+                            GlobalData.scanType = data["scanType"].toString()
                         }
 
                         Log.d(TAG, "Data from flutter: $data ${GlobalData.dob}")

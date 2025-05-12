@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import com.example.ntt_data.data.repository.MeasurmentRepository
+import com.example.ntt_data.globle.GlobalData
 import com.example.ntt_data.measurement.AnuraExampleMeasurementActivity.Companion.TAG
 import com.example.ntt_data.utils.KEY_MEASUREMENT_RESULTS
 
@@ -27,24 +28,29 @@ class HealthResultActivity : ComponentActivity() {
         val dynamicMap = mutableMapOf<String, String>()
         Log.d(TAG, "resultData: $results")
         Log.d(TAG, "resultData ALL: ${results?.allResults}")
-       
         if (results != null) {
-
             for( resultData in results.allResults ){
-
                 val key=resultData.key
-
                 val value=resultData.value.value
                 dynamicMap[key]= value.toString()
                 Log.d(TAG, "resultData: $dynamicMap")
             }
-            repository.addGuest(
-                dataMap =dynamicMap ,
-                onSuccess = {
-                    Log.d("API", "Guest added successfully")
-                }, onError = {
-                    Log.e("API", "Something ent wrong")
-                })
+          if (GlobalData.scanType.isNotEmpty() && GlobalData.scanType == "guest-user"){
+                repository.addGuest(
+                    dataMap =dynamicMap ,
+                    onSuccess = {
+                        Log.d("API", "Guest added successfully")
+                    }, onError = {
+                        Log.e("API", "Something ent wrong")
+                    })
+            }else {
+              repository.storeHealthData(dataMap = dynamicMap, onSuccess = {
+
+                  Log.d("API", "Health data store successfully")
+              }, onError = {
+                  Log.e("API", "Something ent wrong")
+              })
+          }
                 setContent {
                     MaterialTheme {
                         HealthResultScreen(

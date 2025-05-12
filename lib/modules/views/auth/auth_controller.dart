@@ -66,22 +66,22 @@ class AuthController extends GetxController
         );
         StorageHelper.write("userID", loginResponseModel.value.userId!);
         StorageHelper.write("emailId", loginResponseModel.value.emailId!);
-        AppNavigation.to(AppRoutes.homeScreen);
-        clearData();
-        // if (loginResponseModel.value.success == true &&
-        //     loginResponseModel.value.onBoarded == false) {
-        //   AppNavigation.off(
-        //     AppRoutes.homeScreen,
-        //     arguments: {"userId": loginResponseModel.value.userId},
-        //   );
-        //   clearData();
-        // } else {
-        //   StorageHelper.write(
-        //     "isOnboard",
-        //     loginResponseModel.value.onBoarded.toString(),
-        //   );
-        //   AppNavigation.off(AppRoutes.homeScreen);
-        // }
+        // AppNavigation.to(AppRoutes.homeScreen);
+        // clearData();
+        if (loginResponseModel.value.success == "true" &&
+            loginResponseModel.value.onBoarded == "false") {
+          AppNavigation.to(
+            AppRoutes.createAccount,
+            arguments: {"userId": loginResponseModel.value.userId},
+          );
+          clearData();
+        } else {
+          StorageHelper.write(
+            "isOnboard",
+            loginResponseModel.value.onBoarded.toString(),
+          );
+          AppNavigation.off(AppRoutes.homeScreen);
+        }
       } else if (statusCode == 405) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;
@@ -214,23 +214,18 @@ class AuthController extends GetxController
 
   Future<void> getMedicalQuestionList() async {
     isLoading(true);
-    // var data = {
-    //   "emailId": emailSignController.text,
-    //   "otp": otp.value,
-    //   "userId": userId.value,
-    // };
-    // debugPrint(data.toString());
     try {
       Map<String, dynamic> response = await _authServices
           .getMedicalQeustionList(data: "");
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
-        var result = MedicalQuestionListModel.fromJson(
-          response["responseBody"],
-        );
-        medicalQuestionListModel.value =
-            result as List<MedicalQuestionListModel>;
+        var result = MedicalQuestionModels.fromJson(response["responseBody"]);
+        medicalQuestionListModel.value = result.list!;
+        AppSnackbar.show(title: "Success", message: result.message!);
+        if (result.isSuccess == true) {
+          AppNavigation.to(AppRoutes.healthMenu);
+        }
         // AppSnackbar.show(title: "Success", message: errorResponse.value.message!);
         if (errorResponse.value.success == true) {
           clearData();
@@ -256,11 +251,11 @@ class AuthController extends GetxController
     try {
       var data = {
         "userDao": {
-          "emailId": errorResponse.value.emailId,
-          "userId": errorResponse.value.userId,
+          "emailId": loginResponseModel.value.emailId,
+          "userId": loginResponseModel.value.userId,
         },
         "perDetailsDao": {
-          "userEmail": errorResponse.value.emailId,
+          "userEmail": loginResponseModel.value.emailId,
           "password": "",
           "userName": nameController.text,
           "userGender": selectionType.value,
@@ -279,12 +274,13 @@ class AuthController extends GetxController
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
-        var result = MedicalQuestionModels.fromJson(response["responseBody"]);
-        medicalQuestionListModel.value = result.list!;
-        AppSnackbar.show(title: "Success", message: result.message!);
-        if (result.success == true) {
-          AppNavigation.to(AppRoutes.congratulationsScreen);
-        }
+        AppNavigation.to(AppRoutes.congratulationsScreen);
+        // var result = MedicalQuestionModels.fromJson(response["responseBody"]);
+        // medicalQuestionListModel.value = result.list!;
+        // AppSnackbar.show(title: "Success", message: result.message!);
+        // if (result.isSuccess == true) {
+        //   AppNavigation.to(AppRoutes.congratulationsScreen);
+        // }
       } else if (statusCode == 405) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;

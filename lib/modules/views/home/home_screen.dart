@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart';
@@ -71,13 +72,19 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 110),
               ScanButton(
                 width: 193,
-                onPressed: () {
+                onPressed: () async {
                   // AppNavigation.to(AppRoutes.analyzingHealthData);
-                  controller.screenInFocus().whenComplete(() {
-                    AppNavigation.to(AppRoutes.mesurementScreen);
-                  });
-
-                  // NativeCaller.startFaceScan({});
+                  // controller.screenInFocus().whenComplete(() {
+                  //   AppNavigation.to(AppRoutes.mesurementScreen);
+                  // });
+                  var userID = await StorageHelper.read("userID");
+                  var accessToken = await StorageHelper.read("access-token");
+                  Map<String, dynamic> data = {
+                    "userId": userID,
+                    "token": accessToken,
+                    "scanType": "user",
+                  };
+                  NativeCaller.startFaceScan(data);
                   // WidgetsBinding.instance.addPostFrameCallback((_) {
                   //  en((v) {
                   //   AppNavigation.to(AppRoutes.analyzingHealthData);

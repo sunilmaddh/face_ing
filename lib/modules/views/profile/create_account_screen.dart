@@ -8,6 +8,7 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
+import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart' show AppNavigation;
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
@@ -22,6 +23,7 @@ class CreateAccountScreen extends StatelessWidget {
   CreateAccountScreen({super.key});
 
   final AuthController _authController = Get.find<AuthController>();
+  final _profileController = Get.find<ProfileController>();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -33,7 +35,7 @@ class CreateAccountScreen extends StatelessWidget {
         onPressed: () {
           debugPrint(_authController.userId.value);
           if (_formKey.currentState!.validate()) {
-            AppNavigation.to(AppRoutes.profileUpload);
+            _profileController.getMedicalQeustionList();
           }
         },
       ),

@@ -9,4 +9,5 @@ object GlobalData {
     var emailId:String=""
     var weight:String=""
     var guestHeight:String=""
+    var scanType:String=""
 }

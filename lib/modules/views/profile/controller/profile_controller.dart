@@ -5,11 +5,13 @@ import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
+import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
 
 class ProfileController extends GetxController with GenderStateMixin {
+  final _authController = Get.find<AuthController>();
   RxBool isLoading = false.obs;
   RxString userID = ''.obs;
   Map<String, dynamic> selectedAnswerList = {};
@@ -34,8 +36,10 @@ class ProfileController extends GetxController with GenderStateMixin {
       if (statusCode == 200) {
         var result = MedicalQuestionModels.fromJson(response["responseBody"]);
         medicalQuestionListModel.value = result.list!;
+        _authController.medicalQuestionListModel.value =
+            medicalQuestionListModel.value;
         AppSnackbar.show(title: "Success", message: result.message!);
-        if (result.success == true) {
+        if (result.isSuccess == "true") {
           AppNavigation.to(AppRoutes.healthMenu);
         }
       } else if (statusCode == 405) {

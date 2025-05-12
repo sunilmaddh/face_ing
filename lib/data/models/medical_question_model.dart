@@ -14,9 +14,9 @@ MedicalQuestionModels medicalQuestionListModelFromJson(String str) =>
 class MedicalQuestionModels {
   String? message;
   List<MedicalQuestionListModel>? list;
-  bool? success;
+  String? isSuccess;
 
-  MedicalQuestionModels({this.message, this.list, this.success});
+  MedicalQuestionModels({this.message, this.list, this.isSuccess});
 
   factory MedicalQuestionModels.fromJson(Map<String, dynamic> json) =>
       MedicalQuestionModels(
@@ -27,7 +27,7 @@ class MedicalQuestionModels {
                 : List<MedicalQuestionListModel>.from(
                   json["list"].map((x) => MedicalQuestionListModel.fromJson(x)),
                 ),
-        success: json["success"],
+        isSuccess: json["isSuccess"],
       );
 }
 

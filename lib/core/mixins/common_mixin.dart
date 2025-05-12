@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/data/models/add_geust_request_model.dart';
 import 'package:ntt_data/data/repository/services/auth_services.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
@@ -31,11 +32,12 @@ mixin CommonMixin on GetxController {
   }
 
   Future<void> uploadProfileFromCamera() async {
+    var userID = await StorageHelper.read("userID");
     var imageUrl = await profileUploadService.pickImageFromCamera();
     if (imageUrl != null) {
       isProfile.value = true;
       profileUrl.value = File(imageUrl.path);
-      authServices.uploadDocument(profileUrl.value, userId.value);
+      authServices.uploadDocument(profileUrl.value, userID);
     } else {
       isProfile.value = false;
       Get.snackbar("Upload Failed", "Please try again");
