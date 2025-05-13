@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
+import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
+import 'package:ntt_data/data/models/guest_history_details_model.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
+import 'package:ntt_data/data/models/show_guest_history_details.dart';
+import 'package:ntt_data/data/models/user_health_details.dart';
+import 'package:ntt_data/data/models/user_history_list_model.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -20,6 +26,9 @@ class ProfileController extends GetxController with GenderStateMixin {
   final TextEditingController weightController = TextEditingController();
   final TextEditingController heightController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
+  RxList<UserHealthList> userHealthList = <UserHealthList>[].obs;
+  RxList<Map<String, dynamic>> binahHIstoryDetails =
+      <Map<String, dynamic>>[].obs;
   Rx<AnlyzeHealthDataResponseModel> anlyzeHealthDataResponseModel =
       AnlyzeHealthDataResponseModel().obs;
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
@@ -57,7 +66,43 @@ class ProfileController extends GetxController with GenderStateMixin {
     }
   }
 
+  Future<void> getUserHistory() async {
+    var userID = await StorageHelper.read("userID");
+    var data = {"userId": userID};
+
+    Map<String, dynamic> responseData = await _profileService
+        .getUserHealthHistoryService(data: data);
+
+    int statusCode = responseData[AppConstents.statusCode];
+    if (statusCode == 200) {
+      var result = UserHistoryListModel.fromJson(responseData["responseBody"]);
+
+      userHealthList.value = result.userHealthList!;
+    } else {}
+  }
+
+  Future<void> getUserHealthDetails({required var healthId}) async {
+    var userID = await StorageHelper.read("userID");
+    var data = {"userId": userID, "healthId": healthId};
+
+    Map<String, dynamic> responseData = await _profileService
+        .getUserHealthDetailsService(data: data);
+
+    int statusCode = responseData[AppConstents.statusCode];
+    if (statusCode == 200) {
+      var result = UserHistoryDetailsModel.fromJson(
+        responseData["responseBody"],
+      );
+      binahHIstoryDetails.value = await ShowGuestHistoryDetails()
+          .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
+      AppNavigation.to(AppRoutes.userHealthDatails);
+    } else {
+      AppSnackbar.show(title: "Error", message: "Something went wrong");
+    }
+  }
+
   Future<void> storeHealthData() async {
+    var userID = await StorageHelper.read("userID");
     var data = {};
 
     Map<String, dynamic> responseData = await ProfileServices()

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/modules/views/auth/auth_controller.dart'
+    show AuthController;
 import 'package:ntt_data/widgets/common_list_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
@@ -12,6 +14,7 @@ class ProfilePageData extends StatelessWidget {
     required this.text,
     required this.list,
     required this.id,
+    required this.authController,
     required this.question,
   });
 
@@ -20,6 +23,7 @@ class ProfilePageData extends StatelessWidget {
   final RxList<int> selectedIndices = <int>[].obs; // Track multiple selections
   final String id;
   final String question;
+  final AuthController authController;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +53,7 @@ class ProfilePageData extends StatelessWidget {
                     } else {
                       selectedIndices.add(index);
                     }
-                    AppMethods.storeQuestionAnswer(
+                    authController.storeQuestionAnswer(
                       id,
                       question,
                       selectedIndices.map((i) => list[i]).toList(),

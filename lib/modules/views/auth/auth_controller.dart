@@ -31,6 +31,7 @@ class AuthController extends GetxController
   final TextEditingController forgotEmailController = TextEditingController();
   final passwordForgotController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  var dataList = <Map<String, dynamic>>[].obs;
   RxString emailId = ''.obs;
   RxBool isLoading = false.obs;
   RxString date = "".obs;
@@ -246,7 +247,7 @@ class AuthController extends GetxController
     }
   }
 
-  Future<void> profileCreation({required var dataList}) async {
+  Future<void> profileCreation() async {
     isLoading(true);
     try {
       var data = {
@@ -310,5 +311,36 @@ class AuthController extends GetxController
     confirmPasswordController.clear();
     isChecked.value = false;
     otp.value = "";
+  }
+
+  void storeQuestionAnswer(
+    String id,
+    String question,
+    List<dynamic> selectedAnswers,
+  ) {
+    if (selectedAnswers.isNotEmpty) {
+      // Check if the question already exists
+      int index = dataList.indexWhere(
+        (element) => element["question"] == question,
+      );
+
+      if (index != -1) {
+        // Update existing entry
+        dataList[index]["answer"] = selectedAnswers;
+        dataList[index]["id"] = id; // Optionally update id too
+        print("Updated existing entry: ${dataList[index]}");
+      } else {
+        // Add new entry
+        dataList.add({
+          "id": id,
+          "question": question,
+          "answer": selectedAnswers,
+        });
+        print("Added new entry: ${dataList.last}");
+      }
+    }
+
+    // print("Updated existing entry: ${dataList.toString()}");
+    // healthMenuData.value = dataList.value;
   }
 }

@@ -14,6 +14,7 @@ class MeasurementScreen extends StatefulWidget {
 
 class _MeasurementScreenState extends State<MeasurementScreen> {
   final controller = Get.find<MeasurementController>();
+  final String scanType = Get.arguments["scanType"] ?? "";
   @override
   void dispose() {
     // TODO: implement dispose
@@ -24,6 +25,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    controller.scanType.value = scanType;
     controller.startStopButtonClicked();
     return Scaffold(
       appBar: CustomAppBar(title: ""),

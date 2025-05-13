@@ -4,32 +4,43 @@ import 'package:get/get.dart';
 class AppMethods {
   static var dataList = <Map<String, dynamic>>[].obs;
   static var answerList = <Map<String, dynamic>>[].obs;
+  static RxList<Map<String, dynamic>> healthMenuData =
+      <Map<String, dynamic>>[].obs;
 
-  ///  Common method to store question & answer
-  static List<Map<String, dynamic>> storeQuestionAnswer(
+  static void storeQuestionAnswer(
     String id,
     String question,
-    List<dynamic> selectedAnswers, // List of selected answers
+    List<dynamic> selectedAnswers,
   ) {
     if (selectedAnswers.isNotEmpty) {
-      // Find if the question already exists in the dataList
-      var existingEntry = dataList.firstWhere(
+      // Check if the question already exists
+      int index = dataList.indexWhere(
         (element) => element["question"] == question,
-        orElse: () => {},
       );
 
-      // If entry exists, update the answers for that question
-      existingEntry["answer"] = selectedAnswers;
-    } else {
-      // If answers are empty, remove the question from the dataList
-      dataList.removeWhere((element) => element["question"] == question);
+      if (index != -1) {
+        // Update existing entry
+        dataList[index]["answer"] = selectedAnswers;
+        dataList[index]["id"] = id; // Optionally update id too
+        print("Updated existing entry: ${dataList[index]}");
+      } else {
+        // Add new entry
+        dataList.add({
+          "id": id,
+          "question": question,
+          "answer": selectedAnswers,
+        });
+        print("Added new entry: ${dataList.last}");
+      }
     }
 
-    print("Updated Data List: $dataList");
-    return dataList;
+    print("Updated existing entry: ${dataList.toString()}");
+    healthMenuData.value = dataList.value;
   }
 
   static List<Map<String, dynamic>> getstoreQuestionAnswer() {
+    List<Map<String, dynamic>> data = dataList;
+    dataList.clear();
     return dataList;
   }
 

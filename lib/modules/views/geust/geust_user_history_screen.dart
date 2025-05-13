@@ -43,7 +43,12 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
     return Scaffold(
       floatingActionButton: RoundedButton(
         onPressed: () {
-          AppNavigation.to(AppRoutes.addNewGeustScreen);
+          AppNavigation.to(
+            AppRoutes.addNewGeustScreen,
+            action: () {
+              _controller.getGeustHistory();
+            },
+          );
         },
         isAdd: true,
         isAppBar: false,
@@ -83,7 +88,9 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                             result.guestId.toString(),
                           );
                         },
-                        onDelete: () {},
+                        onDelete: () {
+                          _controller.removeGuest(guestId: result.guestId);
+                        },
                       ),
                     );
                   },

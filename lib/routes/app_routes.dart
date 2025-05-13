@@ -17,5 +17,7 @@ class AppRoutes {
       addNewGeustScreen = '/add_new_guest_screen',
       mesurementScreen = "/measurement_model",
       guestHistoryDetails = "/guest_history_details",
+      userHistoryList = "/user_history_data",
+      userHealthDatails = "/user_health_details",
       analyzingHealthData = '/analyzing_health_data';
 }

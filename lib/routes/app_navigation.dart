@@ -1,9 +1,10 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class AppNavigation {
   /// Navigate to a screen with a name
-  static void to(String route, {dynamic arguments}) {
-    Get.toNamed(route, arguments: arguments);
+  static void to(String route, {VoidCallback? action, dynamic arguments}) {
+    Get.toNamed(route, arguments: arguments)!.whenComplete(action!);
   }
 
   /// Replace the current screen with a new one

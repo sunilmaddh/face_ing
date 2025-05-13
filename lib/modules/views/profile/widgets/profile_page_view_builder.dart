@@ -37,6 +37,7 @@ class ProfilePageViewBuilder extends StatelessWidget {
                   question: pages[index].onBoardingQuestionName!,
                   text: pages[index].onBoardingQuestionName!,
                   list: pages[index].onBoardingOptions!,
+                  authController: authController,
                 );
               },
             ),
@@ -51,9 +52,9 @@ class ProfilePageViewBuilder extends StatelessWidget {
                   isAppBar: false,
                   onPressed: () {
                     if (currentIndex == pages.length - 1) {
-                      var data = AppMethods.getstoreQuestionAnswer();
-                      debugPrint(data.toString());
-                      authController.profileCreation(dataList: data);
+                      // var data = AppMethods.getstoreQuestionAnswer();
+                      debugPrint(authController.dataList.toString());
+                      authController.profileCreation();
                       // AppNavigation.to(AppRoutes.congratulationsScreen);
                     } else {
                       _pageController.nextPage(

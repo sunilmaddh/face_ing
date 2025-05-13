@@ -13,7 +13,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class FaceDrawer extends StatelessWidget {
-  const FaceDrawer({super.key});
+  FaceDrawer({super.key});
 
   void editProfilePicture() {
     // TODO: Implement profile picture editing functionality
@@ -131,8 +131,8 @@ class FaceDrawer extends StatelessWidget {
             _buildListTile(
               icon: AppAssets.history,
               title: "History",
-              subtitle: "Guest user data",
-              onTap: () => AppNavigation.to(AppRoutes.geustUserHistory),
+              subtitle: "User history data",
+              onTap: () => AppNavigation.to(AppRoutes.userHistoryList),
             ),
             _buildListTile(
               icon: AppAssets.notification,

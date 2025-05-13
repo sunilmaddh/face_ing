@@ -27,7 +27,7 @@ class MedicalQuestionModels {
                 : List<MedicalQuestionListModel>.from(
                   json["list"].map((x) => MedicalQuestionListModel.fromJson(x)),
                 ),
-        isSuccess: json["isSuccess"],
+        isSuccess: json["success"],
       );
 }
 

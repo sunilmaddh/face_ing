@@ -1,4 +1,5 @@
 import 'package:ntt_data/data/models/guest_history_details_model.dart';
+import 'package:ntt_data/data/models/user_health_details.dart';
 
 class ShowGuestHistoryDetails {
   Future<List<Map<String, dynamic>>> fetchHistoryAnuraDetails(
@@ -81,16 +82,10 @@ class ShowGuestHistoryDetails {
       {"key": "Blood Pressure", "value": guestBinahHistory.bloodPressure},
       {"key": "Hemoglobin", "value": guestBinahHistory.hemoglobin},
       {"key": "HemoglobinA1C", "value": guestBinahHistory.hemoglobinA1C},
+      {"key": "ASCVD Risk", "value": guestBinahHistory.ascvdRisk},
+      {"key": "Heart Age", "value": guestBinahHistory.heartAge},
       {
-        "key": "ASCVD Risk (Atherosclerotic Cardiovascular Disease Risk)",
-        "value": guestBinahHistory.ascvdRisk,
-      },
-      {
-        "key": "Heart Age (biological heart age estimation)",
-        "value": guestBinahHistory.heartAge,
-      },
-      {
-        "key": "High Blood Pressure Risk (Hypertension Risk)",
+        "key": "High Blood Pressure Risk",
         "value": guestBinahHistory.highBloodPressureRisk,
       },
       {
@@ -106,7 +101,7 @@ class ShowGuestHistoryDetails {
         "value": guestBinahHistory.highTotalCholesterolRisk,
       },
       {
-        "key": "Low Hemoglobin Risk (anemia risk)",
+        "key": "Low Hemoglobin Risk",
         "value": guestBinahHistory.lowHemoglobinRisk,
       },
       {"key": "Stress Level", "value": guestBinahHistory.stressLevel},
@@ -118,18 +113,9 @@ class ShowGuestHistoryDetails {
       {"key": "HRV SDNN", "value": guestBinahHistory.sdnn},
       {"key": "Mean R-R Interval", "value": guestBinahHistory.meanRri},
       {"key": "RMSSD", "value": guestBinahHistory.rmssd},
-      {
-        "key": "PNS Zone (level of parasympathetic activity)",
-        "value": guestBinahHistory.pnsZone,
-      },
-      {
-        "key": "PNS Index (Parasympathetic Nervous System)",
-        "value": guestBinahHistory.pnsIndex,
-      },
-      {
-        "key": "Sympathetic Nervous System (SNS) Index",
-        "value": guestBinahHistory.snsIndex,
-      },
+      {"key": "PNS Zone", "value": guestBinahHistory.pnsZone},
+      {"key": "PNS Index", "value": guestBinahHistory.pnsIndex},
+      {"key": "SNS Index", "value": guestBinahHistory.snsIndex},
       {
         "key": "Standard Deviation 1 - HRV metric",
         "value": guestBinahHistory.sd1,
@@ -138,10 +124,71 @@ class ShowGuestHistoryDetails {
         "key": "Standard Deviation 2 - HRV metric",
         "value": guestBinahHistory.sd2,
       },
+      {"key": "SNS Zone", "value": guestBinahHistory.snsZone},
+      {"key": "LF/HF Ratio", "value": guestBinahHistory.lfhf},
+    ];
+
+    return listOfData;
+  }
+
+  Future<List<Map<String, dynamic>>> fetchUserHistoryBinahDetails(
+    UserHealthBinahHistory guestBinahHistory,
+  ) async {
+    List<Map<String, dynamic>> listOfData = [
+      {"key": "Wellness Index", "value": guestBinahHistory.wellnessIndex},
+      {"key": "Heart Rate", "value": guestBinahHistory.pulseRate},
+      {"key": "Breathing Rate", "value": guestBinahHistory.respirationRate},
       {
-        "key": "SNS Zone (level of sympathetic activity)",
-        "value": guestBinahHistory.snsZone,
+        "key": "Pulse Respiration Quotient (PRQ)",
+        "value": guestBinahHistory.prq,
       },
+      {"key": "Oxygen Saturation", "value": guestBinahHistory.oxygenSaturation},
+      {"key": "Blood Pressure", "value": guestBinahHistory.bloodPressure},
+      {"key": "Hemoglobin", "value": guestBinahHistory.hemoglobin},
+      {"key": "HemoglobinA1C", "value": guestBinahHistory.hemoglobinA1C},
+      {"key": "ASCVD Risk", "value": guestBinahHistory.ascvdRisk},
+      {"key": "Heart Age", "value": guestBinahHistory.heartAge},
+      {
+        "key": "High Blood Pressure Risk",
+        "value": guestBinahHistory.highBloodPressureRisk,
+      },
+      {
+        "key": "High Hemoglobin A1C Risk",
+        "value": guestBinahHistory.highHemoglobinA1CRisk,
+      },
+      {
+        "key": "High Fasting Glucose Risk",
+        "value": guestBinahHistory.highFastingGlucoseRisk,
+      },
+      {
+        "key": "High Total Cholesterol Risk",
+        "value": guestBinahHistory.highTotalCholesterolRisk,
+      },
+      {
+        "key": "Low Hemoglobin Risk",
+        "value": guestBinahHistory.lowHemoglobinRisk,
+      },
+      {"key": "Stress Level", "value": guestBinahHistory.stressLevel},
+      {"key": "Stress Index", "value": guestBinahHistory.stressIndex},
+      {
+        "key": "Normalized Stress Index",
+        "value": guestBinahHistory.normalizedStressIndex,
+      },
+      {"key": "HRV SDNN", "value": guestBinahHistory.sdnn},
+      {"key": "Mean R-R Interval", "value": guestBinahHistory.meanRri},
+      {"key": "RMSSD", "value": guestBinahHistory.rmssd},
+      {"key": "PNS Zone", "value": guestBinahHistory.pnsZone},
+      {"key": "PNS Index", "value": guestBinahHistory.pnsIndex},
+      {"key": "SNS Index", "value": guestBinahHistory.snsIndex},
+      {
+        "key": "Standard Deviation 1 - HRV metric",
+        "value": guestBinahHistory.sd1,
+      },
+      {
+        "key": "Standard Deviation 2 - HRV metric",
+        "value": guestBinahHistory.sd2,
+      },
+      {"key": "SNS Zone", "value": guestBinahHistory.snsZone},
       {"key": "LF/HF Ratio", "value": guestBinahHistory.lfhf},
     ];
 

@@ -234,7 +234,7 @@ class GeustController extends GetxController
       "guestDao": {
         "userId": userID,
         "name": nameTextController.text,
-        "gender": genderType.value,
+        "gender": selectionType.value,
         "dob": dobTextController.text,
         "weight": weightTextController.text,
         "height": heightTextController.text,
@@ -361,6 +361,29 @@ class GeustController extends GetxController
     );
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
+    } else if (statusCode == 500) {
+    } else {
+      AppSnackbar.show(
+        title: "Error",
+        message: "Something went wrong",
+        isError: true,
+      );
+    }
+  }
+
+  Future<void> removeGuest({required var guestId}) async {
+    var userID = await StorageHelper.read("userID");
+
+    var data = {"userId": userID, "guestId": guestId};
+
+    debugPrint(data.toString());
+    Map<String, dynamic> resposneData = await GeustServices().deleteGuest(
+      data: data,
+    );
+    int statusCode = resposneData[AppConstents.statusCode];
+    if (statusCode == 200) {
+      AppSnackbar.show(title: "Success", message: "Guest remove successfully");
+      getGeustHistory();
     } else if (statusCode == 500) {
     } else {
       AppSnackbar.show(

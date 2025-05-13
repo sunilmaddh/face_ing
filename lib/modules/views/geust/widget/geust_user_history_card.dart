@@ -74,7 +74,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                         onTap: () {
                           CommonDialog().showDeleteUserDialog(
                             context: context,
-                            onConfirm: () {},
+                            onConfirm: onDelete,
                           );
                         },
                         child: CustomCircularAvatar(

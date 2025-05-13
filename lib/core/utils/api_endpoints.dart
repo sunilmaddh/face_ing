@@ -24,6 +24,8 @@ class ApiEndpoints {
       listOfGeust = "/listOfGuest",
       searchGeust = "/searchGuest",
       deleteGuest = "/removeGuest",
+      userHealthHistory = "/userHealthHistory",
+      userHealthDetails = "/perHealthHistory",
       storeSdkDataForUser = "/userSDKData",
       profileUpload = '/editProfile';
 }

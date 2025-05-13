@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -168,7 +169,8 @@ class MeasurementController extends GetxController
       "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
     );
     startStopButtonClicked();
-    if (scanType.value == "guest") {
+    AppSnackbar.show(title: "Guest", message: scanType.value);
+    if (scanType.value == "add-guest") {
       _geustController.addGuest(vitalsResults.value).whenComplete(() {
         AppNavigation.off(AppRoutes.analyzingHealthData);
       });

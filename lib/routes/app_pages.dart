@@ -14,6 +14,8 @@ import 'package:ntt_data/modules/views/auth/reset_password_screen.dart';
 import 'package:ntt_data/modules/views/home/scanning_screen.dart';
 import 'package:ntt_data/modules/views/onboard/onboard_screen.dart';
 import 'package:ntt_data/modules/views/onboard/splash_screen.dart';
+import 'package:ntt_data/modules/views/profile/user_health_details.dart';
+import 'package:ntt_data/modules/views/profile/user_history_data.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
 class AppPages {
@@ -50,5 +52,7 @@ class AppPages {
     GetPage(name: AppRoutes.addNewGeustScreen, page: () => AddNewGuestScreen()),
     GetPage(name: AppRoutes.scanScreen, page: () => ScanningScreen()),
     GetPage(name: AppRoutes.mesurementScreen, page: () => MeasurementScreen()),
+    GetPage(name: AppRoutes.userHistoryList, page: () => UserHistoryData()),
+    GetPage(name: AppRoutes.userHealthDatails, page: () => UserHealthDetails()),
   ];
 }
