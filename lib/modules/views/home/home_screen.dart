@@ -75,7 +75,10 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () async {
                   // AppNavigation.to(AppRoutes.analyzingHealthData);
                   controller.screenInFocus().whenComplete(() {
-                    AppNavigation.to(AppRoutes.mesurementScreen);
+                    AppNavigation.to(
+                      AppRoutes.mesurementScreen,
+                      arguments: {"scanType": "user"},
+                    );
                   });
                   // var userID = await StorageHelper.read("userID");
                   // var accessToken = await StorageHelper.read("access-token");

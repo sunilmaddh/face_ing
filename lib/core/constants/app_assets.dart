@@ -27,5 +27,6 @@ class AppAssets {
       homoglobin = "$baseUrlSvg/homeoglobin.svg",
       upload = "$baseUrlSvg/upload.svg",
       heartAge = "$baseUrlSvg/heart_age.svg",
+      progressCircle = "$baseUrlSvg/progress_circle.svg",
       homeMenu = "$baseUrlSvg/home_menu.svg";
 }
