@@ -7,7 +7,10 @@ class ApiEndpoints {
 
   ApiEndpoints._internal();
 
-  static const String baseUrl = "192.168.1.234:8085";
+  static const String baseUrl = "198.199.123.185:8085";
+  //  "192.168.1.234:8085";
+
+  //Uat = "http://198.199.123.185:8085/"
   // "192.168.1.114:8085";
   // "192.168.1.234:8085";
 

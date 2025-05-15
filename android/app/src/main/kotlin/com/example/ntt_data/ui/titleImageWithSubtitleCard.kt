@@ -72,27 +72,29 @@ fun TitleWithImageSubtitleCard(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.matchParentSize()
                 )
+                Column ( modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(8.dp)) {
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color(0xff0072BC),
+                        fontWeight = FontWeight.W700,
+                        fontSize = 24.sp,
 
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xff0072BC),
-                    fontWeight = FontWeight.W700,
-                    fontSize = 24.sp,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(8.dp)
-                )
-                Text(
-                    text = mass,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xff0072BC),
-                    fontWeight = FontWeight.W700,
-                    fontSize = 24.sp,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(8.dp)
-                )
+                    )
+                    Text(
+                        text = mass,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color(0xff0072BC),
+                        fontWeight = FontWeight.W400,
+                        fontSize = 14.sp,
+//                        modifier = Modifier
+//                            .align(Alignment.Center)
+//                            .padding(8.dp)
+                    )
+                }
+
             }
         }
     }

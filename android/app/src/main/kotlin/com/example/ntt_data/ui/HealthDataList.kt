@@ -63,12 +63,24 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
         )}
         Row(horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
-                dynamicMap["HEALTH_SCORE"]?.let {         CenteredContentCard(
-                    title = "Overall Health Score",
-                    subtitle = it,
+                dynamicMap["AGE"]?.let {
+                    CenteredContentCard(
+                        title = "Facial Skin Age",
+                        isWidget = true,
+                        borderColor = Color(0xFF0072BC).copy(alpha = 0.2f),
+                        drawArcColor = Color(0xFF0072BC),
+                        value = it.toDouble(),
+                        maxProgress = 100f,
+                        mass = "years"
 
-                    imageRes = R.drawable.msh
-                )}
+                    )
+                }
+//                dynamicMap["HEALTH_SCORE"]?.let {         CenteredContentCard(
+//                    title = "Overall Health Score",
+//                    subtitle = it,
+//
+//                    imageRes = R.drawable.msh
+//                )}
                 dynamicMap["BR_BPM"]?.let {      TitleWithImageSubtitleCard(
                     title = "Breathing Rate",
                     subtitle = it,
@@ -117,8 +129,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
             )}
             dynamicMap["HBA1C_RISK_PROB"]?.let {CommonCard(
                 title = "Hemoglobin A1C Risk",
-                subtitle = it,
-                mass = "%"
+                subtitle = "$it %"
+
             )}
 //            dynamicMap["HRV_SDNN"]?.let { CommonCard(
 //                title = "Heart Rate Variability",
@@ -136,14 +148,14 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
             Row {
                 dynamicMap["MFBG_RISK_PROB"]?.let { CommonCard(
                     title = "Fasting Blood Glucose Risk",
-                    subtitle = it,
-                    mass = "%"
+                    subtitle =  "$it %",
+
 
                 )}
                 dynamicMap["BP_CVD"]?.let {CommonCard(
                     title = "Cardiovascular Risk Level",
-                    subtitle = it,
-                    mass = "%"
+                    subtitle =  "$it %",
+
                 )}
 //            dynamicMap["HRV_SDNN"]?.let { CommonCard(
 //                title = "Heart Rate Variability",
@@ -169,9 +181,9 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             isWidgetWithText = true,
                             borderColor = Color(0xFFFFFDDF),
                             drawArcColor = Color(0xFFF7D100),
-                            value = it.toDouble(),
+                            value = it.toDouble()  ,
                             maxProgress = 100f,
-                            mass = "%"
+
 
 
                         )
@@ -319,9 +331,13 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
 
                                 }
                 dynamicMap["HRV_SDNN"]?.let {
+                    val formatted = (it as? Number)?.toDouble()?.let { num ->
+                        String.format("%.1f", num)
+                    } ?: it.toString()
+
                     InfoCard(
                         title = "Heart Rate Variability",
-                        subtitle = it,
+                        subtitle = formatted,
                         mass = "ms",
                         imageRes = R.drawable.mask_group
                     )

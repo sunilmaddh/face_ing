@@ -74,20 +74,20 @@ class HomeScreen extends StatelessWidget {
                 width: 193,
                 onPressed: () async {
                   // AppNavigation.to(AppRoutes.analyzingHealthData);
-                  controller.screenInFocus().whenComplete(() {
-                    AppNavigation.to(
-                      AppRoutes.mesurementScreen,
-                      arguments: {"scanType": "user"},
-                    );
-                  });
-                  // var userID = await StorageHelper.read("userID");
-                  // var accessToken = await StorageHelper.read("access-token");
-                  // Map<String, dynamic> data = {
-                  //   "userId": userID,
-                  //   "token": accessToken,
-                  //   "scanType": "user",
-                  // };
-                  // NativeCaller.startFaceScan(data);
+                  // controller.screenInFocus().whenComplete(() {
+                  //   AppNavigation.to(
+                  //     AppRoutes.mesurementScreen,
+                  //     arguments: {"scanType": "user"},
+                  //   );
+                  // });
+                  var userID = await StorageHelper.read("userID");
+                  var accessToken = await StorageHelper.read("access-token");
+                  Map<String, dynamic> data = {
+                    "userId": userID,
+                    "token": accessToken,
+                    "scanType": "user",
+                  };
+                  NativeCaller.startFaceScan(data);
                   // WidgetsBinding.instance.addPostFrameCallback((_) {
                   //  en((v) {
                   //   AppNavigation.to(AppRoutes.analyzingHealthData);

@@ -142,7 +142,7 @@ class AddNewGuestScreen extends StatelessWidget {
                         children: [
                           TermsCheckboxWidget(
                             message:
-                                "I have read and agree with the Terms & Conditions",
+                                "This application is not a medical device. Measurement results cannot be used for the diagnosis, treatment or prevention of disease.If you are unsure about your health, please use medical equipment to measure the exact value.",
                             controller: _geustController,
                           ),
                           Align(
@@ -170,59 +170,59 @@ class AddNewGuestScreen extends StatelessWidget {
                                             "Please accept term and conditions",
                                       );
                                     } else {
-                                      // var userID = await StorageHelper.read(
-                                      //   "userID",
-                                      // );
-                                      // var accessToken =
-                                      //     await StorageHelper.read(
-                                      //       "access-token",
-                                      //     );
-                                      controller.screenInFocus().whenComplete(
-                                        () {
-                                          _geustController.scanType.value =
-                                              "guest";
-                                          AppNavigation.to(
-                                            AppRoutes.mesurementScreen,
-                                            arguments: {
-                                              "scanType": "add-guest",
-                                            },
-                                          );
-                                        },
+                                      var userID = await StorageHelper.read(
+                                        "userID",
                                       );
+                                      var accessToken =
+                                          await StorageHelper.read(
+                                            "access-token",
+                                          );
+                                      // controller.screenInFocus().whenComplete(
+                                      //   () {
+                                      //     _geustController.scanType.value =
+                                      //         "guest";
+                                      //     AppNavigation.to(
+                                      //       AppRoutes.mesurementScreen,
+                                      //       arguments: {
+                                      //         "scanType": "add-guest",
+                                      //       },
+                                      //     );
+                                      //   },
+                                      // );
                                       // "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAzc3VuaWxtYWRkaGVzaXlhNDI4QGdtYWlsLmNvbSIsImlhdCI6MTc0NjY5ODgxMCwiZXhwIjoxNzQ2Nzg1MjEwfQ.77fVLLy1ha1zdWOnNCZOX6vgHTMMjZXXGXrFnixBpbc";
                                       // await StorageHelper.read(
                                       //   "access-token",
                                       // );
-                                      // Map<String, dynamic> data = {
-                                      //   "userId": userID,
-                                      //   "name":
-                                      //       _geustController
-                                      //           .nameTextController
-                                      //           .text,
-                                      //   "gender":
-                                      //       _geustController
-                                      //           .selectionType
-                                      //           .value,
-                                      //   "dob":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text, // Keep as string unless using DateTime
-                                      //   "weight":
-                                      //       _geustController
-                                      //           .weightTextController
-                                      //           .text,
-                                      //   "height":
-                                      //       _geustController
-                                      //           .heightTextController
-                                      //           .text,
-                                      //   "emailId":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text,
-                                      //   "token": accessToken,
-                                      //   "scanType": "guest-user",
-                                      // };
-                                      // NativeCaller.startFaceScan(data);
+                                      Map<String, dynamic> data = {
+                                        "userId": userID,
+                                        "name":
+                                            _geustController
+                                                .nameTextController
+                                                .text,
+                                        "gender":
+                                            _geustController
+                                                .selectionType
+                                                .value,
+                                        "dob":
+                                            _geustController
+                                                .dobTextController
+                                                .text, // Keep as string unless using DateTime
+                                        "weight":
+                                            _geustController
+                                                .weightTextController
+                                                .text,
+                                        "height":
+                                            _geustController
+                                                .heightTextController
+                                                .text,
+                                        "emailId":
+                                            _geustController
+                                                .dobTextController
+                                                .text,
+                                        "token": accessToken,
+                                        "scanType": "guest-user",
+                                      };
+                                      NativeCaller.startFaceScan(data);
                                     }
                                   }
                                 },
