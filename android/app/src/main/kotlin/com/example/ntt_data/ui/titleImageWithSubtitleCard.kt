@@ -30,6 +30,7 @@ fun TitleWithImageSubtitleCard(
     title: String,
     subtitle: String,
     imageRes: Int,
+    mass:String="",
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -74,6 +75,16 @@ fun TitleWithImageSubtitleCard(
 
                 Text(
                     text = subtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xff0072BC),
+                    fontWeight = FontWeight.W700,
+                    fontSize = 24.sp,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(8.dp)
+                )
+                Text(
+                    text = mass,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xff0072BC),
                     fontWeight = FontWeight.W700,

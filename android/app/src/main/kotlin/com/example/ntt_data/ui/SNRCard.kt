@@ -29,6 +29,7 @@ fun SNRCard(
     title: String,
     subtitle: String,
     imageRes: Int,
+    mass:String="",
     modifier: Modifier = Modifier
 ) {
     Card(

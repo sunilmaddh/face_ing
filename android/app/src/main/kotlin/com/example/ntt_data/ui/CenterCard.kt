@@ -31,6 +31,7 @@ fun CenteredContentCard(
     imageRes: Int=0,
     maxProgress: Float = 100f,
     mass:String="",
+    width:Double=170.0,
     value:Double=0.0,
     borderColor:Color=Color.Transparent,
     drawArcColor:Color=Color.Transparent,
@@ -43,7 +44,7 @@ fun CenteredContentCard(
 
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
-            .width(170.dp)
+            .width(width.dp)
             .height(200.dp)
             .padding(8.dp)
     ) {

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -52,16 +53,27 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        dynamicMap["HEALTH_SCORE"]?.let {         CenteredContentCard(
+            width = 450.0,
+            title = "Overall Health Score",
+
+            subtitle = it,
+
+            imageRes = R.drawable.msh
+        )}
         Row(horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
                 dynamicMap["HEALTH_SCORE"]?.let {         CenteredContentCard(
                     title = "Overall Health Score",
                     subtitle = it,
+
                     imageRes = R.drawable.msh
                 )}
                 dynamicMap["BR_BPM"]?.let {      TitleWithImageSubtitleCard(
                     title = "Breathing Rate",
                     subtitle = it,
+                    mass = "rpm",
+
                     imageRes = R.drawable.vital_sign
                 )}
 //                dynamicMap["BMI_CALC"]?.let {
@@ -100,12 +112,13 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
             dynamicMap["IHB_COUNT"]?.let { CommonCard(
                 title = "Irregular Heartbeat Count",
                 subtitle = it,
-                mass = "ms"
+
 
             )}
             dynamicMap["HBA1C_RISK_PROB"]?.let {CommonCard(
                 title = "Hemoglobin A1C Risk",
                 subtitle = it,
+                mass = "%"
             )}
 //            dynamicMap["HRV_SDNN"]?.let { CommonCard(
 //                title = "Heart Rate Variability",
@@ -124,12 +137,13 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                 dynamicMap["MFBG_RISK_PROB"]?.let { CommonCard(
                     title = "Fasting Blood Glucose Risk",
                     subtitle = it,
-                    mass = "ms"
+                    mass = "%"
 
                 )}
                 dynamicMap["BP_CVD"]?.let {CommonCard(
                     title = "Cardiovascular Risk Level",
                     subtitle = it,
+                    mass = "%"
                 )}
 //            dynamicMap["HRV_SDNN"]?.let { CommonCard(
 //                title = "Heart Rate Variability",
@@ -145,7 +159,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
 
             }
 
-            dynamicMap["BP_HEART_ATTACK"]?.let {SNRCard(title = "Heart Attack Risk", subtitle =  results.snr.toString(), imageRes = R.drawable.snr)
+            dynamicMap["BP_HEART_ATTACK"]?.let {SNRCard(title = "Heart Attack Risk", subtitle =  results.snr.toString(), imageRes = R.drawable.snr,)
 
 
                 Row {
@@ -156,7 +170,9 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             borderColor = Color(0xFFFFFDDF),
                             drawArcColor = Color(0xFFF7D100),
                             value = it.toDouble(),
-                            maxProgress = 100f
+                            maxProgress = 100f,
+                            mass = "%"
+
 
                         )
                     }
@@ -168,7 +184,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             drawArcColor = Color(0xFF0072BC),
                             value = it.toDouble(),
                             isWidgetWithText = true,
-                            maxProgress = 5f
+                            maxProgress = 5f,
+                            mass = "%"
 
                         )
                     }
@@ -187,12 +204,13 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
             dynamicMap["FLD_RISK_PROB"]?.let {CommonCard(
                 title = "Fatty Liver Disease Risk",
                 subtitle = it,
-                mass = "cm"
+                mass = "%"
 
             )}
             dynamicMap["HDLTC_RISK_PROB"]?.let { CommonCard(
                 title = "Hypercholesterolemia Risk",
                 subtitle = it,
+                mass = "%"
 
                 )}
 
@@ -206,7 +224,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 borderColor = Color(0xFFFFFDDF),
                                 drawArcColor = Color(0xFFF7D100),
                                 value = it.toDouble(),
-                                maxProgress = 100f
+                                maxProgress = 100f,
+                                mass = "%"
 
                             )
                         }
@@ -218,7 +237,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 drawArcColor = Color(0xFF0072BC),
                                 value = it.toDouble(),
                                 isWidgetWithText = true,
-                                maxProgress = 5f
+                                maxProgress = 5f,
+                                mass = "%"
 
                             )
                         }}
@@ -227,6 +247,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 TitleWithImageSubtitleCard(
                                     title = "Hypertriglyceridemia Risk",
                                     subtitle = it,
+                                    mass = "%",
+
                                     imageRes = R.drawable.vital_sign
                                 )
                             }
@@ -282,13 +304,15 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                         CenteredContentCard(
                                             title = "Cardiac Workload",
                                             subtitle = it,
-                                            imageRes = R.drawable.heart_risk_level
+                                            imageRes = R.drawable.heart_risk_level,
+                                            mass = "dB"
                                         )
                                     }
                                     dynamicMap["BP_TAU"]?.let {
                                         CenteredContentCard(
                                             title = "Vascular Capacity",
                                             subtitle = it,
+                                            mass = "seconds",
                                             imageRes = R.drawable.heart_risk_level
                                         )
                                     }
@@ -298,6 +322,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                     InfoCard(
                         title = "Heart Rate Variability",
                         subtitle = it,
+                        mass = "ms",
                         imageRes = R.drawable.mask_group
                     )
                 }
@@ -310,7 +335,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                             borderColor = Color(0xFF0072BC).copy(alpha = 0.2f),
                                             drawArcColor = Color(0xFF0072BC),
                                             value = it.toDouble(),
-                                            maxProgress = 100f
+                                            maxProgress = 100f,
+                                            mass = "years"
 
                                         )
                                     }
