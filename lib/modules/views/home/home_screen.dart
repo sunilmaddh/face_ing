@@ -70,32 +70,34 @@ class HomeScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 110),
-              ScanButton(
-                width: 193,
-                onPressed: () async {
-                  // AppNavigation.to(AppRoutes.analyzingHealthData);
-                  // controller.screenInFocus().whenComplete(() {
-                  //   AppNavigation.to(
-                  //     AppRoutes.mesurementScreen,
-                  //     arguments: {"scanType": "user"},
-                  //   );
-                  // });
-                  var userID = await StorageHelper.read("userID");
-                  var accessToken = await StorageHelper.read("access-token");
-                  Map<String, dynamic> data = {
-                    "userId": userID,
-                    "token": accessToken,
-                    "scanType": "user",
-                  };
-                  NativeCaller.startFaceScan(data);
-                  // WidgetsBinding.instance.addPostFrameCallback((_) {
-                  //  en((v) {
-                  //   AppNavigation.to(AppRoutes.analyzingHealthData);
-                  // });
+              SafeArea(
+                child: ScanButton(
+                  width: 193,
+                  onPressed: () async {
+                    // AppNavigation.to(AppRoutes.analyzingHealthData);
+                    // controller.screenInFocus().whenComplete(() {
+                    //   AppNavigation.to(
+                    //     AppRoutes.mesurementScreen,
+                    //     arguments: {"scanType": "user"},
+                    //   );
+                    // });
+                    var userID = await StorageHelper.read("userID");
+                    var accessToken = await StorageHelper.read("access-token");
+                    Map<String, dynamic> data = {
+                      "userId": userID,
+                      "token": accessToken,
+                      "scanType": "user",
+                    };
+                    NativeCaller.startFaceScan(data);
+                    // WidgetsBinding.instance.addPostFrameCallback((_) {
+                    //  en((v) {
+                    //   AppNavigation.to(AppRoutes.analyzingHealthData);
+                    // });
 
-                  // AppNavigation.to(AppRoutes.analyzingHealthData);
-                  //  AppNavigation.to(AppRoutes.scanScreen);
-                },
+                    // AppNavigation.to(AppRoutes.analyzingHealthData);
+                    //  AppNavigation.to(AppRoutes.scanScreen);
+                  },
+                ),
               ),
             ],
           ),

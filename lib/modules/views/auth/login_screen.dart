@@ -33,57 +33,59 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Stack(
           children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: AppDimensions.height(30)),
-                  CustomFormField(
-                    validator: (email) {
-                      if (email == null || email.isEmpty) {
-                        return "Please enter email ID";
-                      }
-                      return null;
-                    },
-                    label: AppConstents.email,
-                    hint: AppConstents.emailHint,
-                    controller: _authController.emailController,
-                  ),
-                  SizedBox(height: 20),
-                  CustomFormField(
-                    validator: (password) {
-                      if (password == null || password.isEmpty) {
-                        return "Please enter password";
-                      }
-                      return null;
-                    },
-                    label: AppConstents.password,
-                    hint: AppConstents.passHint,
-                    controller: _authController.passwordController,
-                  ),
-                  SizedBox(height: AppDimensions.height(10)),
-                  InkWell(
-                    onTap: () {
-                      CommonDialog().showFullWidthDialog(
-                        isLoading: _authController.isLoading,
-                        title: "Forgot password",
-                        textController: _authController.forgotEmailController,
-                        onPressed: () {
-                          _authController.getForgetOtp();
-                        },
-                      );
-                      // AppNavigation.to(AppRoutes.resetPassword);
-                    },
-                    child: CommonText.text(
-                      AppConstents.forgotPassword,
-                      fontSize: AppDimensions.font(16),
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.primary,
+            SafeArea(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: AppDimensions.height(30)),
+                    CustomFormField(
+                      validator: (email) {
+                        if (email == null || email.isEmpty) {
+                          return "Please enter email ID";
+                        }
+                        return null;
+                      },
+                      label: AppConstents.email,
+                      hint: AppConstents.emailHint,
+                      controller: _authController.emailController,
                     ),
-                  ),
-                ],
+                    SizedBox(height: 20),
+                    CustomFormField(
+                      validator: (password) {
+                        if (password == null || password.isEmpty) {
+                          return "Please enter password";
+                        }
+                        return null;
+                      },
+                      label: AppConstents.password,
+                      hint: AppConstents.passHint,
+                      controller: _authController.passwordController,
+                    ),
+                    SizedBox(height: AppDimensions.height(10)),
+                    InkWell(
+                      onTap: () {
+                        CommonDialog().showFullWidthDialog(
+                          isLoading: _authController.isLoading,
+                          title: "Forgot password",
+                          textController: _authController.forgotEmailController,
+                          onPressed: () {
+                            _authController.getForgetOtp();
+                          },
+                        );
+                        // AppNavigation.to(AppRoutes.resetPassword);
+                      },
+                      child: CommonText.text(
+                        AppConstents.forgotPassword,
+                        fontSize: AppDimensions.font(16),
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
 
