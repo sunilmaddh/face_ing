@@ -25,7 +25,7 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: AppDimensions.width(140),
+      width: AppDimensions.width(145),
       height: AppDimensions.height(50),
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed, // Disable button when loading
