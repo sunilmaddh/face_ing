@@ -39,7 +39,7 @@ packages:
       path: biosensesignalsdk
       relative: true
     source: path
-    version: "5.9.1"
+    version: "5.9.3"
   boolean_selector:
     dependency: transitive
     description:
