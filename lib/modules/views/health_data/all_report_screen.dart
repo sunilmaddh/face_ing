@@ -85,10 +85,9 @@ class AllReportScreen extends StatelessWidget {
                             isTextOnly: true,
                             height: 230,
                             title: "Oxygen Saturation",
-                            value: getVitalValue(
-                              VitalSignTypes.oxygenSaturation,
-                            ),
-                            mass: "%",
+                            value:
+                                "${getVitalValue(VitalSignTypes.oxygenSaturation)} %",
+                            // mass: "%",
                           ),
                         ),
                       ],
@@ -117,7 +116,7 @@ class AllReportScreen extends StatelessWidget {
                             height: 190,
                             title: "Hemoglobin",
                             value: getVitalValue(VitalSignTypes.hemoglobin),
-                            mass: "%",
+                            mass: "g/dL",
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -127,8 +126,9 @@ class AllReportScreen extends StatelessWidget {
                             centerImage: AppAssets.homoglobin,
                             height: 190,
                             title: "HemoglobinA1C",
-                            value: getVitalValue(VitalSignTypes.hemoglobinA1C),
-                            mass: "%",
+                            value:
+                                "${getVitalValue(VitalSignTypes.hemoglobinA1C)} %",
+                            // mass: "%",
                           ),
                         ),
                       ],
@@ -139,8 +139,8 @@ class AllReportScreen extends StatelessWidget {
                       child: CircleProgressCard(
                         height: 270,
                         imageWidth: 190,
-                        value: getVitalValue(VitalSignTypes.ascvdRisk),
-                        mass: "%",
+                        value: "${getVitalValue(VitalSignTypes.ascvdRisk)} %",
+                        // mass: "%",
                         borderColor: Color(0xFF0072BC).withOpacity(0.2),
                         drawArcColor: Color(0xFF0072BC),
                         title:
@@ -272,7 +272,7 @@ class AllReportScreen extends StatelessWidget {
                             height: 190,
                             title: "HRV SDNN ",
                             value: getVitalValue(VitalSignTypes.sdnn),
-                            mass: "%",
+                            mass: "ms",
                           ),
                         ),
                       ],
@@ -287,6 +287,7 @@ class AllReportScreen extends StatelessWidget {
                             height: 190,
                             title: "Mean R-R Interval",
                             value: getVitalValue(VitalSignTypes.meanRri),
+                            mass: "ms",
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -355,8 +356,8 @@ class AllReportScreen extends StatelessWidget {
                           flex: 1,
                           child: CircleProgressCard(
                             size: 75,
-                            progress: getVitalValueInt(VitalSignTypes.sd1),
-                            age: getVitalValueInt(VitalSignTypes.sd1),
+                            progress: getVitalValueInt(VitalSignTypes.sd2),
+                            age: getVitalValueInt(VitalSignTypes.sd2),
                             maxProgress: 10,
                             mass: "ms",
                             borderColor: Color(0xFF0072BC).withOpacity(0.2),
@@ -405,9 +406,24 @@ class AllReportScreen extends StatelessWidget {
     );
   }
 
+  // String getVitalValue(int type) {
+  //   final result = _mesurementController.vitalsResults.value.getResult(type);
+  //   return result?.value?.toString() ?? "null";
+  // }
+
   String getVitalValue(int type) {
     final result = _mesurementController.vitalsResults.value.getResult(type);
-    return result?.value?.toString() ?? "null";
+    final value = result?.value;
+
+    if (value == null) return "null";
+
+    // Check if it's a double or num and format to 1 decimal
+    if (value is num) {
+      return value.toStringAsFixed(1);
+    }
+
+    // Fallback
+    return value.toString();
   }
 
   double getVitalValueD(int type) {

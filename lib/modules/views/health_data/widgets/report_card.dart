@@ -111,11 +111,15 @@ class ReportCard extends StatelessWidget {
                     alignment: Alignment.center,
                     children: [
                       SvgPicture.asset(backgroundImage),
-                      CommonText.text(
-                        value,
-                        fontSize: AppDimensions.font(14),
-                        fontWeight: FontWeight.w400,
-                        color: textColor,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CommonText.text(
+                          value,
+                          fontSize: AppDimensions.font(24),
+                          fontWeight: FontWeight.w700,
+                          textAlign: TextAlign.center,
+                          color: textColor,
+                        ),
                       ),
                     ],
                   ),

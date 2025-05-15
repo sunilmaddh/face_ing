@@ -169,7 +169,6 @@ class MeasurementController extends GetxController
       "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
     );
     startStopButtonClicked();
-    AppSnackbar.show(title: "Guest", message: scanType.value);
     if (scanType.value == "add-guest") {
       _geustController.addGuest(vitalsResults.value).whenComplete(() {
         AppNavigation.off(AppRoutes.analyzingHealthData);
