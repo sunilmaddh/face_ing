@@ -46,6 +46,7 @@ class GeustController extends GetxController
         .getGeustHistoryService(data: data);
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
+      guestList.clear();
       // var jsonString = jsonDecode(resposneData["responseBody"]);
       var data = GuestListResponseModel.fromJson(resposneData["responseBody"]);
       guestList.value = data.guestList!;
