@@ -23,7 +23,7 @@ class AppAssets {
       lhRatioImage = "$baseUrlSvg/lh_ratio.svg",
       pnsImage = "$baseUrlSvg/pns.svg",
       snsImage = "$baseUrlSvg/sns.svg",
-      wellnessImage = "$baseUrlSvg/wellness.svg",
+      wellnessImage = "$baseUrlSvg/wellness_index.svg",
       homoglobin = "$baseUrlSvg/homeoglobin.svg",
       upload = "$baseUrlSvg/upload.svg",
       heartAge = "$baseUrlSvg/heart_age.svg",

@@ -5,6 +5,7 @@ class SeamlessCircularProgressIndicator extends StatefulWidget {
   final int progress; // Current progress value
   final int maxProgress;
   final int age;
+  final String mass;
   final Color borderColor;
   final Color drawArcColor;
   final double size;
@@ -15,6 +16,7 @@ class SeamlessCircularProgressIndicator extends StatefulWidget {
     required this.progress,
     this.maxProgress = 100,
     required this.age,
+    this.mass = "",
     required this.borderColor,
     required this.drawArcColor,
     this.size = 100,
@@ -88,9 +90,19 @@ class _SeamlessCircularProgressIndicatorState
                   drawArcColor: widget.drawArcColor,
                 ),
               ),
-              Text(
-                "${widget.age.toInt()}",
-                style: const TextStyle(fontSize: 18, color: Colors.black),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "${widget.age.toInt()}",
+                    style: const TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                  Text(
+                    widget.mass,
+                    style: const TextStyle(fontSize: 14, color: Colors.black),
+                  ),
+                ],
               ),
             ],
           );

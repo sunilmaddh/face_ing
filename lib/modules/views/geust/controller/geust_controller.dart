@@ -51,7 +51,9 @@ class GeustController extends GetxController
       var data = GuestListResponseModel.fromJson(resposneData["responseBody"]);
       guestList.value = data.guestList!;
     } else if (statusCode == 500) {
+      guestList.clear();
     } else {
+      guestList.clear();
       AppSnackbar.show(
         title: "Error",
         message: "Something went wrong",
@@ -403,5 +405,14 @@ class GeustController extends GetxController
     selectionType.value = "";
     isTermAccepted.value = false;
     isChecked.value = false;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    guestList.clear();
+    clearData();
+
+    super.dispose();
   }
 }

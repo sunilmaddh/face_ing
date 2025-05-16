@@ -124,42 +124,66 @@ class ReportCard extends StatelessWidget {
                     ],
                   ),
                 ),
+
               if (image.isNotEmpty)
-                Container(
-                  padding: EdgeInsets.only(top: 30, bottom: 15),
-                  width: AppDimensions.width(width),
-                  height: 320,
+                Align(
                   alignment: Alignment.bottomCenter,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset(image, fit: BoxFit.contain),
-
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: value,
-                              style: const TextStyle(
-                                fontSize: 24,
+                  child: Container(
+                    padding: EdgeInsets.only(top: 30, bottom: 15),
+                    width: 220,
+                    height: 130,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SvgPicture.asset(image, fit: BoxFit.contain),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CommonText.text(
+                                value,
+                                fontSize: AppDimensions.font(24),
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.primary,
+                                textAlign: TextAlign.center,
+                                color: textColor,
                               ),
-                            ),
-
-                            TextSpan(
-                              text: " $mass", // Replace with appropriate unit
-                              style: const TextStyle(
-                                fontSize: 14,
+                              CommonText.text(
+                                mass,
+                                fontSize: AppDimensions.font(14),
                                 fontWeight: FontWeight.w400,
+                                textAlign: TextAlign.center,
                                 color: AppColors.blackColor,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+
+                        // RichText(
+                        //   text: TextSpan(
+                        //     children: [
+                        //       TextSpan(
+                        //         text: value,
+                        //         style: const TextStyle(
+                        //           fontSize: 24,
+                        //           fontWeight: FontWeight.w700,
+                        //           color: AppColors.primary,
+                        //         ),
+                        //       ),
+
+                        //       TextSpan(
+                        //         text: " $mass", // Replace with appropriate unit
+                        //         style: const TextStyle(
+                        //           fontSize: 14,
+                        //           fontWeight: FontWeight.w400,
+                        //           color: AppColors.blackColor,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -208,7 +232,7 @@ class ReportCard extends StatelessWidget {
               //       ),
               //     ],
               //   ),
-              SizedBox(height: AppDimensions.height(20)),
+              // SizedBox(height: AppDimensions.height(20)),
               // if (image.isEmpty && leftPadding == 0.0)
               //   Column(
               //     crossAxisAlignment: CrossAxisAlignment.center,
