@@ -41,9 +41,11 @@ fun FullImageContentCard(
             .padding(8.dp)
     ) {
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
+
         ) {
             // Top Title
             Text(
@@ -82,6 +84,7 @@ fun FullImageContentCard(
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Black,
                         fontWeight = FontWeight.W400,
+                        textAlign = TextAlign.Center,
                         fontSize = 14.sp,
 
 

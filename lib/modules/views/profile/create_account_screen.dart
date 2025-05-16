@@ -46,144 +46,146 @@ class CreateAccountScreen extends StatelessWidget {
         },
         title: AppConstents.createAccount,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              SizedBox(height: AppDimensions.height(0)),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                SizedBox(height: AppDimensions.height(0)),
 
-              /// Name Field
-              CustomFormField(
-                validator: (name) {
-                  if (name == null || name.isEmpty) {
-                    return "Please enter name";
-                  }
-                  return null;
-                },
-                label: AppConstents.name,
-                hint: "Enter your name",
-                controller: _authController.nameController,
-              ),
-              SizedBox(height: 15),
-
-              GenderWidget(controller: _authController),
-              SizedBox(height: 15),
-
-              /// Date of Birth Picker
-              CustomFormField(
-                readOnly: true,
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    CommonDialog.selectDate(
-                      context: context,
-                      dateController: _authController.dateController,
-                    );
+                /// Name Field
+                CustomFormField(
+                  validator: (name) {
+                    if (name == null || name.isEmpty) {
+                      return "Please enter name";
+                    }
+                    return null;
                   },
-                  icon: Icon(Icons.date_range, color: AppColors.primary),
+                  label: AppConstents.name,
+                  hint: "Enter your name",
+                  controller: _authController.nameController,
                 ),
-                label: AppConstents.dob,
-                hint: "Select your date of birth",
-                controller: _authController.dateController,
-              ),
-              SizedBox(height: 15),
+                SizedBox(height: 15),
 
-              /// Weight Field
-              CustomFormField(
-                validator: (weight) {
-                  if (weight == null || weight.isEmpty) {
-                    return "Please enter weight";
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.number,
-                label: AppConstents.weight,
-                hint: "Enter your weight (kg)",
-                controller: _authController.weightController,
-              ),
-              SizedBox(height: 15),
+                GenderWidget(controller: _authController),
+                SizedBox(height: 15),
 
-              /// Height Field
-              CustomFormField(
-                validator: (height) {
-                  if (height == null || height.isEmpty) {
-                    return "Please enter height";
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.number,
-                label: AppConstents.height,
-                hint: "Enter your height (cm)",
-                controller: _authController.heightController,
-              ),
-              SizedBox(height: 15),
-              SizedBox(
-                height: AppDimensions.height(190),
-                width: MediaQuery.of(context).size.width,
-                child: Stack(
-                  children: [
-                    DottedBorder(
-                      dashPattern: [6, 5],
-                      strokeWidth: 3.0,
-                      borderType: BorderType.RRect,
-                      radius: Radius.circular(10),
-                      color: AppColors.dottedBorderColor,
-                      child: Container(
-                        height: AppDimensions.height(161),
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.all(8.0),
+                /// Date of Birth Picker
+                CustomFormField(
+                  readOnly: true,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      CommonDialog.selectDate(
+                        context: context,
+                        dateController: _authController.dateController,
+                      );
+                    },
+                    icon: Icon(Icons.date_range, color: AppColors.primary),
+                  ),
+                  label: AppConstents.dob,
+                  hint: "Select your date of birth",
+                  controller: _authController.dateController,
+                ),
+                SizedBox(height: 15),
 
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(9.0),
-                          color: AppColors.uploadCardColor,
-                        ),
-                        child: Obx(
-                          () =>
-                              _authController.isProfile.isTrue
-                                  ? Image.file(
-                                    _authController.profileUrl.value,
-                                    fit: BoxFit.cover,
-                                  )
-                                  : InkWell(
-                                    onTap: () {
-                                      ImagePickerBottomsheet.showImagePickerBottomSheet(
-                                        onGalleryTap: () async {
-                                          await _authController
-                                              .uploadProfileFromGallery();
-                                        },
-                                        onCameraTap: () async {
-                                          await _authController
-                                              .uploadProfileFromCamera();
-                                        },
-                                      );
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          AppAssets.upload,
-                                          height: AppDimensions.height(26.3),
-                                          width: AppDimensions.width(24),
-                                        ),
-                                        SizedBox(width: 5.0),
-                                        CommonText.text(
-                                          "Upload file",
-                                          fontSize: AppDimensions.font(16),
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xff263238),
-                                        ),
-                                      ],
+                /// Weight Field
+                CustomFormField(
+                  validator: (weight) {
+                    if (weight == null || weight.isEmpty) {
+                      return "Please enter weight";
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.number,
+                  label: AppConstents.weight,
+                  hint: "Enter your weight (kg)",
+                  controller: _authController.weightController,
+                ),
+                SizedBox(height: 15),
+
+                /// Height Field
+                CustomFormField(
+                  validator: (height) {
+                    if (height == null || height.isEmpty) {
+                      return "Please enter height";
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.number,
+                  label: AppConstents.height,
+                  hint: "Enter your height (cm)",
+                  controller: _authController.heightController,
+                ),
+                SizedBox(height: 15),
+                SizedBox(
+                  height: AppDimensions.height(190),
+                  width: MediaQuery.of(context).size.width,
+                  child: Stack(
+                    children: [
+                      DottedBorder(
+                        dashPattern: [6, 5],
+                        strokeWidth: 3.0,
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(10),
+                        color: AppColors.dottedBorderColor,
+                        child: Container(
+                          height: AppDimensions.height(161),
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(8.0),
+
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(9.0),
+                            color: AppColors.uploadCardColor,
+                          ),
+                          child: Obx(
+                            () =>
+                                _authController.isProfile.isTrue
+                                    ? Image.file(
+                                      _authController.profileUrl.value,
+                                      fit: BoxFit.cover,
+                                    )
+                                    : InkWell(
+                                      onTap: () {
+                                        ImagePickerBottomsheet.showImagePickerBottomSheet(
+                                          onGalleryTap: () async {
+                                            await _authController
+                                                .uploadProfileFromGallery();
+                                          },
+                                          onCameraTap: () async {
+                                            await _authController
+                                                .uploadProfileFromCamera();
+                                          },
+                                        );
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            AppAssets.upload,
+                                            height: AppDimensions.height(26.3),
+                                            width: AppDimensions.width(24),
+                                          ),
+                                          SizedBox(width: 5.0),
+                                          CommonText.text(
+                                            "Upload file",
+                                            fontSize: AppDimensions.font(16),
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff263238),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

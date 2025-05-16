@@ -55,11 +55,13 @@ class HealthMenuScreen extends StatelessWidget {
         },
         title: AppConstents.createAccount,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: ProfilePageViewBuilder(
-          pages: _authController.medicalQuestionListModel.value,
-          authController: _authController,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: ProfilePageViewBuilder(
+            pages: _authController.medicalQuestionListModel.value,
+            authController: _authController,
+          ),
         ),
       ),
     );

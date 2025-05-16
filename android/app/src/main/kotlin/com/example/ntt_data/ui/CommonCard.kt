@@ -43,7 +43,7 @@ fun CommonCard(
             .padding(8.dp)
     ) {
         Column(
-//            horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally,
 //            verticalArrangement = Arrangement.spacedBy(space = 3.dp,),
 
             verticalArrangement = Arrangement.SpaceBetween,
@@ -55,6 +55,7 @@ fun CommonCard(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 16.sp,
+                textAlign = TextAlign.Center,
                 fontWeight = FontWeight.W600,
 
             )
@@ -66,7 +67,8 @@ fun CommonCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xff0072BC),
                     fontWeight = FontWeight.W700,
-                    textAlign = TextAlign.End,
+                    textAlign = TextAlign.Center,
+
                     fontSize = 24.sp,
 
                     )
@@ -75,6 +77,7 @@ fun CommonCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Black,
                     fontWeight = FontWeight.W700,
+                    textAlign = TextAlign.Center,
                     fontSize = 14.sp,
 
                     )

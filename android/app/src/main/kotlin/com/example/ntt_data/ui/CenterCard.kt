@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ntt_data.ui.SeamlessCircularProgressIndicator
@@ -59,8 +60,8 @@ fun CenteredContentCard(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.W600,
-                fontSize = 16.sp
-
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -88,6 +89,7 @@ fun CenteredContentCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xff0072BC),
                     fontWeight = FontWeight.W700,
+                    textAlign = TextAlign.Center,
                     fontSize = 24.sp,
                 )
                 Text(
@@ -95,6 +97,7 @@ fun CenteredContentCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Black,
                     fontWeight = FontWeight.W400,
+                    textAlign = TextAlign.Center,
                     fontSize = 14.sp,
 
                     )

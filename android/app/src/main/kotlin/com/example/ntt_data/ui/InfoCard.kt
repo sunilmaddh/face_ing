@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -42,9 +43,11 @@ fun InfoCard(
                 .background(Color.White)
                 ,
             verticalArrangement = Arrangement.SpaceBetween,
-//            horizontalAlignment = Alignment.CenterHorizontally
+       horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(modifier=Modifier.padding(8.dp)) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier=Modifier.padding(8.dp)) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
@@ -57,6 +60,7 @@ fun InfoCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xff0072BC),
                     fontWeight = FontWeight.W700,
+                    textAlign = TextAlign.Center,
                     fontSize = 24.sp,
                 )
                 Text(
@@ -71,7 +75,6 @@ fun InfoCard(
 
 
             Spacer(modifier = Modifier.height(16.dp))
-
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = null,
