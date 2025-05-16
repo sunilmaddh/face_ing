@@ -59,6 +59,14 @@ fun SNRCard(
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black,
+                fontWeight = FontWeight.W700,
+                fontSize = 16.sp,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = mass,
+                style = MaterialTheme.typography.bodyMedium,
                 color = Color(0xff0072BC),
                 fontWeight = FontWeight.W700,
                 fontSize = 24.sp,

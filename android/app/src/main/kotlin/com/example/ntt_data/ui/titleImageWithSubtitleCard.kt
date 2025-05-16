@@ -39,7 +39,7 @@ fun TitleWithImageSubtitleCard(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .width(170.dp)
-            .height(173.dp)
+            .height(190.dp)
             .padding(8.dp)
     ) {
         Column(
@@ -72,7 +72,9 @@ fun TitleWithImageSubtitleCard(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.matchParentSize()
                 )
-                Column ( modifier = Modifier
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
                     .align(Alignment.Center)
                     .padding(8.dp)) {
                     Text(
@@ -80,14 +82,16 @@ fun TitleWithImageSubtitleCard(
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color(0xff0072BC),
                         fontWeight = FontWeight.W700,
+                        textAlign = TextAlign.Center,
                         fontSize = 24.sp,
 
                     )
                     Text(
                         text = mass,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xff0072BC),
+                        color = Color.Black,
                         fontWeight = FontWeight.W400,
+                        textAlign = TextAlign.Center,
                         fontSize = 14.sp,
 //                        modifier = Modifier
 //                            .align(Alignment.Center)

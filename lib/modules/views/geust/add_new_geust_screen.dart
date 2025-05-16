@@ -141,7 +141,7 @@ class AddNewGuestScreen extends StatelessWidget {
                       bottom: AppDimensions.width(20.0),
                     ),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height - 668,
+                      height: MediaQuery.of(context).size.height - 608,
                       width: MediaQuery.of(context).size.width,
                       child: Stack(
                         children: [

@@ -10,15 +10,11 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -73,55 +69,26 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                 val formatted = formatMixedValue(it)
                 CenteredContentCard(
                     width = 450.0,
-                    title = "Overall Health Score",
+                    title = "General Health Score",
+
+                    isFullWidth = true,
 
                     subtitle = formatted,
 
-                    imageRes = R.drawable.msh
+                    imageRes = R.drawable.over_health
                 )
             }
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
-                Column {
-                    dynamicMap["AGE"]?.let {
-                        val formatted = formatMixedValue(it)
-                        CenteredContentCard(
-                            title = "Facial Skin Age",
-                            isWidget = true,
-                            borderColor = Color(0xFF0072BC).copy(alpha = 0.2f),
-                            drawArcColor = Color(0xFF0072BC),
-                            value = formatted.toDouble(),
-                            maxProgress = 100f,
-                            mass = "years"
 
-                        )
-                    }
-//                dynamicMap["HEALTH_SCORE"]?.let {         CenteredContentCard(
-//                    title = "Overall Health Score",
-//                    subtitle = it,
-//
-//                    imageRes = R.drawable.msh
-//                )}
-                    dynamicMap["BR_BPM"]?.let {
-                        val formatted = formatMixedValue(it)
-                        TitleWithImageSubtitleCard(
-                            title = "Breathing Rate",
-                            subtitle = formatted,
-                            mass = "rpm",
+                dynamicMap["BR_BPM"]?.let {
+                    val formatted = formatMixedValue(it)
+                    TitleWithImageSubtitleCard(
+                        title = "Breathing Rate",
+                        subtitle = formatted,
+                        mass = "rpm",
 
-                            imageRes = R.drawable.vital_sign
-                        )
-                    }
-//                dynamicMap["BMI_CALC"]?.let {
-//                    CommonCard(
-//                        title = "Body Mass Index(BMI)",
-//                        subtitle = it
-//                    )
-//                }
-//                dynamicMap["ABSI"]?.let {  CommonCard(
-//                    title = "Body Shape Index",
-//                    subtitle = it,
-//                ) }
-
+                        imageRes = R.drawable.vital_sign
+                    )
                 }
                 dynamicMap["HR_BPM"]?.let {
                     val formatted = formatMixedValue(it)
@@ -140,7 +107,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                     (dynamicMap["BP_DIASTOLIC"]?.toString()?.toDoubleOrNull())?.toInt()
                 if (systolicInt != null && diastolicInt != null) {
                     InfoCard(
-                        title = "Blood Pressure (Systolic/Diastolic)",
+                        title = "Blood Pressure",
                         subtitle = "$systolicInt/$diastolicInt",
                         mass = "mmHg",
                         imageRes = R.drawable.mask_group
@@ -155,14 +122,15 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             subtitle = formatted,
 
 
+
                             )
                     }
                     dynamicMap["HBA1C_RISK_PROB"]?.let {
                         val formatted = formatMixedValue(it)
                         CommonCard(
                             title = "Hemoglobin A1C Risk",
-                            subtitle = "$formatted %"
-
+                            subtitle =formatted,
+                            mass = "%"
                         )
                     }
 //            dynamicMap["HRV_SDNN"]?.let { CommonCard(
@@ -183,7 +151,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         val formatted = formatMixedValue(it)
                         CommonCard(
                             title = "Fasting Blood Glucose Risk",
-                            subtitle = "$formatted %",
+                            subtitle = formatted ,
+                            mass = "%"
 
 
                             )
@@ -192,7 +161,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         val formatted = formatMixedValue(it)
                         CommonCard(
                             title = "Cardiovascular Risk Level",
-                            subtitle = "$formatted %",
+                            subtitle = formatted,
+                            mass = "%"
 
                             )
                     }
@@ -216,6 +186,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         title = "Heart Attack Risk",
                         subtitle = formatted,
                         imageRes = R.drawable.snr,
+                        mass = "%"
                     )
 
 
@@ -227,8 +198,9 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 isWidgetWithText = true,
                                 borderColor = Color(0xFFFFFDDF),
                                 drawArcColor = Color(0xFFF7D100),
-                                value = formatted.toDouble(),
+                                value = it.toDouble(),
                                 maxProgress = 100f,
+                                mass = "%"
 
 
                                 )
@@ -240,9 +212,10 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 title = " Diabetes Risk",
                                 borderColor = Color(0xFF0072BC).copy(alpha = .53f),
                                 drawArcColor = Color(0xFF0072BC),
-                                value = "${formatted}  %".toDouble(),
+                                value = formatted.toDouble(),
                                 isWidgetWithText = true,
                                 maxProgress = 5f,
+                                mass = "%"
 
 
                             )
@@ -263,7 +236,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             val formatted = formatMixedValue(it)
                             CommonCard(
                                 title = "Fatty Liver Disease Risk",
-                                subtitle =  formatted + "%",
+                                subtitle =  formatted,
+                                mass = "%"
 
 
                             )
@@ -272,7 +246,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             val formatted = formatMixedValue(it)
                             CommonCard(
                                 title = "Hypercholesterolemia Risk",
-                                subtitle = formatted + "%",
+                                subtitle = formatted,
                                 mass = "%"
 
                             )
@@ -288,7 +262,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 isWidgetWithText = true,
                                 borderColor = Color(0xFFFFFDDF),
                                 drawArcColor = Color(0xFFF7D100),
-                                value = "${formatted}  %".toDouble(),
+                                value = formatted.toDouble(),
                                 maxProgress = 100f,
                                 mass = "%"
 
@@ -301,9 +275,10 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 title = " Overall Metabolic Health Risk",
                                 borderColor = Color(0xFF0072BC).copy(alpha = .53f),
                                 drawArcColor = Color(0xFF0072BC),
-                                value ="${formatted}  %".toDouble(),
+                                value =formatted.toDouble(),
                                 isWidgetWithText = true,
                                 maxProgress = 5f,
+                                mass = "%"
 
 
                             )
@@ -314,7 +289,8 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             val formatted = formatMixedValue(it)
                             TitleWithImageSubtitleCard(
                                 title = "Hypertriglyceridemia Risk",
-                                subtitle = formatted + "%",
+                                subtitle = formatted,
+                                mass = "%",
 
 
                                 imageRes = R.drawable.vital_sign
@@ -408,7 +384,9 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         )
                     }
 
-                    Row {
+                    Row(
+                        horizontalArrangement =Arrangement.Start ,
+                        ) {
                         dynamicMap["AGE"]?.let {
                             val formatted = formatMixedValue(it)
                             CenteredContentCard(
@@ -423,9 +401,10 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             )
                         }
                         dynamicMap["SNR"]?.let {
+                            val formatted = formatMixedValue(it)
                             CommonCard(
                                 title = "Signal-to-Noise Ratio",
-                                subtitle = it,
+                                subtitle = formatted,
                                 mass = "g/dl",
 
                                 )

@@ -16,7 +16,7 @@ class CongratulationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: PrimaryButton(
-        text: "Thanku",
+        text: "Thank you",
         onPressed: () {
           AppNavigation.to(AppRoutes.homeScreen);
         },

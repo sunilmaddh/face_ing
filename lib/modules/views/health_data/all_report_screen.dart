@@ -51,7 +51,7 @@ class AllReportScreen extends StatelessWidget {
                           height: 190,
                           isTextOnly: true,
                           title: "Breathing Rate",
-                          value: getVitalValue(VitalSignTypes.prq),
+                          value: getVitalValue(VitalSignTypes.respirationRate),
                           mass: "rpm",
                         ),
                       ),

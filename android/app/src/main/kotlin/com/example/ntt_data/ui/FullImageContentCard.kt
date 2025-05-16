@@ -37,7 +37,7 @@ fun FullImageContentCard(
         shape = RoundedCornerShape(16.dp),
 //        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = modifier
-            .width(170.dp).height(373.dp)
+            .width(170.dp).height(190.dp)
             .padding(8.dp)
     ) {
         Column(
@@ -69,11 +69,14 @@ fun FullImageContentCard(
                         .fillMaxWidth().align(alignment = Alignment.BottomCenter).height(330.dp)
 
                 )
-                Column( modifier = Modifier
-                    .padding(16.dp).align(alignment = Alignment.BottomStart)) {  Text(
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                    .padding(16.dp).align(alignment = Alignment.BottomCenter)) {  Text(
                     text = centerText,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xff0072BC),
+                    textAlign = TextAlign.Center,
                     fontWeight = FontWeight.W700,
                     fontSize = 24.sp,
 

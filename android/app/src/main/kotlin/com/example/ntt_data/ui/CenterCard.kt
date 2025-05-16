@@ -34,9 +34,11 @@ fun CenteredContentCard(
     mass:String="",
     width:Double=170.0,
     value:Double=0.0,
+    age:Double=0.0,
     borderColor:Color=Color.Transparent,
     drawArcColor:Color=Color.Transparent,
     isWidget:Boolean=false,
+    isFullWidth:Boolean=false,
     isWidgetWithText:Boolean=false,
     modifier: Modifier = Modifier
 ) {
@@ -74,14 +76,26 @@ fun CenteredContentCard(
 
                 }
             }else{
-                Image(
-                    painter = painterResource(id = imageRes),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .height(45.dp)
-                        .fillMaxWidth(),
-                    contentScale = ContentScale.Fit
-                )
+                if (isFullWidth){
+                    Image(
+                        painter = painterResource(id = imageRes),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(80.dp)
+                            .fillMaxWidth(),
+                        contentScale = ContentScale.Fit
+                    )
+                }else{
+                    Image(
+                        painter = painterResource(id = imageRes),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(45.dp)
+                            .fillMaxWidth(),
+                        contentScale = ContentScale.Fit
+                    )
+                }
+
 //                Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
