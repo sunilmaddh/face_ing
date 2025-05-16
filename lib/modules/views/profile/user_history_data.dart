@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart' show AppColors;
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 
 import '../../../widgets/fields/common_text.dart';
@@ -16,7 +17,12 @@ class UserHistoryData extends StatelessWidget {
   Widget build(BuildContext context) {
     _profileController.getUserHistory();
     return Scaffold(
-      appBar: CustomAppBar(title: "User History list"),
+      appBar: CustomAppBar(
+        onTop: () {
+          AppNavigation.back();
+        },
+        title: "User History list",
+      ),
       body: Obx(
         () => ListView.separated(
           padding: EdgeInsets.all(20),

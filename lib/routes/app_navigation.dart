@@ -8,13 +8,15 @@ class AppNavigation {
   }
 
   /// Replace the current screen with a new one
-  static void off(String route, {dynamic arguments}) {
-    Get.offNamed(route, arguments: arguments);
+  static void off(String route, {VoidCallback? action, dynamic arguments}) {
+    Get.offNamed(route, arguments: arguments)!.whenComplete(action!);
+    ;
   }
 
   /// Remove all previous screens and navigate to a new one
-  static void offAll(String route, {dynamic arguments}) {
-    Get.offAllNamed(route, arguments: arguments);
+  static void offAll(String route, {VoidCallback? action, dynamic arguments}) {
+    Get.offAllNamed(route, arguments: arguments)!.whenComplete(action!);
+    ;
   }
 
   /// Navigate back to the previous screen

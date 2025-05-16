@@ -28,7 +28,12 @@ class AddNewGuestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Add Guest"),
+      appBar: CustomAppBar(
+        onTop: () {
+          AppNavigation.back();
+        },
+        title: "Add Guest",
+      ),
       backgroundColor: AppColors.historyCardColor,
       body: SafeArea(
         child: ListView(
@@ -148,7 +153,7 @@ class AddNewGuestScreen extends StatelessWidget {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: SizedBox(
-                              width: AppDimensions.width(193),
+                              width: AppDimensions.width(180),
                               child: ScanButton(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
@@ -181,7 +186,7 @@ class AddNewGuestScreen extends StatelessWidget {
                                         () {
                                           _geustController.scanType.value =
                                               "guest";
-                                          AppNavigation.to(
+                                          AppNavigation.off(
                                             AppRoutes.mesurementScreen,
                                             arguments: {
                                               "scanType": "add-guest",

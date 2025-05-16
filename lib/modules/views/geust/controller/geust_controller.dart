@@ -394,4 +394,14 @@ class GeustController extends GetxController
       );
     }
   }
+
+  clearData() {
+    nameTextController.clear();
+    weightTextController.clear();
+    heightTextController.clear();
+    dobTextController.clear();
+    selectionType.value = "";
+    isTermAccepted.value = false;
+    isChecked.value = false;
+  }
 }

@@ -45,14 +45,14 @@ class CircleProgressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor =
-        value.toUpperCase() == "HIGH"
-            ? Colors.orange
-            : value.toUpperCase() == "LOW"
-            ? Colors.red
-            : value.toUpperCase() == "MEDIUM"
-            ? Colors.green
-            : AppColors.primary;
+    Color textColor = AppColors.primary;
+    // value.toUpperCase() == "HIGH"
+    //     ? Colors.orange
+    //     : value.toUpperCase() == "LOW"
+    //     ? Colors.red
+    //     : value.toUpperCase() == "MEDIUM"
+    //     ? Colors.green
+    //     : AppColors.primary;
     return CommonCard(
       radius: AppDimensions.radius(18),
       widget: SizedBox(

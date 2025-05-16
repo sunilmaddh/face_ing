@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/camera_preview.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 
 class MeasurementScreen extends StatefulWidget {
@@ -25,10 +26,16 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    controller.isMeasurementCanceled.value = false;
     controller.scanType.value = scanType;
     controller.startStopButtonClicked();
     return Scaffold(
-      appBar: CustomAppBar(title: ""),
+      appBar: CustomAppBar(
+        onTop: () {
+          AppNavigation.back();
+        },
+        title: "",
+      ),
       body: Column(
         children: [
           Expanded(

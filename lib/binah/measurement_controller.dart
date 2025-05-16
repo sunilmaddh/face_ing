@@ -66,11 +66,11 @@ class MeasurementController extends GetxController
     });
     ever<String?>(warning, (value) {
       if (value != null && value.isNotEmpty) {
-        Fluttertoast.showToast(
-          msg: value,
-          toastLength: Toast.LENGTH_SHORT,
-          textColor: Colors.white,
-        );
+        // Fluttertoast.showToast(
+        //   msg: value,
+        //   toastLength: Toast.LENGTH_SHORT,
+        //   textColor: Colors.white,
+        // );
       }
     });
 
@@ -79,7 +79,7 @@ class MeasurementController extends GetxController
       if (value != null && value.isNotEmpty) {
         Future.delayed(Duration.zero, () {
           isMeasurementCanceled.value = true;
-          showAlert(Get.context!, null, value);
+          // showAlert(Get.context!, null, value);
           resetProgress();
           stopProgress();
           startStopButtonClicked();
@@ -108,10 +108,6 @@ class MeasurementController extends GetxController
         _startMeasuring().then((v) {
           startProgress(seconds: 60);
         });
-        // debugPrint("Start scanning");
-        // _startMeasuring().then((v) {
-        //   startProgress(seconds: 60);
-        // });
 
         debugPrint("Start scanning $state");
       } else if (state == SessionState.processing) {
@@ -168,17 +164,31 @@ class MeasurementController extends GetxController
     debugPrint(
       "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
     );
-    startStopButtonClicked();
-    if (scanType.value == "add-guest") {
-      _geustController.addGuest(vitalsResults.value).whenComplete(() {
-        AppNavigation.off(AppRoutes.analyzingHealthData);
-      });
-    } else {
-      _geustController
-          .storeBinahHealthForUser(vitalsResults.value)
-          .whenComplete(() {
-            AppNavigation.off(AppRoutes.analyzingHealthData);
-          });
+    if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
+      startStopButtonClicked();
+      if (scanType.value == "add-guest") {
+        _geustController.addGuest(vitalsResults.value).whenComplete(() {
+          AppNavigation.off(
+            AppRoutes.allReportScreen,
+            action: () {
+              _geustController.clearData();
+              _geustController.getGeustHistory();
+            },
+          );
+        });
+      } else {
+        _geustController
+            .storeBinahHealthForUser(vitalsResults.value)
+            .whenComplete(() {
+              AppNavigation.off(
+                AppRoutes.allReportScreen,
+                action: () {
+                  _geustController.clearData();
+                  _geustController.getGeustHistory();
+                },
+              );
+            });
+      }
     }
   }
 

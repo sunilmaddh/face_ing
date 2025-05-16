@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 110),
               ScanButton(
-                width: 193,
+                width: 180,
                 onPressed: () async {
                   // AppNavigation.to(AppRoutes.analyzingHealthData);
                   controller.screenInFocus().whenComplete(() {

@@ -19,5 +19,6 @@ class AppRoutes {
       guestHistoryDetails = "/guest_history_details",
       userHistoryList = "/user_history_data",
       userHealthDatails = "/user_health_details",
+      allReportScreen = "/all_report_screen",
       analyzingHealthData = '/analyzing_health_data';
 }
