@@ -40,7 +40,12 @@ class CreateAccountScreen extends StatelessWidget {
         },
       ),
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: AppConstents.createAccount),
+      appBar: CustomAppBar(
+        onTop: () {
+          AppNavigation.back();
+        },
+        title: AppConstents.createAccount,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Form(

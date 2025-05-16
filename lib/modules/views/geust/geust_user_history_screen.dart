@@ -54,7 +54,12 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
         isAppBar: false,
         size: AppDimensions.height(58),
       ),
-      appBar: CustomAppBar(title: "Geust user"),
+      appBar: CustomAppBar(
+        onTop: () {
+          AppNavigation.back();
+        },
+        title: "Geust user",
+      ),
       body: Padding(
         padding: EdgeInsets.all(AppDimensions.padding(15)),
         child: SingleChildScrollView(

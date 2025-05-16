@@ -41,19 +41,18 @@ class AuthController extends GetxController
   }
 
   Future<void> userLogin() async {
-    AppNavigation.off(AppRoutes.homeScreen);
     isLoading(true);
     var data = {
       "emailId": emailController.text,
       "password": passwordController.text,
-      "sDKType": "ANURA",
+      "sDKType": "BINAH",
     };
     debugPrint(data.toString());
     try {
       Map<String, dynamic> response = await _authServices.userLogin(data: data);
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
-      AppNavigation.off(AppRoutes.homeScreen);
+      // AppNavigation.off(AppRoutes.homeScreen);
       if (statusCode == 200) {
         var header = response["header"];
         var accessToken = header["accesstoken"];

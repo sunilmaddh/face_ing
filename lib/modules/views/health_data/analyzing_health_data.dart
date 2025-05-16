@@ -4,6 +4,7 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/modules/views/health_data/additional_screen.dart';
 import 'package:ntt_data/modules/views/health_data/all_report_screen.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
 import 'package:ntt_data/modules/views/health_data/vital_screen.dart';
 import 'package:ntt_data/modules/views/health_data/wellness_screen.dart';
@@ -29,6 +30,9 @@ class AnalyzingHealthData extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
+        onTop: () {
+          AppNavigation.back();
+        },
         isCenterTitle: false,
         title: "Analyzing health data",
         textColor: AppColors.blackColor,

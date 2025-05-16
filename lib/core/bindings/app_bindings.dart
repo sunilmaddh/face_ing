@@ -17,6 +17,7 @@ class AppBindings extends Bindings {
       () => MeasurementController(),
       fenix: true,
     );
+    Get.lazyPut<OnboardController>(() => OnboardController(), fenix: true);
     Get.put(MeasurementController());
   }
 }

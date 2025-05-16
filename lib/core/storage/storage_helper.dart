@@ -39,13 +39,14 @@ class StorageHelper {
   //   return null;
   // }
 
-  // /// Remove a specific key from storage
-  // static void remove(String key) {
-  //   box.remove(key);
-  // }
+  /// Remove a specific key from storage
+  static void remove(String key) {
+    _box.remove(key);
+  }
 
-  // /// Clear all stored data
-  // static void clear() {
-  //   box.erase();
-  // }
+  /// Clear all stored data
+  static void clear() {
+    StorageHelper.write("userId", "");
+    StorageHelper.write("isOnboard", false);
+  }
 }

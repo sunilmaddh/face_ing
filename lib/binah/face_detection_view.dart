@@ -19,16 +19,19 @@ class FaceDetectionView extends StatelessWidget {
     var heightFactor = size!.height / (imageInfo.imageHeight / dpr);
 
     return Positioned(
-      left: (roi.left * widthFactor) / dpr,
-      top: (roi.top * heightFactor) / dpr,
+      left: (controller.imageData.value?.roi?.left ?? 0.0 * widthFactor) / dpr,
+      top: (controller.imageData.value?.roi?.top ?? 0.0 * heightFactor) / dpr,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.transparent,
           border: Border.all(width: 4, color: const Color(0xff0653F4)),
           borderRadius: BorderRadius.circular(5),
         ),
-        width: (roi.width * widthFactor) / dpr,
-        height: (roi.height * heightFactor) / dpr,
+        width:
+            (controller.imageData.value?.roi?.width ?? 0.0 * widthFactor) / dpr,
+        height:
+            (controller.imageData.value?.roi?.height ?? 0.0 * heightFactor) /
+            dpr,
       ),
     );
   }

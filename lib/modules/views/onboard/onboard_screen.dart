@@ -7,7 +7,7 @@ class OnboardScreen extends StatelessWidget {
   final List<dynamic> _pages = [
     {
       'image': AppAssets.onboard1,
-      'title': 'Wlcome',
+      'title': 'Welcome',
       'description': 'Discover amazing features with our app.',
     },
     {
