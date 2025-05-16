@@ -70,19 +70,26 @@ class AuthController extends GetxController
         StorageHelper.write("emailId", loginResponseModel.value.emailId!);
         // AppNavigation.to(AppRoutes.homeScreen);
         // clearData();
-        if (loginResponseModel.value.success == "true" &&
-            loginResponseModel.value.onBoarded == "false") {
-          AppNavigation.to(
-            AppRoutes.createAccount,
-            arguments: {"userId": loginResponseModel.value.userId},
-          );
-          clearData();
+        if (loginResponseModel.value.success == "true") {
+          if (loginResponseModel.value.success == "true" &&
+              loginResponseModel.value.onBoarded == "false") {
+            AppNavigation.to(
+              AppRoutes.createAccount,
+              arguments: {"userId": loginResponseModel.value.userId},
+            );
+            clearData();
+          } else {
+            StorageHelper.write(
+              "isOnboard",
+              loginResponseModel.value.onBoarded.toString(),
+            );
+            AppNavigation.off(AppRoutes.homeScreen);
+          }
         } else {
-          StorageHelper.write(
-            "isOnboard",
-            loginResponseModel.value.onBoarded.toString(),
-          );
-          AppNavigation.off(AppRoutes.homeScreen);
+          // AppSnackbar.show(
+          //   title: "Error",
+          //   message: "Email Id or password is wrong",
+          // );
         }
       } else if (statusCode == 405) {
         var result = ErrorResponse.fromJson(response["responseBody"]);

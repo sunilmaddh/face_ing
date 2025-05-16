@@ -38,9 +38,10 @@ class AllReportScreen extends StatelessWidget {
                 children: [
                   ReportCard(
                     height: 190,
-                    backgroundImage: AppAssets.wellnessImage,
-                    title: "Wellness Index",
+                    image: AppAssets.wellnessImage,
+                    title: "Wellness Score",
                     value: getVitalValue(VitalSignTypes.wellnessIndex),
+                    mass: getVitalValue(VitalSignTypes.wellnessLevel),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -57,9 +58,9 @@ class AllReportScreen extends StatelessWidget {
                       const SizedBox(width: 20),
                       Flexible(
                         child: ReportCard(
-                          centerImage: AppAssets.heartRate,
+                          image: AppAssets.heartRate,
                           height: 190,
-                          title: "Heart Rate",
+                          title: "Plus RAte (Heart Rate)",
                           value: getVitalValue(VitalSignTypes.oxygenSaturation),
                           mass: "bpm",
                         ),
@@ -77,14 +78,14 @@ class AllReportScreen extends StatelessWidget {
                           maxProgress: 10,
                           borderColor: Color(0xFFFFFDDF),
                           drawArcColor: Color(0xFFF7D100),
-                          title: 'Pulse Respiration Quotient (PRQ)',
+                          title: 'PRQ',
                         ),
                       ),
                       const SizedBox(width: 20),
                       Flexible(
                         child: ReportCard(
                           isTextOnly: true,
-                          height: 230,
+                          height: 190,
                           title: "Oxygen Saturation",
                           value:
                               "${getVitalValue(VitalSignTypes.oxygenSaturation)} %",
@@ -236,9 +237,8 @@ class AllReportScreen extends StatelessWidget {
                           isTextOnly: true,
                           height: 190,
                           title: "Normalized Stress Index",
-                          value: getVitalValue(
-                            VitalSignTypes.normalizedStressIndex,
-                          ),
+                          value:
+                              "${getVitalValue(VitalSignTypes.normalizedStressIndex)} %",
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -284,7 +284,7 @@ class AllReportScreen extends StatelessWidget {
                         child: ReportCard(
                           backgroundImage: AppAssets.pnsImage,
                           height: 190,
-                          title: "PNS Zone",
+                          title: "Recovery Ability (PNS Zone)",
                           value: getVitalValue(VitalSignTypes.pnsZone),
                         ),
                       ),
@@ -303,7 +303,7 @@ class AllReportScreen extends StatelessWidget {
                   ReportCard(
                     backgroundImage: AppAssets.snsImage,
                     height: 190,
-                    title: "Sympathetic Nervous System (SNS) Index",
+                    title: "SNS Index",
                     value: getVitalValue(VitalSignTypes.snsIndex),
                   ),
                   const SizedBox(height: 20),
@@ -311,6 +311,7 @@ class AllReportScreen extends StatelessWidget {
                     children: [
                       Flexible(
                         child: CircleProgressCard(
+                          height: 190,
                           size: 75,
                           progress: getVitalValueInt(VitalSignTypes.sd1),
                           age: getVitalValueInt(VitalSignTypes.sd1),
@@ -318,7 +319,7 @@ class AllReportScreen extends StatelessWidget {
                           mass: "ms",
                           borderColor: Color(0xFF0072BC).withOpacity(0.2),
                           drawArcColor: Color(0xFF0072BC),
-                          title: 'Standard Deviation 1 - HRV metric',
+                          title: 'SD1',
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -331,7 +332,7 @@ class AllReportScreen extends StatelessWidget {
                           mass: "ms",
                           borderColor: Color(0xFF0072BC).withOpacity(0.2),
                           drawArcColor: Color(0xFF0072BC),
-                          title: 'Standard Deviation 2 - HRV metric',
+                          title: 'SD2',
                         ),
                       ),
                     ],
@@ -341,7 +342,7 @@ class AllReportScreen extends StatelessWidget {
                     height: 240,
                     imageWidth: MediaQuery.of(context).size.width,
                     value: getVitalValue(VitalSignTypes.snsZone),
-                    title: 'SNS Zone (level of sympathetic activity)',
+                    title: 'Stress Response (SNS Zone)',
                     bottomImage: AppAssets.stressLevel,
                   ),
                   const SizedBox(height: 20),
