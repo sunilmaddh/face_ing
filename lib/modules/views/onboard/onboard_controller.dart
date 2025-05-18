@@ -8,14 +8,14 @@ class OnboardController extends GetxController {
   void onInit() {
     super.onInit();
     String userId = StorageHelper.read("userId") ?? "";
-    bool isWalk = StorageHelper.read("isWalkThrough") ?? false;
-    bool isOnboard = StorageHelper.read("isOnboard") ?? false;
+    String isWalk = StorageHelper.read("isWalkThrough") ?? "";
+    String isOnboard = StorageHelper.read("isOnboard") ?? "";
     Future.delayed(Duration(seconds: 2), () {
-      if (!isWalk) {
+      if (isWalk != "isWalk") {
         AppNavigation.off(AppRoutes.onboardScreen);
-      } else if (userId.isNotEmpty && !isOnboard) {
+      } else if (userId.isNotEmpty && isOnboard != "isOnboard") {
         AppNavigation.offAll(AppRoutes.createAccount);
-      } else if (userId.isNotEmpty && isOnboard) {
+      } else if (userId.isNotEmpty && isOnboard == "isOnboard") {
         AppNavigation.off(AppRoutes.homeScreen);
       } else {
         AppNavigation.off(AppRoutes.loginScreen);

@@ -67,6 +67,71 @@ class ShowGuestHistoryDetails {
     return listOfData;
   }
 
+  Future<List<Map<String, dynamic>>> fetchUserHistoryAnuraDetails(
+    UserHealthAnuraHistory guestAnuraHistory,
+  ) async {
+    List<Map<String, dynamic>> listOfData = [
+      {"key": "Overall Health Score", "value": guestAnuraHistory.healthScore},
+      {"key": "Heart Rate", "value": guestAnuraHistory.hRbpm},
+      {"key": "Breathing Rate", "value": guestAnuraHistory.hRbpm},
+      {
+        "key":
+            "Blood Pressure"
+            "",
+        "value": guestAnuraHistory.bPSystolic,
+      },
+
+      {
+        "key":
+            "Irregular Heartbeat Count"
+            "",
+        "value": guestAnuraHistory.iHbCount,
+      },
+      {
+        "key":
+            "Hemoglobin A1C Risk"
+            "",
+        "value": "",
+      },
+
+      {
+        "key": "Fasting Blood Glucose Risk",
+        "value": guestAnuraHistory.mFbgRiskProb,
+      },
+      {"key": "Cardiovascular Risk Level", "value": guestAnuraHistory.bPcvd},
+      {"key": "Heart Attack Risk", "value": guestAnuraHistory.bpHeartAttack},
+      {"key": "Stroke Risk", "value": guestAnuraHistory.bPStroke},
+      {"key": "Diabetes Risk", "value": guestAnuraHistory.dBtRiskProb},
+      {
+        "key": "Fatty Liver Disease Risk",
+        "value": guestAnuraHistory.fLdRiskProb,
+      },
+      {
+        "key": "Hypercholesterolemia Risk",
+        "value": guestAnuraHistory.hDltcRiskProb,
+      },
+      {"key": "Hypertension Risk", "value": guestAnuraHistory.hPtRiskProb},
+      {
+        "key": "Overall Metabolic Health Risk",
+        "value": guestAnuraHistory.overallMetabolicRiskProb,
+      },
+      {"key": "Mental Score", "value": guestAnuraHistory.mentalScore},
+
+      {"key": "Physical Score", "value": guestAnuraHistory.physicalScore},
+      {"key": "Physiological Score", "value": guestAnuraHistory.physioScore},
+      {"key": "Risk Score", "value": guestAnuraHistory.risksScore},
+      {"key": "Vital Signs Score", "value": guestAnuraHistory.vitalScore},
+      {"key": "Mental Stress Index", "value": guestAnuraHistory.mSi},
+      {"key": "Cardiac Workload", "value": guestAnuraHistory.bPrpp},
+      {"key": "Vascular Capacity", "value": guestAnuraHistory.bPTau},
+      {"key": "Heart Rate Variability", "value": guestAnuraHistory.hRvsdnn},
+      {"key": "Facial Skin Age", "value": guestAnuraHistory.age},
+      {"key": "Signal-to-Noise Ratio", "value": guestAnuraHistory.sNr},
+    ];
+
+    return listOfData;
+  }
+
   Future<List<Map<String, dynamic>>> fetchHistoryBinahDetails(
     GuestHealthBinahHistory guestBinahHistory,
   ) async {

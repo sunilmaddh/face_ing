@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
-import 'package:ntt_data/data/models/guest_history_details_model.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
 import 'package:ntt_data/data/models/show_guest_history_details.dart';
 import 'package:ntt_data/data/models/user_health_details.dart';
@@ -16,7 +16,8 @@ import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
 
-class ProfileController extends GetxController with GenderStateMixin {
+class ProfileController extends GetxController
+    with GenderStateMixin, CommonMixin {
   final _authController = Get.find<AuthController>();
   RxBool isLoading = false.obs;
   RxString userID = ''.obs;
@@ -29,6 +30,7 @@ class ProfileController extends GetxController with GenderStateMixin {
   RxList<UserHealthList> userHealthList = <UserHealthList>[].obs;
   RxList<Map<String, dynamic>> binahHIstoryDetails =
       <Map<String, dynamic>>[].obs;
+
   Rx<AnlyzeHealthDataResponseModel> anlyzeHealthDataResponseModel =
       AnlyzeHealthDataResponseModel().obs;
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
@@ -93,8 +95,13 @@ class ProfileController extends GetxController with GenderStateMixin {
       var result = UserHistoryDetailsModel.fromJson(
         responseData["responseBody"],
       );
+
+      ///this is for binah
+      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
+      //     .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
+      ///this is for anura
       binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-          .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
+          .fetchUserHistoryAnuraDetails(result.userHealthAnuraHistory!);
       AppNavigation.to(AppRoutes.userHealthDatails);
     } else {
       AppSnackbar.show(title: "Error", message: "Something went wrong");

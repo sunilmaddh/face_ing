@@ -6,8 +6,10 @@ import android.content.Intent
 import android.nfc.Tag
 import android.util.Log
 import com.example.ntt_data.globle.GlobalData
+import com.example.ntt_data.measurement.AnuraExampleMeasurementActivity
 import com.example.ntt_data.measurement.AnuraExampleMeasurementActivity.Companion.TAG
 import com.example.ntt_data.measurement.ExampleStartActivity
+import com.example.ntt_data.ui.HealthDataList
 import com.example.ntt_data.ui.HealthResultActivity
 import com.google.gson.Gson
 import io.flutter.embedding.engine.FlutterEngine
@@ -80,7 +82,7 @@ class MainApplication : Application() {
     private fun startAnura() {
         try {
             Log.d("AnuraSDK", "Anura SDK Started")
-            val intent = Intent(this, ExampleStartActivity::class.java)
+            val intent = Intent(this, AnuraExampleMeasurementActivity()::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             // Initialize and start Anura SDK (replace with actual Anura SDK implementation)

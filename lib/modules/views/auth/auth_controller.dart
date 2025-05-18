@@ -52,7 +52,7 @@ class AuthController extends GetxController
       Map<String, dynamic> response = await _authServices.userLogin(data: data);
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
-      // AppNavigation.off(AppRoutes.homeScreen);
+
       if (statusCode == 200) {
         var header = response["header"];
         var accessToken = header["accesstoken"];
@@ -67,22 +67,29 @@ class AuthController extends GetxController
           message: loginResponseModel.value.message!,
         );
         StorageHelper.write("userID", loginResponseModel.value.userId!);
-        StorageHelper.write("emailId", loginResponseModel.value.emailId!);
-        // AppNavigation.to(AppRoutes.homeScreen);
-        // clearData();
+        clearData();
         if (loginResponseModel.value.success == "true") {
           if (loginResponseModel.value.success == "true" &&
               loginResponseModel.value.onBoarded == "false") {
+            StorageHelper.write("isOnboard", "isOnboard");
             AppNavigation.to(
               AppRoutes.createAccount,
               arguments: {"userId": loginResponseModel.value.userId},
             );
             clearData();
           } else {
-            StorageHelper.write(
-              "isOnboard",
-              loginResponseModel.value.onBoarded.toString(),
+            StorageHelper.write("isOnboard", "isOnboard");
+            AppSnackbar.show(
+              title: "Error",
+              message: loginResponseModel.value.commonUserDetailsDao!.userName!,
             );
+
+            userImage.value =
+                loginResponseModel.value.commonUserDetailsDao!.userImage!;
+            userEmail.value =
+                loginResponseModel.value.commonUserDetailsDao!.userEmail!;
+            userName.value =
+                loginResponseModel.value.commonUserDetailsDao!.userName!;
             AppNavigation.off(AppRoutes.homeScreen);
           }
         } else {
@@ -100,7 +107,7 @@ class AuthController extends GetxController
       }
     } catch (e) {
       debugPrint(e.toString());
-      AppSnackbar.show(title: "Exception", message: e.toString());
+      // AppSnackbar.show(title: "Exception", message: e.toString());
     } finally {
       isLoading(false);
     }
@@ -283,6 +290,13 @@ class AuthController extends GetxController
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
+        StorageHelper.write("isOnboard", "isOnboard");
+        userImage.value =
+            loginResponseModel.value.commonUserDetailsDao!.userImage!;
+        userEmail.value =
+            loginResponseModel.value.commonUserDetailsDao!.userEmail!;
+        userName.value =
+            loginResponseModel.value.commonUserDetailsDao!.userName!;
         AppNavigation.to(AppRoutes.congratulationsScreen);
         // var result = MedicalQuestionModels.fromJson(response["responseBody"]);
         // medicalQuestionListModel.value = result.list!;

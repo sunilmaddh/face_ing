@@ -16,6 +16,9 @@ mixin CommonMixin on GetxController {
   RxBool isProfile = false.obs;
   RxString userId = "".obs;
   RxString otp = "".obs;
+  RxString userImage = "".obs;
+  RxString userName = "".obs;
+  RxString userEmail = "".obs;
   ProfileServices profileServices = ProfileServices();
   ProfileUploadService profileUploadService = ProfileUploadService();
   AuthServices authServices = AuthServices();

@@ -74,11 +74,11 @@ class GeustController extends GetxController
       var data = GuestHistoryDetailsModel.fromJson(
         resposneData["responseBody"],
       );
-      // anuraHIstoryDetails.value = await ShowGuestHistoryDetails()
-      //     .fetchHistoryAnuraDetails(data.guestHealthAnuraHistory!);
+      anuraHIstoryDetails.value = await ShowGuestHistoryDetails()
+          .fetchHistoryAnuraDetails(data.guestHealthAnuraHistory!);
 
-      binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-          .fetchHistoryBinahDetails(data.guestHealthBinahHistory!);
+      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
+      //     .fetchHistoryBinahDetails(data.guestHealthBinahHistory!);
 
       AppNavigation.to(AppRoutes.guestHistoryDetails);
 

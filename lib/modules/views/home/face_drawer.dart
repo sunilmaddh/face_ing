@@ -6,8 +6,11 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
+import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
+import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -18,6 +21,8 @@ class FaceDrawer extends StatelessWidget {
   void editProfilePicture() {
     // TODO: Implement profile picture editing functionality
   }
+
+  final _profileController = Get.find<AuthController>();
 
   Widget _buildListTile({
     required String icon,
@@ -50,6 +55,7 @@ class FaceDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppSnackbar.show(title: "Name", message: _profileController.userName.value);
     return SizedBox(
       width: AppDimensions.width(342),
       child: Drawer(
@@ -89,7 +95,21 @@ class FaceDrawer extends StatelessWidget {
                         width: AppDimensions.width(90),
                         child: Stack(
                           children: [
-                            CustomCircularAvatar(),
+                            Obx(
+                              () => CustomCircularAvatar(
+                                image: _profileController.userImage.value,
+                                widget: CommonText.text(
+                                  _profileController.userName.isNotEmpty
+                                      ? _profileController.userName
+                                          .substring(0, 1)
+                                          .toUpperCase()
+                                      : "",
+                                  color: AppColors.btntext,
+                                  fontSize: AppDimensions.font(30),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
                             Align(
                               alignment: Alignment.topRight,
                               child: InkWell(
@@ -101,18 +121,22 @@ class FaceDrawer extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: AppDimensions.height(20)),
-                      CommonText.text(
-                        "Sunil Maddheshiya",
-                        fontSize: AppDimensions.font(16),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: AppConstents.gilroyBold,
+                      Obx(
+                        () => CommonText.text(
+                          _profileController.userName.value,
+                          fontSize: AppDimensions.font(16),
+                          fontWeight: FontWeight.w400,
+                          fontFamily: AppConstents.gilroyBold,
+                        ),
                       ),
                       SizedBox(height: AppDimensions.height(10)),
-                      CommonText.text(
-                        "sunil.maddheshiya@example.com",
-                        fontSize: AppDimensions.font(14),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: AppConstents.gilroyMedium,
+                      Obx(
+                        () => CommonText.text(
+                          _profileController.userEmail.value,
+                          fontSize: AppDimensions.font(14),
+                          fontWeight: FontWeight.w400,
+                          fontFamily: AppConstents.gilroyMedium,
+                        ),
                       ),
                     ],
                   ),

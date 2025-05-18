@@ -51,7 +51,7 @@ class CustomOnboardingScreen extends StatelessWidget {
                     return PrimaryButton(
                       onPressed: () {
                         if (currentIndex == pages.length - 1) {
-                          StorageHelper.write("isWalkThrough", true);
+                          StorageHelper.write("isWalkThrough", "isWalk");
                           AppNavigation.to(AppRoutes.loginScreen);
                         } else {
                           _pageController.nextPage(
