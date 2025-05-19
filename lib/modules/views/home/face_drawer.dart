@@ -13,16 +13,23 @@ import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart'
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
+import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class FaceDrawer extends StatelessWidget {
   FaceDrawer({super.key});
+  final _profileController = Get.find<AuthController>();
 
   void editProfilePicture() {
-    // TODO: Implement profile picture editing functionality
+    ImagePickerBottomsheet.showImagePickerBottomSheet(
+      onGalleryTap: () async {
+        await _profileController.uploadProfileFromGallery();
+      },
+      onCameraTap: () async {
+        await _profileController.uploadProfileFromCamera();
+      },
+    );
   }
-
-  final _profileController = Get.find<AuthController>();
 
   Widget _buildListTile({
     required String icon,
@@ -96,17 +103,38 @@ class FaceDrawer extends StatelessWidget {
                           children: [
                             Obx(
                               () => CustomCircularAvatar(
-                                image: _profileController.userImage.value,
-                                widget: CommonText.text(
-                                  _profileController.userName.isNotEmpty
-                                      ? _profileController.userName
-                                          .substring(0, 1)
-                                          .toUpperCase()
-                                      : "",
-                                  color: AppColors.btntext,
-                                  fontSize: AppDimensions.font(30),
-                                  fontWeight: FontWeight.w700,
-                                ),
+                                widget:
+                                    _profileController
+                                                .uploadImageResponseModel
+                                                .value !=
+                                            null
+                                        ? Image.network(
+                                          _profileController
+                                              .uploadImageResponseModel
+                                              .value
+                                              .imagePath
+                                              .toString(),
+                                        )
+                                        : _profileController
+                                            .userImage
+                                            .isNotEmpty
+                                        ? Image.network(
+                                          _profileController
+                                              .uploadImageResponseModel
+                                              .value
+                                              .imagePath
+                                              .toString(),
+                                        )
+                                        : CommonText.text(
+                                          _profileController.userName.isNotEmpty
+                                              ? _profileController.userName
+                                                  .substring(0, 1)
+                                                  .toUpperCase()
+                                              : "",
+                                          color: AppColors.btntext,
+                                          fontSize: AppDimensions.font(30),
+                                          fontWeight: FontWeight.w700,
+                                        ),
                               ),
                             ),
                             Align(
