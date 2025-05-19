@@ -78,16 +78,22 @@ class HomeScreen extends StatelessWidget {
 
                   onPressed: () async {
                     gcontroller.isLoading.value = true;
-                    var userID = await StorageHelper.read("userID");
-                    var accessToken = await StorageHelper.read("access-token");
-                    Map<String, dynamic> data = {
-                      "userId": userID,
-                      "token": accessToken,
-                      "scanType": "user",
-                    };
+                    // var userID = await StorageHelper.read("userID");
+                    // var accessToken = await StorageHelper.read("access-token");
+                    // Map<String, dynamic> data = {
+                    //   "userId": userID,
+                    //   "token": accessToken,
+                    //   "scanType": "user",
+                    // };
                     Future.delayed(Duration(seconds: 2), () {
                       gcontroller.isLoading.value = false;
-                      NativeCaller.startFaceScan(data);
+                      // NativeCaller.startFaceScan(data);
+                      controller.screenInFocus().whenComplete(() {
+                        AppNavigation.to(
+                          AppRoutes.mesurementScreen,
+                          arguments: {"scanType": "user"},
+                        );
+                      });
                     });
                   },
                 ),

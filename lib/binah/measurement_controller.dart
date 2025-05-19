@@ -35,7 +35,7 @@ class MeasurementController extends GetxController
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
   final _geustController = Get.find<GeustController>();
   final licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
-  final measurementDuration = 60;
+  final measurementDuration = 35;
   Session? _session;
   final Rx<SessionState?> sessionState = Rx<SessionState?>(null);
   final RxnString error = RxnString();
