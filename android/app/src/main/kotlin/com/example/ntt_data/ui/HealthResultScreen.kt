@@ -81,7 +81,7 @@ fun HealthResultScreen(
         }
     ) { innerPadding ->
 //        && !measurementResults?.isSNRGood
-     if (measurementResults != null && measurementResults.isSNRGood ) {
+     if (measurementResults?.isSNRGood==false || measurementResults != null ) {
             // 👇 Proper padding to avoid being hidden by the top app bar
             Box(modifier = Modifier
                 .fillMaxSize()

@@ -227,6 +227,7 @@ class AddNewGuestScreen extends StatelessWidget {
                                         "token": accessToken,
                                         "scanType": "guest-user",
                                       };
+
                                       NativeCaller.startFaceScan(data);
                                     }
                                   }

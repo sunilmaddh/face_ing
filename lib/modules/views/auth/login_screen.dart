@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.bottomRight,
                       child: PrimaryButton(
                         text: AppConstents.login,
+                        // isLoading: _authController.isLoading.value,
                         onPressed: () {
                           // AppNavigation.to(AppRoutes.homeScreen);
                           if (_formKey.currentState!.validate()) {

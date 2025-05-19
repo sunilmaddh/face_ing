@@ -34,6 +34,8 @@ class GeustController extends GetxController
       <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> binahHIstoryDetails =
       <Map<String, dynamic>>[].obs;
+
+  RxBool isLoading = false.obs;
   RxList<GuestList> guestList = <GuestList>[].obs;
   RxString sdkType = "".obs;
   RxString genderType = "".obs;

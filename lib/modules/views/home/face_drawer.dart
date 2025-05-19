@@ -55,7 +55,6 @@ class FaceDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppSnackbar.show(title: "Name", message: _profileController.userName.value);
     return SizedBox(
       width: AppDimensions.width(342),
       child: Drawer(

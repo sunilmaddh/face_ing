@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
@@ -62,12 +63,9 @@ class AuthController extends GetxController
         StorageHelper.write("refresh-token", refereshToken);
         var result = LoginResponseModel.fromJson(response["responseBody"]);
         loginResponseModel.value = result;
-        AppSnackbar.show(
-          title: "Success",
-          message: loginResponseModel.value.message!,
-        );
+
         StorageHelper.write("userID", loginResponseModel.value.userId!);
-        clearData();
+
         if (loginResponseModel.value.success == "true") {
           if (loginResponseModel.value.success == "true" &&
               loginResponseModel.value.onBoarded == "false") {
@@ -76,14 +74,8 @@ class AuthController extends GetxController
               AppRoutes.createAccount,
               arguments: {"userId": loginResponseModel.value.userId},
             );
-            clearData();
           } else {
             StorageHelper.write("isOnboard", "isOnboard");
-            AppSnackbar.show(
-              title: "Error",
-              message: loginResponseModel.value.commonUserDetailsDao!.userName!,
-            );
-
             userImage.value =
                 loginResponseModel.value.commonUserDetailsDao!.userImage!;
             userEmail.value =
@@ -92,11 +84,13 @@ class AuthController extends GetxController
                 loginResponseModel.value.commonUserDetailsDao!.userName!;
             AppNavigation.off(AppRoutes.homeScreen);
           }
+          clearData();
         } else {
-          // AppSnackbar.show(
-          //   title: "Error",
-          //   message: "Email Id or password is wrong",
-          // );
+          AppSnackbar.show(
+            title: "Error",
+            message: loginResponseModel.value.message!,
+            isError: true,
+          );
         }
       } else if (statusCode == 405) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
@@ -136,9 +130,17 @@ class AuthController extends GetxController
       } else if (statusCode == 405) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;
-        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
+        AppSnackbar.show(
+          title: "Error",
+          message: errorResponse.value.message!,
+          isError: true,
+        );
       } else {
-        AppSnackbar.show(title: "Error", message: "Something went wrong");
+        AppSnackbar.show(
+          title: "Error",
+          message: "Something went wrong",
+          isError: true,
+        );
       }
     } catch (e) {
       debugPrint(e.toString());

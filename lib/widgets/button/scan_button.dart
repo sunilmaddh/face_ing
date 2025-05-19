@@ -11,6 +11,7 @@ class ScanButton extends StatelessWidget {
   final double borderRadius;
   final double padding;
   final double width;
+  final isLoading;
 
   const ScanButton({
     super.key,
@@ -21,12 +22,13 @@ class ScanButton extends StatelessWidget {
     this.borderRadius = 12.0,
     this.padding = 10.0,
     this.width = 128.0,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: isLoading ? null : onPressed,
       child: AnimatedContainer(
         alignment: Alignment.center,
         width: AppDimensions.width(width),
@@ -44,23 +46,26 @@ class ScanButton extends StatelessWidget {
             ),
           ],
         ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CommonAssets.svgAsset(AppAssets.scan),
-              Text(
-                "Start face Scan",
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 16,
+        child:
+            isLoading
+                ? const CircularProgressIndicator(color: AppColors.btntext)
+                : Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CommonAssets.svgAsset(AppAssets.scan),
+                      Text(
+                        "Start face Scan",
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 16,
 
-                  fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

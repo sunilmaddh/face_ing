@@ -43,12 +43,14 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
     return Scaffold(
       floatingActionButton: RoundedButton(
         onPressed: () {
-          AppNavigation.to(
-            AppRoutes.addNewGeustScreen,
-            action: () {
-              _controller.getGeustHistory();
-            },
-          );
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            AppNavigation.to(
+              AppRoutes.addNewGeustScreen,
+              action: () {
+                _controller.getGeustHistory();
+              },
+            );
+          });
         },
         isAdd: true,
         isAppBar: false,
@@ -56,7 +58,9 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
       ),
       appBar: CustomAppBar(
         onTop: () {
-          AppNavigation.back();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            AppNavigation.back();
+          });
         },
         title: "Geust user",
       ),

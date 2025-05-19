@@ -71,18 +71,26 @@ class HomeScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 110),
-              ScanButton(
-                width: 180,
-                onPressed: () async {
-                  var userID = await StorageHelper.read("userID");
-                  var accessToken = await StorageHelper.read("access-token");
-                  Map<String, dynamic> data = {
-                    "userId": userID,
-                    "token": accessToken,
-                    "scanType": "user",
-                  };
-                  NativeCaller.startFaceScan(data);
-                },
+              Obx(
+                () => ScanButton(
+                  isLoading: gcontroller.isLoading.value,
+                  width: 180,
+
+                  onPressed: () async {
+                    gcontroller.isLoading.value = true;
+                    var userID = await StorageHelper.read("userID");
+                    var accessToken = await StorageHelper.read("access-token");
+                    Map<String, dynamic> data = {
+                      "userId": userID,
+                      "token": accessToken,
+                      "scanType": "user",
+                    };
+                    Future.delayed(Duration(seconds: 2), () {
+                      gcontroller.isLoading.value = false;
+                      NativeCaller.startFaceScan(data);
+                    });
+                  },
+                ),
               ),
             ],
           ),
