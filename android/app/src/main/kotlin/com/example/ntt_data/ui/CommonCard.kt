@@ -1,8 +1,10 @@
+import android.inputmethodservice.Keyboard
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,6 +33,7 @@ fun CommonCard(
     title: String,
     subtitle: String,
     mass:String="",
+    perMass:String="",
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -51,6 +54,7 @@ fun CommonCard(
             modifier = Modifier.fillMaxSize().padding(8.dp)
         ) {
             // Title
+
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
@@ -61,7 +65,7 @@ fun CommonCard(
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-
+            Row {
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodyMedium,
@@ -72,6 +76,18 @@ fun CommonCard(
                     fontSize = 24.sp,
 
                     )
+                Text(
+                    text = perMass,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xff0072BC),
+                    fontWeight = FontWeight.W700,
+                    textAlign = TextAlign.Center,
+
+                    fontSize = 24.sp,
+
+                    )
+            }
+
                 Text(
                     text = mass,
                     style = MaterialTheme.typography.bodyMedium,

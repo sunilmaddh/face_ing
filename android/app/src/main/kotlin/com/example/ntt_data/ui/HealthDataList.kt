@@ -130,7 +130,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         CommonCard(
                             title = "Hemoglobin A1C Risk",
                             subtitle =formatted,
-                            mass = "%"
+                            perMass = "%"
                         )
                     }
 //            dynamicMap["HRV_SDNN"]?.let { CommonCard(
@@ -152,7 +152,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         CommonCard(
                             title = "Fasting Blood Glucose Risk",
                             subtitle = formatted ,
-                            mass = "%"
+                            perMass = "%"
 
 
                             )
@@ -162,7 +162,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         CommonCard(
                             title = "Cardiovascular Risk Level",
                             subtitle = formatted,
-                            mass = "%"
+                            perMass = "%"
 
                             )
                     }
@@ -186,13 +186,13 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         title = "Heart Attack Risk",
                         subtitle = formatted,
                         imageRes = R.drawable.snr,
-                        mass = "%"
+                        perMass = "%"
                     )
 
 
                     Row {
                         dynamicMap["BP_STROKE"]?.let {
-                            val formatted = formatMixedValue(it)
+//                            val formatted = formatMixedValue(it)
                             CenteredContentCard(
                                 title = "Stroke Risk",
                                 isWidgetWithText = true,
@@ -200,7 +200,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 drawArcColor = Color(0xFFF7D100),
                                 value = it.toDouble(),
                                 maxProgress = 100f,
-                                mass = "%"
+                                perMass = "%"
 
 
                                 )
@@ -215,7 +215,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 value = formatted.toDouble(),
                                 isWidgetWithText = true,
                                 maxProgress = 5f,
-                                mass = "%"
+                                perMass = "%"
 
 
                             )
@@ -237,7 +237,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             CommonCard(
                                 title = "Fatty Liver Disease Risk",
                                 subtitle =  formatted,
-                                mass = "%"
+                                perMass = "%"
 
 
                             )
@@ -247,7 +247,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             CommonCard(
                                 title = "Hypercholesterolemia Risk",
                                 subtitle = formatted,
-                                mass = "%"
+                                perMass = "%"
 
                             )
                         }
@@ -264,7 +264,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 drawArcColor = Color(0xFFF7D100),
                                 value = formatted.toDouble(),
                                 maxProgress = 100f,
-                                mass = "%"
+                                perMass = "%"
 
                             )
                         }
@@ -278,7 +278,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 value =formatted.toDouble(),
                                 isWidgetWithText = true,
                                 maxProgress = 5f,
-                                mass = "%"
+                                perMass = "%"
 
 
                             )
@@ -290,7 +290,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             TitleWithImageSubtitleCard(
                                 title = "Hypertriglyceridemia Risk",
                                 subtitle = formatted,
-                                mass = "%",
+                                perMass = "%",
 
 
                                 imageRes = R.drawable.vital_sign
@@ -328,19 +328,18 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                     Row {
                         dynamicMap["RISKS_SCORE"]?.let {
                             val formatted = formatMixedValue(it)
-                            CenteredContentCard(
-
+                            TitleWithImageSubtitleCard(
                                 title = "Risk Score",
                                 subtitle = formatted,
-                                imageRes = R.drawable.msh
+                                imageRes = R.drawable.risk_score
                             )
                         }
                         dynamicMap["VITAL_SCORE"]?.let {
                             val formatted = formatMixedValue(it)
-                            CenteredContentCard(
+                            TitleWithImageSubtitleCard(
                                 title = "Vital Signs Score",
                                 subtitle = formatted,
-                                imageRes = R.drawable.msh
+                                imageRes = R.drawable.risk_score
                             )
                         }
                     }
@@ -368,7 +367,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 title = "Vascular Capacity",
                                 subtitle = formatted,
                                 mass = "seconds",
-                                imageRes = R.drawable.heart_risk_level
+                                imageRes = R.drawable.vascular
                             )
                         }
 

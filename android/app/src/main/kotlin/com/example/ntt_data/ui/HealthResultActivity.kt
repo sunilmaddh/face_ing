@@ -28,13 +28,13 @@ class HealthResultActivity : ComponentActivity() {
         val dynamicMap = mutableMapOf<String, String>()
         Log.d(TAG, "resultData: $results")
         Log.d(TAG, "resultData ALL: ${results?.allResults}")
-        if (results == null) {
-//            for( resultData in results.allResults ){
-//                val key=resultData.key
-//                val value=resultData.value.value
-//                dynamicMap[key]= value.toString()
-//                Log.d(TAG, "resultData: $dynamicMap")
-//            }
+        if (results != null) {
+            for( resultData in results.allResults ){
+                val key=resultData.key
+                val value=resultData.value.value
+                dynamicMap[key]= value.toString()
+                Log.d(TAG, "resultData: $dynamicMap")
+            }
           if (GlobalData.scanType.isNotEmpty() && GlobalData.scanType == "guest-user"){
                 repository.addGuest(
                     dataMap =dynamicMap ,

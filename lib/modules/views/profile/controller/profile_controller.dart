@@ -77,10 +77,13 @@ class ProfileController extends GetxController
 
     int statusCode = responseData[AppConstents.statusCode];
     if (statusCode == 200) {
+      userHealthList.clear();
       var result = UserHistoryListModel.fromJson(responseData["responseBody"]);
 
       userHealthList.value = result.userHealthList!;
-    } else {}
+    } else {
+      userHealthList.clear();
+    }
   }
 
   Future<void> getUserHealthDetails({required var healthId}) async {
@@ -92,6 +95,7 @@ class ProfileController extends GetxController
 
     int statusCode = responseData[AppConstents.statusCode];
     if (statusCode == 200) {
+      binahHIstoryDetails.clear();
       var result = UserHistoryDetailsModel.fromJson(
         responseData["responseBody"],
       );
@@ -101,9 +105,10 @@ class ProfileController extends GetxController
       //     .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
       ///this is for anura
       binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-          .fetchUserHistoryAnuraDetails(result.userHealthAnuraHistory!);
+          .fetchUserHistoryAnuraDetails(result.userHealthAnuraDetail!);
       AppNavigation.to(AppRoutes.userHealthDatails);
     } else {
+      binahHIstoryDetails.clear();
       AppSnackbar.show(title: "Error", message: "Something went wrong");
     }
   }

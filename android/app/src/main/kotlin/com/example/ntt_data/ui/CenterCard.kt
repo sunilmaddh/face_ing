@@ -2,6 +2,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ntt_data.ui.SeamlessCircularProgressIndicator
+import java.time.Year
 
 @Composable
 fun CenteredContentCard(
@@ -32,9 +34,10 @@ fun CenteredContentCard(
     imageRes: Int=0,
     maxProgress: Float = 100f,
     mass:String="",
+    perMass:String="",
     width:Double=170.0,
     value:Double=0.0,
-    age:Double=0.0,
+    years: String="",
     borderColor:Color=Color.Transparent,
     drawArcColor:Color=Color.Transparent,
     isWidget:Boolean=false,
@@ -68,11 +71,11 @@ fun CenteredContentCard(
 
             Spacer(modifier = Modifier.height(12.dp))
         if(isWidget){
-              SeamlessCircularProgressIndicator(value.toFloat(),maxProgress=maxProgress, borderColor = borderColor, drawArcColor = drawArcColor, age = value)
+              SeamlessCircularProgressIndicator(value.toFloat(),maxProgress=maxProgress, borderColor = borderColor, drawArcColor = drawArcColor, age = value, years =years )
         }else{
             if(isWidgetWithText){
                 Box(Modifier.width(80.dp).height(80.dp)){
-                    SeamlessCircularProgressIndicator(value.toFloat(),maxProgress=maxProgress, borderColor = borderColor, drawArcColor = drawArcColor, age = value)
+                    SeamlessCircularProgressIndicator(value.toFloat(),maxProgress=maxProgress, borderColor = borderColor, drawArcColor = drawArcColor, age = value, years = years)
 
                 }
             }else{
@@ -98,14 +101,27 @@ fun CenteredContentCard(
 
 //                Spacer(modifier = Modifier.height(12.dp))
 
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xff0072BC),
-                    fontWeight = FontWeight.W700,
-                    textAlign = TextAlign.Center,
-                    fontSize = 24.sp,
-                )
+                Row {
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color(0xff0072BC),
+                        fontWeight = FontWeight.W700,
+                        textAlign = TextAlign.Center,
+
+                        fontSize = 24.sp,
+
+                        )
+                    Text(
+                        text = perMass,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color(0xff0072BC),
+                        fontWeight = FontWeight.W700,
+                        textAlign = TextAlign.Center,
+                        fontSize = 24.sp,
+
+                        )
+                }
                 Text(
                     text = mass,
                     style = MaterialTheme.typography.bodyMedium,

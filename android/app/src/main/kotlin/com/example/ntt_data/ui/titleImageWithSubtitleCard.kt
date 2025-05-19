@@ -3,6 +3,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,12 +31,12 @@ fun TitleWithImageSubtitleCard(
     title: String,
     subtitle: String,
     imageRes: Int,
-    mass:String="",
+    mass: String = "",
+    perMass: String = "",
     modifier: Modifier = Modifier
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-//        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .width(170.dp)
@@ -45,7 +46,6 @@ fun TitleWithImageSubtitleCard(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
-
             modifier = Modifier.fillMaxSize()
         ) {
             // Title
@@ -55,37 +55,55 @@ fun TitleWithImageSubtitleCard(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W700,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(8.dp)
+                modifier = Modifier.padding(8.dp)
             )
 
-            // Subtitle with background image
+            // Subtitle over background image
             Box(
                 modifier = Modifier
                     .width(137.dp)
-                    .height(80.dp).padding(bottom = 10.dp)
-
+                    .height(80.dp)
+                    .padding(bottom = 10.dp),
+                contentAlignment = Alignment.Center // Ensures the content (Column) is centered over the image
             ) {
+                // Custom-sized image
                 Image(
                     painter = painterResource(id = imageRes),
                     contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.matchParentSize()
+//                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .width(95.dp) // 👈 custom width
+                        .height(80.dp) // 👈 custom height
+                        .align(Alignment.Center).padding(bottom = 20.dp) // optional for layout clarity
                 )
-                Column (
+
+                // Centered overlay text
+                Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(8.dp)) {
-                    Text(
-                        text = subtitle,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xff0072BC),
-                        fontWeight = FontWeight.W700,
-                        textAlign = TextAlign.Center,
-                        fontSize = 24.sp,
+                        .align(Alignment.Center)
+                        .padding(15.dp)
+                ) {
+                    Row(
 
-                    )
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = subtitle,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0xff0072BC),
+                            fontWeight = FontWeight.W700,
+                            textAlign = TextAlign.Center,
+                            fontSize = 24.sp,
+                        )
+                        Text(
+                            text = perMass,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0xff0072BC),
+                            fontWeight = FontWeight.W700,
+                            textAlign = TextAlign.Center,
+                            fontSize = 24.sp,
+                        )
+                    }
                     Text(
                         text = mass,
                         style = MaterialTheme.typography.bodyMedium,
@@ -93,13 +111,11 @@ fun TitleWithImageSubtitleCard(
                         fontWeight = FontWeight.W400,
                         textAlign = TextAlign.Center,
                         fontSize = 14.sp,
-//                        modifier = Modifier
-//                            .align(Alignment.Center)
-//                            .padding(8.dp)
+                        modifier = Modifier.padding(top = 4.dp)
                     )
                 }
-
             }
+
         }
     }
 }

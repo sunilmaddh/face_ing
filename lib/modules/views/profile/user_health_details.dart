@@ -19,7 +19,7 @@ class UserHealthDetails extends StatelessWidget {
         onTop: () {
           AppNavigation.back();
         },
-        title: "",
+        title: "User Health Details",
       ),
       body: Obx(
         () => ListView.separated(
@@ -33,12 +33,12 @@ class UserHealthDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CommonText.text(
-                    result["key"],
+                    result["key"] ?? "",
                     fontSize: AppDimensions.font(14),
                     fontWeight: FontWeight.w500,
                   ),
                   CommonText.text(
-                    result["value"]!,
+                    result["value"] ?? "",
                     // result["value"]
                   ),
                 ],

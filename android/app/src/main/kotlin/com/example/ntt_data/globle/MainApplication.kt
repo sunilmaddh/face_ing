@@ -82,7 +82,7 @@ class MainApplication : Application() {
     private fun startAnura() {
         try {
             Log.d("AnuraSDK", "Anura SDK Started")
-            val intent = Intent(this, HealthResultActivity()::class.java)
+            val intent = Intent(this, ExampleStartActivity()::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             // Initialize and start Anura SDK (replace with actual Anura SDK implementation)

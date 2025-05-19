@@ -100,46 +100,49 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: AppDimensions.height(100),
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: PrimaryButton(
-                        text: AppConstents.login,
-                        // isLoading: _authController.isLoading.value,
-                        onPressed: () {
-                          // AppNavigation.to(AppRoutes.homeScreen);
-                          if (_formKey.currentState!.validate()) {
-                            _authController.userLogin();
+                    Obx(
+                      () => Align(
+                        alignment: Alignment.bottomRight,
+                        child: PrimaryButton(
+                          isLoading: _authController.isLoading.value,
+                          text: AppConstents.login,
+                          // isLoading: _authController.isLoading.value,
+                          onPressed: () {
                             // AppNavigation.to(AppRoutes.homeScreen);
-                          }
+                            if (_formKey.currentState!.validate()) {
+                              _authController.userLogin();
+                              // AppNavigation.to(AppRoutes.homeScreen);
+                            }
 
-                          // AppNavigation.to(AppRoutes.homeScreen);
-                        },
+                            // AppNavigation.to(AppRoutes.homeScreen);
+                          },
+                        ),
                       ),
+                      // SizedBox(height: AppDimensions.height(20)),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     CommonText.text(
+                      //       AppConstents.donThaveAccoount,
+                      //       fontSize: AppDimensions.font(16),
+                      //       fontWeight: FontWeight.w400,
+                      //       color: AppColors.blackColor,
+                      //     ),
+                      //     SizedBox(width: AppDimensions.width(5)),
+                      //     InkWell(
+                      //       onTap: () {
+                      //         AppNavigation.to(AppRoutes.createAccount);
+                      //       },
+                      //       child: CommonText.text(
+                      //         AppConstents.signUp,
+                      //         color: AppColors.primary,
+                      //         fontSize: AppDimensions.font(16),
+                      //         fontWeight: FontWeight.w500,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ),
-                    // SizedBox(height: AppDimensions.height(20)),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     CommonText.text(
-                    //       AppConstents.donThaveAccoount,
-                    //       fontSize: AppDimensions.font(16),
-                    //       fontWeight: FontWeight.w400,
-                    //       color: AppColors.blackColor,
-                    //     ),
-                    //     SizedBox(width: AppDimensions.width(5)),
-                    //     InkWell(
-                    //       onTap: () {
-                    //         AppNavigation.to(AppRoutes.createAccount);
-                    //       },
-                    //       child: CommonText.text(
-                    //         AppConstents.signUp,
-                    //         color: AppColors.primary,
-                    //         fontSize: AppDimensions.font(16),
-                    //         fontWeight: FontWeight.w500,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),

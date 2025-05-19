@@ -10,14 +10,14 @@ UserHistoryDetailsModel userHistoryDetailsModelFromJson(String str) =>
 class UserHistoryDetailsModel {
   String? msg;
 
-  UserHealthAnuraHistory? userHealthAnuraHistory;
+  UserHealthAnuraDetail? userHealthAnuraDetail;
   UserHealthBinahHistory? userHealthBinahHistory;
   String? success;
 
   UserHistoryDetailsModel({
     this.msg,
 
-    this.userHealthAnuraHistory,
+    this.userHealthAnuraDetail,
     this.userHealthBinahHistory,
     this.success,
   });
@@ -26,12 +26,10 @@ class UserHistoryDetailsModel {
       UserHistoryDetailsModel(
         msg: json["msg"] ?? "",
 
-        userHealthAnuraHistory:
-            json["userHealthAnuraHistory"] != null
-                ? UserHealthAnuraHistory.fromJson(
-                  json["userHealthAnuraHistory"],
-                )
-                : UserHealthAnuraHistory(),
+        userHealthAnuraDetail:
+            json["userHealthAnuraDetail"] != null
+                ? UserHealthAnuraDetail.fromJson(json["userHealthAnuraDetail"])
+                : UserHealthAnuraDetail(),
         userHealthBinahHistory:
             json["userHealthBinahDetail"] != null
                 ? UserHealthBinahHistory.fromJson(json["userHealthBinahDetail"])
@@ -40,7 +38,7 @@ class UserHistoryDetailsModel {
       );
 }
 
-class UserHealthAnuraHistory {
+class UserHealthAnuraDetail {
   String? userEmail;
   String? age;
   String? hRbpm;
@@ -71,7 +69,7 @@ class UserHealthAnuraHistory {
   String? tGRiskProb;
   String? physioScore;
 
-  UserHealthAnuraHistory({
+  UserHealthAnuraDetail({
     this.userEmail,
     this.age,
     this.hRbpm,
@@ -103,8 +101,8 @@ class UserHealthAnuraHistory {
     this.physioScore,
   });
 
-  factory UserHealthAnuraHistory.fromJson(Map<String, dynamic> json) =>
-      UserHealthAnuraHistory(
+  factory UserHealthAnuraDetail.fromJson(Map<String, dynamic> json) =>
+      UserHealthAnuraDetail(
         userEmail: json["userEmail"] ?? "",
         age: json["age"] ?? "",
         hRbpm: json["hRBPM"] ?? "",

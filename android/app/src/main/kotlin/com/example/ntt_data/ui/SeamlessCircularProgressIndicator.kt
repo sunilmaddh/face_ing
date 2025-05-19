@@ -3,6 +3,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ fun SeamlessCircularProgressIndicator(
     age: Double,
     borderColor: Color,
     drawArcColor: Color,
+    years:String="",
     modifier: Modifier = Modifier,
     size: Dp = 100.dp,
     baseStrokeWidth: Dp = 8.dp
@@ -71,10 +73,13 @@ fun SeamlessCircularProgressIndicator(
         }
 
         // Centered animated age text
-        Text(
+         Text(
             text = "${age.toInt()}",
             color = Color.Black,
             fontSize = 18.sp
         )
+
+
+
     }
 }

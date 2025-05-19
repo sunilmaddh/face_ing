@@ -26,7 +26,7 @@ class ShowGuestHistoryDetails {
         "key":
             "Hemoglobin A1C Risk"
             "",
-        "value": "",
+        "value": guestAnuraHistory.hBa1CRiskProb,
       },
 
       {
@@ -68,7 +68,7 @@ class ShowGuestHistoryDetails {
   }
 
   Future<List<Map<String, dynamic>>> fetchUserHistoryAnuraDetails(
-    UserHealthAnuraHistory guestAnuraHistory,
+    UserHealthAnuraDetail guestAnuraHistory,
   ) async {
     List<Map<String, dynamic>> listOfData = [
       {"key": "Overall Health Score", "value": guestAnuraHistory.healthScore},
@@ -91,7 +91,7 @@ class ShowGuestHistoryDetails {
         "key":
             "Hemoglobin A1C Risk"
             "",
-        "value": "",
+        "value": guestAnuraHistory.hBa1CRiskProb,
       },
 
       {
