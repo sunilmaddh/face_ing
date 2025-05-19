@@ -101,11 +101,12 @@ class ProfileController extends GetxController
       );
 
       ///this is for binah
-      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-      //     .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
-      ///this is for anura
       binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-          .fetchUserHistoryAnuraDetails(result.userHealthAnuraDetail!);
+          .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
+
+      ///this is for anura
+      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
+      //     .fetchUserHistoryAnuraDetails(result.userHealthAnuraDetail!);
       AppNavigation.to(AppRoutes.userHealthDatails);
     } else {
       binahHIstoryDetails.clear();

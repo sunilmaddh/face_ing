@@ -46,7 +46,7 @@ class AuthController extends GetxController
     var data = {
       "emailId": emailController.text,
       "password": passwordController.text,
-      "sDKType": "ANURA",
+      "sDKType": "BINAH",
     };
     debugPrint(data.toString());
     try {

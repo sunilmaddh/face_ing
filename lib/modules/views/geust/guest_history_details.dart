@@ -23,9 +23,9 @@ class GuestHistoryDetails extends StatelessWidget {
       body: Obx(
         () => ListView.separated(
           padding: EdgeInsets.all(20),
-          itemCount: _controller.anuraHIstoryDetails.length,
+          itemCount: _controller.binahHIstoryDetails.length,
           itemBuilder: (context, index) {
-            var result = _controller.anuraHIstoryDetails[index];
+            var result = _controller.binahHIstoryDetails[index];
             return Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Row(
@@ -36,7 +36,7 @@ class GuestHistoryDetails extends StatelessWidget {
                     fontSize: AppDimensions.font(14),
                     fontWeight: FontWeight.w500,
                   ),
-                  CommonText.text(result["value"]),
+                  CommonText.text(result["value"] ?? ""),
                 ],
               ),
             );
