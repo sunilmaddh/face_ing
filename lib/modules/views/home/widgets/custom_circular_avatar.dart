@@ -18,7 +18,7 @@ class CustomCircularAvatar extends StatelessWidget {
     return Center(
       child: CircleAvatar(
         radius: radius, // Size of the circle
-        backgroundColor: color, // Background color
+        // backgroundImage:Image.memory(bytes), // Background color
         child: Center(child: widget),
       ),
     );

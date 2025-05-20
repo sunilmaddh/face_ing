@@ -175,6 +175,29 @@ class AddNewGuestScreen extends StatelessWidget {
                                             "Please accept term and conditions",
                                       );
                                     } else {
+                                      // DateTime birthDate = DateTime.parse(
+                                      //   _geustController.dobTextController.text,
+                                      // );
+                                      DateTime parsedDate = DateTime.parse(
+                                        _geustController.dobTextController.text
+                                            .replaceAll("/", "-"),
+                                      );
+                                      double age =
+                                          _geustController
+                                              .calculateAge(parsedDate)
+                                              .toDouble();
+
+                                      double weight = double.parse(
+                                        _geustController
+                                            .weightTextController
+                                            .text,
+                                      );
+                                      double height = double.parse(
+                                        _geustController
+                                            .heightTextController
+                                            .text,
+                                      );
+
                                       var userID = await StorageHelper.read(
                                         "userID",
                                       );
@@ -182,18 +205,29 @@ class AddNewGuestScreen extends StatelessWidget {
                                           await StorageHelper.read(
                                             "access-token",
                                           );
-                                      controller.screenInFocus().whenComplete(
-                                        () {
-                                          _geustController.scanType.value =
-                                              "guest";
-                                          AppNavigation.off(
-                                            AppRoutes.mesurementScreen,
-                                            arguments: {
-                                              "scanType": "add-guest",
-                                            },
-                                          );
-                                        },
+                                      debugPrint(
+                                        "user Information ${_geustController.selectionType.value}s$weight$height,$age",
                                       );
+
+                                      controller
+                                          .screenInFocus(
+                                            _geustController
+                                                .selectionType
+                                                .value,
+                                            age,
+                                            weight,
+                                            height,
+                                          )
+                                          .whenComplete(() {
+                                            _geustController.scanType.value =
+                                                "guest";
+                                            AppNavigation.off(
+                                              AppRoutes.mesurementScreen,
+                                              arguments: {
+                                                "scanType": "add-guest",
+                                              },
+                                            );
+                                          });
                                       // "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAzc3VuaWxtYWRkaGVzaXlhNDI4QGdtYWlsLmNvbSIsImlhdCI6MTc0NjY5ODgxMCwiZXhwIjoxNzQ2Nzg1MjEwfQ.77fVLLy1ha1zdWOnNCZOX6vgHTMMjZXXGXrFnixBpbc";
                                       // await StorageHelper.read(
                                       //   "access-token",

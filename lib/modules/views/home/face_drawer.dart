@@ -108,12 +108,15 @@ class FaceDrawer extends StatelessWidget {
                                                 .uploadImageResponseModel
                                                 .value !=
                                             null
-                                        ? Image.network(
-                                          _profileController
-                                              .uploadImageResponseModel
-                                              .value
-                                              .imagePath
-                                              .toString(),
+                                        ? ClipOval(
+                                          child: Image.network(
+                                            _profileController
+                                                .uploadImageResponseModel
+                                                .value
+                                                .imagePath
+                                                .toString(),
+                                            fit: BoxFit.contain,
+                                          ),
                                         )
                                         : _profileController
                                             .userImage
@@ -124,6 +127,7 @@ class FaceDrawer extends StatelessWidget {
                                               .value
                                               .imagePath
                                               .toString(),
+                                          fit: BoxFit.fill,
                                         )
                                         : CommonText.text(
                                           _profileController.userName.isNotEmpty
@@ -185,18 +189,18 @@ class FaceDrawer extends StatelessWidget {
               subtitle: "User history data",
               onTap: () => AppNavigation.to(AppRoutes.userHistoryList),
             ),
-            _buildListTile(
-              icon: AppAssets.notification,
-              title: "Push Notification",
-              subtitle: "Manage notifications and more",
-              trailing: Switch(
-                value: true,
-                onChanged: (value) {
-                  // Handle switch toggle logic
-                },
-              ),
-              onTap: () {},
-            ),
+            // _buildListTile(
+            //   icon: AppAssets.notification,
+            //   title: "Push Notification",
+            //   subtitle: "Manage notifications and more",
+            //   trailing: Switch(
+            //     value: true,
+            //     onChanged: (value) {
+            //       // Handle switch toggle logic
+            //     },
+            //   ),
+            //   onTap: () {},
+            // ),
             _buildListTile(
               icon: AppAssets.logout,
               title: "Logout",

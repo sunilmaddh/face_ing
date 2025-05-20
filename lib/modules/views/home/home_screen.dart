@@ -8,6 +8,7 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart'
     show NativeCaller;
+import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final controller = Get.find<MeasurementController>();
   final gcontroller = Get.find<GeustController>();
+  final authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +80,22 @@ class HomeScreen extends StatelessWidget {
 
                   onPressed: () async {
                     gcontroller.isLoading.value = true;
+
+                    var result =
+                        authController
+                            .loginResponseModel
+                            .value
+                            .commonUserDetailsDao;
+
+                    DateTime parsedDate = DateTime.parse(
+                      result!.userDob!.replaceAll("/", "-"),
+                    );
+                    double age =
+                        gcontroller.calculateAge(parsedDate).toDouble();
+
+                    double weight = double.parse(result.userWeight!);
+                    double height = double.parse(result.userHeight!);
+
                     // var userID = await StorageHelper.read("userID");
                     // var accessToken = await StorageHelper.read("access-token");
                     // Map<String, dynamic> data = {
@@ -85,15 +103,28 @@ class HomeScreen extends StatelessWidget {
                     //   "token": accessToken,
                     //   "scanType": "user",
                     // };
+                    controller.isMeasurementCanceled.value = false;
                     Future.delayed(Duration(seconds: 2), () {
                       gcontroller.isLoading.value = false;
+
+                      debugPrint(
+                        "User data $weight ,$height, ${result.userGender},$age",
+                      );
+
                       // NativeCaller.startFaceScan(data);
-                      controller.screenInFocus().whenComplete(() {
-                        AppNavigation.to(
-                          AppRoutes.mesurementScreen,
-                          arguments: {"scanType": "user"},
-                        );
-                      });
+                      controller
+                          .screenInFocus(
+                            result.userGender ?? "",
+                            age,
+                            weight,
+                            height,
+                          )
+                          .whenComplete(() {
+                            AppNavigation.to(
+                              AppRoutes.mesurementScreen,
+                              arguments: {"scanType": "user"},
+                            );
+                          });
                     });
                   },
                 ),

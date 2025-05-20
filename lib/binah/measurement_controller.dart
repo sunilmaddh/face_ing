@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:biosensesignal_flutter_sdk/session/demographics/sex.dart';
+import 'package:biosensesignal_flutter_sdk/session/smoking_status.dart';
+import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -35,7 +38,7 @@ class MeasurementController extends GetxController
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
   final _geustController = Get.find<GeustController>();
   final licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
-  final measurementDuration = 35;
+  final measurementDuration = 60;
   Session? _session;
   final Rx<SessionState?> sessionState = Rx<SessionState?>(null);
   final RxnString error = RxnString();
@@ -88,11 +91,16 @@ class MeasurementController extends GetxController
     });
   }
 
-  Future<void> screenInFocus() async {
+  Future<void> screenInFocus(
+    String genderType,
+    double age,
+    double weight,
+    double height,
+  ) async {
     _requestCameraPermission().then((granted) {
       if (granted) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
-          await createSession();
+          await createSession(genderType, age, weight, height);
         });
       }
     });
@@ -239,13 +247,28 @@ class MeasurementController extends GetxController
   @override
   void onLicenseInfo(LicenseInfo licenseInfo) {}
 
-  Future<void> createSession() async {
+  Future<void> createSession(
+    String genderType,
+    double age,
+    double weight,
+    double height,
+  ) async {
     // if (_session != null) {
     //   await _terminateSession();
     // }
     // _reset();
+
+    debugPrint("user2 Information $genderType$weight$height,$age");
+    var userInformation = UserInformation(
+      sex: genderType == "Male" ? Sex.male : Sex.female,
+      age: 30.0,
+      weight: weight,
+      height: height,
+      smokingStatus: SmokingStatus.nonSmoker,
+    );
     try {
       _session = await FaceSessionBuilder()
+          .withUserInformation(userInformation)
           .withImageDataListener(this)
           .withVitalSignsListener(this)
           .withSessionInfoListener(this)

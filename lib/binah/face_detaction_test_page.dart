@@ -39,8 +39,8 @@ class FaceDetectionCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = 300;
-    double height = 380;
+    double width = 330;
+    double height = 400;
 
     return SizedBox(
       width: width,

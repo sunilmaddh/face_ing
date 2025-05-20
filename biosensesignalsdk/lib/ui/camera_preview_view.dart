@@ -16,8 +16,8 @@ class CameraPreviewView extends StatelessWidget {
           clipBehavior: Clip.values.last,
           // borderRadius: BorderRadius.circular(80),
           child: const SizedBox(
-            width: 300,
-            height: 380,
+            width: 330,
+            height: 400,
             child: AndroidView(
               viewType: _viewType,
               creationParams: null,

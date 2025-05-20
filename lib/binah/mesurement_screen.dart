@@ -44,7 +44,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                 Container(
                   color: Colors.white,
                   width: double.infinity,
-                  padding: const EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 120),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,15 +75,18 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                     ],
                   ),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Obx(
-                    () =>
-                        (controller.sessionState.value == null ||
-                                controller.sessionState.value ==
-                                    SessionState.initializing)
-                            ? Container()
-                            : CameraPreview(),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 190),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Obx(
+                      () =>
+                          (controller.sessionState.value == null ||
+                                  controller.sessionState.value ==
+                                      SessionState.initializing)
+                              ? Container()
+                              : CameraPreview(),
+                    ),
                   ),
                 ),
               ],
