@@ -28,5 +28,6 @@ class AppAssets {
       upload = "$baseUrlSvg/upload.svg",
       heartAge = "$baseUrlSvg/heart_age.svg",
       progressCircle = "$baseUrlSvg/progress_circle.svg",
+      logo = "$baseUrlSvg/logo.svg",
       homeMenu = "$baseUrlSvg/home_menu.svg";
 }
