@@ -38,7 +38,7 @@ class MeasurementController extends GetxController
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
   final _geustController = Get.find<GeustController>();
   final licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
-  final measurementDuration = 60;
+  final measurementDuration = 40;
   Session? _session;
   final Rx<SessionState?> sessionState = Rx<SessionState?>(null);
   final RxnString error = RxnString();
@@ -59,7 +59,7 @@ class MeasurementController extends GetxController
     super.onInit();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 60),
+      duration: const Duration(seconds: 40),
     );
     animationController.addListener(() {
       progress.value = animationController.value;
@@ -97,11 +97,15 @@ class MeasurementController extends GetxController
     double weight,
     double height,
   ) async {
+    debugPrint("Permistion request");
     _requestCameraPermission().then((granted) {
       if (granted) {
+        debugPrint("Permistion granted");
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           await createSession(genderType, age, weight, height);
         });
+      } else {
+        debugPrint("Permistion denied");
       }
     });
   }

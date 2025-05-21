@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/camera_preview.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 
@@ -44,7 +45,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                 Container(
                   color: Colors.white,
                   width: double.infinity,
-                  padding: const EdgeInsets.only(bottom: 120),
+                  padding: EdgeInsets.only(bottom: AppDimensions.height(120)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,28 +56,28 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                 ? Text(
                                   "Measurement canceled.",
 
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppColors.backArrowColor,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 24,
+                                    fontSize: AppDimensions.font(24),
                                   ),
                                 )
                                 : Text(
                                   controller.imageValidityString.value,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 18,
+                                    fontSize: AppDimensions.font(18),
                                   ),
                                 ),
                       ),
 
-                      SizedBox(height: 30),
+                      SizedBox(height: AppDimensions.height(30)),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 190),
+                  padding: EdgeInsets.only(bottom: AppDimensions.height(190)),
                   child: Align(
                     alignment: Alignment.center,
                     child: Obx(

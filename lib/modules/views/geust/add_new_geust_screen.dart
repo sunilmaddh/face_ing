@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
@@ -100,6 +101,7 @@ class AddNewGuestScreen extends StatelessWidget {
 
                               /// Weight Field
                               CustomFormField(
+                                keyboardType: TextInputType.number,
                                 validator: (weight) {
                                   if (weight == null || weight.isEmpty) {
                                     return "Please enter weight";
@@ -115,6 +117,7 @@ class AddNewGuestScreen extends StatelessWidget {
 
                               /// Height Field
                               CustomFormField(
+                                keyboardType: TextInputType.number,
                                 validator: (height) {
                                   if (height == null || height.isEmpty) {
                                     return "Please enter height";
@@ -141,7 +144,9 @@ class AddNewGuestScreen extends StatelessWidget {
                       bottom: AppDimensions.width(20.0),
                     ),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height - 608,
+                      height:
+                          MediaQuery.of(context).size.height -
+                          AppDimensions.height(590),
                       width: MediaQuery.of(context).size.width,
                       child: Stack(
                         children: [
@@ -153,7 +158,7 @@ class AddNewGuestScreen extends StatelessWidget {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: SizedBox(
-                              width: AppDimensions.width(180),
+                              width: AppDimensions.width(230),
                               child: ScanButton(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {

@@ -25,8 +25,8 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: AppDimensions.width(145),
-      height: AppDimensions.height(53),
+      width: AppDimensions.width(155),
+      height: AppDimensions.height(50),
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed, // Disable button when loading
         style: ElevatedButton.styleFrom(
@@ -34,10 +34,10 @@ class PrimaryButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
-          padding: EdgeInsets.symmetric(
-            vertical: padding,
-            horizontal: padding * 2,
-          ),
+          // padding: EdgeInsets.symmetric(
+          //   vertical: padding,
+          //   horizontal: padding * 2,
+          // ),
           shadowColor: Colors.black26,
           elevation: 4,
         ),
@@ -50,8 +50,8 @@ class PrimaryButton extends StatelessWidget {
                   text,
                   style: TextStyle(
                     color: textColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: AppDimensions.font(16),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
       ),

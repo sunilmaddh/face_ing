@@ -26,10 +26,17 @@ class CameraPreviewView extends StatelessWidget {
           ),
         );
       } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-        return const UiKitView(
-            viewType: _viewType,
-            creationParams: null,
-            creationParamsCodec: StandardMessageCodec());
+        return ClipOval(
+          clipBehavior: Clip.values.last,
+          child: const SizedBox(
+            width: 330,
+            height: 415,
+            child: UiKitView(
+                viewType: _viewType,
+                creationParams: null,
+                creationParamsCodec: StandardMessageCodec()),
+          ),
+        );
       } else {
         return const Text("Not supported");
       }

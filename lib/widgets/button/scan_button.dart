@@ -34,7 +34,7 @@ class ScanButton extends StatelessWidget {
         width: AppDimensions.width(width),
         height: AppDimensions.height(50),
         duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(vertical: padding, horizontal: 12),
+        // padding: EdgeInsets.symmetric(vertical: padding, horizontal: 12),
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(borderRadius),
@@ -58,9 +58,9 @@ class ScanButton extends StatelessWidget {
                         "Start face Scan",
                         style: TextStyle(
                           color: textColor,
-                          fontSize: 16,
+                          fontSize: AppDimensions.font(16),
 
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],

@@ -59,6 +59,7 @@ mixin CommonMixin on GetxController {
     var imageUrl = await profileUploadService.pickImageFromCamera();
     if (imageUrl != null) {
       isProfile.value = true;
+      debugPrint("uploadImageResponseModel $imageUrl");
       Map<String, dynamic> responseData = await authServices.uploadDocument(
         profileUrl.value,
         userID,

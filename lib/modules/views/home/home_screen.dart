@@ -29,8 +29,11 @@ class HomeScreen extends StatelessWidget {
       drawer: FaceDrawer(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30),
-          child: Column(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimensions.width(10.0),
+            vertical: AppDimensions.width(30.0),
+          ),
+          child: ListView(
             children: [
               Row(
                 children: [
@@ -43,8 +46,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         child: CommonAssets.svgAsset(
                           AppAssets.homeMenu,
-                          width: 60,
-                          height: 60,
+                          width: AppDimensions.width(60),
+                          height: AppDimensions.height(60),
                         ),
                       ), // Keeps at the start
                     ),
@@ -62,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: AppDimensions.height(60)),
+              SizedBox(height: AppDimensions.height(30)),
               CommonAssets.svgAsset(AppAssets.scanIllustration),
               SizedBox(height: AppDimensions.height(30)),
               CommonText.text(
@@ -72,11 +75,11 @@ class HomeScreen extends StatelessWidget {
                 maxLines: 2,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 110),
+              SizedBox(height: AppDimensions.height(75)),
               Obx(
                 () => ScanButton(
                   isLoading: gcontroller.isLoading.value,
-                  width: 180,
+                  width: AppDimensions.height(230),
 
                   onPressed: () async {
                     gcontroller.isLoading.value = true;
