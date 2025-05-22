@@ -23,10 +23,10 @@ class FaceDrawer extends StatelessWidget {
   void editProfilePicture() {
     ImagePickerBottomsheet.showImagePickerBottomSheet(
       onGalleryTap: () async {
-        await _profileController.uploadProfileFromGallery();
+        await _profileController.uploadProfileFromGallery("false");
       },
       onCameraTap: () async {
-        await _profileController.uploadProfileFromCamera();
+        await _profileController.uploadProfileFromCamera("false");
       },
     );
   }
@@ -103,42 +103,28 @@ class FaceDrawer extends StatelessWidget {
                           children: [
                             Obx(
                               () => CustomCircularAvatar(
-                                widget:
+                                image:
                                     _profileController
                                                 .uploadImageResponseModel
-                                                .value !=
-                                            null
-                                        ? ClipOval(
-                                          child: Image.network(
-                                            _profileController
-                                                .uploadImageResponseModel
                                                 .value
-                                                .imagePath
-                                                .toString(),
-                                            fit: BoxFit.contain,
-                                          ),
-                                        )
-                                        : _profileController
-                                            .userImage
-                                            .isNotEmpty
-                                        ? Image.network(
-                                          _profileController
-                                              .uploadImageResponseModel
-                                              .value
-                                              .imagePath
-                                              .toString(),
-                                          fit: BoxFit.fill,
-                                        )
-                                        : CommonText.text(
-                                          _profileController.userName.isNotEmpty
-                                              ? _profileController.userName
-                                                  .substring(0, 1)
-                                                  .toUpperCase()
-                                              : "",
-                                          color: AppColors.btntext,
-                                          fontSize: AppDimensions.font(30),
-                                          fontWeight: FontWeight.w700,
-                                        ),
+                                                .imagePath !=
+                                            null
+                                        ? _profileController
+                                            .uploadImageResponseModel
+                                            .value
+                                            .imagePath
+                                            .toString()
+                                        : _profileController.userImage.value,
+                                widget: CommonText.text(
+                                  _profileController.userName.isNotEmpty
+                                      ? _profileController.userName
+                                          .substring(0, 1)
+                                          .toUpperCase()
+                                      : "",
+                                  color: AppColors.btntext,
+                                  fontSize: AppDimensions.font(30),
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                             Align(

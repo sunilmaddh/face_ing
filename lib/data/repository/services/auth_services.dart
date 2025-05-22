@@ -46,11 +46,13 @@ class AuthServices extends BaseApiService {
   Future<Map<String, dynamic>> uploadDocument(
     File? imagePath,
     String userID,
+    String imageType,
   ) async {
     Response? response = await uploadImage(
       ApiEndpoints.profileUpload,
       imagePath!.path,
       userID,
+      imageType,
     );
     debugPrint(
       "ResponseCode: ${response!.statusCode}= ResponseBody${response.body}",

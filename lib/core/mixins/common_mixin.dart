@@ -27,7 +27,7 @@ mixin CommonMixin on GetxController {
   ProfileUploadService profileUploadService = ProfileUploadService();
   AuthServices authServices = AuthServices();
 
-  Future<void> uploadProfileFromGallery() async {
+  Future<void> uploadProfileFromGallery(String imageType) async {
     var imageUrl = await profileUploadService.pickImageFromGallery();
     if (imageUrl != null) {
       isProfile.value = true;
@@ -36,6 +36,7 @@ mixin CommonMixin on GetxController {
       Map<String, dynamic> responseData = await authServices.uploadDocument(
         profileUrl.value,
         userID,
+        imageType,
       );
       int statusCode = responseData["responseCode"];
       debugPrint("uploadImageResponseModel $statusCode");
@@ -54,15 +55,17 @@ mixin CommonMixin on GetxController {
     }
   }
 
-  Future<void> uploadProfileFromCamera() async {
-    var userID = await StorageHelper.read("userID");
+  Future<void> uploadProfileFromCamera(String imageType) async {
     var imageUrl = await profileUploadService.pickImageFromCamera();
     if (imageUrl != null) {
       isProfile.value = true;
+      profileUrl.value = File(imageUrl.path);
+      var userID = await StorageHelper.read("userID");
       debugPrint("uploadImageResponseModel $imageUrl");
       Map<String, dynamic> responseData = await authServices.uploadDocument(
         profileUrl.value,
         userID,
+        imageType,
       );
       int statusCode = responseData["responseCode"];
       debugPrint("uploadImageResponseModel $statusCode");
@@ -71,6 +74,10 @@ mixin CommonMixin on GetxController {
         debugPrint("uploadImageResponseModel $result");
 
         uploadImageResponseModel.value = result;
+        userImage.value = uploadImageResponseModel.value.imagePath!;
+        debugPrint(
+          "uploadImageResponseModel ${uploadImageResponseModel.value}",
+        );
 
         // userImage.value = uploadImageResponseModel.value.imagePath!;
       }

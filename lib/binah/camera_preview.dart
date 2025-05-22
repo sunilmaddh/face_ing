@@ -24,7 +24,7 @@ class _CameraPreviewState extends State<CameraPreview> {
         child: SizedBox(
           width: double.infinity,
           child: AspectRatio(
-            aspectRatio: AppDimensions.height(0.90),
+            aspectRatio: 0.90,
             child: Stack(
               children: [
                 Align(

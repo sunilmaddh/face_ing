@@ -322,11 +322,11 @@ class AuthController extends GetxController
   }
 
   Future<void> callUploadProfileFromGallery() async {
-    return uploadProfileFromGallery();
+    return uploadProfileFromGallery("true");
   }
 
   Future<void> callUploadProfileFromCamera() async {
-    return uploadProfileFromCamera();
+    return uploadProfileFromCamera("true");
   }
 
   clearData() {

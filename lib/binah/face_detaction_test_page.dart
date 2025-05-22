@@ -47,7 +47,7 @@ class FaceDetectionCircle extends StatelessWidget {
             : AppDimensions.width(400);
     double height =
         Platform.isAndroid
-            ? AppDimensions.height(400)
+            ? AppDimensions.width(400)
             : AppDimensions.height(520);
 
     return SizedBox(

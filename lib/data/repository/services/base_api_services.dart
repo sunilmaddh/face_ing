@@ -175,6 +175,7 @@ abstract class BaseApiService {
     String endpoint,
     filepath,
     String userID,
+    String imageType,
   ) async {
     var accessToken = await StorageHelper.read("access-token");
     Uri uri = Uri.http(baseUrl, endpoint);
@@ -184,7 +185,7 @@ abstract class BaseApiService {
     var request = http.MultipartRequest('PUT', Uri.http(baseUrl, endP));
 
     request.files.add(await http.MultipartFile.fromPath('file', filepath));
-    request.fields["isSignup"] = "true";
+    request.fields["isSignup"] = imageType;
 
     request.headers.addAll({
       'Content-Type': 'application/json',
