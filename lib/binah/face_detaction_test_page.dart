@@ -43,18 +43,18 @@ class FaceDetectionCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     double width =
         Platform.isAndroid
-            ? AppDimensions.width(330)
-            : AppDimensions.width(400);
+            ? AppDimensions.width(310)
+            : AppDimensions.width(370);
     double height =
         Platform.isAndroid
-            ? AppDimensions.width(400)
-            : AppDimensions.height(520);
+            ? AppDimensions.width(370)
+            : AppDimensions.height(460);
 
     return SizedBox(
       width: width,
       height: height,
       child:
-          isStarted
+          !isStarted
               ? Stack(
                 alignment: Alignment.center,
                 children: [
@@ -81,7 +81,7 @@ class FaceDetectionCircle extends StatelessWidget {
               : DottedBorder(
                 borderType: BorderType.values.last,
                 dashPattern: [6, 4],
-                color: Colors.white,
+                color: Colors.grey,
                 strokeWidth: 3,
                 padding: EdgeInsets.zero,
                 child: SizedBox(width: width, height: height),
