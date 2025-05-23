@@ -54,7 +54,7 @@ class FaceDetectionCircle extends StatelessWidget {
       width: width,
       height: height,
       child:
-          !isStarted
+          isStarted
               ? Stack(
                 alignment: Alignment.center,
                 children: [
@@ -67,8 +67,8 @@ class FaceDetectionCircle extends StatelessWidget {
                     child: SizedBox(width: width, height: height),
                   ),
                   SizedBox(
-                    width: width + 10,
-                    height: height + 10,
+                    width: width,
+                    height: height,
                     child: CircularProgressIndicator(
                       value: progress,
                       strokeWidth: 6,

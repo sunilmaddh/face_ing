@@ -163,6 +163,9 @@
 //   }
 // }
 
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
@@ -190,12 +193,13 @@ class ShimmerLoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Shimmer Animation')),
-      body: ListView.builder(
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return const ShimmerListItem();
-        },
-      ),
+      body: HomeScreen(),
+      //  ListView.builder(
+      //   itemCount: 6,
+      //   itemBuilder: (context, index) {
+      //     return const ShimmerListItem();
+      //   },
+      // ),
     );
   }
 }
@@ -254,4 +258,204 @@ class ShimmerListItem extends StatelessWidget {
       ),
     );
   }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String thumbText = "0";
+  double _progress = 0.0;
+  Timer? _timer;
+
+  void _startProgress() {
+    _timer?.cancel();
+    _progress = 0.0;
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      setState(() {
+        _progress += 0.01;
+        if (_progress >= 1.0) {
+          _progress = 1.0;
+          _timer?.cancel();
+        }
+        thumbText = (_progress * 100).toStringAsFixed(0);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Circular SeekBar')),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomCircularSeekBar(
+            thumbText: thumbText,
+            progress: _progress,
+            onChanged: (value) {
+              setState(() {
+                thumbText = (value * 100).toStringAsFixed(0);
+              });
+            },
+          ),
+          const SizedBox(height: 40),
+          ElevatedButton(
+            onPressed: _startProgress,
+            child: const Text("Start Timer"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomCircularSeekBar extends StatefulWidget {
+  final double size;
+  final double width;
+  final double height;
+  final double strokeWidth;
+  final Color trackColor;
+  final Color progressColor;
+  final Color thumbColor;
+  final String thumbText;
+  final double progress;
+  final Function(double) onChanged;
+
+  const CustomCircularSeekBar({
+    super.key,
+    this.size = 200,
+    this.height = 200,
+    this.width = 200,
+    this.strokeWidth = 10,
+    this.trackColor = Colors.grey,
+    this.progressColor = Colors.blue,
+    this.thumbColor = Colors.red,
+    this.thumbText = "",
+    this.progress = 0.0,
+    required this.onChanged,
+  });
+
+  @override
+  State<CustomCircularSeekBar> createState() => _CircularSeekBarState();
+}
+
+class _CircularSeekBarState extends State<CustomCircularSeekBar> {
+  double get _angle => widget.progress * 2 * pi;
+
+  Offset _polarToCartesian(double angle) {
+    final radius = widget.size / 2;
+    final x = radius + radius * cos(angle - pi / 2);
+    final y = radius + radius * sin(angle - pi / 2);
+    return Offset(x, y);
+  }
+
+  double _globalToAngle(Offset globalPosition) {
+    final local = (context.findRenderObject() as RenderBox).globalToLocal(
+      globalPosition,
+    );
+    final center = Offset(widget.size / 2, widget.size / 2);
+    final dx = local.dx - center.dx;
+    final dy = local.dy - center.dy;
+    final angle = atan2(dy, dx) + pi / 2;
+    return (angle < 0) ? (2 * pi + angle) : angle;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final thumbOffset = _polarToCartesian(_angle);
+
+    return GestureDetector(
+      onPanUpdate: (details) {
+        final angle = _globalToAngle(details.globalPosition);
+        final progress = angle / (2 * pi);
+        widget.onChanged(progress);
+      },
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            width: widget.width,
+            height: widget.height,
+            child: CustomPaint(
+              painter: _CircularSeekBarPainter(
+                angle: _angle,
+                strokeWidth: widget.strokeWidth,
+                trackColor: widget.trackColor,
+                progressColor: widget.progressColor,
+              ),
+            ),
+          ),
+          Positioned(
+            left: thumbOffset.dx - widget.strokeWidth,
+            top: thumbOffset.dy - widget.strokeWidth,
+            child: Container(
+              alignment: Alignment.center,
+              width: widget.strokeWidth * 2,
+              height: widget.strokeWidth * 2,
+              decoration: BoxDecoration(
+                color: widget.thumbColor,
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                widget.thumbText,
+                style: const TextStyle(fontSize: 10, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CircularSeekBarPainter extends CustomPainter {
+  final double angle;
+  final double strokeWidth;
+  final Color trackColor;
+  final Color progressColor;
+
+  _CircularSeekBarPainter({
+    required this.angle,
+    required this.strokeWidth,
+    required this.trackColor,
+    required this.progressColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2;
+
+    final trackPaint =
+        Paint()
+          ..color = trackColor
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = strokeWidth;
+
+    final progressPaint =
+        Paint()
+          ..color = progressColor
+          ..style = PaintingStyle.stroke
+          ..strokeCap = StrokeCap.round
+          ..strokeWidth = strokeWidth;
+
+    canvas.drawCircle(center, radius, trackPaint);
+
+    final rect = Rect.fromCircle(center: center, radius: radius);
+    canvas.drawArc(rect, -pi / 2, angle, false, progressPaint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }

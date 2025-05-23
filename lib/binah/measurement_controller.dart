@@ -176,32 +176,32 @@ class MeasurementController extends GetxController
     debugPrint(
       "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
     );
-    if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
-      startStopButtonClicked();
-      if (scanType.value == "add-guest") {
-        _geustController.addGuest(vitalsResults.value).whenComplete(() {
-          AppNavigation.off(
-            AppRoutes.allReportScreen,
-            action: () {
-              _geustController.clearData();
-              _geustController.getGeustHistory();
-            },
-          );
-        });
-      } else {
-        _geustController
-            .storeBinahHealthForUser(vitalsResults.value)
-            .whenComplete(() {
-              AppNavigation.off(
-                AppRoutes.allReportScreen,
-                action: () {
-                  _geustController.clearData();
-                  _geustController.getGeustHistory();
-                },
-              );
-            });
-      }
-    }
+    // if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
+    //   startStopButtonClicked();
+    //   if (scanType.value == "add-guest") {
+    //     _geustController.addGuest(vitalsResults.value).whenComplete(() {
+    //       AppNavigation.off(
+    //         AppRoutes.allReportScreen,
+    //         action: () {
+    //           _geustController.clearData();
+    //           _geustController.getGeustHistory();
+    //         },
+    //       );
+    //     });
+    //   } else {
+    //     _geustController
+    //         .storeBinahHealthForUser(vitalsResults.value)
+    //         .whenComplete(() {
+    //           AppNavigation.off(
+    //             AppRoutes.allReportScreen,
+    //             action: () {
+    //               _geustController.clearData();
+    //               _geustController.getGeustHistory();
+    //             },
+    //           );
+    //         });
+    //   }
+    // }
   }
 
   @override

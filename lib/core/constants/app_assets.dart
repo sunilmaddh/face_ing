@@ -29,5 +29,7 @@ class AppAssets {
       heartAge = "$baseUrlSvg/heart_age.svg",
       progressCircle = "$baseUrlSvg/progress_circle.svg",
       logo = "$baseUrlSvg/logo.svg",
+      redHeart = "$baseUrlPng/red-heart.png",
+      heartRed = "$baseUrlPng/redheart.jpg",
       homeMenu = "$baseUrlSvg/home_menu.svg";
 }

@@ -1,8 +1,10 @@
 import 'package:biosensesignal_flutter_sdk/session/session_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/camera_preview.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -53,13 +55,19 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                       Obx(
                         () =>
                             controller.isMeasurementCanceled.value
-                                ? Text(
-                                  "Measurement canceled.",
+                                ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 30.0,
+                                  ),
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    "The measurement was canceled. Please wait while we prepare to restart.",
+                                    style: TextStyle(
+                                      color: AppColors.backArrowColor,
+                                      fontWeight: FontWeight.w500,
 
-                                  style: TextStyle(
-                                    color: AppColors.backArrowColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: AppDimensions.font(24),
+                                      fontSize: AppDimensions.font(16),
+                                    ),
                                   ),
                                 )
                                 : Text(
@@ -73,6 +81,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                       ),
 
                       SizedBox(height: AppDimensions.height(30)),
+                      // Image.asset("assets/images/png/redheart.jpg"),
                     ],
                   ),
                 ),

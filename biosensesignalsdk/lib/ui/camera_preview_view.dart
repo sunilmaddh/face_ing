@@ -32,7 +32,8 @@ class CameraPreviewView extends StatelessWidget {
           ),
         );
       } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-        return ClipOval(
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(50.0),
           child: SizedBox(
             width: width + 10,
             height: height + 20, // slightly taller for iOS if needed
