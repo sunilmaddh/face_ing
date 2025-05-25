@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
@@ -203,13 +204,12 @@ class AddNewGuestScreen extends StatelessWidget {
                                             .text,
                                       );
 
-                                      var userID = await StorageHelper.read(
-                                        "userID",
-                                      );
+                                      var userID =
+                                          await IndoSharedPreference.instance
+                                              .getUserId();
                                       var accessToken =
-                                          await StorageHelper.read(
-                                            "access-token",
-                                          );
+                                          await IndoSharedPreference.instance
+                                              .getAccessToken();
                                       debugPrint(
                                         "user Information ${_geustController.selectionType.value}s$weight$height,$age",
                                       );

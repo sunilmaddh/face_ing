@@ -6,6 +6,7 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/data/models/add_geust_request_model.dart';
 import 'package:ntt_data/data/models/upload_image_response_model.dart';
@@ -32,7 +33,7 @@ mixin CommonMixin on GetxController {
     if (imageUrl != null) {
       isProfile.value = true;
       profileUrl.value = File(imageUrl.path);
-      var userID = await StorageHelper.read("userID");
+      var userID = await IndoSharedPreference.instance.getUserId();
       Map<String, dynamic> responseData = await authServices.uploadDocument(
         profileUrl.value,
         userID,
@@ -60,7 +61,7 @@ mixin CommonMixin on GetxController {
     if (imageUrl != null) {
       isProfile.value = true;
       profileUrl.value = File(imageUrl.path);
-      var userID = await StorageHelper.read("userID");
+      var userID = await IndoSharedPreference.instance.getUserId();
       debugPrint("uploadImageResponseModel $imageUrl");
       Map<String, dynamic> responseData = await authServices.uploadDocument(
         profileUrl.value,

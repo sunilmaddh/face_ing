@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
@@ -58,7 +57,7 @@ class AppMethods {
   }
 
   void logout() async {
-    StorageHelper.clear();
+    // StorageHelper.clear();
     AppNavigation.offAll(AppRoutes.loginScreen);
     // StorageHelper.remove("userId");
     // StorageHelper.remove("isOnboard");

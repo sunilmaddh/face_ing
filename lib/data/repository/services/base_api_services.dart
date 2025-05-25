@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
 
@@ -22,7 +23,7 @@ abstract class BaseApiService {
     String endpoint, {
     required Map<String, dynamic> data,
   }) async {
-    var accessToken = await StorageHelper.read("access-token");
+    var accessToken = await IndoSharedPreference.instance.getAccessToken();
     debugPrint("Access toke $accessToken");
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
@@ -50,7 +51,7 @@ abstract class BaseApiService {
     String endpoint, {
     required Map<String, dynamic> data,
   }) async {
-    var accessToken = await StorageHelper.read("access-token");
+    var accessToken = await IndoSharedPreference.instance.getAccessToken();
     debugPrint("Access toke $accessToken");
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
@@ -177,7 +178,7 @@ abstract class BaseApiService {
     String userID,
     String imageType,
   ) async {
-    var accessToken = await StorageHelper.read("access-token");
+    var accessToken = await IndoSharedPreference.instance.getAccessToken();
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint('URL  $uri');
     debugPrint('File  $filepath');

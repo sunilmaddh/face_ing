@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/onboard/onboarding_page_view.dart';
@@ -51,7 +52,7 @@ class CustomOnboardingScreen extends StatelessWidget {
                     return PrimaryButton(
                       onPressed: () {
                         if (currentIndex == pages.length - 1) {
-                          StorageHelper.write("isWalkThrough", "isWalk");
+                          IndoSharedPreference.instance.saveWalkScreen(true);
                           AppNavigation.to(AppRoutes.loginScreen);
                         } else {
                           _pageController.nextPage(

@@ -9,6 +9,7 @@ import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/guest_history_details_model.dart';
@@ -42,7 +43,7 @@ class GeustController extends GetxController
   RxString geustDob = ''.obs;
   RxBool isTermAccepted = false.obs;
   Future<void> getGeustHistory() async {
-    var userID = await StorageHelper.read("userID");
+    var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID};
     Map<String, dynamic> resposneData = await GeustServices()
         .getGeustHistoryService(data: data);
@@ -65,7 +66,7 @@ class GeustController extends GetxController
   }
 
   Future<void> getGeustDetails(String guestID) async {
-    var userID = await StorageHelper.read("userID");
+    var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID, "guestId": guestID};
 
     debugPrint(data.toString());
@@ -92,7 +93,7 @@ class GeustController extends GetxController
   Future<void> storeBinahHealthForUser(
     VitalSignsResults vitalSignResult,
   ) async {
-    var userID = await StorageHelper.read("userID");
+    var userID = await IndoSharedPreference.instance.getUserId();
     var data = {
       "userId": userID,
       "binahDetails": {
@@ -234,7 +235,7 @@ class GeustController extends GetxController
   }
 
   Future<void> addGuest(VitalSignsResults vitalSignResult) async {
-    var userID = await StorageHelper.read("userID");
+    var userID = await IndoSharedPreference.instance.getUserId();
     var data = {
       "guestDao": {
         "userId": userID,
@@ -377,8 +378,7 @@ class GeustController extends GetxController
   }
 
   Future<void> removeGuest({required var guestId}) async {
-    var userID = await StorageHelper.read("userID");
-
+    var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID, "guestId": guestId};
 
     debugPrint(data.toString());
