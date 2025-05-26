@@ -10,7 +10,6 @@ class OnboardController extends GetxController {
 
   Future<void> checkUserStatus() async {
     final userId = await _indoSharedPreference.getUserId();
-    AppSnackbar.show(title: "Message", message: userId);
     if (userId.isNotEmpty) {
       final isOnboard = await _indoSharedPreference.getOnBoard();
       if (isOnboard == "true") {
@@ -20,7 +19,6 @@ class OnboardController extends GetxController {
       }
     } else {
       final isWalk = await _indoSharedPreference.getWalkScreen();
-      AppSnackbar.show(title: "Message", message: isWalk.toString());
       if (isWalk == true) {
         AppNavigation.off(AppRoutes.loginScreen);
       } else {
