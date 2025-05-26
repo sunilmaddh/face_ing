@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
@@ -58,7 +59,10 @@ class AppMethods {
 
   void logout() async {
     // StorageHelper.clear();
+    await IndoSharedPreference.instance.saveUserId("");
+    await IndoSharedPreference.instance.saveOnBoard("false");
     AppNavigation.offAll(AppRoutes.loginScreen);
+
     // StorageHelper.remove("userId");
     // StorageHelper.remove("isOnboard");
     // StorageHelper.remove("authToken"); // If you store an auth token

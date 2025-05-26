@@ -50,9 +50,11 @@ class CustomOnboardingScreen extends StatelessWidget {
                   valueListenable: _currentIndex,
                   builder: (context, currentIndex, child) {
                     return PrimaryButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (currentIndex == pages.length - 1) {
-                          IndoSharedPreference.instance.saveWalkScreen(true);
+                          await IndoSharedPreference.instance.saveWalkScreen(
+                            true,
+                          );
                           AppNavigation.to(AppRoutes.loginScreen);
                         } else {
                           _pageController.nextPage(

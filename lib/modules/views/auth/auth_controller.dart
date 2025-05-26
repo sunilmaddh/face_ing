@@ -60,19 +60,19 @@ class AuthController extends GetxController
         var accessToken = header["accesstoken"];
         var refereshToken = header["refreshtoken"];
         debugPrint("Access token ${header["accesstoken"]}");
-        IndoSharedPreference.instance.saveAccessToken(accessToken);
-        IndoSharedPreference.instance.saveRefereshToken(refereshToken);
+        await IndoSharedPreference.instance.saveAccessToken(accessToken);
+        await IndoSharedPreference.instance.saveRefreshToken(refereshToken);
         var result = LoginResponseModel.fromJson(response["responseBody"]);
         loginResponseModel.value = result;
 
-        IndoSharedPreference.instance.saveAccessToken(
+        await IndoSharedPreference.instance.saveUserId(
           loginResponseModel.value.userId!,
         );
 
         if (loginResponseModel.value.success == "true") {
           if (loginResponseModel.value.success == "true" &&
               loginResponseModel.value.onBoarded == "false") {
-            IndoSharedPreference.instance.saveOnBoard(
+            await IndoSharedPreference.instance.saveOnBoard(
               loginResponseModel.value.onBoarded!,
             );
             AppNavigation.to(
@@ -80,7 +80,7 @@ class AuthController extends GetxController
               arguments: {"userId": loginResponseModel.value.userId},
             );
           } else {
-            IndoSharedPreference.instance.saveOnBoard(
+            await IndoSharedPreference.instance.saveOnBoard(
               loginResponseModel.value.onBoarded!,
             );
             userImage.value =
