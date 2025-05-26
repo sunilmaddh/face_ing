@@ -175,13 +175,13 @@ class AddNewGuestScreen extends StatelessWidget {
                                             "Please accept term and conditions",
                                       );
                                     } else {
-                                      var userID = await StorageHelper.read(
-                                        "userID",
-                                      );
-                                      var accessToken =
-                                          await StorageHelper.read(
-                                            "access-token",
-                                          );
+                                      // var userID = await StorageHelper.read(
+                                      //   "userID",
+                                      // );
+                                      // var accessToken =
+                                      //     await StorageHelper.read(
+                                      //       "access-token",
+                                      //     );
                                       // controller.screenInFocus().whenComplete(
                                       //   () {
                                       //     _geustController.scanType.value =
@@ -198,37 +198,37 @@ class AddNewGuestScreen extends StatelessWidget {
                                       // await StorageHelper.read(
                                       //   "access-token",
                                       // );
-                                      Map<String, dynamic> data = {
-                                        "userId": userID,
-                                        "name":
-                                            _geustController
-                                                .nameTextController
-                                                .text,
-                                        "gender":
-                                            _geustController
-                                                .selectionType
-                                                .value,
-                                        "dob":
-                                            _geustController
-                                                .dobTextController
-                                                .text, // Keep as string unless using DateTime
-                                        "weight":
-                                            _geustController
-                                                .weightTextController
-                                                .text,
-                                        "height":
-                                            _geustController
-                                                .heightTextController
-                                                .text,
-                                        "emailId":
-                                            _geustController
-                                                .dobTextController
-                                                .text,
-                                        "token": accessToken,
-                                        "scanType": "guest-user",
-                                      };
+                                      // Map<String, dynamic> data = {
+                                      //   "userId": userID,
+                                      //   "name":
+                                      //       _geustController
+                                      //           .nameTextController
+                                      //           .text,
+                                      //   "gender":
+                                      //       _geustController
+                                      //           .selectionType
+                                      //           .value,
+                                      //   "dob":
+                                      //       _geustController
+                                      //           .dobTextController
+                                      //           .text, // Keep as string unless using DateTime
+                                      //   "weight":
+                                      //       _geustController
+                                      //           .weightTextController
+                                      //           .text,
+                                      //   "height":
+                                      //       _geustController
+                                      //           .heightTextController
+                                      //           .text,
+                                      //   "emailId":
+                                      //       _geustController
+                                      //           .dobTextController
+                                      //           .text,
+                                      //   "token": accessToken,
+                                      //   "scanType": "guest-user",
+                                      // };
 
-                                      NativeCaller.startFaceScan(data);
+                                      // NativeCaller.startFaceScan(data);
                                     }
                                   }
                                 },
