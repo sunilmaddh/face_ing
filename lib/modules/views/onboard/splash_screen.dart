@@ -5,12 +5,13 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/modules/views/onboard/onboard_controller.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+  SplashScreen({super.key});
+  final _onboardController = Get.find<OnboardController>();
 
   @override
   Widget build(BuildContext context) {
     // Initialize the controller and trigger its logic
-    Future.microtask(() => Get.put(OnboardController()));
+    Future.microtask(() => _onboardController.checkUserStatus());
 
     return Scaffold(body: Center(child: SvgPicture.asset(AppAssets.logo)));
   }

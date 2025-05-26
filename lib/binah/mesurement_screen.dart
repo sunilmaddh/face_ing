@@ -29,9 +29,12 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    controller.isMeasurementCanceled.value = false;
-    controller.scanType.value = scanType;
-    controller.startStopButtonClicked();
+    Future.microtask(() {
+      controller.isMeasurementCanceled.value = false;
+      controller.scanType.value = scanType;
+      controller.startStopButtonClicked();
+    });
+
     return Scaffold(
       appBar: CustomAppBar(
         onTop: () {

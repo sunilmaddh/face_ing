@@ -38,7 +38,7 @@ class MeasurementController extends GetxController
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
   final _geustController = Get.find<GeustController>();
   final licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
-  final measurementDuration = 40;
+  final measurementDuration = 60;
   Session? _session;
   final Rx<SessionState?> sessionState = Rx<SessionState?>(null);
   final RxnString error = RxnString();
@@ -59,7 +59,7 @@ class MeasurementController extends GetxController
     super.onInit();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 40),
+      duration: const Duration(seconds: 60),
     );
     animationController.addListener(() {
       progress.value = animationController.value;
@@ -176,32 +176,32 @@ class MeasurementController extends GetxController
     debugPrint(
       "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
     );
-    // if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
-    //   startStopButtonClicked();
-    //   if (scanType.value == "add-guest") {
-    //     _geustController.addGuest(vitalsResults.value).whenComplete(() {
-    //       AppNavigation.off(
-    //         AppRoutes.allReportScreen,
-    //         action: () {
-    //           _geustController.clearData();
-    //           _geustController.getGeustHistory();
-    //         },
-    //       );
-    //     });
-    //   } else {
-    //     _geustController
-    //         .storeBinahHealthForUser(vitalsResults.value)
-    //         .whenComplete(() {
-    //           AppNavigation.off(
-    //             AppRoutes.allReportScreen,
-    //             action: () {
-    //               _geustController.clearData();
-    //               _geustController.getGeustHistory();
-    //             },
-    //           );
-    //         });
-    //   }
-    // }
+    if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
+      startStopButtonClicked();
+      if (scanType.value == "add-guest") {
+        _geustController.addGuest(vitalsResults.value).whenComplete(() {
+          AppNavigation.off(
+            AppRoutes.allReportScreen,
+            action: () {
+              _geustController.clearData();
+              _geustController.getGeustHistory();
+            },
+          );
+        });
+      } else {
+        _geustController
+            .storeBinahHealthForUser(vitalsResults.value)
+            .whenComplete(() {
+              AppNavigation.off(
+                AppRoutes.allReportScreen,
+                action: () {
+                  _geustController.clearData();
+                  _geustController.getGeustHistory();
+                },
+              );
+            });
+      }
+    }
   }
 
   @override

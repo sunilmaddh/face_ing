@@ -60,7 +60,7 @@ class AllReportScreen extends StatelessWidget {
                         child: ReportCard(
                           image: AppAssets.heartRate,
                           height: 190,
-                          title: "Plus RAte (Heart Rate)",
+                          title: "Pulse rate (Heart Rate)",
                           value: getVitalValue(VitalSignTypes.oxygenSaturation),
                           mass: "bpm",
                         ),

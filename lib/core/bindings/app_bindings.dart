@@ -11,7 +11,8 @@ class AppBindings extends Bindings {
     // Get.lazyPut<ApiServices>(() => ApiServices(), fenix: true);
     Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
     Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
-    Get.lazyPut<OnboardController>(() => OnboardController(), fenix: true);
+    Get.put(OnboardController());
+    // Get.lazyPut<OnboardController>(() => OnboardController(), fenix: true);
     Get.lazyPut<GeustController>(() => GeustController(), fenix: true);
     Get.lazyPut<MeasurementController>(
       () => MeasurementController(),
