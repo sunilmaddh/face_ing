@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart'
     show NativeCaller;
+import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -20,6 +22,7 @@ class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final controller = Get.find<MeasurementController>();
   final gcontroller = Get.find<GeustController>();
+  final authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,8 +30,11 @@ class HomeScreen extends StatelessWidget {
       drawer: FaceDrawer(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30),
-          child: Column(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimensions.width(10.0),
+            vertical: AppDimensions.width(30.0),
+          ),
+          child: ListView(
             children: [
               Row(
                 children: [
@@ -41,8 +47,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         child: CommonAssets.svgAsset(
                           AppAssets.homeMenu,
-                          width: 60,
-                          height: 60,
+                          width: AppDimensions.width(60),
+                          height: AppDimensions.height(60),
                         ),
                       ), // Keeps at the start
                     ),
@@ -60,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: AppDimensions.height(60)),
+              SizedBox(height: AppDimensions.height(30)),
               CommonAssets.svgAsset(AppAssets.scanIllustration),
               SizedBox(height: AppDimensions.height(30)),
               CommonText.text(
@@ -70,26 +76,30 @@ class HomeScreen extends StatelessWidget {
                 maxLines: 2,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 110),
+              SizedBox(height: AppDimensions.height(75)),
               Obx(
-                () => ScanButton(
-                  isLoading: gcontroller.isLoading.value,
-                  width: 180,
+                () => Center(
+                  child: ScanButton(
+                    isLoading: gcontroller.isLoading.value,
+                    width: AppDimensions.height(230),
 
-                  onPressed: () async {
-                    // gcontroller.isLoading.value = true;
-                    // var userID = await StorageHelper.read("userID");
-                    // var accessToken = await StorageHelper.read("access-token");
-                    // Map<String, dynamic> data = {
-                    //   "userId": userID,
-                    //   "token": accessToken,
-                    //   "scanType": "user",
-                    // };
-                    // Future.delayed(Duration(seconds: 2), () {
-                    //   gcontroller.isLoading.value = false;
-                    //   NativeCaller.startFaceScan(data);
-                    // });
-                  },
+                    onPressed: () async {
+                      gcontroller.isLoading.value = true;
+                      var userID =
+                          await IndoSharedPreference.instance.getUserId();
+                      var accessToken =
+                          await IndoSharedPreference.instance.getAccessToken();
+                      Map<String, dynamic> data = {
+                        "userId": userID,
+                        "token": accessToken,
+                        "scanType": "user",
+                      };
+                      Future.delayed(Duration(seconds: 2), () {
+                        gcontroller.isLoading.value = false;
+                        NativeCaller.startFaceScan(data);
+                      });
+                    },
+                  ),
                 ),
               ),
             ],

@@ -1,9 +1,12 @@
 import 'package:biosensesignal_flutter_sdk/session/session_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/camera_preview.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 
@@ -26,9 +29,12 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    controller.isMeasurementCanceled.value = false;
-    controller.scanType.value = scanType;
-    controller.startStopButtonClicked();
+    Future.microtask(() {
+      controller.isMeasurementCanceled.value = false;
+      controller.scanType.value = scanType;
+      controller.startStopButtonClicked();
+    });
+
     return Scaffold(
       appBar: CustomAppBar(
         onTop: () {
@@ -44,7 +50,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                 Container(
                   color: Colors.white,
                   width: double.infinity,
-                  padding: const EdgeInsets.only(bottom: 40),
+                  padding: EdgeInsets.only(bottom: AppDimensions.height(120)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,38 +58,48 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                       Obx(
                         () =>
                             controller.isMeasurementCanceled.value
-                                ? Text(
-                                  "Measurement canceled.",
+                                ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 30.0,
+                                  ),
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    "The measurement was canceled. Please wait while we prepare to restart.",
+                                    style: TextStyle(
+                                      color: AppColors.backArrowColor,
+                                      fontWeight: FontWeight.w500,
 
-                                  style: const TextStyle(
-                                    color: AppColors.backArrowColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 24,
+                                      fontSize: AppDimensions.font(16),
+                                    ),
                                   ),
                                 )
                                 : Text(
                                   controller.imageValidityString.value,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 18,
+                                    fontSize: AppDimensions.font(18),
                                   ),
                                 ),
                       ),
 
-                      SizedBox(height: 30),
+                      SizedBox(height: AppDimensions.height(30)),
+                      // Image.asset("assets/images/png/redheart.jpg"),
                     ],
                   ),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Obx(
-                    () =>
-                        (controller.sessionState.value == null ||
-                                controller.sessionState.value ==
-                                    SessionState.initializing)
-                            ? Container()
-                            : CameraPreview(),
+                Padding(
+                  padding: EdgeInsets.only(bottom: AppDimensions.height(190)),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Obx(
+                      () =>
+                          (controller.sessionState.value == null ||
+                                  controller.sessionState.value ==
+                                      SessionState.initializing)
+                              ? Container()
+                              : CameraPreview(),
+                    ),
                   ),
                 ),
               ],

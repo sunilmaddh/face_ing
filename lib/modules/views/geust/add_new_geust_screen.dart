@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
@@ -100,6 +102,7 @@ class AddNewGuestScreen extends StatelessWidget {
 
                               /// Weight Field
                               CustomFormField(
+                                keyboardType: TextInputType.number,
                                 validator: (weight) {
                                   if (weight == null || weight.isEmpty) {
                                     return "Please enter weight";
@@ -115,6 +118,7 @@ class AddNewGuestScreen extends StatelessWidget {
 
                               /// Height Field
                               CustomFormField(
+                                keyboardType: TextInputType.number,
                                 validator: (height) {
                                   if (height == null || height.isEmpty) {
                                     return "Please enter height";
@@ -141,7 +145,9 @@ class AddNewGuestScreen extends StatelessWidget {
                       bottom: AppDimensions.width(20.0),
                     ),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height - 608,
+                      height:
+                          MediaQuery.of(context).size.height -
+                          AppDimensions.height(590),
                       width: MediaQuery.of(context).size.width,
                       child: Stack(
                         children: [
@@ -153,7 +159,7 @@ class AddNewGuestScreen extends StatelessWidget {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: SizedBox(
-                              width: AppDimensions.width(180),
+                              width: AppDimensions.width(230),
                               child: ScanButton(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
@@ -175,60 +181,44 @@ class AddNewGuestScreen extends StatelessWidget {
                                             "Please accept term and conditions",
                                       );
                                     } else {
-                                      // var userID = await StorageHelper.read(
-                                      //   "userID",
-                                      // );
-                                      // var accessToken =
-                                      //     await StorageHelper.read(
-                                      //       "access-token",
-                                      //     );
-                                      // controller.screenInFocus().whenComplete(
-                                      //   () {
-                                      //     _geustController.scanType.value =
-                                      //         "guest";
-                                      //     AppNavigation.off(
-                                      //       AppRoutes.mesurementScreen,
-                                      //       arguments: {
-                                      //         "scanType": "add-guest",
-                                      //       },
-                                      //     );
-                                      //   },
-                                      // );
-                                      // "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAzc3VuaWxtYWRkaGVzaXlhNDI4QGdtYWlsLmNvbSIsImlhdCI6MTc0NjY5ODgxMCwiZXhwIjoxNzQ2Nzg1MjEwfQ.77fVLLy1ha1zdWOnNCZOX6vgHTMMjZXXGXrFnixBpbc";
-                                      // await StorageHelper.read(
-                                      //   "access-token",
-                                      // );
-                                      // Map<String, dynamic> data = {
-                                      //   "userId": userID,
-                                      //   "name":
-                                      //       _geustController
-                                      //           .nameTextController
-                                      //           .text,
-                                      //   "gender":
-                                      //       _geustController
-                                      //           .selectionType
-                                      //           .value,
-                                      //   "dob":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text, // Keep as string unless using DateTime
-                                      //   "weight":
-                                      //       _geustController
-                                      //           .weightTextController
-                                      //           .text,
-                                      //   "height":
-                                      //       _geustController
-                                      //           .heightTextController
-                                      //           .text,
-                                      //   "emailId":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text,
-                                      //   "token": accessToken,
-                                      //   "scanType": "guest-user",
-                                      // };
+                                      var userID =
+                                          await IndoSharedPreference.instance
+                                              .getUserId();
+                                      var accessToken =
+                                          await IndoSharedPreference.instance
+                                              .getAccessToken();
 
-                                      // NativeCaller.startFaceScan(data);
+                                      Map<String, dynamic> data = {
+                                        "userId": userID,
+                                        "name":
+                                            _geustController
+                                                .nameTextController
+                                                .text,
+                                        "gender":
+                                            _geustController
+                                                .selectionType
+                                                .value,
+                                        "dob":
+                                            _geustController
+                                                .dobTextController
+                                                .text, // Keep as string unless using DateTime
+                                        "weight":
+                                            _geustController
+                                                .weightTextController
+                                                .text,
+                                        "height":
+                                            _geustController
+                                                .heightTextController
+                                                .text,
+                                        "emailId":
+                                            _geustController
+                                                .dobTextController
+                                                .text,
+                                        "token": accessToken,
+                                        "scanType": "guest-user",
+                                      };
+
+                                      NativeCaller.startFaceScan(data);
                                     }
                                   }
                                 },

@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:biosensesignal_flutter_sdk/session/demographics/sex.dart';
+import 'package:biosensesignal_flutter_sdk/session/smoking_status.dart';
+import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -88,12 +91,21 @@ class MeasurementController extends GetxController
     });
   }
 
-  Future<void> screenInFocus() async {
+  Future<void> screenInFocus(
+    String genderType,
+    double age,
+    double weight,
+    double height,
+  ) async {
+    debugPrint("Permistion request");
     _requestCameraPermission().then((granted) {
       if (granted) {
+        debugPrint("Permistion granted");
         WidgetsBinding.instance.addPostFrameCallback((_) async {
-          await createSession();
+          await createSession(genderType, age, weight, height);
         });
+      } else {
+        debugPrint("Permistion denied");
       }
     });
   }
@@ -239,13 +251,28 @@ class MeasurementController extends GetxController
   @override
   void onLicenseInfo(LicenseInfo licenseInfo) {}
 
-  Future<void> createSession() async {
+  Future<void> createSession(
+    String genderType,
+    double age,
+    double weight,
+    double height,
+  ) async {
     // if (_session != null) {
     //   await _terminateSession();
     // }
     // _reset();
+
+    debugPrint("user2 Information $genderType$weight$height,$age");
+    var userInformation = UserInformation(
+      sex: genderType == "Male" ? Sex.male : Sex.female,
+      age: 30.0,
+      weight: weight,
+      height: height,
+      smokingStatus: SmokingStatus.nonSmoker,
+    );
     try {
       _session = await FaceSessionBuilder()
+          .withUserInformation(userInformation)
           .withImageDataListener(this)
           .withVitalSignsListener(this)
           .withSessionInfoListener(this)

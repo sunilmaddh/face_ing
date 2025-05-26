@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
@@ -69,7 +70,7 @@ class ProfileController extends GetxController
   }
 
   Future<void> getUserHistory() async {
-    var userID = await StorageHelper.read("userID");
+    var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID};
 
     Map<String, dynamic> responseData = await _profileService
@@ -87,7 +88,7 @@ class ProfileController extends GetxController
   }
 
   Future<void> getUserHealthDetails({required var healthId}) async {
-    var userID = await StorageHelper.read("userID");
+    var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID, "healthId": healthId};
 
     Map<String, dynamic> responseData = await _profileService
@@ -101,11 +102,12 @@ class ProfileController extends GetxController
       );
 
       ///this is for binah
-      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-      //     .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
-      ///this is for anura
       binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-          .fetchUserHistoryAnuraDetails(result.userHealthAnuraDetail!);
+          .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
+
+      ///this is for anura
+      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
+      //     .fetchUserHistoryAnuraDetails(result.userHealthAnuraDetail!);
       AppNavigation.to(AppRoutes.userHealthDatails);
     } else {
       binahHIstoryDetails.clear();
@@ -114,7 +116,7 @@ class ProfileController extends GetxController
   }
 
   Future<void> storeHealthData() async {
-    var userID = await StorageHelper.read("userID");
+    var userID = await IndoSharedPreference.instance.getUserId();
     var data = {};
 
     Map<String, dynamic> responseData = await ProfileServices()

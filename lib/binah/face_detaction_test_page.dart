@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:ntt_data/binah/camera_preview.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
 
 class FaceDetectionCircleWidget extends StatelessWidget {
   const FaceDetectionCircleWidget({super.key});
@@ -39,8 +41,14 @@ class FaceDetectionCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = 300;
-    double height = 380;
+    double width =
+        Platform.isAndroid
+            ? AppDimensions.width(310)
+            : AppDimensions.width(370);
+    double height =
+        Platform.isAndroid
+            ? AppDimensions.width(370)
+            : AppDimensions.height(460);
 
     return SizedBox(
       width: width,
@@ -59,8 +67,8 @@ class FaceDetectionCircle extends StatelessWidget {
                     child: SizedBox(width: width, height: height),
                   ),
                   SizedBox(
-                    width: width + 10,
-                    height: height + 10,
+                    width: width,
+                    height: height,
                     child: CircularProgressIndicator(
                       value: progress,
                       strokeWidth: 6,
@@ -73,7 +81,7 @@ class FaceDetectionCircle extends StatelessWidget {
               : DottedBorder(
                 borderType: BorderType.values.last,
                 dashPattern: [6, 4],
-                color: Colors.white,
+                color: Colors.grey,
                 strokeWidth: 3,
                 padding: EdgeInsets.zero,
                 child: SizedBox(width: width, height: height),

@@ -404,7 +404,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             CommonCard(
                                 title = "Signal-to-Noise Ratio",
                                 subtitle = formatted,
-                                mass = "g/dl",
+                                mass = "dB",
 
                                 )
                         }

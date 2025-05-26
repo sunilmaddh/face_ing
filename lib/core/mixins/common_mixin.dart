@@ -4,9 +4,12 @@ import 'dart:io';
 
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/data/models/add_geust_request_model.dart';
+import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/data/repository/services/auth_services.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
 import 'package:ntt_data/data/repository/services/profile_upload_services.dart';
@@ -19,28 +22,66 @@ mixin CommonMixin on GetxController {
   RxString userImage = "".obs;
   RxString userName = "".obs;
   RxString userEmail = "".obs;
+  Rx<UploadImageResponseModel> uploadImageResponseModel =
+      UploadImageResponseModel().obs;
   ProfileServices profileServices = ProfileServices();
   ProfileUploadService profileUploadService = ProfileUploadService();
   AuthServices authServices = AuthServices();
 
-  Future<void> uploadProfileFromGallery() async {
+  Future<void> uploadProfileFromGallery(String imageType) async {
     var imageUrl = await profileUploadService.pickImageFromGallery();
     if (imageUrl != null) {
       isProfile.value = true;
       profileUrl.value = File(imageUrl.path);
+      var userID = await IndoSharedPreference.instance.getUserId();
+      Map<String, dynamic> responseData = await authServices.uploadDocument(
+        profileUrl.value,
+        userID,
+        imageType,
+      );
+      int statusCode = responseData["responseCode"];
+      debugPrint("uploadImageResponseModel $statusCode");
+      if (statusCode == 200) {
+        var result = responseData["response"];
+        debugPrint("uploadImageResponseModel ${result}");
+        uploadImageResponseModel.value = result;
+        userImage.value = uploadImageResponseModel.value.imagePath!;
+        debugPrint(
+          "uploadImageResponseModel ${uploadImageResponseModel.value}",
+        );
+      }
     } else {
       isProfile.value = false;
       Get.snackbar("Upload Failed", "Please try again");
     }
   }
 
-  Future<void> uploadProfileFromCamera() async {
-    var userID = await StorageHelper.read("userID");
+  Future<void> uploadProfileFromCamera(String imageType) async {
     var imageUrl = await profileUploadService.pickImageFromCamera();
     if (imageUrl != null) {
       isProfile.value = true;
       profileUrl.value = File(imageUrl.path);
-      authServices.uploadDocument(profileUrl.value, userID);
+      var userID = await IndoSharedPreference.instance.getUserId();
+      debugPrint("uploadImageResponseModel $imageUrl");
+      Map<String, dynamic> responseData = await authServices.uploadDocument(
+        profileUrl.value,
+        userID,
+        imageType,
+      );
+      int statusCode = responseData["responseCode"];
+      debugPrint("uploadImageResponseModel $statusCode");
+      if (statusCode == 200) {
+        var result = responseData["response"];
+        debugPrint("uploadImageResponseModel $result");
+
+        uploadImageResponseModel.value = result;
+        userImage.value = uploadImageResponseModel.value.imagePath!;
+        debugPrint(
+          "uploadImageResponseModel ${uploadImageResponseModel.value}",
+        );
+
+        // userImage.value = uploadImageResponseModel.value.imagePath!;
+      }
     } else {
       isProfile.value = false;
       Get.snackbar("Upload Failed", "Please try again");

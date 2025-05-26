@@ -2,7 +2,7 @@ name: ntt_data
 description: "A new Flutter project."
 
 publish_to: 'none' 
-version: 1.0.2+3
+version: 1.0.4+5
 
 environment:
   sdk: ^3.7.0
@@ -37,6 +37,8 @@ dependencies:
   encrypt: ^5.0.3
   mime: ^1.0.4
   percent_indicator: ^4.2.5
+  shimmer_animation: ^2.2.2
+  shared_preferences: ^2.5.3
   # flutter_secure_storage: ^4.2.1
   
 

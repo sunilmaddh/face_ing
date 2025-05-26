@@ -5,6 +5,7 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/error_response.dart';
@@ -59,23 +60,29 @@ class AuthController extends GetxController
         var accessToken = header["accesstoken"];
         var refereshToken = header["refreshtoken"];
         debugPrint("Access token ${header["accesstoken"]}");
-        StorageHelper.write("access-token", accessToken);
-        StorageHelper.write("refresh-token", refereshToken);
+        await IndoSharedPreference.instance.saveAccessToken(accessToken);
+        await IndoSharedPreference.instance.saveRefreshToken(refereshToken);
         var result = LoginResponseModel.fromJson(response["responseBody"]);
         loginResponseModel.value = result;
 
-        StorageHelper.write("userID", loginResponseModel.value.userId!);
+        await IndoSharedPreference.instance.saveUserId(
+          loginResponseModel.value.userId!,
+        );
 
         if (loginResponseModel.value.success == "true") {
           if (loginResponseModel.value.success == "true" &&
               loginResponseModel.value.onBoarded == "false") {
-            StorageHelper.write("isOnboard", "isOnboard");
+            await IndoSharedPreference.instance.saveOnBoard(
+              loginResponseModel.value.onBoarded!,
+            );
             AppNavigation.to(
               AppRoutes.createAccount,
               arguments: {"userId": loginResponseModel.value.userId},
             );
           } else {
-            StorageHelper.write("isOnboard", "isOnboard");
+            await IndoSharedPreference.instance.saveOnBoard(
+              loginResponseModel.value.onBoarded!,
+            );
             userImage.value =
                 loginResponseModel.value.commonUserDetailsDao!.userImage!;
             userEmail.value =
@@ -292,7 +299,9 @@ class AuthController extends GetxController
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
-        StorageHelper.write("isOnboard", "isOnboard");
+        IndoSharedPreference.instance.saveOnBoard(
+          loginResponseModel.value.onBoarded!,
+        );
         userImage.value =
             loginResponseModel.value.commonUserDetailsDao!.userImage!;
         userEmail.value =
@@ -322,11 +331,11 @@ class AuthController extends GetxController
   }
 
   Future<void> callUploadProfileFromGallery() async {
-    return uploadProfileFromGallery();
+    return uploadProfileFromGallery("true");
   }
 
   Future<void> callUploadProfileFromCamera() async {
-    return uploadProfileFromCamera();
+    return uploadProfileFromCamera("true");
   }
 
   clearData() {

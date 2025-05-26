@@ -151,11 +151,15 @@ class CreateAccountScreen extends StatelessWidget {
                                         ImagePickerBottomsheet.showImagePickerBottomSheet(
                                           onGalleryTap: () async {
                                             await _authController
-                                                .uploadProfileFromGallery();
+                                                .uploadProfileFromGallery(
+                                                  "true",
+                                                );
                                           },
                                           onCameraTap: () async {
                                             await _authController
-                                                .uploadProfileFromCamera();
+                                                .uploadProfileFromCamera(
+                                                  "true",
+                                                );
                                           },
                                         );
                                       },
