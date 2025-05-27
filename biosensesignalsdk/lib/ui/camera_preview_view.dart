@@ -20,28 +20,23 @@ class CameraPreviewView extends StatelessWidget {
 
     Widget createNativeView() {
       if (defaultTargetPlatform == TargetPlatform.android) {
-        return ClipOval(
-          child: SizedBox(
-            width: width,
-            height: height,
-            child: const AndroidView(
-              viewType: _viewType,
-              creationParams: null,
-              creationParamsCodec: StandardMessageCodec(),
-            ),
+        return SizedBox(
+          width: width,
+          height: height,
+          child: const AndroidView(
+            viewType: _viewType,
+            creationParams: null,
+            creationParamsCodec: StandardMessageCodec(),
           ),
         );
       } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(50.0),
-          child: SizedBox(
-            width: width + 10,
-            height: height + 20, // slightly taller for iOS if needed
-            child: const UiKitView(
-              viewType: _viewType,
-              creationParams: null,
-              creationParamsCodec: StandardMessageCodec(),
-            ),
+        return SizedBox(
+          width: width + 10,
+          height: height + 20, // slightly taller for iOS if needed
+          child: const UiKitView(
+            viewType: _viewType,
+            creationParams: null,
+            creationParamsCodec: StandardMessageCodec(),
           ),
         );
       } else {

@@ -32,10 +32,10 @@ class _CameraPreviewState extends State<CameraPreview> {
                   child: const CameraPreviewView(),
                 ),
 
-                Align(
-                  alignment: Alignment.center,
-                  child: FaceDetectionCircleWidget(),
-                ),
+                // Align(
+                //   alignment: Alignment.center,
+                //   child: FaceDetectionCircleWidget(),
+                // ),
                 FaceDetectionView(size: size),
               ],
             ),

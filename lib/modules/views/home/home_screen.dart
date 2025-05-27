@@ -83,53 +83,62 @@ class HomeScreen extends StatelessWidget {
                     width: AppDimensions.height(230),
 
                     onPressed: () async {
-                      gcontroller.isLoading.value = true;
-
-                      var result =
-                          authController
-                              .loginResponseModel
-                              .value
-                              .commonUserDetailsDao;
-
-                      DateTime parsedDate = DateTime.parse(
-                        result!.userDob!.replaceAll("/", "-"),
+                      AppNavigation.to(
+                        AppRoutes.mesurementScreen,
+                        arguments: {"scanType": "user"},
                       );
-                      double age =
-                          gcontroller.calculateAge(parsedDate).toDouble();
+                      // gcontroller.isLoading.value = true;
 
-                      double weight = double.parse(result.userWeight!);
-                      double height = double.parse(result.userHeight!);
+                      // var result =
+                      //     authController
+                      //         .loginResponseModel
+                      //         .value
+                      //         .commonUserDetailsDao;
 
-                      // var userID = await StorageHelper.read("userID");
-                      // var accessToken = await StorageHelper.read("access-token");
-                      // Map<String, dynamic> data = {
-                      //   "userId": userID,
-                      //   "token": accessToken,
-                      //   "scanType": "user",
-                      // };
-                      controller.isMeasurementCanceled.value = false;
-                      Future.delayed(Duration(seconds: 2), () {
-                        gcontroller.isLoading.value = false;
+                      // DateTime parsedDate = DateTime.parse(
+                      //   result!.userDob!.replaceAll("/", "-"),
+                      // );
+                      // double age =
+                      //     gcontroller.calculateAge(parsedDate).toDouble();
 
-                        debugPrint(
-                          "User data $weight ,$height, ${result.userGender},$age",
-                        );
+                      // double weight = double.parse(result.userWeight!);
+                      // double height = double.parse(result.userHeight!);
 
-                        // NativeCaller.startFaceScan(data);
-                        controller
-                            .screenInFocus(
-                              result.userGender ?? "",
-                              age,
-                              weight,
-                              height,
-                            )
-                            .whenComplete(() {
-                              AppNavigation.to(
-                                AppRoutes.mesurementScreen,
-                                arguments: {"scanType": "user"},
-                              );
-                            });
-                      });
+                      // // var userID = await StorageHelper.read("userID");
+                      // // var accessToken = await StorageHelper.read("access-token");
+                      // // Map<String, dynamic> data = {
+                      // //   "userId": userID,
+                      // //   "token": accessToken,
+                      // //   "scanType": "user",
+                      // // };
+                      // controller.isMeasurementCanceled.value = false;
+                      // Future.delayed(Duration(seconds: 2), () {
+                      //   gcontroller.isLoading.value = false;
+
+                      //   debugPrint(
+                      //     "User data $weight ,$height, ${result.userGender},$age",
+                      //   );
+
+                      //   AppNavigation.to(
+                      //     AppRoutes.mesurementScreen,
+                      //     arguments: {"scanType": "user"},
+                      //   );
+
+                      //   // NativeCaller.startFaceScan(data);
+                      //   // controller
+                      //   //     .screenInFocus(
+                      //   //       result.userGender ?? "",
+                      //   //       age,
+                      //   //       weight,
+                      //   //       height,
+                      //   //     )
+                      //   //     .whenComplete(() {
+                      //   //       AppNavigation.to(
+                      //   //         AppRoutes.mesurementScreen,
+                      //   //         arguments: {"scanType": "user"},
+                      //   //       );
+                      //   //     });
+                      // });
                     },
                   ),
                 ),
