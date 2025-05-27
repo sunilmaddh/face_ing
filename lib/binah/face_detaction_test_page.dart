@@ -53,39 +53,46 @@ class FaceDetectionCircle extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child:
-          isStarted
-              ? Stack(
-                alignment: Alignment.center,
-                children: [
-                  DottedBorder(
-                    borderType: BorderType.values.last,
-                    dashPattern: [6, 4],
-                    color: Colors.black,
-                    strokeWidth: 3,
-                    padding: EdgeInsets.zero,
-                    child: SizedBox(width: width, height: height),
-                  ),
-                  SizedBox(
-                    width: width,
-                    height: height,
-                    child: CircularProgressIndicator(
-                      value: progress,
-                      strokeWidth: 6,
-                      backgroundColor: Colors.transparent,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ],
-              )
-              : DottedBorder(
-                borderType: BorderType.values.last,
-                dashPattern: [6, 4],
-                color: Colors.grey,
-                strokeWidth: 3,
-                padding: EdgeInsets.zero,
-                child: SizedBox(width: width, height: height),
-              ),
+      child: DottedBorder(
+        borderType: BorderType.values.last,
+        dashPattern: [6, 4],
+        color: Colors.grey,
+        strokeWidth: 3,
+        padding: EdgeInsets.zero,
+        child: SizedBox(width: width, height: height),
+      ),
+      // isStarted
+      //     ? Stack(
+      //       alignment: Alignment.center,
+      //       children: [
+      //         DottedBorder(
+      //           borderType: BorderType.values.last,
+      //           dashPattern: [6, 4],
+      //           color: Colors.black,
+      //           strokeWidth: 3,
+      //           padding: EdgeInsets.zero,
+      //           child: SizedBox(width: width, height: height),
+      //         ),
+      //         SizedBox(
+      //           width: width,
+      //           height: height,
+      //           child: CircularProgressIndicator(
+      //             value: progress,
+      //             strokeWidth: 6,
+      //             backgroundColor: Colors.transparent,
+      //             color: AppColors.primary,
+      //           ),
+      //         ),
+      //       ],
+      //     )
+      //     : DottedBorder(
+      //       borderType: BorderType.values.last,
+      //       dashPattern: [6, 4],
+      //       color: Colors.grey,
+      //       strokeWidth: 3,
+      //       padding: EdgeInsets.zero,
+      //       child: SizedBox(width: width, height: height),
+      //     ),
     );
   }
 }

@@ -15,13 +15,13 @@ class CameraPreviewView extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     // Set responsive size (adjust as needed)
-    final double width = screenWidth * 0.83; // 85% of screen width
-    final double height = screenHeight * 0.48; // 45% of screen height
+    final double width = screenWidth * 0.80; // 85% of screen width
+    final double height = screenHeight * 0.90; // 45% of screen height
 
     Widget createNativeView() {
       if (defaultTargetPlatform == TargetPlatform.android) {
         return SizedBox(
-          width: width,
+          width: MediaQuery.of(context).size.width,
           height: height,
           child: const AndroidView(
             viewType: _viewType,

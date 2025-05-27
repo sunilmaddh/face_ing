@@ -214,25 +214,25 @@ class AddNewGuestScreen extends StatelessWidget {
                                         "user Information ${_geustController.selectionType.value}s$weight$height,$age",
                                       );
 
-                                      controller
-                                          .screenInFocus(
-                                            _geustController
-                                                .selectionType
-                                                .value,
-                                            age,
-                                            weight,
-                                            height,
-                                          )
-                                          .whenComplete(() {
-                                            _geustController.scanType.value =
-                                                "guest";
-                                            AppNavigation.off(
-                                              AppRoutes.mesurementScreen,
-                                              arguments: {
-                                                "scanType": "add-guest",
-                                              },
-                                            );
-                                          });
+                                      // controller
+                                      //     .screenInFocus(
+                                      //       _geustController
+                                      //           .selectionType
+                                      //           .value,
+                                      //       age,
+                                      //       weight,
+                                      //       height,
+                                      //     )
+                                      //     .whenComplete(() {
+                                      //       _geustController.scanType.value =
+                                      //           "guest";
+                                      //       AppNavigation.off(
+                                      //         AppRoutes.mesurementScreen,
+                                      //         arguments: {
+                                      //           "scanType": "add-guest",
+                                      //         },
+                                      //       );
+                                      //     });
                                       // "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAzc3VuaWxtYWRkaGVzaXlhNDI4QGdtYWlsLmNvbSIsImlhdCI6MTc0NjY5ODgxMCwiZXhwIjoxNzQ2Nzg1MjEwfQ.77fVLLy1ha1zdWOnNCZOX6vgHTMMjZXXGXrFnixBpbc";
                                       // await StorageHelper.read(
                                       //   "access-token",

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:biosensesignal_flutter_sdk/session/demographics/sex.dart';
 import 'package:biosensesignal_flutter_sdk/session/smoking_status.dart';
 import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
+import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_pulse_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -43,8 +44,14 @@ class MeasurementController extends GetxController
   final Rx<SessionState?> sessionState = Rx<SessionState?>(null);
   final RxnString error = RxnString();
   final RxnString warning = RxnString();
-  final RxnString pulseRate = RxnString();
+  final RxString pulseRate = "".obs;
   final RxnString finalResultsString = RxnString();
+  final RxString genderType = "".obs;
+  final RxDouble age = 0.0.obs;
+  final RxDouble weight = 0.0.obs;
+  final RxDouble height = 0.0.obs;
+  final RxBool isStarted = false.obs;
+  RxBool isLoading = false.obs;
   RxBool isMeasurementCanceled = false.obs;
   @override
   final RxBool showImageValidity = false.obs;
@@ -62,7 +69,7 @@ class MeasurementController extends GetxController
       duration: const Duration(seconds: 60),
     );
     animationController.addListener(() {
-      progress.value = animationController.value;
+      progress.value = animationController.value * 100;
       if (animationController.isCompleted) {
         isStarted.value = false;
       }
@@ -91,24 +98,41 @@ class MeasurementController extends GetxController
     });
   }
 
-  Future<void> screenInFocus(
+  screenInFocus(
+    bool focus,
     String genderType,
     double age,
     double weight,
     double height,
   ) async {
-    debugPrint("Permistion request");
-    _requestCameraPermission().then((granted) {
-      if (granted) {
-        debugPrint("Permistion granted");
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          await createSession(genderType, age, weight, height);
-        });
-      } else {
-        debugPrint("Permistion denied");
+    if (focus) {
+      if (!await _requestCameraPermission()) {
+        return;
       }
-    });
+      createSession(genderType, age, weight, height);
+    } else {
+      _terminateSession();
+    }
   }
+
+  // Future<void> screenInFocus(
+  //   String genderType,
+  //   double age,
+  //   double weight,
+  //   double height,
+  // ) async {
+  //   debugPrint("Permistion request");
+  //   _requestCameraPermission().then((granted) {
+  //     if (granted) {
+  //       debugPrint("Permistion granted");
+  //       WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //         await createSession(genderType, age, weight, height);
+  //       });
+  //     } else {
+  //       debugPrint("Permistion denied");
+  //     }
+  //   });
+  // }
 
   Future<void> startStopButtonClicked() async {
     showImageValidity.value = false;
@@ -118,11 +142,13 @@ class MeasurementController extends GetxController
       if (sessionState.value == SessionState.ready) {
         isMeasurementCanceled.value = false;
         _startMeasuring().then((v) {
+          isLoading.value = false;
           startProgress(seconds: 60);
         });
 
         debugPrint("Start scanning $state");
       } else if (state == SessionState.processing) {
+        isLoading.value = false;
         _stopMeasuring();
       }
     });
@@ -132,7 +158,7 @@ class MeasurementController extends GetxController
   void onImageData(sdk_image_data.ImageData imageData) {
     this.imageData.value = imageData;
     debugPrint("Image validity: ${imageData.imageValidity}");
-
+    showImageValidity.value = true;
     switch (imageData.imageValidity) {
       case ImageValidity.valid:
         handleValid("Perfect! Please hold it.");
@@ -163,8 +189,8 @@ class MeasurementController extends GetxController
 
   @override
   void onVitalSign(VitalSign vitalSign) {
-    if (vitalSign.type == VitalSignTypes.bloodPressure) {
-      pulseRate.value = "PR: ${(vitalSign as VitalSignBloodPressure).value}";
+    if (vitalSign.type == VitalSignTypes.pulseRate) {
+      pulseRate.value = (vitalSign as VitalSignPulseRate).value.toString();
     }
   }
 
@@ -257,10 +283,10 @@ class MeasurementController extends GetxController
     double weight,
     double height,
   ) async {
-    // if (_session != null) {
-    //   await _terminateSession();
-    // }
-    // _reset();
+    if (_session != null) {
+      await _terminateSession();
+    }
+    _reset();
 
     debugPrint("user2 Information $genderType$weight$height,$age");
     var userInformation = UserInformation(
@@ -309,7 +335,7 @@ class MeasurementController extends GetxController
   void _reset() {
     error.value = null;
     warning.value = null;
-    pulseRate.value = null;
+    pulseRate.value = "";
     finalResultsString.value = null;
   }
 

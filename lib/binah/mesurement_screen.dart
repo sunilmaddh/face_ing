@@ -1,16 +1,16 @@
+import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
 import 'package:biosensesignal_flutter_sdk/session/session_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:focus_detector/focus_detector.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ntt_data/binah/camera_preview.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/binah/start_stop_button.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
-import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
+import 'package:ntt_data/widgets/button/primary_button.dart';
 
 class MeasurementScreen extends StatefulWidget {
   const MeasurementScreen({super.key});
@@ -36,111 +36,110 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
     //   controller.scanType.value = scanType;
     //   controller.startStopButtonClicked();
     // });
-
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: CustomAppBar(
-        onTop: () {
-          AppNavigation.back();
-        },
-        title: "",
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(bottom: AppDimensions.height(120)),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
+    return FocusDetector(
+      onFocusLost: () {
+        controller.screenInFocus(
+          false,
+          controller.genderType.value,
+          controller.age.value,
+          controller.weight.value,
+          controller.height.value,
+        );
+      },
+      onFocusGained: () {
+        controller.screenInFocus(
+          true,
+          controller.genderType.value,
+          controller.age.value,
+          controller.weight.value,
+          controller.height.value,
+        );
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  CameraPreview(),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: AppDimensions.height(250),
+                      padding: EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
                       ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      child: Obx(() {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ImageValidityScan(),
 
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(height: AppDimensions.height(30)),
-                        Text(
-                          textAlign: TextAlign.center,
-                          "47 bpm",
-                          style: TextStyle(
-                            color: AppColors.backArrowColor,
-                            fontWeight: FontWeight.w500,
-
-                            fontSize: AppDimensions.font(16),
-                          ),
-                        ),
-                        SizedBox(
-                          height: AppDimensions.height(100),
-                          child: LottieBuilder.asset(AppAssets.heartRateAnim),
-                        ),
-                        SizedBox(height: AppDimensions.height(30)),
-
-                        // LinearProgressIndicator(),
-                        FAProgressBar(currentValue: 50.0, displayText: "%"),
-
-                        // Obx(
-                        //   () =>
-                        //       controller.isMeasurementCanceled.value
-                        //           ? Padding(
-                        //             padding: const EdgeInsets.symmetric(
-                        //               horizontal: 30.0,
-                        //             ),
-                        //             child: Text(
-                        //               textAlign: TextAlign.center,
-                        //               "The measurement was canceled. Please wait while we prepare to restart.",
-                        //               style: TextStyle(
-                        //                 color: AppColors.backArrowColor,
-                        //                 fontWeight: FontWeight.w500,
-
-                        //                 fontSize: AppDimensions.font(16),
-                        //               ),
-                        //             ),
-                        //           )
-                        //           : Text(
-                        //             controller.imageValidityString.value,
-                        //             style: TextStyle(
-                        //               color: Colors.black,
-                        //               fontWeight: FontWeight.w600,
-                        //               fontSize: AppDimensions.font(18),
-                        //             ),
-                        //           ),
-                        // ),
-                        SizedBox(height: AppDimensions.height(30)),
-                        // Image.asset("assets/images/png/redheart.jpg"),
-                      ],
+                            MeasurmentProgress(controller: controller),
+                            SizedBox(height: 30),
+                            StartStopButton(),
+                          ],
+                        );
+                      }),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: AppDimensions.height(190)),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: CameraPreview(),
-                    //  Obx(
-                    //   () =>
-                    //       (controller.sessionState.value == null ||
-                    //               controller.sessionState.value ==
-                    //                   SessionState.initializing)
-                    //           ? Container()
-                    //           : CameraPreview(),
-                    // ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+}
+
+class MeasurmentProgress extends StatelessWidget {
+  const MeasurmentProgress({super.key, required this.controller});
+
+  final MeasurementController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return Visibility(
+        visible:
+            controller.imageData.value != null &&
+            controller.imageData.value!.imageValidity == ImageValidity.valid &&
+            controller.isStarted.value == true,
+        child: Column(
+          children: [
+            PulseRate(),
+
+            SizedBox(
+              width: 300,
+              height: AppDimensions.height(100),
+              child: LottieBuilder.asset(
+                AppAssets.heartRateAnim,
+                fit: BoxFit.fill,
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppDimensions.width(20),
+              ),
+              child: FAProgressBar(
+                progressColor: Colors.green,
+                currentValue: controller.progress.value,
+                displayText: "%",
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

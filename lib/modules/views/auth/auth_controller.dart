@@ -89,6 +89,25 @@ class AuthController extends GetxController
                 loginResponseModel.value.commonUserDetailsDao!.userEmail!;
             userName.value =
                 loginResponseModel.value.commonUserDetailsDao!.userName!;
+
+            await IndoSharedPreference.instance.saveGenderType(
+              loginResponseModel.value.commonUserDetailsDao!.userGender
+                  .toString(),
+            );
+
+            await IndoSharedPreference.instance.saveHeight(
+              loginResponseModel.value.commonUserDetailsDao!.userHeight
+                  .toString(),
+            );
+
+            await IndoSharedPreference.instance.saveWeight(
+              loginResponseModel.value.commonUserDetailsDao!.userWeight
+                  .toString(),
+            );
+            await IndoSharedPreference.instance.saveAge(
+              loginResponseModel.value.commonUserDetailsDao!.userDob.toString(),
+            );
+
             AppNavigation.off(AppRoutes.homeScreen);
           }
           clearData();

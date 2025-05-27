@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart'
     show NativeCaller;
@@ -83,26 +85,27 @@ class HomeScreen extends StatelessWidget {
                     width: AppDimensions.height(230),
 
                     onPressed: () async {
+                      String genderType =
+                          await IndoSharedPreference.instance.getGenderType();
+                      String dob = await IndoSharedPreference.instance.getAge();
+                      String height =
+                          await IndoSharedPreference.instance.getHeight();
+                      String weight =
+                          await IndoSharedPreference.instance.getWeight();
+                      controller.weight.value = double.parse(weight);
+                      controller.height.value = double.parse(height);
+                      controller.genderType.value = genderType;
+
+                      DateTime parsedDate = DateTime.parse(
+                        dob.replaceAll("/", "-"),
+                      );
+                      controller.age.value =
+                          gcontroller.calculateAge(parsedDate).toDouble();
+
                       AppNavigation.to(
                         AppRoutes.mesurementScreen,
                         arguments: {"scanType": "user"},
                       );
-                      // gcontroller.isLoading.value = true;
-
-                      // var result =
-                      //     authController
-                      //         .loginResponseModel
-                      //         .value
-                      //         .commonUserDetailsDao;
-
-                      // DateTime parsedDate = DateTime.parse(
-                      //   result!.userDob!.replaceAll("/", "-"),
-                      // );
-                      // double age =
-                      //     gcontroller.calculateAge(parsedDate).toDouble();
-
-                      // double weight = double.parse(result.userWeight!);
-                      // double height = double.parse(result.userHeight!);
 
                       // // var userID = await StorageHelper.read("userID");
                       // // var accessToken = await StorageHelper.read("access-token");
