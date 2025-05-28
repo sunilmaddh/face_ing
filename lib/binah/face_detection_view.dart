@@ -1,8 +1,10 @@
+import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
 
 class FaceDetectionView extends StatelessWidget {
   final Size? size;
@@ -29,6 +31,12 @@ class FaceDetectionView extends StatelessWidget {
           AppAssets.faceDetact,
           width: ((roi.width ?? 0.0) * widthFactor) / dpr,
           height: ((roi.height ?? 0.0) * heightFactor) / dpr,
+          color:
+              controller.imageData.value != null &&
+                      controller.imageData.value!.imageValidity !=
+                          ImageValidity.valid
+                  ? AppColors.camreraPreviewColor
+                  : AppColors.btntext,
         ),
         // Container(
         //   decoration: BoxDecoration(

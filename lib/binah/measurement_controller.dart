@@ -4,10 +4,8 @@ import 'package:biosensesignal_flutter_sdk/session/smoking_status.dart';
 import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_pulse_rate.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -28,7 +26,6 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_listener.dart
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign.dart';
-import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_blood_pressure.dart';
 import 'package:biosensesignal_flutter_sdk/alerts/warning_data.dart';
 import 'package:biosensesignal_flutter_sdk/alerts/error_data.dart';
 import 'package:biosensesignal_flutter_sdk/alerts/alert_codes.dart';
@@ -52,36 +49,29 @@ class MeasurementController extends GetxController
   final RxDouble height = 0.0.obs;
   final RxBool isStarted = false.obs;
   RxBool isLoading = false.obs;
+  RxString smokerType = ''.obs;
   RxBool isMeasurementCanceled = false.obs;
   @override
   final RxBool showImageValidity = false.obs;
   Rx<VitalSignsResults> vitalsResults = VitalSignsResults().obs;
-  // final RxString imageValidityString = ''.obs;
   final Rx<sdk_image_data.ImageData?> imageData = Rx<sdk_image_data.ImageData?>(
     null,
   );
   @override
   void onInit() {
-    // screenInFocus();
     super.onInit();
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 60),
     );
     animationController.addListener(() {
-      progress.value = animationController.value * 100;
+      progress.value = (animationController.value * 100).toInt();
       if (animationController.isCompleted) {
         isStarted.value = false;
       }
     });
     ever<String?>(warning, (value) {
-      if (value != null && value.isNotEmpty) {
-        // Fluttertoast.showToast(
-        //   msg: value,
-        //   toastLength: Toast.LENGTH_SHORT,
-        //   textColor: Colors.white,
-        // );
-      }
+      if (value != null && value.isNotEmpty) {}
     });
 
     // Show alert on error
@@ -89,7 +79,6 @@ class MeasurementController extends GetxController
       if (value != null && value.isNotEmpty) {
         Future.delayed(Duration.zero, () {
           isMeasurementCanceled.value = true;
-          // showAlert(Get.context!, null, value);
           resetProgress();
           stopProgress();
           startStopButtonClicked();
@@ -104,35 +93,17 @@ class MeasurementController extends GetxController
     double age,
     double weight,
     double height,
+    String smokerType,
   ) async {
     if (focus) {
       if (!await _requestCameraPermission()) {
         return;
       }
-      createSession(genderType, age, weight, height);
+      createSession(genderType, age, weight, height, smokerType);
     } else {
       _terminateSession();
     }
   }
-
-  // Future<void> screenInFocus(
-  //   String genderType,
-  //   double age,
-  //   double weight,
-  //   double height,
-  // ) async {
-  //   debugPrint("Permistion request");
-  //   _requestCameraPermission().then((granted) {
-  //     if (granted) {
-  //       debugPrint("Permistion granted");
-  //       WidgetsBinding.instance.addPostFrameCallback((_) async {
-  //         await createSession(genderType, age, weight, height);
-  //       });
-  //     } else {
-  //       debugPrint("Permistion denied");
-  //     }
-  //   });
-  // }
 
   Future<void> startStopButtonClicked() async {
     showImageValidity.value = false;
@@ -141,6 +112,7 @@ class MeasurementController extends GetxController
     Future.delayed(Duration(seconds: 5), () {
       if (sessionState.value == SessionState.ready) {
         isMeasurementCanceled.value = false;
+        isStarted.value = true;
         _startMeasuring().then((v) {
           isLoading.value = false;
           startProgress(seconds: 60);
@@ -149,7 +121,8 @@ class MeasurementController extends GetxController
         debugPrint("Start scanning $state");
       } else if (state == SessionState.processing) {
         isLoading.value = false;
-        _stopMeasuring();
+        isStarted.value = false;
+        stopMeasuring();
       }
     });
   }
@@ -165,20 +138,24 @@ class MeasurementController extends GetxController
         break;
 
       case ImageValidity.invalidDeviceOrientation:
-        handleInvalid("Invalid Orientation");
+        handleInvalid("Retrun to the portrait mode.");
         break;
 
       case ImageValidity.invalidRoi:
       case ImageValidity.faceTooFar:
-        handleInvalid("Please little Closer");
+        handleInvalid("Please move your face closer to the camera.");
         break;
 
       case ImageValidity.tiltedHead:
-        handleInvalid("Tilted Head");
+        handleInvalid(
+          "Make sure your head is upright and centered in the frame.",
+        );
         break;
 
       case ImageValidity.unevenLight:
-        handleInvalid("Uneven Lighting");
+        handleInvalid(
+          "Ensure your face is clearly visible with no shadows or bright spots.",
+        );
         break;
 
       default:
@@ -266,7 +243,7 @@ class MeasurementController extends GetxController
     resetProgress();
     stopProgress();
     closeProgress();
-    _stopMeasuring();
+    stopMeasuring();
     _terminateSession();
     _reset();
   }
@@ -282,19 +259,23 @@ class MeasurementController extends GetxController
     double age,
     double weight,
     double height,
+    String smokerType,
   ) async {
     if (_session != null) {
       await _terminateSession();
     }
     _reset();
 
-    debugPrint("user2 Information $genderType$weight$height,$age");
+    debugPrint("user2 Information $genderType$weight$height,$age,$smokerType");
     var userInformation = UserInformation(
       sex: genderType == "Male" ? Sex.male : Sex.female,
       age: 30.0,
       weight: weight,
       height: height,
-      smokingStatus: SmokingStatus.nonSmoker,
+      smokingStatus:
+          smokerType == "Smoker"
+              ? SmokingStatus.smoker
+              : SmokingStatus.nonSmoker,
     );
     try {
       _session = await FaceSessionBuilder()
@@ -319,8 +300,9 @@ class MeasurementController extends GetxController
     }
   }
 
-  Future<void> _stopMeasuring() async {
+  Future<void> stopMeasuring() async {
     try {
+      _reset();
       await _session?.stop();
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";
@@ -337,6 +319,7 @@ class MeasurementController extends GetxController
     warning.value = null;
     pulseRate.value = "";
     finalResultsString.value = null;
+    isStarted.value = false;
   }
 
   Future<bool> _requestCameraPermission() async {

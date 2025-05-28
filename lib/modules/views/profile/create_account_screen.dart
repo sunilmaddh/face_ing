@@ -14,6 +14,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
+import 'package:ntt_data/widgets/fields/common_dropmenu.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 import 'package:ntt_data/widgets/gender_widget.dart';
@@ -26,6 +27,8 @@ class CreateAccountScreen extends StatelessWidget {
   final _profileController = Get.find<ProfileController>();
 
   final _formKey = GlobalKey<FormState>();
+
+  List<String> smokerTypeList = ["Smoker", "Non Smoker"];
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +121,16 @@ class CreateAccountScreen extends StatelessWidget {
                   hint: "Enter your height (cm)",
                   controller: _authController.heightController,
                 ),
+                SizedBox(height: 15),
+                CommonDropdown(
+                  items: smokerTypeList,
+                  onChanged: (selectedValue) {
+                    _authController.smokerType.value = selectedValue.toString();
+                  },
+                  label: "Select smoker type",
+                  itemToString: (smoker) => smoker,
+                ),
+
                 SizedBox(height: 15),
                 SizedBox(
                   height: AppDimensions.height(190),

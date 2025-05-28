@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
-import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
 class FaceDetectionCircleWidget extends StatelessWidget {
@@ -20,7 +19,7 @@ class FaceDetectionCircleWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FaceDetectionCircle(
-            progress: progressController.progress.value,
+            progress: progressController.progress.value.toDouble(),
             isStarted: progressController.isStarted.value,
           ),
         ],

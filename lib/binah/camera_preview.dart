@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:biosensesignal_flutter_sdk/ui/camera_preview_view.dart';
-import 'package:ntt_data/binah/face_detaction_test_page.dart';
 import 'package:ntt_data/binah/face_detection_view.dart';
+import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/binah/widget_size.dart';
-import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/widgets/button/primary_button.dart';
-import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class CameraPreview extends StatefulWidget {
-  const CameraPreview({super.key});
-
+  const CameraPreview({super.key, required this.controller});
+  final MeasurementController controller;
   @override
   State<CameraPreview> createState() => _CameraPreviewState();
 }
@@ -31,20 +28,11 @@ class _CameraPreviewState extends State<CameraPreview> {
             child: Stack(
               children: [
                 const CameraPreviewView(),
-                SafeArea(
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: CommonText.text("Stop", color: AppColors.primary),
-                    ),
-                  ),
-                ),
 
-                Align(
-                  alignment: Alignment.center,
-                  child: FaceDetectionCircleWidget(),
-                ),
+                // Align(
+                //   alignment: Alignment.center,
+                //   child: FaceDetectionCircleWidget(),
+                // ),
                 FaceDetectionView(size: size),
               ],
             ),

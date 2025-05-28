@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 mixin ProgressHandlerMixin on GetxController {
   late AnimationController animationController;
   final RxBool isStarted = false.obs;
-  final RxDouble progress = 0.0.obs;
+  final RxInt progress = 0.obs;
   final RxString imageValidityString = "".obs;
   RxString scanType = "".obs;
   final RxBool showImageValidity = false.obs;
@@ -23,7 +23,7 @@ mixin ProgressHandlerMixin on GetxController {
 
   void resetProgress() {
     animationController.reset();
-    progress.value = 0.0;
+    progress.value = 0;
     isStarted.value = false;
   }
 

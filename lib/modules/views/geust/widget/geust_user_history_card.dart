@@ -75,6 +75,10 @@ class GeustUserHistoryCard extends StatelessWidget {
                           CommonDialog().showDeleteUserDialog(
                             context: context,
                             onConfirm: onDelete,
+                            title: "Want to Remove the Guest?",
+                            message:
+                                "Are you sure you want to remove? This action cannot be undone",
+                            confirmText: "Delete",
                           );
                         },
                         child: CustomCircularAvatar(

@@ -4,13 +4,15 @@ import 'package:get/get.dart';
 import 'package:biosensesignal_flutter_sdk/session/session_state.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class StartStopButton extends StatelessWidget {
-  StartStopButton({super.key});
+  StartStopButton({super.key, required this.userName});
 
   final controller = Get.find<MeasurementController>();
+  final String userName;
 
   @override
   Widget build(BuildContext context) {
@@ -20,46 +22,38 @@ class StartStopButton extends StatelessWidget {
             controller.sessionState.value == SessionState.ready ||
             controller.sessionState.value == SessionState.processing &&
                 controller.isStarted.value == false,
-        child: Column(
-          children: [
-            CommonText.text(
-              "Sit still, ensure your face is evenly illuminated and there is no light source in the background.",
-              color: AppColors.searchColor,
-            ),
-            PrimaryButton(
-              isLoading: controller.isLoading.value,
-              text: "Measure now",
-              onPressed: () {
-                controller.isLoading.value = true;
-                controller.startStopButtonClicked();
-              },
-            ),
-          ],
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(30)),
+          child: Column(
+            children: [
+              CommonText.text(
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                "$userName, Ready to Measure your vital Signs?",
+                color: AppColors.primary,
+                fontSize: AppDimensions.font(18),
+                fontWeight: FontWeight.w500,
+              ),
+              SizedBox(height: AppDimensions.height(10)),
+              CommonText.text(
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                "Sit still, ensure your face is evenly illuminated and there is no light source in the background.",
+                color: AppColors.searchColor,
+              ),
+              SizedBox(height: AppDimensions.height(10)),
+              PrimaryButton(
+                isLoading: controller.isLoading.value,
+                text: "Measure now",
+                onPressed: () {
+                  controller.isLoading.value = true;
+                  controller.startStopButtonClicked();
+                },
+              ),
+            ],
+          ),
         ),
       );
-      //  Opacity(
-      //   opacity:
-      //       (controller.sessionState.value == SessionState.ready ||
-      //               controller.sessionState.value == SessionState.processing)
-      //           ? 1.0
-      //           : 0.5,
-      //   child: InkWell(
-      //     onTap: controller.startStopButtonClicked,
-      //     child: Container(
-      //       width: 300,
-      //       height: 60,
-      //       alignment: Alignment.center,
-      //       padding: const EdgeInsets.symmetric(vertical: 20),
-      //       color: const Color(0xFF6200EE),
-      //       child: Text(
-      //         controller.sessionState.value != SessionState.processing
-      //             ? "STOP ${controller.sessionState.value}"
-      //             : "START",
-      //         style: const TextStyle(color: Colors.white),
-      //       ),
-      //     ),
-      //   ),
-      // );
     });
   }
 }
@@ -72,7 +66,9 @@ class PulseRate extends StatelessWidget {
     final controller = Get.find<MeasurementController>();
     return Obx(
       () => Text(
-        "${controller.pulseRate.value} bpm" ?? "",
+        controller.pulseRate.value.isNotEmpty
+            ? "${controller.pulseRate.value} bpm"
+            : "",
         style: const TextStyle(color: Colors.black, fontSize: 26),
       ),
     );
@@ -85,17 +81,47 @@ class ImageValidityScan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MeasurementController>();
-    return Center(
-      child: Obx(
-        () => Visibility(
+    return Obx(
+      () => Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(45)),
+        child: Visibility(
           visible:
               controller.imageData.value != null &&
               controller.imageData.value!.imageValidity !=
                   ImageValidity.valid &&
               controller.isStarted.value == true,
-          child: Text(
-            controller.imageValidityString.value,
-            style: const TextStyle(color: Colors.black, fontSize: 15),
+          child: Column(
+            children: [
+              Text(
+                textAlign: TextAlign.center,
+                controller.imageData.value!.imageValidity ==
+                            ImageValidity.faceTooFar ||
+                        controller.imageData.value!.imageValidity ==
+                            ImageValidity.invalidRoi
+                    ? "Face too far"
+                    : controller.imageData.value!.imageValidity ==
+                        ImageValidity.tiltedHead
+                    ? "Tilted Head"
+                    : controller.imageData.value!.imageValidity ==
+                        ImageValidity.unevenLight
+                    ? "Uneven light"
+                    : controller.imageData.value!.imageValidity ==
+                        ImageValidity.invalidDeviceOrientation
+                    ? "Invalid device orientation"
+                    : "",
+                style: const TextStyle(
+                  color: AppColors.primary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: AppDimensions.height(10)),
+              Text(
+                textAlign: TextAlign.center,
+                controller.imageValidityString.value,
+                style: const TextStyle(color: Colors.black, fontSize: 15),
+              ),
+            ],
           ),
         ),
       ),

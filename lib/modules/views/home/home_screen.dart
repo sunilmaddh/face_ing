@@ -85,6 +85,8 @@ class HomeScreen extends StatelessWidget {
                     width: AppDimensions.height(230),
 
                     onPressed: () async {
+                      String userName =
+                          await IndoSharedPreference.instance.getUserName();
                       String genderType =
                           await IndoSharedPreference.instance.getGenderType();
                       String dob = await IndoSharedPreference.instance.getAge();
@@ -104,7 +106,7 @@ class HomeScreen extends StatelessWidget {
 
                       AppNavigation.to(
                         AppRoutes.mesurementScreen,
-                        arguments: {"scanType": "user"},
+                        arguments: {"scanType": "user", "userName": userName},
                       );
 
                       // // var userID = await StorageHelper.read("userID");

@@ -20,13 +20,15 @@ class CameraPreviewView extends StatelessWidget {
 
     Widget createNativeView() {
       if (defaultTargetPlatform == TargetPlatform.android) {
-        return SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: height,
-          child: const AndroidView(
-            viewType: _viewType,
-            creationParams: null,
-            creationParamsCodec: StandardMessageCodec(),
+        return Positioned.fill(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: height,
+            child: const AndroidView(
+              viewType: _viewType,
+              creationParams: null,
+              creationParamsCodec: StandardMessageCodec(),
+            ),
           ),
         );
       } else if (defaultTargetPlatform == TargetPlatform.iOS) {

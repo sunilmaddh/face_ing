@@ -17,6 +17,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
+import 'package:ntt_data/widgets/fields/common_dropmenu.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 import 'package:ntt_data/widgets/gender_widget.dart';
 
@@ -26,6 +27,8 @@ class AddNewGuestScreen extends StatelessWidget {
   final _geustController = Get.find<GeustController>();
   final controller = Get.find<MeasurementController>();
   final _formKey = GlobalKey<FormState>();
+
+  List<String> smokerTypeList = ["Smoker", "Non Smoker"];
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +133,26 @@ class AddNewGuestScreen extends StatelessWidget {
                                 controller:
                                     _geustController.heightTextController,
                               ),
+                              SizedBox(height: 15),
+                              CommonDropdown(
+                                items: smokerTypeList,
+                                onChanged: (value) {
+                                  controller.smokerType.value = value!;
+                                },
+                                label: "Select smoker type",
+                                itemToString: (smokerType) => smokerType,
+                              ),
+                              // CustomFormField(
+                              //   validator: (name) {
+                              //     if (name == null || name.isEmpty) {
+                              //       return "Please enter name";
+                              //     }
+                              //     return null;
+                              //   },
+                              //   label: "Patiant Id",
+                              //   hint: "Enter your name",
+                              //   controller: _geustController.nameTextController,
+                              // ),
                             ],
                           ),
                         ),
@@ -180,6 +203,11 @@ class AddNewGuestScreen extends StatelessWidget {
                                         message:
                                             "Please accept term and conditions",
                                       );
+                                    } else if (controller.smokerType.isEmpty) {
+                                      AppSnackbar.show(
+                                        title: "Error",
+                                        message: "Please select smoker type",
+                                      );
                                     } else {
                                       // DateTime birthDate = DateTime.parse(
                                       //   _geustController.dobTextController.text,
@@ -188,21 +216,23 @@ class AddNewGuestScreen extends StatelessWidget {
                                         _geustController.dobTextController.text
                                             .replaceAll("/", "-"),
                                       );
-                                      double age =
+                                      controller.age.value =
                                           _geustController
                                               .calculateAge(parsedDate)
                                               .toDouble();
 
-                                      double weight = double.parse(
+                                      controller.weight.value = double.parse(
                                         _geustController
                                             .weightTextController
                                             .text,
                                       );
-                                      double height = double.parse(
+                                      controller.height.value = double.parse(
                                         _geustController
                                             .heightTextController
                                             .text,
                                       );
+                                      controller.genderType.value =
+                                          _geustController.selectionType.value;
 
                                       var userID =
                                           await IndoSharedPreference.instance
@@ -210,9 +240,20 @@ class AddNewGuestScreen extends StatelessWidget {
                                       var accessToken =
                                           await IndoSharedPreference.instance
                                               .getAccessToken();
-                                      debugPrint(
-                                        "user Information ${_geustController.selectionType.value}s$weight$height,$age",
+                                      _geustController.scanType.value = "guest";
+                                      AppNavigation.off(
+                                        AppRoutes.mesurementScreen,
+                                        arguments: {
+                                          "scanType": "add-guest",
+                                          "userName":
+                                              _geustController
+                                                  .nameTextController
+                                                  .text,
+                                        },
                                       );
+                                      // debugPrint(
+                                      //   "user Information ${_geustController.selectionType.value}s$weight$height,$age",
+                                      // );
 
                                       // controller
                                       //     .screenInFocus(

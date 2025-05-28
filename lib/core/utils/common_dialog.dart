@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
@@ -104,20 +105,23 @@ class CommonDialog {
   void showDeleteUserDialog({
     required BuildContext context,
     required VoidCallback onConfirm,
+    required String title,
+    required String message,
+    required confirmText,
   }) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: CommonText.text(
-            "Want to Remove the Guest?",
+            title,
             maxLines: 2,
             fontSize: AppDimensions.font(18),
             fontWeight: FontWeight.w400,
             fontFamily: "Gilroy-Bold",
           ),
           content: CommonText.text(
-            "Are you sure you want to remove? This action cannot be undone",
+            message,
             maxLines: 2,
             fontSize: AppDimensions.font(15),
             fontWeight: FontWeight.w400,
@@ -144,7 +148,10 @@ class CommonDialog {
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    child: CommonText.text("Delete", color: AppColors.btntext),
+                    child: CommonText.text(
+                      confirmText,
+                      color: AppColors.btntext,
+                    ),
                   ),
                 ),
                 SizedBox(width: AppDimensions.width(2)),
