@@ -6,6 +6,7 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart'
     show NativeCaller;
@@ -84,20 +85,20 @@ class HomeScreen extends StatelessWidget {
                     width: AppDimensions.height(230),
 
                     onPressed: () async {
-                      // gcontroller.isLoading.value = true;
-                      // var userID =
-                      //     await IndoSharedPreference.instance.getUserId();
-                      // var accessToken =
-                      //     await IndoSharedPreference.instance.getAccessToken();
-                      // Map<String, dynamic> data = {
-                      //   "userId": userID,
-                      //   "token": accessToken,
-                      //   "scanType": "user",
-                      // };
-                      // Future.delayed(Duration(seconds: 2), () {
-                      //   gcontroller.isLoading.value = false;
-                      //   NativeCaller.startFaceScan(data);
-                      // });
+                      gcontroller.isLoading.value = true;
+                      var userID =
+                          await IndoSharedPreference.instance.getUserId();
+                      var accessToken =
+                          await IndoSharedPreference.instance.getAccessToken();
+                      Map<String, dynamic> data = {
+                        "userId": userID,
+                        "token": accessToken,
+                        "scanType": "user",
+                      };
+                      Future.delayed(Duration(seconds: 2), () {
+                        gcontroller.isLoading.value = false;
+                        NativeCaller.startFaceScan(data);
+                      });
                     },
                   ),
                 ),

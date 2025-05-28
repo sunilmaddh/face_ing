@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/login_response_model.dart';
@@ -33,14 +31,12 @@ class AuthController extends GetxController
   final TextEditingController forgotEmailController = TextEditingController();
   final passwordForgotController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final RxString smokerType = "".obs;
   var dataList = <Map<String, dynamic>>[].obs;
   RxString emailId = ''.obs;
   RxBool isLoading = false.obs;
   RxString date = "".obs;
   var selectedDate = DateTime.now().obs;
-  void toggleCheckbox() {
-    isChecked.value = !isChecked.value;
-  }
 
   Future<void> userLogin() async {
     isLoading(true);
@@ -89,6 +85,29 @@ class AuthController extends GetxController
                 loginResponseModel.value.commonUserDetailsDao!.userEmail!;
             userName.value =
                 loginResponseModel.value.commonUserDetailsDao!.userName!;
+
+            await IndoSharedPreference.instance.saveUserName(
+              loginResponseModel.value.commonUserDetailsDao!.userName!,
+            );
+
+            await IndoSharedPreference.instance.saveGenderType(
+              loginResponseModel.value.commonUserDetailsDao!.userGender
+                  .toString(),
+            );
+
+            await IndoSharedPreference.instance.saveHeight(
+              loginResponseModel.value.commonUserDetailsDao!.userHeight
+                  .toString(),
+            );
+
+            await IndoSharedPreference.instance.saveWeight(
+              loginResponseModel.value.commonUserDetailsDao!.userWeight
+                  .toString(),
+            );
+            await IndoSharedPreference.instance.saveAge(
+              loginResponseModel.value.commonUserDetailsDao!.userDob.toString(),
+            );
+
             AppNavigation.off(AppRoutes.homeScreen);
           }
           clearData();
@@ -288,6 +307,7 @@ class AuthController extends GetxController
           "userHeight": heightController.text,
           "userDOB": dateController.text,
           "userImage": profileUrl.value.path,
+          "smokerType": smokerType.value,
         },
         "helthDetailsListDao": dataList,
       };
@@ -308,13 +328,25 @@ class AuthController extends GetxController
             loginResponseModel.value.commonUserDetailsDao!.userEmail!;
         userName.value =
             loginResponseModel.value.commonUserDetailsDao!.userName!;
+        await IndoSharedPreference.instance.saveUserName(
+          loginResponseModel.value.commonUserDetailsDao!.userName!,
+        );
+
+        await IndoSharedPreference.instance.saveGenderType(
+          loginResponseModel.value.commonUserDetailsDao!.userGender.toString(),
+        );
+
+        await IndoSharedPreference.instance.saveHeight(
+          loginResponseModel.value.commonUserDetailsDao!.userHeight.toString(),
+        );
+
+        await IndoSharedPreference.instance.saveWeight(
+          loginResponseModel.value.commonUserDetailsDao!.userWeight.toString(),
+        );
+        await IndoSharedPreference.instance.saveAge(
+          loginResponseModel.value.commonUserDetailsDao!.userDob.toString(),
+        );
         AppNavigation.to(AppRoutes.congratulationsScreen);
-        // var result = MedicalQuestionModels.fromJson(response["responseBody"]);
-        // medicalQuestionListModel.value = result.list!;
-        // AppSnackbar.show(title: "Success", message: result.message!);
-        // if (result.isSuccess == true) {
-        //   AppNavigation.to(AppRoutes.congratulationsScreen);
-        // }
       } else if (statusCode == 405) {
         var result = ErrorResponse.fromJson(response["responseBody"]);
         errorResponse.value = result;

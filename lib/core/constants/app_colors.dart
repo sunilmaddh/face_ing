@@ -30,6 +30,7 @@ class AppColors {
       searchColor = Color(0xffA1A1AA),
       dottedBorderColor = Color(0xffE5E4E4),
       powerBy = Color(0xffAEA8A8),
+      camreraPreviewColor = Color(0xffE98180),
       checkBoxBorderColor = Color(0xffD4D2D2);
   // ignore: deprecated_member_use
   static Color progressColorDeactive = Color(0xff0072BC).withOpacity(0.26);

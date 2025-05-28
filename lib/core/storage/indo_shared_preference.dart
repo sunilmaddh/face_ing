@@ -63,6 +63,16 @@ class IndoSharedPreference {
     return _preferences!.getString("access_token") ?? "";
   }
 
+  Future<void> saveUserName(String userName) async {
+    _checkInit();
+    await _preferences!.setString("user_name", userName);
+  }
+
+  Future<String> getUserName() async {
+    _checkInit();
+    return _preferences!.getString("user_name") ?? "";
+  }
+
   Future<void> saveRefreshToken(String refreshToken) async {
     _checkInit();
     await _preferences!.setString("refresh_token", refreshToken);
@@ -71,5 +81,45 @@ class IndoSharedPreference {
   Future<String> getRefreshToken() async {
     _checkInit();
     return _preferences!.getString("refresh_token") ?? "";
+  }
+
+  Future<void> saveHeight(String height) async {
+    _checkInit();
+    await _preferences!.setString("height", height);
+  }
+
+  Future<String> getHeight() async {
+    _checkInit();
+    return _preferences!.getString("height") ?? "";
+  }
+
+  Future<void> saveWeight(String weight) async {
+    _checkInit();
+    await _preferences!.setString("weight", weight);
+  }
+
+  Future<String> getWeight() async {
+    _checkInit();
+    return _preferences!.getString("weight") ?? "";
+  }
+
+  Future<void> saveAge(String age) async {
+    _checkInit();
+    await _preferences!.setString("age", age);
+  }
+
+  Future<String> getAge() async {
+    _checkInit();
+    return _preferences!.getString("age") ?? "";
+  }
+
+  Future<void> saveGenderType(String genderType) async {
+    _checkInit();
+    await _preferences!.setString("gender_type", genderType);
+  }
+
+  Future<String> getGenderType() async {
+    _checkInit();
+    return _preferences!.getString("gender_type") ?? "";
   }
 }

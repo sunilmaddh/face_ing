@@ -1,415 +1,108 @@
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart'; // Import GetX
-// import 'package:dotted_border/dotted_border.dart';
-
-// void main() {
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Face Detection Circle',
-//       // home: FaceDetectionTestPage(),
-//     );
-//   }
-// }
-
-// class ProgressController extends GetxController {
-//   var progress = 0.0.obs; // Reactive progress
-//   var isStarted = false.obs; // Reactive flag for animation start
-
-//   // Method to start progress animation
-//   void startProgress(
-//     int durationInSeconds,
-//     AnimationController animationController,
-//   ) {
-//     isStarted.value = true; // Mark animation as started
-
-//     animationController.addListener(() {
-//       progress.value = animationController.value; // Update the progress value
-//     });
-
-//     animationController.forward(); // Start the animation
-//   }
-// }
-
-// class FaceDetectionTestPage extends StatefulWidget {
-//   const FaceDetectionTestPage({super.key, required this.widget});
-//   final Widget widget;
-//   @override
-//   _FaceDetectionTestPageState createState() => _FaceDetectionTestPageState();
-// }
-
-// class _FaceDetectionTestPageState extends State<FaceDetectionTestPage>
-//     with SingleTickerProviderStateMixin {
-//   late AnimationController _controller;
-//   final ProgressController progressController = Get.put(ProgressController());
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _controller = AnimationController(
-//       vsync: this,
-//       duration: const Duration(seconds: 30),
-//     );
-//   }
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(title: const Text("Face Detection Circle")),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Obx(() {
-//               // Reactively update the progress and isStarted
-//               return FaceDetectionCircle(
-//                 progress: progressController.progress.value,
-//                 isStarted: progressController.isStarted.value,
-//                 widget: widget,
-//               );
-//             }),
-//             const SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () {
-//                 progressController.startProgress(
-//                   5,
-//                   _controller,
-//                 ); // Start progress on button click
-//               },
-//               child: const Text("Start Progress"),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class FaceDetectionCircle extends StatelessWidget {
-//   final double progress; // 0.0 to 1.0
-//   final bool isStarted;
-//   final Widget widget;
-//   const FaceDetectionCircle({
-//     super.key,
-//     required this.progress,
-//     required this.isStarted,
-//     required this.widget,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     double width = 250; // Increase width of the circle
-//     double height = 300; // Increased height of the circle
-
-//     return SizedBox(
-//       width: width,
-//       height: height,
-//       child:
-//           isStarted
-//               ? Stack(
-//                 alignment: Alignment.center,
-//                 children: [
-//                   // Dotted border circle
-//                   DottedBorder(
-//                     borderType: BorderType.values.last,
-//                     dashPattern: [6, 4],
-//                     color: Colors.blueAccent,
-//                     strokeWidth: 3,
-//                     padding: EdgeInsets.zero,
-//                     child: SizedBox(
-//                       width: width,
-//                       height: height,
-//                       child: widget,
-//                     ),
-//                   ),
-//                   // Circular progress indicator
-//                   SizedBox(
-//                     width: width + 10, // Slightly larger than the dotted circle
-//                     height: height + 10,
-//                     child: CircularProgressIndicator(
-//                       value:
-//                           progress, // Progress based on the animation controller
-//                       strokeWidth: 6,
-//                       backgroundColor: Colors.transparent,
-//                       color: Colors.blueAccent,
-//                     ),
-//                   ),
-//                   // Face icon in the center
-//                 ],
-//               )
-//               : DottedBorder(
-//                 borderType: BorderType.values.last,
-//                 dashPattern: [6, 4],
-//                 color: Colors.blueAccent,
-//                 strokeWidth: 3,
-//                 padding: EdgeInsets.zero,
-//                 child: SizedBox(width: width, height: height),
-//               ),
-//     );
-//   }
-// }
-
-import 'dart:async';
-import 'dart:math';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:flutter/services.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shimmer Animation Example',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const ShimmerLoadingScreen(),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: CameraOverlayScreen(),
     );
   }
 }
 
-class ShimmerLoadingScreen extends StatelessWidget {
-  const ShimmerLoadingScreen({super.key});
+class CameraOverlayScreen extends StatelessWidget {
+  const CameraOverlayScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+
+    final double ovalWidth = screenSize.width * 0.8;
+    final double ovalHeight = screenSize.height * 0.5;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Shimmer Animation')),
-      body: HomeScreen(),
-      //  ListView.builder(
-      //   itemCount: 6,
-      //   itemBuilder: (context, index) {
-      //     return const ShimmerListItem();
-      //   },
-      // ),
-    );
-  }
-}
-
-class ShimmerListItem extends StatelessWidget {
-  const ShimmerListItem({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
         children: [
-          Shimmer(
-            duration: const Duration(seconds: 2),
-            interval: const Duration(seconds: 0),
-            color: Colors.white,
-            colorOpacity: 0.3,
-            enabled: true,
-            direction: const ShimmerDirection.fromLTRB(),
-            child: Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+          // ✅ Fullscreen Camera Preview (Platform View)
+          Positioned.fill(
+            child:
+                defaultTargetPlatform == TargetPlatform.android
+                    ? const AndroidView(
+                      viewType:
+                          'plugins.biosensesignal.com/camera_preview_view',
+                      creationParams: null,
+                      creationParamsCodec: StandardMessageCodec(),
+                    )
+                    : const Center(child: Text("Unsupported Platform")),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Shimmer(
-                  duration: const Duration(seconds: 2),
-                  child: Container(
-                    height: 16,
-                    color: Colors.grey[300],
-                    margin: const EdgeInsets.only(bottom: 8),
-                  ),
-                ),
-                Shimmer(
-                  duration: const Duration(seconds: 2),
-                  child: Container(
-                    height: 14,
-                    width: 150,
-                    color: Colors.grey[300],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  String thumbText = "0";
-  double _progress = 0.0;
-  Timer? _timer;
-
-  void _startProgress() {
-    _timer?.cancel();
-    _progress = 0.0;
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      setState(() {
-        _progress += 0.01;
-        if (_progress >= 1.0) {
-          _progress = 1.0;
-          _timer?.cancel();
-        }
-        thumbText = (_progress * 100).toStringAsFixed(0);
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Circular SeekBar')),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomCircularSeekBar(
-            thumbText: thumbText,
-            progress: _progress,
-            onChanged: (value) {
-              setState(() {
-                thumbText = (value * 100).toStringAsFixed(0);
-              });
-            },
-          ),
-          const SizedBox(height: 40),
-          ElevatedButton(
-            onPressed: _startProgress,
-            child: const Text("Start Timer"),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomCircularSeekBar extends StatefulWidget {
-  final double size;
-  final double width;
-  final double height;
-  final double strokeWidth;
-  final Color trackColor;
-  final Color progressColor;
-  final Color thumbColor;
-  final String thumbText;
-  final double progress;
-  final Function(double) onChanged;
-
-  const CustomCircularSeekBar({
-    super.key,
-    this.size = 200,
-    this.height = 200,
-    this.width = 200,
-    this.strokeWidth = 10,
-    this.trackColor = Colors.grey,
-    this.progressColor = Colors.blue,
-    this.thumbColor = Colors.red,
-    this.thumbText = "",
-    this.progress = 0.0,
-    required this.onChanged,
-  });
-
-  @override
-  State<CustomCircularSeekBar> createState() => _CircularSeekBarState();
-}
-
-class _CircularSeekBarState extends State<CustomCircularSeekBar> {
-  double get _angle => widget.progress * 2 * pi;
-
-  Offset _polarToCartesian(double angle) {
-    final radius = widget.size / 2;
-    final x = radius + radius * cos(angle - pi / 2);
-    final y = radius + radius * sin(angle - pi / 2);
-    return Offset(x, y);
-  }
-
-  double _globalToAngle(Offset globalPosition) {
-    final local = (context.findRenderObject() as RenderBox).globalToLocal(
-      globalPosition,
-    );
-    final center = Offset(widget.size / 2, widget.size / 2);
-    final dx = local.dx - center.dx;
-    final dy = local.dy - center.dy;
-    final angle = atan2(dy, dx) + pi / 2;
-    return (angle < 0) ? (2 * pi + angle) : angle;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final thumbOffset = _polarToCartesian(_angle);
-
-    return GestureDetector(
-      onPanUpdate: (details) {
-        final angle = _globalToAngle(details.globalPosition);
-        final progress = angle / (2 * pi);
-        widget.onChanged(progress);
-      },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          SizedBox(
-            width: widget.width,
-            height: widget.height,
+          // ✅ Overlay with transparent oval cutout
+          Positioned.fill(
             child: CustomPaint(
-              painter: _CircularSeekBarPainter(
-                angle: _angle,
-                strokeWidth: widget.strokeWidth,
-                trackColor: widget.trackColor,
-                progressColor: widget.progressColor,
+              painter: OverlayWithOvalHolePainter(
+                center: Offset(screenSize.width / 2, screenSize.height / 2.6),
+                radiusX: ovalWidth / 2,
+                radiusY: ovalHeight / 2,
+                overlayColor: Colors.black.withOpacity(0.6),
               ),
             ),
           ),
-          Positioned(
-            left: thumbOffset.dx - widget.strokeWidth,
-            top: thumbOffset.dy - widget.strokeWidth,
+
+          // ✅ Bottom Instruction Card
+          Align(
+            alignment: Alignment.bottomCenter,
             child: Container(
-              alignment: Alignment.center,
-              width: widget.strokeWidth * 2,
-              height: widget.strokeWidth * 2,
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
               decoration: BoxDecoration(
-                color: widget.thumbColor,
-                shape: BoxShape.circle,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
               ),
-              child: Text(
-                widget.thumbText,
-                style: const TextStyle(fontSize: 10, color: Colors.white),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'tanmay , Ready to Measure your Vital Signs?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Color(0xFF2E2E5D),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Sit still, ensure your face is evenly illuminated and there is no light source in the background.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Start measurement
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 14,
+                      ),
+                      backgroundColor: const Color(0xFF2E2E5D),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      "MEASURE NOW",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -419,43 +112,243 @@ class _CircularSeekBarState extends State<CustomCircularSeekBar> {
   }
 }
 
-class _CircularSeekBarPainter extends CustomPainter {
-  final double angle;
-  final double strokeWidth;
-  final Color trackColor;
-  final Color progressColor;
+class OverlayWithOvalHolePainter extends CustomPainter {
+  final Offset center;
+  final double radiusX;
+  final double radiusY;
+  final Color overlayColor;
 
-  _CircularSeekBarPainter({
-    required this.angle,
-    required this.strokeWidth,
-    required this.trackColor,
-    required this.progressColor,
+  OverlayWithOvalHolePainter({
+    required this.center,
+    required this.radiusX,
+    required this.radiusY,
+    required this.overlayColor,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.width / 2;
+    final Path screenPath =
+        Path()..addRect(Rect.fromLTWH(0, 0, size.width, size.height));
+    final Path ovalPath =
+        Path()..addOval(
+          Rect.fromCenter(
+            center: center,
+            width: radiusX * 2,
+            height: radiusY * 2,
+          ),
+        );
 
-    final trackPaint =
-        Paint()
-          ..color = trackColor
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = strokeWidth;
+    final Path mask = Path.combine(
+      PathOperation.difference,
+      screenPath,
+      ovalPath,
+    );
 
-    final progressPaint =
-        Paint()
-          ..color = progressColor
-          ..style = PaintingStyle.stroke
-          ..strokeCap = StrokeCap.round
-          ..strokeWidth = strokeWidth;
-
-    canvas.drawCircle(center, radius, trackPaint);
-
-    final rect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawArc(rect, -pi / 2, angle, false, progressPaint);
+    canvas.drawPath(mask, Paint()..color = overlayColor);
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
+
+// import 'dart:async';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Animated Progress Bar',
+//       theme: ThemeData(primarySwatch: Colors.blue),
+//       home: ProgressBarScreen(),
+//     );
+//   }
+// }
+
+// class ProgressBarScreen extends StatefulWidget {
+//   @override
+//   _ProgressBarScreenState createState() => _ProgressBarScreenState();
+// }
+
+// class _ProgressBarScreenState extends State<ProgressBarScreen> {
+//   int _progress = 0;
+//   Timer? _timer;
+//   final int totalSeconds = 60;
+
+//   void startTimer() {
+//     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+//       if (_progress >= 100) {
+//         _timer?.cancel();
+//       } else {
+//         setState(() {
+//           _progress += (100 ~/ totalSeconds);
+//         });
+//       }
+//     });
+//   }
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     startTimer();
+//   }
+
+//   @override
+//   void dispose() {
+//     _timer?.cancel();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('FA Progress Bar')),
+//       body: Center(
+//         child: Padding(
+//           padding: const EdgeInsets.all(24.0),
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               // Text(
+//               //   '$_progress%',
+//               //   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+//               // ),
+//               // SizedBox(height: 24),
+//               FAProgressBar(
+//                 currentValue: _progress.toDouble(),
+//                 displayText: '%',
+//                 size: 20,
+//                 maxValue: 100,
+//                 animatedDuration: Duration(milliseconds: 300),
+//                 progressColor: Colors.green,
+//                 backgroundColor: Colors.grey.shade300,
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+
+// void main() {
+//   runApp(const MyApp());
+// }
+
+// /// Main App Widget
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: CameraPreviewScreen(),
+//     );
+//   }
+// }
+
+// /// Screen with Camera Preview and Transparent Oval Overlay
+// class CameraPreviewScreen extends StatelessWidget {
+//   const CameraPreviewScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold(body: CameraPreviewView());
+//   }
+// }
+
+// /// Widget that displays the native camera preview with overlay
+// class CameraPreviewView extends StatelessWidget {
+//   static const String _viewType =
+//       "plugins.biosensesignal.com/camera_preview_view";
+
+//   const CameraPreviewView({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final screenSize = MediaQuery.of(context).size;
+
+//     // Oval hole dimensions (responsive)
+//     final double holeWidth = screenSize.width * 0.80;
+//     final double holeHeight = screenSize.height * 0.55;
+
+//     // Create platform-native camera view
+//     Widget createNativeView() {
+//       if (defaultTargetPlatform == TargetPlatform.android) {
+//         return const AndroidView(
+//           viewType: _viewType,
+//           creationParams: null,
+//           creationParamsCodec: StandardMessageCodec(),
+//         );
+//       } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+//         return const UiKitView(
+//           viewType: _viewType,
+//           creationParams: null,
+//           creationParamsCodec: StandardMessageCodec(),
+//         );
+//       } else {
+//         return const Center(child: Text("Platform not supported"));
+//       }
+//     }
+
+//     return Stack(
+//       children: [
+//         // Native camera view (full screen)
+//         Positioned.fill(child: createNativeView()),
+
+//         // Overlay with transparent oval in center
+//         Positioned.fill(
+//           child: CustomPaint(
+//             painter: OvalHolePainter(
+//               holeWidth: holeWidth,
+//               holeHeight: holeHeight,
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// /// Custom painter that draws a dimmed overlay with a transparent oval in the center
+// class OvalHolePainter extends CustomPainter {
+//   final double holeWidth;
+//   final double holeHeight;
+
+//   OvalHolePainter({required this.holeWidth, required this.holeHeight});
+
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     final paint =
+//         Paint()
+//           ..color = Colors.black.withOpacity(0.6)
+//           ..style = PaintingStyle.fill;
+
+//     final outerRect = Rect.fromLTWH(0, 0, size.width, size.height);
+//     final path = Path()..addRect(outerRect);
+
+//     final center = Offset(size.width / 2, size.height / 2);
+//     final ovalRect = Rect.fromCenter(
+//       center: center,
+//       width: holeWidth,
+//       height: holeHeight,
+//     );
+
+//     path.addOval(ovalRect);
+//     path.fillType = PathFillType.evenOdd;
+
+//     canvas.drawPath(path, paint);
+//   }
+
+//   @override
+//   bool shouldRepaint(OvalHolePainter oldDelegate) => false;
+// }

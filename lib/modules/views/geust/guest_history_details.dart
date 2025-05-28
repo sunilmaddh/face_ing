@@ -5,6 +5,7 @@ import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
+import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class GuestHistoryDetails extends StatelessWidget {

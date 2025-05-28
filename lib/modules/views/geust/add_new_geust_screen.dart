@@ -17,6 +17,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
+import 'package:ntt_data/widgets/fields/common_dropmenu.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 import 'package:ntt_data/widgets/gender_widget.dart';
 
@@ -26,6 +27,8 @@ class AddNewGuestScreen extends StatelessWidget {
   final _geustController = Get.find<GeustController>();
   final controller = Get.find<MeasurementController>();
   final _formKey = GlobalKey<FormState>();
+
+  List<String> smokerTypeList = ["Smoker", "Non Smoker"];
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +133,26 @@ class AddNewGuestScreen extends StatelessWidget {
                                 controller:
                                     _geustController.heightTextController,
                               ),
+                              SizedBox(height: 15),
+                              CommonDropdown(
+                                items: smokerTypeList,
+                                onChanged: (value) {
+                                  controller.smokerType.value = value!;
+                                },
+                                label: "Select smoker type",
+                                itemToString: (smokerType) => smokerType,
+                              ),
+                              // CustomFormField(
+                              //   validator: (name) {
+                              //     if (name == null || name.isEmpty) {
+                              //       return "Please enter name";
+                              //     }
+                              //     return null;
+                              //   },
+                              //   label: "Patiant Id",
+                              //   hint: "Enter your name",
+                              //   controller: _geustController.nameTextController,
+                              // ),
                             ],
                           ),
                         ),
@@ -180,45 +203,50 @@ class AddNewGuestScreen extends StatelessWidget {
                                         message:
                                             "Please accept term and conditions",
                                       );
+                                    } else if (controller.smokerType.isEmpty) {
+                                      AppSnackbar.show(
+                                        title: "Error",
+                                        message: "Please select smoker type",
+                                      );
                                     } else {
-                                      // var userID =
-                                      //     await IndoSharedPreference.instance
-                                      //         .getUserId();
-                                      // var accessToken =
-                                      //     await IndoSharedPreference.instance
-                                      //         .getAccessToken();
+                                      var userID =
+                                          await IndoSharedPreference.instance
+                                              .getUserId();
+                                      var accessToken =
+                                          await IndoSharedPreference.instance
+                                              .getAccessToken();
 
-                                      // Map<String, dynamic> data = {
-                                      //   "userId": userID,
-                                      //   "name":
-                                      //       _geustController
-                                      //           .nameTextController
-                                      //           .text,
-                                      //   "gender":
-                                      //       _geustController
-                                      //           .selectionType
-                                      //           .value,
-                                      //   "dob":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text, // Keep as string unless using DateTime
-                                      //   "weight":
-                                      //       _geustController
-                                      //           .weightTextController
-                                      //           .text,
-                                      //   "height":
-                                      //       _geustController
-                                      //           .heightTextController
-                                      //           .text,
-                                      //   "emailId":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text,
-                                      //   "token": accessToken,
-                                      //   "scanType": "guest-user",
-                                      // };
+                                      Map<String, dynamic> data = {
+                                        "userId": userID,
+                                        "name":
+                                            _geustController
+                                                .nameTextController
+                                                .text,
+                                        "gender":
+                                            _geustController
+                                                .selectionType
+                                                .value,
+                                        "dob":
+                                            _geustController
+                                                .dobTextController
+                                                .text, // Keep as string unless using DateTime
+                                        "weight":
+                                            _geustController
+                                                .weightTextController
+                                                .text,
+                                        "height":
+                                            _geustController
+                                                .heightTextController
+                                                .text,
+                                        "emailId":
+                                            _geustController
+                                                .dobTextController
+                                                .text,
+                                        "token": accessToken,
+                                        "scanType": "guest-user",
+                                      };
 
-                                      // NativeCaller.startFaceScan(data);
+                                      NativeCaller.startFaceScan(data);
                                     }
                                   }
                                 },

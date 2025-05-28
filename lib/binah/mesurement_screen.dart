@@ -1,14 +1,18 @@
-import 'package:biosensesignal_flutter_sdk/session/session_state.dart';
+import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import 'package:focus_detector/focus_detector.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:ntt_data/binah/camera_preview.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/binah/start_stop_button.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class MeasurementScreen extends StatefulWidget {
   const MeasurementScreen({super.key});
@@ -19,6 +23,7 @@ class MeasurementScreen extends StatefulWidget {
 class _MeasurementScreenState extends State<MeasurementScreen> {
   final controller = Get.find<MeasurementController>();
   final String scanType = Get.arguments["scanType"] ?? "";
+  final String userName = Get.arguments["userName"] ?? "";
   @override
   void dispose() {
     // TODO: implement dispose
@@ -29,84 +34,213 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future.microtask(() {
-      controller.isMeasurementCanceled.value = false;
-      controller.scanType.value = scanType;
-      controller.startStopButtonClicked();
-    });
+    final Size screenSize = MediaQuery.of(context).size;
+    final double ovalWidth = screenSize.width * 0.8;
+    final double ovalHeight = screenSize.height * 0.5;
+    return FocusDetector(
+      onFocusLost: () {
+        controller.screenInFocus(
+          false,
+          controller.genderType.value,
+          controller.age.value,
+          controller.weight.value,
+          controller.height.value,
+          "Smoker",
+        );
+      },
+      onFocusGained: () {
+        controller.screenInFocus(
+          true,
+          controller.genderType.value,
+          controller.age.value,
+          controller.weight.value,
+          controller.height.value,
+          "Smoker",
+        );
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(title: "Measurment", onTop: () {}),
+        backgroundColor: Colors.transparent,
+        body: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  CameraPreview(controller: controller),
+                  Obx(() {
+                    return Positioned.fill(
+                      child: CustomPaint(
+                        painter: OverlayWithOvalHolePainter(
+                          center: Offset(
+                            screenSize.width / 2,
+                            screenSize.height / 2.6,
+                          ),
+                          radiusX: ovalWidth / 2,
+                          radiusY: ovalHeight / 2,
+                          overlayColor:
+                              controller.imageData.value != null &&
+                                      controller
+                                              .imageData
+                                              .value!
+                                              .imageValidity !=
+                                          ImageValidity.valid
+                                  ? AppColors.camreraPreviewColor.withOpacity(
+                                    0.6,
+                                  )
+                                  : Colors.black.withOpacity(0.3),
+                        ),
+                      ),
+                    );
+                  }),
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        onTop: () {
-          AppNavigation.back();
-        },
-        title: "",
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  color: Colors.white,
-                  width: double.infinity,
-                  padding: EdgeInsets.only(bottom: AppDimensions.height(120)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Obx(
-                        () =>
-                            controller.isMeasurementCanceled.value
-                                ? Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 30.0,
-                                  ),
-                                  child: Text(
-                                    textAlign: TextAlign.center,
-                                    "The measurement was canceled. Please wait while we prepare to restart.",
-                                    style: TextStyle(
-                                      color: AppColors.backArrowColor,
-                                      fontWeight: FontWeight.w500,
-
-                                      fontSize: AppDimensions.font(16),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: AppDimensions.height(250),
+                      padding: EdgeInsets.only(
+                        bottom: AppDimensions.height(20),
+                        top: AppDimensions.height(8.0),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Obx(
+                            () => Visibility(
+                              visible: controller.isStarted.value == true,
+                              child: SafeArea(
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      CommonDialog().showDeleteUserDialog(
+                                        context: context,
+                                        onConfirm: () {
+                                          controller.stopMeasuring();
+                                        },
+                                        title: 'Measurement',
+                                        message:
+                                            'The measurement is not completed yet. Are you sure?',
+                                        confirmText: "Yes",
+                                      );
+                                    },
+                                    child: CommonText.text(
+                                      "Stop",
+                                      color: AppColors.blackColor,
+                                      fontSize: AppDimensions.font(18),
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                )
-                                : Text(
-                                  controller.imageValidityString.value,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: AppDimensions.font(18),
-                                  ),
                                 ),
-                      ),
+                              ),
+                            ),
+                          ),
 
-                      SizedBox(height: AppDimensions.height(30)),
-                      // Image.asset("assets/images/png/redheart.jpg"),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: AppDimensions.height(190)),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Obx(
-                      () =>
-                          (controller.sessionState.value == null ||
-                                  controller.sessionState.value ==
-                                      SessionState.initializing)
-                              ? Container()
-                              : CameraPreview(),
+                          SizedBox(height: AppDimensions.height(10)),
+                          ImageValidityScan(),
+                          MeasurmentProgress(controller: controller),
+                          SizedBox(height: AppDimensions.height(10)),
+                          StartStopButton(userName: userName),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+}
+
+class MeasurmentProgress extends StatelessWidget {
+  const MeasurmentProgress({super.key, required this.controller});
+
+  final MeasurementController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return Visibility(
+        visible:
+            controller.imageData.value != null &&
+            controller.imageData.value!.imageValidity == ImageValidity.valid &&
+            controller.isStarted.value == true,
+        child: Column(
+          children: [
+            PulseRate(),
+
+            SizedBox(
+              width: 300,
+              height: AppDimensions.height(80),
+              child: LottieBuilder.asset(
+                AppAssets.heartRateAnim,
+                fit: BoxFit.fill,
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppDimensions.width(20),
+              ),
+              child: FAProgressBar(
+                progressColor: Colors.green,
+                currentValue: controller.progress.value.toDouble(),
+                displayText: "%",
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
+class OverlayWithOvalHolePainter extends CustomPainter {
+  final Offset center;
+  final double radiusX;
+  final double radiusY;
+  final Color overlayColor;
+
+  OverlayWithOvalHolePainter({
+    required this.center,
+    required this.radiusX,
+    required this.radiusY,
+    required this.overlayColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Path screenPath =
+        Path()..addRect(Rect.fromLTWH(0, 0, size.width, size.height));
+    final Path ovalPath =
+        Path()..addOval(
+          Rect.fromCenter(
+            center: center,
+            width: radiusX * 2,
+            height: radiusY * 2,
+          ),
+        );
+
+    final Path mask = Path.combine(
+      PathOperation.difference,
+      screenPath,
+      ovalPath,
+    );
+
+    canvas.drawPath(mask, Paint()..color = overlayColor);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

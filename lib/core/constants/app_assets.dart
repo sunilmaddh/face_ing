@@ -1,7 +1,8 @@
 class AppAssets {
   static const String baseUrlAssets = "assets/images";
   static const String baseUrlPng = "$baseUrlAssets/png";
-  static const String baseUrlSvg = "$baseUrlAssets/svg",
+  static const String baseUrlSvg = "$baseUrlAssets/svg";
+  static const String baseUrlLottie = "$baseUrlAssets/lottie",
       onboard1 = "$baseUrlSvg/onbosrd_1.svg",
       faceLogo = "$baseUrlSvg/face_log.svg",
       tickCircle = "$baseUrlSvg/tick_circle.svg",
@@ -31,5 +32,8 @@ class AppAssets {
       logo = "$baseUrlSvg/logo.svg",
       redHeart = "$baseUrlPng/red-heart.png",
       heartRed = "$baseUrlPng/redheart.jpg",
+      heartRateAnim = "$baseUrlLottie/heart_rate_animation.json",
+      faceDetact = "$baseUrlSvg/face_detection.svg",
+      faceD = "$baseUrlPng/face_d.png",
       homeMenu = "$baseUrlSvg/home_menu.svg";
 }

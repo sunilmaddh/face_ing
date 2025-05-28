@@ -15,14 +15,14 @@ class CameraPreviewView extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     // Set responsive size (adjust as needed)
-    final double width = screenWidth * 0.83; // 85% of screen width
-    final double height = screenHeight * 0.48; // 45% of screen height
+    final double width = screenWidth * 0.80; // 85% of screen width
+    final double height = screenHeight * 0.90; // 45% of screen height
 
     Widget createNativeView() {
       if (defaultTargetPlatform == TargetPlatform.android) {
-        return ClipOval(
+        return Positioned.fill(
           child: SizedBox(
-            width: width,
+            width: MediaQuery.of(context).size.width,
             height: height,
             child: const AndroidView(
               viewType: _viewType,
@@ -32,16 +32,13 @@ class CameraPreviewView extends StatelessWidget {
           ),
         );
       } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(50.0),
-          child: SizedBox(
-            width: width + 10,
-            height: height + 20, // slightly taller for iOS if needed
-            child: const UiKitView(
-              viewType: _viewType,
-              creationParams: null,
-              creationParamsCodec: StandardMessageCodec(),
-            ),
+        return SizedBox(
+          width: width + 10,
+          height: height + 20, // slightly taller for iOS if needed
+          child: const UiKitView(
+            viewType: _viewType,
+            creationParams: null,
+            creationParamsCodec: StandardMessageCodec(),
           ),
         );
       } else {

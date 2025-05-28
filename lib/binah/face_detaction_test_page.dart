@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
-import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
 class FaceDetectionCircleWidget extends StatelessWidget {
@@ -20,7 +19,7 @@ class FaceDetectionCircleWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FaceDetectionCircle(
-            progress: progressController.progress.value,
+            progress: progressController.progress.value.toDouble(),
             isStarted: progressController.isStarted.value,
           ),
         ],
@@ -53,39 +52,46 @@ class FaceDetectionCircle extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child:
-          isStarted
-              ? Stack(
-                alignment: Alignment.center,
-                children: [
-                  DottedBorder(
-                    borderType: BorderType.values.last,
-                    dashPattern: [6, 4],
-                    color: Colors.black,
-                    strokeWidth: 3,
-                    padding: EdgeInsets.zero,
-                    child: SizedBox(width: width, height: height),
-                  ),
-                  SizedBox(
-                    width: width,
-                    height: height,
-                    child: CircularProgressIndicator(
-                      value: progress,
-                      strokeWidth: 6,
-                      backgroundColor: Colors.transparent,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ],
-              )
-              : DottedBorder(
-                borderType: BorderType.values.last,
-                dashPattern: [6, 4],
-                color: Colors.grey,
-                strokeWidth: 3,
-                padding: EdgeInsets.zero,
-                child: SizedBox(width: width, height: height),
-              ),
+      child: DottedBorder(
+        borderType: BorderType.values.last,
+        dashPattern: [6, 4],
+        color: Colors.grey,
+        strokeWidth: 3,
+        padding: EdgeInsets.zero,
+        child: SizedBox(width: width, height: height),
+      ),
+      // isStarted
+      //     ? Stack(
+      //       alignment: Alignment.center,
+      //       children: [
+      //         DottedBorder(
+      //           borderType: BorderType.values.last,
+      //           dashPattern: [6, 4],
+      //           color: Colors.black,
+      //           strokeWidth: 3,
+      //           padding: EdgeInsets.zero,
+      //           child: SizedBox(width: width, height: height),
+      //         ),
+      //         SizedBox(
+      //           width: width,
+      //           height: height,
+      //           child: CircularProgressIndicator(
+      //             value: progress,
+      //             strokeWidth: 6,
+      //             backgroundColor: Colors.transparent,
+      //             color: AppColors.primary,
+      //           ),
+      //         ),
+      //       ],
+      //     )
+      //     : DottedBorder(
+      //       borderType: BorderType.values.last,
+      //       dashPattern: [6, 4],
+      //       color: Colors.grey,
+      //       strokeWidth: 3,
+      //       padding: EdgeInsets.zero,
+      //       child: SizedBox(width: width, height: height),
+      //     ),
     );
   }
 }
