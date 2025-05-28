@@ -84,20 +84,20 @@ class HomeScreen extends StatelessWidget {
                     width: AppDimensions.height(230),
 
                     onPressed: () async {
-                      gcontroller.isLoading.value = true;
-                      var userID =
-                          await IndoSharedPreference.instance.getUserId();
-                      var accessToken =
-                          await IndoSharedPreference.instance.getAccessToken();
-                      Map<String, dynamic> data = {
-                        "userId": userID,
-                        "token": accessToken,
-                        "scanType": "user",
-                      };
-                      Future.delayed(Duration(seconds: 2), () {
-                        gcontroller.isLoading.value = false;
-                        NativeCaller.startFaceScan(data);
-                      });
+                      // gcontroller.isLoading.value = true;
+                      // var userID =
+                      //     await IndoSharedPreference.instance.getUserId();
+                      // var accessToken =
+                      //     await IndoSharedPreference.instance.getAccessToken();
+                      // Map<String, dynamic> data = {
+                      //   "userId": userID,
+                      //   "token": accessToken,
+                      //   "scanType": "user",
+                      // };
+                      // Future.delayed(Duration(seconds: 2), () {
+                      //   gcontroller.isLoading.value = false;
+                      //   NativeCaller.startFaceScan(data);
+                      // });
                     },
                   ),
                 ),
