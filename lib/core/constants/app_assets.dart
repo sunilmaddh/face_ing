@@ -35,5 +35,8 @@ class AppAssets {
       heartRateAnim = "$baseUrlLottie/heart_rate_animation.json",
       faceDetact = "$baseUrlSvg/face_detection.svg",
       faceD = "$baseUrlPng/face_d.png",
+      lowAsset = "$baseUrlSvg/low.svg",
+      mediumAsset = "$baseUrlSvg/medium.svg",
+      highAsset = "$baseUrlSvg/high.svg",
       homeMenu = "$baseUrlSvg/home_menu.svg";
 }
