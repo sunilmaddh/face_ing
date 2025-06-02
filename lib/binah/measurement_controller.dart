@@ -51,6 +51,7 @@ class MeasurementController extends GetxController
   RxBool isLoading = false.obs;
   RxString smokerType = ''.obs;
   RxBool isMeasurementCanceled = false.obs;
+  RxList<String> vitlaList = <String>[].obs;
   @override
   final RxBool showImageValidity = false.obs;
   Rx<VitalSignsResults> vitalsResults = VitalSignsResults().obs;
@@ -179,6 +180,38 @@ class MeasurementController extends GetxController
     debugPrint(
       "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
     );
+    vitlaList.value = [
+      vitalsResults.value.getResult(VitalSignTypes.wellnessIndex).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.wellnessIndex).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.respirationRate).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.pulseRate).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.prq).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.bloodPressure).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.oxygenSaturation).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.hemoglobin).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.hemoglobinA1C).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.ascvdRisk).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.heartAge).toString(),
+      vitalsResults.value
+          .getResult(VitalSignTypes.highBloodPressureRisk)
+          .toString(),
+      vitalsResults.value
+          .getResult(VitalSignTypes.highHemoglobinA1CRisk)
+          .toString(),
+      vitalsResults.value
+          .getResult(VitalSignTypes.highFastingGlucoseRisk)
+          .toString(),
+      vitalsResults.value
+          .getResult(VitalSignTypes.highTotalCholesterolRisk)
+          .toString(),
+      vitalsResults.value
+          .getResult(VitalSignTypes.lowHemoglobinRisk)
+          .toString(),
+      vitalsResults.value.getResult(VitalSignTypes.stressIndex).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.sdnn).toString(),
+      vitalsResults.value.getResult(VitalSignTypes.lfhf).toString(),
+    ];
+
     if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
       startStopButtonClicked();
       if (scanType.value == "add-guest") {

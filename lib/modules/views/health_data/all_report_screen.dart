@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/circle_progress_card.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/report_card.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 
@@ -17,6 +19,11 @@ class AllReportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Future.microtask(() {
+    //   Map<String, String> vitalData = {
+    //     "vitalResult": _measurementController.vitlaList,
+    //   };
+    // });
     return Scaffold(
       appBar: CustomAppBar(
         onTop: () {
@@ -36,322 +43,262 @@ class AllReportScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ReportCard(
-                    height: 190,
-                    image: AppAssets.wellnessImage,
-                    title: "Wellness Score",
-                    value: getVitalValue(VitalSignTypes.wellnessIndex),
-                    mass: getVitalValue(VitalSignTypes.wellnessLevel),
+                  IndoCommonCard(
+                    vitalName: "Wellness Score",
+                    vitalValue: getVitalValue(VitalSignTypes.wellnessIndex),
+                    // vitalMass: getVitalValue(VitalSignTypes.wellnessIndex),
+                    vitalHeading: WellnessMetricDescriptions.wellnessScore,
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.wellnessScore,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: ReportCard(
-                          height: 190,
-                          isTextOnly: true,
-                          title: "Breathing Rate",
-                          value: getVitalValue(VitalSignTypes.respirationRate),
-                          mass: "rpm",
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: ReportCard(
-                          image: AppAssets.heartRate,
-                          height: 190,
-                          title: "Pulse rate (Heart Rate)",
-                          value: getVitalValue(VitalSignTypes.oxygenSaturation),
-                          mass: "bpm",
-                        ),
-                      ),
-                    ],
+                  IndoCommonCard(
+                    vitalName: "Breathing Rate",
+                    vitalValue: getVitalValue(VitalSignTypes.respirationRate),
+                    vitalMass: "rpm",
+                    vitalHeading: WellnessMetricDescriptions.breathingRate,
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.breathingRate,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: CircleProgressCard(
-                          size: 75,
-                          progress: getVitalValueInt(VitalSignTypes.prq),
-                          age: getVitalValueInt(VitalSignTypes.prq),
-                          maxProgress: 10,
-                          borderColor: Color(0xFFFFFDDF),
-                          drawArcColor: Color(0xFFF7D100),
-                          title: 'PRQ',
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "Oxygen Saturation",
-                          value:
-                              "${getVitalValue(VitalSignTypes.oxygenSaturation)} %",
-                        ),
-                      ),
-                    ],
+                  IndoCommonCard(
+                    vitalName: "Pulse rate (Heart Rate)",
+                    vitalValue: getVitalValue(VitalSignTypes.respirationRate),
+                    vitalMass: "bpm",
+                    vitalHeading: WellnessMetricDescriptions.pulseRate,
+                    vitalDescription: WellnessMetricDescriptionsLong.pulseRate,
                   ),
                   const SizedBox(height: 20),
-                  CircleProgressCard(
-                    height: 220,
-                    imageWidth: MediaQuery.of(context).size.width,
-                    value: getVitalValue(VitalSignTypes.bloodPressure),
-                    mass: "mmHg",
-                    title: 'Blood Pressure ',
-                    bottomImage: AppAssets.stressLevel,
+                  // IndoCommonCard(
+                  //   vitalName: "Pulse rate (Heart Rate)",
+                  //   vitalValue: getVitalValue(VitalSignTypes.respirationRate),
+                  //   vitalMass: "bpm",
+                  //   vitalHeading: "",
+                  // ),
+                  // const SizedBox(height: 20),
+                  IndoCommonCard(
+                    vitalName: "PRQ",
+                    vitalValue: getVitalValue(VitalSignTypes.prq),
+                    vitalMass: "bpm",
+                    vitalHeading: WellnessMetricDescriptions.prq,
+                    vitalDescription: WellnessMetricDescriptionsLong.prq,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: ReportCard(
-                          centerImage: AppAssets.homoglobin,
-                          height: 190,
-                          title: "Hemoglobin",
-                          value: getVitalValue(VitalSignTypes.hemoglobin),
-                          mass: "g/dL",
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: ReportCard(
-                          centerImage: AppAssets.homoglobin,
-                          height: 190,
-                          title: "HemoglobinA1C",
-                          value:
-                              "${getVitalValue(VitalSignTypes.hemoglobinA1C)} %",
-                        ),
-                      ),
-                    ],
+                  IndoCommonCard(
+                    vitalName: "Blood Pressure",
+                    vitalValue: getVitalValue(VitalSignTypes.bloodPressure),
+                    vitalMass: "mmHg",
+                    vitalHeading:
+                        WellnessMetricDescriptions.bloodPressureDiastolic,
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.bpDiastolic,
+                  ),
+
+                  const SizedBox(height: 20),
+                  IndoCommonCard(
+                    vitalName: "Oxygen Saturation",
+                    vitalValue: getVitalValue(VitalSignTypes.oxygenSaturation),
+                    vitalMass: "%",
+                    vitalHeading: WellnessMetricDescriptions.oxygenSaturation,
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.oxygenSaturation,
+                  ),
+
+                  const SizedBox(height: 20),
+                  IndoCommonCard(
+                    vitalName: "Hemoglobin",
+                    vitalValue: getVitalValue(VitalSignTypes.hemoglobin),
+                    vitalMass: "g/dL",
+                    vitalHeading: WellnessMetricDescriptions.hemoglobin,
+                    vitalDescription: WellnessMetricDescriptionsLong.hemoglobin,
                   ),
                   const SizedBox(height: 20),
-                  CircleProgressCard(
-                    height: 270,
-                    imageWidth: 190,
-                    value: "${getVitalValue(VitalSignTypes.ascvdRisk)} %",
-                    borderColor: Color(0xFF0072BC).withOpacity(0.2),
-                    drawArcColor: Color(0xFF0072BC),
-                    title:
-                        'ASCVD Risk (Atherosclerotic Cardiovascular Disease Risk)',
-                    bottomImage: AppAssets.goodImage,
+                  IndoCommonCard(
+                    vitalName: "HemoglobinA1C",
+                    vitalValue: getVitalValue(VitalSignTypes.hemoglobinA1C),
+                    vitalMass: "%",
+                    vitalHeading: WellnessMetricDescriptions.hemoglobinA1C,
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.hemoglobinA1C,
                   ),
                   const SizedBox(height: 20),
-                  CircleProgressCard(
-                    height: 240,
-                    imageWidth: MediaQuery.of(context).size.width,
-                    value: getVitalValue(VitalSignTypes.heartAge),
-                    mass: "years",
-                    borderColor: Color(0xFF0072BC).withOpacity(0.2),
-                    drawArcColor: Color(0xFF0072BC),
-                    title: 'Heart Age (biological heart age estimation)',
-                    bottomImage: AppAssets.heartAge,
+                  IndoCommonCard(
+                    vitalName:
+                        "ASCVD Risk (Atherosclerotic Cardiovascular Disease Risk)",
+                    vitalValue: getVitalValue(VitalSignTypes.ascvdRisk),
+                    vitalMass: "%",
+                    vitalHeading: WellnessMetricDescriptions.ascvdRisk,
+                    vitalDescription: WellnessMetricDescriptionsLong.ascvdRisk,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "High Blood Pressure Risk",
-                          value: getVitalValue(
-                            VitalSignTypes.highBloodPressureRisk,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "High Hemoglobin A1C Risk",
-                          value: getVitalValue(
-                            VitalSignTypes.highHemoglobinA1CRisk,
-                          ),
-                        ),
-                      ),
-                    ],
+
+                  IndoCommonCard(
+                    vitalName: "Heart Age (biological heart age estimation)",
+                    vitalValue: getVitalValue(VitalSignTypes.heartAge),
+                    vitalMass: "years",
+                    vitalHeading: WellnessMetricDescriptions.heartAge,
+                    vitalDescription: WellnessMetricDescriptionsLong.heartAge,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "High Fasting Glucose Risk",
-                          value: getVitalValue(
-                            VitalSignTypes.highFastingGlucoseRisk,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "High Total Cholesterol Risk",
-                          value: getVitalValue(
-                            VitalSignTypes.highTotalCholesterolRisk,
-                          ),
-                        ),
-                      ),
-                    ],
+
+                  IndoCommonCard(
+                    vitalName: "High Blood Pressure Risk",
+                    vitalValue: getVitalValue(
+                      VitalSignTypes.highBloodPressureRisk,
+                    ),
+
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.highBloodPressureRisk,
+
+                    vitalHeading:
+                        WellnessMetricDescriptions.highBloodPressureRisk,
                   ),
                   const SizedBox(height: 20),
-                  ReportCard(
-                    isTextOnly: true,
-                    height: 170,
-                    title: "Low Hemoglobin Risk (anemia risk)",
-                    value: getVitalValue(VitalSignTypes.lowHemoglobinRisk),
+                  IndoCommonCard(
+                    vitalName: "High Hemoglobin A1C Risk",
+                    vitalValue: getVitalValue(
+                      VitalSignTypes.highHemoglobinA1CRisk,
+                    ),
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.highHbA1cRisk,
+
+                    vitalHeading: WellnessMetricDescriptions.highHbA1cRisk,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "Stress Level",
-                          value: getVitalValue(VitalSignTypes.stressLevel),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "Stress Index",
-                          value: getVitalValue(VitalSignTypes.stressIndex),
-                        ),
-                      ),
-                    ],
+                  IndoCommonCard(
+                    vitalName: "High Fasting Glucose Risk",
+                    vitalValue: getVitalValue(
+                      VitalSignTypes.highFastingGlucoseRisk,
+                    ),
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.highFastingGlucoseRisk,
+
+                    vitalHeading:
+                        WellnessMetricDescriptions.highFastingGlucoseRisk,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "Normalized Stress Index",
-                          value:
-                              "${getVitalValue(VitalSignTypes.normalizedStressIndex)} %",
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "HRV SDNN ",
-                          value: getVitalValue(VitalSignTypes.sdnn),
-                          mass: "ms",
-                        ),
-                      ),
-                    ],
+                  IndoCommonCard(
+                    vitalName: "High Total Cholesterol Risk",
+                    vitalValue: getVitalValue(
+                      VitalSignTypes.highTotalCholesterolRisk,
+                    ),
+
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.highTotalCholesterolRisk,
+
+                    vitalHeading:
+                        WellnessMetricDescriptions.highTotalCholesterolRisk,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "Mean R-R Interval",
-                          value: getVitalValue(VitalSignTypes.meanRri),
-                          mass: "ms",
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: ReportCard(
-                          isTextOnly: true,
-                          height: 190,
-                          title: "RMSSD",
-                          value: getVitalValue(VitalSignTypes.rmssd),
-                          mass: "ms",
-                        ),
-                      ),
-                    ],
+                  IndoCommonCard(
+                    vitalName: "Low Hemoglobin Risk (anemia risk)",
+                    vitalValue: getVitalValue(VitalSignTypes.lowHemoglobinRisk),
+
+                    vitalHeading: WellnessMetricDescriptions.lowHemoglobinRisk,
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.lowHemoglobinRisk,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: ReportCard(
-                          backgroundImage: AppAssets.pnsImage,
-                          height: 190,
-                          title: "Recovery Ability (PNS Zone)",
-                          value: getVitalValue(VitalSignTypes.pnsZone),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: ReportCard(
-                          backgroundImage: AppAssets.pnsImage,
-                          height: 190,
-                          title: "PNS Index",
-                          value: getVitalValue(VitalSignTypes.pnsIndex),
-                        ),
-                      ),
-                    ],
+
+                  IndoCommonCard(
+                    vitalName: "Stress",
+                    vitalValue: getVitalValue(VitalSignTypes.stressIndex),
+
+                    vitalHeading: WellnessMetricDescriptions.stressIndex,
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.stressIndex,
+                    vitalMass: "%",
                   ),
                   const SizedBox(height: 20),
-                  ReportCard(
-                    backgroundImage: AppAssets.snsImage,
-                    height: 190,
-                    title: "SNS Index",
-                    value: getVitalValue(VitalSignTypes.snsIndex),
+
+                  IndoCommonCard(
+                    vitalName: "HRV SDNN",
+                    vitalValue: getVitalValue(VitalSignTypes.sdnn),
+
+                    vitalHeading: WellnessMetricDescriptions.hrvSdnn,
+                    vitalDescription: WellnessMetricDescriptionsLong.hrvSDNN,
+                    vitalMass: "ms",
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: CircleProgressCard(
-                          height: 190,
-                          size: 75,
-                          progress: getVitalValueInt(VitalSignTypes.sd1),
-                          age: getVitalValueInt(VitalSignTypes.sd1),
-                          maxProgress: 10,
-                          mass: "ms",
-                          borderColor: Color(0xFF0072BC).withOpacity(0.2),
-                          drawArcColor: Color(0xFF0072BC),
-                          title: 'SD1',
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Flexible(
-                        child: CircleProgressCard(
-                          size: 75,
-                          progress: getVitalValueInt(VitalSignTypes.sd2),
-                          age: getVitalValueInt(VitalSignTypes.sd2),
-                          maxProgress: 10,
-                          mass: "ms",
-                          borderColor: Color(0xFF0072BC).withOpacity(0.2),
-                          drawArcColor: Color(0xFF0072BC),
-                          title: 'SD2',
-                        ),
-                      ),
-                    ],
+                  IndoCommonCard(
+                    vitalName: "Mean R-R Interval",
+                    vitalValue: getVitalValue(VitalSignTypes.meanRri),
+
+                    vitalHeading: WellnessMetricDescriptions.meanRRi,
+                    vitalDescription: WellnessMetricDescriptionsLong.meanRRi,
+                    vitalMass: "ms",
                   ),
                   const SizedBox(height: 20),
-                  CircleProgressCard(
-                    height: 240,
-                    imageWidth: MediaQuery.of(context).size.width,
-                    value: getVitalValue(VitalSignTypes.snsZone),
-                    title: 'Stress Response (SNS Zone)',
-                    bottomImage: AppAssets.stressLevel,
+
+                  IndoCommonCard(
+                    vitalName: "RMSSD",
+                    vitalValue: getVitalValue(VitalSignTypes.rmssd),
+                    vitalMass: "ms",
+
+                    vitalHeading: WellnessMetricDescriptions.rmssd,
+                    vitalDescription: WellnessMetricDescriptionsLong.rmssd,
                   ),
                   const SizedBox(height: 20),
-                  ReportCard(
-                    centerImage: AppAssets.lhRatioImage,
-                    height: 190,
-                    title: "LF/HF Ratio",
-                    value: getVitalValue(VitalSignTypes.lfhf),
+                  IndoCommonCard(
+                    vitalName: "Recovery Ability (PNS Zone)",
+                    vitalValue: getVitalValue(VitalSignTypes.pnsZone),
+
+                    vitalHeading: WellnessMetricDescriptions.recoveryAbility,
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.recoveryAbility,
                   ),
+                  const SizedBox(height: 20),
+                  IndoCommonCard(
+                    vitalName: "PNS Index",
+                    vitalValue: getVitalValue(VitalSignTypes.pnsIndex),
+
+                    vitalHeading: WellnessMetricDescriptions.pnsIndex,
+                    vitalDescription: WellnessMetricDescriptionsLong.pnsIndex,
+                  ),
+                  const SizedBox(height: 20),
+                  IndoCommonCard(
+                    vitalName: "SNS Index",
+                    vitalValue: getVitalValue(VitalSignTypes.snsIndex),
+
+                    vitalHeading: WellnessMetricDescriptions.snsIndex,
+                    vitalDescription: WellnessMetricDescriptionsLong.snsIndex,
+                  ),
+                  const SizedBox(height: 20),
+                  IndoCommonCard(
+                    vitalName: "SD1",
+                    vitalValue: getVitalValue(VitalSignTypes.sd1),
+                    vitalMass: "ms",
+
+                    vitalHeading: WellnessMetricDescriptions.sd1,
+                    vitalDescription: WellnessMetricDescriptionsLong.sd1,
+                  ),
+                  const SizedBox(height: 20),
+                  IndoCommonCard(
+                    vitalName: "SD2",
+                    vitalValue: getVitalValue(VitalSignTypes.sd2),
+                    vitalMass: "ms",
+
+                    vitalHeading: WellnessMetricDescriptions.sd2,
+                    vitalDescription: WellnessMetricDescriptionsLong.sd2,
+                  ),
+                  const SizedBox(height: 20),
+                  IndoCommonCard(
+                    vitalName: "Stress Response (SNS Zone)",
+                    vitalValue: getVitalValue(VitalSignTypes.sd2),
+
+                    vitalHeading: WellnessMetricDescriptions.stressResponse,
+                    vitalDescription:
+                        WellnessMetricDescriptionsLong.stressResponse,
+                  ),
+                  const SizedBox(height: 20),
+                  IndoCommonCard(
+                    vitalName: "LF/HF Ratio",
+                    vitalValue: getVitalValue(VitalSignTypes.sd2),
+
+                    vitalHeading: WellnessMetricDescriptions.lfHf,
+                    vitalDescription: WellnessMetricDescriptionsLong.lfHf,
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),

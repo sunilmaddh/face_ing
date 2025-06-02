@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 
 void main() => runApp(const MyApp());
@@ -406,6 +408,17 @@ class _CommonCardState extends State<IndoCommonCard> {
   Widget build(BuildContext context) {
     Color statusColor = const Color(0xFF1BC76D);
     late String imageAsset;
+
+    switch (widget.vitalStatus.toLowerCase()) {
+      case 'high':
+        imageAsset = AppAssets.highAsset;
+        break;
+      case 'medium':
+        imageAsset = AppAssets.mediumAsset;
+        break;
+      default:
+        imageAsset = AppAssets.lowAsset;
+    }
     switch (widget.vitalStatus.toLowerCase()) {
       case 'high':
         imageAsset = AppAssets.highAsset;
@@ -418,141 +431,226 @@ class _CommonCardState extends State<IndoCommonCard> {
     }
 
     return CommonCard(
-      widget: Column(
-        children: [
-          Row(
-            children: [
-              // Left section
-              Container(
-                width: 150,
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  children: [
-                    SvgPicture.asset(imageAsset, width: 37, height: 37),
-                    const SizedBox(height: 10),
-                    Text(
-                      widget.vitalName,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff575656),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      widget.vitalCondition,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff575656),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: widget.vitalValue,
-                            style: const TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff4A4949),
-                            ),
-                          ),
-                          TextSpan(
-                            text: widget.vitalMass,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Divider
-              Container(
-                width: 1,
-                height: 160, // Adjust height as needed
-                color: const Color(0xffD9D9D9),
-              ),
-
-              // Right section
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+      widget: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                // Left section
+                Container(
+                  width: 150,
+                  padding: const EdgeInsets.all(15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.vitalHeading,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff5E5D5D),
-                        ),
-                      ),
+                      SvgPicture.asset(imageAsset, width: 37, height: 37),
                       const SizedBox(height: 10),
                       Text(
-                        widget.vitalDescription,
+                        widget.vitalName,
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xff5E5D5D),
-                          height: 1.25,
+                          color: Color(0xff575656),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        widget.vitalCondition,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff575656),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 10.5,
-                                backgroundColor: statusColor,
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: widget.vitalValue,
+                              style: const TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff4A4949),
                               ),
-                              const SizedBox(width: 10),
-                              Text(
-                                widget.vitalStatus,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: statusColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isExpanded = !isExpanded;
-                              });
-                            },
-                            child: SvgPicture.asset(
-                              imageAsset,
-                              width: 20,
-                              height: 20,
                             ),
-                          ),
-                        ],
+                            TextSpan(
+                              text: widget.vitalMass,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
-          ),
-          if (isExpanded)
-            Container(
-              height: 60,
-              width: double.infinity,
-              color: const Color(0xFF1BC76D),
+
+                // Divider
+                Container(
+                  width: 1,
+                  height: 150, // Adjust height as needed
+                  color: const Color(0xffD9D9D9),
+                ),
+
+                // Right section
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.vitalHeading,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff5E5D5D),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          widget.vitalDescription,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff5E5D5D),
+                            height: 1.25,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 10.5,
+                                  backgroundColor: statusColor,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  "High",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: statusColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Icon(Icons.info_rounded),
+                            // SvgPicture.asset(imageAsset, width: 20, height: 20),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-        ],
+            Padding(
+              padding: EdgeInsets.only(right: 15, bottom: 15),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isExpanded = !isExpanded;
+                    });
+                  },
+                  child:
+                      widget.vitalName == "stress" && isExpanded
+                          ? Icon(Icons.minimize_outlined)
+                          : Icon(Icons.add_outlined),
+                ),
+              ),
+            ),
+            if (widget.vitalName == "stress" && isExpanded)
+              Container(
+                height: 1, // Adjust height as needed
+                color: const Color(0xffD9D9D9),
+              ),
+
+            if (widget.vitalName == "Stress" && isExpanded)
+              ListView.separated(
+                shrinkWrap: true,
+                itemCount: 1,
+                itemBuilder: (contect, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Normalized Stress Index ",
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff575656),
+                              ),
+                            ),
+                            Text(
+                              "Your Stress Index is Mild",
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff575656),
+                              ),
+                            ),
+                            SvgPicture.asset(imageAsset, width: 20, height: 20),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '5',
+                                    style: const TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xff4A4949),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: "%",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            Icon(Icons.info_rounded),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const Divider(
+                    color: Colors.grey,
+                    thickness: 1,
+                    indent: 16,
+                    endIndent: 16,
+                  );
+                },
+              ),
+          ],
+        ),
       ),
     );
   }
