@@ -35,21 +35,24 @@ fun IndoCommonCard(
     vitalCondition: String = "",
     vitalmass: String = "",
 ) {
-    val imageRes = when (vitalStatus) {
-        "High" -> R.drawable.high
+    val statusLower = vitalStatus.lowercase()
+
+    val imageRes = when (statusLower) {
+        "high" -> R.drawable.high
         "medium" -> R.drawable.medium
         else -> R.drawable.low
     }
-    val colors = when (vitalStatus) {
-        "High" -> Color(0xFF1BC76D)
+    val colors = when (statusLower) {
+        "high" -> Color(0xFF1BC76D)
         "medium" -> Color(0xFFEEC000)
         else -> Color(0xFFFA704E)
     }
-    val status = when (vitalStatus) {
-        "High" -> "High"
+    val status = when (statusLower) {
+        "high" -> "High"
         "medium" -> "Medium"
         else -> "Low"
     }
+
 
     var isExpanded by remember { mutableStateOf(false) }
 
