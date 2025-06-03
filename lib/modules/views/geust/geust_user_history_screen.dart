@@ -78,40 +78,64 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                 controller: _searchController,
               ),
               SizedBox(height: 20),
-
-              Obx(
-                () =>
-                    _controller.guestList.isNotEmpty
-                        ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _controller.guestList.length,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (contex, index) {
-                            var result = _controller.guestList[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: GeustUserHistoryCard(
-                                gender: result.gender.toString(),
-                                name: result.name.toString(),
-                                height: result.height.toString(),
-                                weight: result.weight.toString(),
-                                time: result.date.toString(),
-                                onTop: () {
-                                  _controller.getGeustDetails(
-                                    result.guestId.toString(),
-                                  );
-                                },
-                                onDelete: () {
-                                  _controller.removeGuest(
-                                    guestId: result.guestId,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        )
-                        : ShimmerLoadingScreen(),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: _controller.guestList.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (contex, index) {
+                  var result = _controller.guestList[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: GeustUserHistoryCard(
+                      gender: result.gender.toString(),
+                      name: result.name.toString(),
+                      height: result.height.toString(),
+                      weight: result.weight.toString(),
+                      time: result.date.toString(),
+                      onTop: () {
+                        _controller.getGeustDetails(result.guestId.toString());
+                      },
+                      onDelete: () {
+                        _controller.removeGuest(guestId: result.guestId);
+                      },
+                    ),
+                  );
+                },
               ),
+
+              // Obx(
+              //   () =>
+              //       _controller.guestList.isNotEmpty
+              //           ? ListView.builder(
+              //             shrinkWrap: true,
+              //             itemCount: _controller.guestList.length,
+              //             physics: NeverScrollableScrollPhysics(),
+              //             itemBuilder: (contex, index) {
+              //               var result = _controller.guestList[index];
+              //               return Padding(
+              //                 padding: const EdgeInsets.only(bottom: 10),
+              //                 child: GeustUserHistoryCard(
+              //                   gender: result.gender.toString(),
+              //                   name: result.name.toString(),
+              //                   height: result.height.toString(),
+              //                   weight: result.weight.toString(),
+              //                   time: result.date.toString(),
+              //                   onTop: () {
+              //                     _controller.getGeustDetails(
+              //                       result.guestId.toString(),
+              //                     );
+              //                   },
+              //                   onDelete: () {
+              //                     _controller.removeGuest(
+              //                       guestId: result.guestId,
+              //                     );
+              //                   },
+              //                 ),
+              //               );
+              //             },
+              //           )
+              //           : ShimmerLoadingScreen(),
+              // ),
             ],
           ),
         ),
