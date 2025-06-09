@@ -86,7 +86,8 @@ class HomeScreen extends StatelessWidget {
                           await IndoSharedPreference.instance.getUserName();
                       String genderType =
                           await IndoSharedPreference.instance.getGenderType();
-                      String dob = await IndoSharedPreference.instance.getAge();
+                      String dobRaw =
+                          await IndoSharedPreference.instance.getAge();
                       String height =
                           await IndoSharedPreference.instance.getHeight();
                       String weight =
@@ -94,25 +95,32 @@ class HomeScreen extends StatelessWidget {
                       controller.weight.value = double.parse(weight);
                       controller.height.value = double.parse(height);
                       controller.genderType.value = genderType;
+                      // Clean the DOB string safely
+                      String cleanDob =
+                          dobRaw
+                              .replaceAll("/", "-")
+                              .replaceAll(
+                                RegExp(r'[^\x00-\x7F]'),
+                                '',
+                              ) // remove non-ASCII chars
+                              .trim();
 
-                      DateTime parsedDate = DateTime.parse(
-                        dob.replaceAll("/", "-"),
-                      );
+                      // Parse the cleaned date
+                      DateTime parsedDate = DateTime.parse(cleanDob);
                       controller.age.value =
                           gcontroller.calculateAge(parsedDate).toDouble();
 
                       AppNavigation.to(
                         AppRoutes.mesurementScreen,
-                        arguments: {"scanType": "user", "userName": userName},
+                        arguments: {"scanType": "user", "userName": "fff"},
                       );
-
-                      // // var userID = await StorageHelper.read("userID");
-                      // // var accessToken = await StorageHelper.read("access-token");
-                      // // Map<String, dynamic> data = {
-                      // //   "userId": userID,
-                      // //   "token": accessToken,
-                      // //   "scanType": "user",
-                      // // };
+                      // var userID = await StorageHelper.read("userID");
+                      // var accessToken = await StorageHelper.read("access-token");
+                      // Map<String, dynamic> data = {
+                      //   "userId": userID,
+                      //   "token": accessToken,
+                      //   "scanType": "user",
+                      // };
                       // controller.isMeasurementCanceled.value = false;
                       // Future.delayed(Duration(seconds: 2), () {
                       //   gcontroller.isLoading.value = false;

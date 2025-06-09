@@ -57,11 +57,11 @@ class GeustController extends GetxController
       guestList.clear();
     } else {
       guestList.clear();
-      AppSnackbar.show(
-        title: "Error",
-        message: "Something went wrong",
-        isError: true,
-      );
+      // AppSnackbar.show(
+      //   title: "Error",
+      //   message: "Something went wrong",
+      //   isError: true,
+      // );
     }
   }
 
@@ -367,6 +367,8 @@ class GeustController extends GetxController
     );
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
+      final _geustController = Get.find<GeustController>();
+      _geustController.getGeustHistory();
     } else if (statusCode == 500) {
     } else {
       AppSnackbar.show(

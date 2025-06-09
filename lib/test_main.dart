@@ -6,6 +6,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
+import 'package:ntt_data/widgets/test_main_expand_widget.dart';
 
 void main() => runApp(const MyApp());
 
@@ -385,6 +386,8 @@ class IndoCommonCard extends StatefulWidget {
   final String vitalDescription;
   final String vitalCondition;
   final String vitalMass;
+  final bool isExpand;
+  final Widget expandedWidget;
 
   const IndoCommonCard({
     Key? key,
@@ -395,8 +398,9 @@ class IndoCommonCard extends StatefulWidget {
     this.vitalDescription = "",
     this.vitalCondition = "",
     this.vitalMass = "",
+    this.isExpand = false,
+    this.expandedWidget = const SizedBox(), // fixed default widget
   }) : super(key: key);
-
   @override
   State<IndoCommonCard> createState() => _CommonCardState();
 }
@@ -406,25 +410,30 @@ class _CommonCardState extends State<IndoCommonCard> {
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor = const Color(0xFF1BC76D);
-    late String imageAsset;
+    Color statusColor;
+    String imageAsset;
 
-    switch (widget.vitalStatus.toLowerCase()) {
-      case 'high':
-        imageAsset = AppAssets.highAsset;
-        break;
-      case 'medium':
+    switch (widget.vitalStatus) {
+      case 'Normal':
+        statusColor = const Color(0xFFFFD700); // Yellow color
         imageAsset = AppAssets.mediumAsset;
         break;
+      case 'High':
+        statusColor = const Color(0xFF1BC76D); // Green color
+        imageAsset = AppAssets.highAsset;
+        break;
+      case 'Low':
       default:
+        statusColor = const Color(0xFFE53935); // Red color
         imageAsset = AppAssets.lowAsset;
     }
-    switch (widget.vitalStatus.toLowerCase()) {
-      case 'high':
-        imageAsset = AppAssets.highAsset;
-        break;
-      case 'medium':
+
+    switch (widget.vitalStatus) {
+      case 'Normal':
         imageAsset = AppAssets.mediumAsset;
+        break;
+      case 'High':
+        imageAsset = AppAssets.highAsset;
         break;
       default:
         imageAsset = AppAssets.lowAsset;
@@ -432,6 +441,7 @@ class _CommonCardState extends State<IndoCommonCard> {
 
     return CommonCard(
       widget: Container(
+        margin: EdgeInsets.all(10),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -534,7 +544,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  "High",
+                                  widget.vitalStatus,
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
@@ -553,102 +563,58 @@ class _CommonCardState extends State<IndoCommonCard> {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 15, bottom: 15),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isExpanded = !isExpanded;
-                    });
-                  },
-                  child:
-                      widget.vitalName == "stress" && isExpanded
-                          ? Icon(Icons.minimize_outlined)
-                          : Icon(Icons.add_outlined),
-                ),
-              ),
-            ),
-            if (widget.vitalName == "stress" && isExpanded)
-              Container(
-                height: 1, // Adjust height as needed
-                color: const Color(0xffD9D9D9),
-              ),
-
-            if (widget.vitalName == "Stress" && isExpanded)
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: 1,
-                itemBuilder: (contect, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Normalized Stress Index ",
-                              style: const TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff575656),
-                              ),
-                            ),
-                            Text(
-                              "Your Stress Index is Mild",
-                              style: const TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff575656),
-                              ),
-                            ),
-                            SvgPicture.asset(imageAsset, width: 20, height: 20),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '5',
-                                    style: const TextStyle(
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xff4A4949),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: "%",
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            Icon(Icons.info_rounded),
-                          ],
-                        ),
-                      ],
+            // Expand/Collapse button ONLY if isExpand prop is true
+            widget.isExpand
+                ? Padding(
+                  padding: const EdgeInsets.only(right: 8, bottom: 15),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isExpanded = !isExpanded;
+                        });
+                      },
+                      child:
+                          (widget.vitalName.toLowerCase() == "stress" ||
+                                      widget.vitalName.toLowerCase() ==
+                                          "blood pressure") &&
+                                  isExpanded
+                              ? const Icon(Icons.minimize_outlined)
+                              : const Icon(Icons.add_outlined),
                     ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                    indent: 16,
-                    endIndent: 16,
-                  );
-                },
-              ),
+                  ),
+                )
+                : const SizedBox(),
+
+            // Show detailed card only when expanded AND vitalName is stress or blood pressure
+            if (isExpanded &&
+                (widget.vitalName.toLowerCase() == "stress" ||
+                    widget.vitalName == "HRV SDNN"))
+              widget.expandedWidget,
+            // StressInfoCard(
+            //   vitalName: widget.vitalName.toLowerCase(),
+            //   isExpanded: isExpanded,
+            //   titleText:
+            //       widget.vitalName.toLowerCase() == "blood pressure"
+            //           ? "Blood Pressure Systolic"
+            //           : "Normalized Stress Index",
+            //   statusText:
+            //       widget.vitalName.toLowerCase() == "blood pressure"
+            //           ? "Your Blood Pressure Systolic Index is Mild"
+            //           : "Your Stress Index is Mild",
+            //   valueText:
+            //       widget.vitalName.toLowerCase() == "blood pressure"
+            //           ? widget.vitalValue.length > 3
+            //               ? widget.vitalValue.substring(0, 3)
+            //               : widget.vitalValue
+            //           : "5",
+
+            //   unitText:
+            //       widget.vitalName.toLowerCase() == "blood pressure"
+            //           ? 'mmh'
+            //           : "%",
+            // ),
           ],
         ),
       ),

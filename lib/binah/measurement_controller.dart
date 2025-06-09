@@ -28,7 +28,7 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign.dart';
 import 'package:biosensesignal_flutter_sdk/alerts/warning_data.dart';
 import 'package:biosensesignal_flutter_sdk/alerts/error_data.dart';
-import 'package:biosensesignal_flutter_sdk/alerts/alert_codes.dart';
+// import 'package:biosensesignal_flutter_sdk/alerts/alert_codes.dart';
 import 'package:biosensesignal_flutter_sdk/health_monitor_exception.dart';
 
 class MeasurementController extends GetxController
@@ -217,7 +217,7 @@ class MeasurementController extends GetxController
       if (scanType.value == "add-guest") {
         _geustController.addGuest(vitalsResults.value).whenComplete(() {
           AppNavigation.off(
-            AppRoutes.allReportScreen,
+            AppRoutes.analyzingHealthData,
             action: () {
               _geustController.clearData();
               _geustController.getGeustHistory();
@@ -243,10 +243,10 @@ class MeasurementController extends GetxController
   @override
   void onWarning(WarningData warningData) {
     if (warning.value != null) return;
-    if (warningData.code ==
-        AlertCodes.measurementCodeMisdetectionDurationExceedsLimitWarning) {
-      pulseRate.value = "";
-    }
+    // if (warningData.code ==
+    //     AlertCodes.measurementCodeMisdetectionDurationExceedsLimitWarning) {
+    //   pulseRate.value = "";
+    // }
     warning.value = "Warning: ${warningData.code}";
     Future.delayed(const Duration(seconds: 1), () => warning.value = null);
   }
