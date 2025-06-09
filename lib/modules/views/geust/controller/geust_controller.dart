@@ -42,6 +42,7 @@ class GeustController extends GetxController
   RxString genderType = "".obs;
   RxString geustDob = ''.obs;
   RxBool isTermAccepted = false.obs;
+
   Future<void> getGeustHistory() async {
     var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID};
@@ -57,11 +58,14 @@ class GeustController extends GetxController
       guestList.clear();
     } else {
       guestList.clear();
-      AppSnackbar.show(
-        title: "Error",
-        message: "Something went wrong",
-        isError: true,
-      );
+
+      //todo: update api handle 404
+
+      // AppSnackbar.show(
+      //   title: "Error",
+      //   message: "Something went wrong",
+      //   isError: true,
+      // );
     }
   }
 
@@ -77,11 +81,11 @@ class GeustController extends GetxController
       var data = GuestHistoryDetailsModel.fromJson(
         resposneData["responseBody"],
       );
-      // anuraHIstoryDetails.value = await ShowGuestHistoryDetails()
-      //     .fetchHistoryAnuraDetails(data.guestHealthAnuraHistory!);
+      anuraHIstoryDetails.value = await ShowGuestHistoryDetails()
+          .fetchHistoryAnuraDetails(data.guestHealthAnuraHistory!);
 
-      binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-          .fetchHistoryBinahDetails(data.guestHealthBinahHistory!);
+      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
+      //     .fetchHistoryBinahDetails(data.guestHealthBinahHistory!);
 
       AppNavigation.to(AppRoutes.guestHistoryDetails);
 

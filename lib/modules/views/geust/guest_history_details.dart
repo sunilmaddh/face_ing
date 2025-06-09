@@ -24,13 +24,13 @@ class GuestHistoryDetails extends StatelessWidget {
 
       body: Obx(
         () =>
-            _controller.binahHIstoryDetails.isEmpty
+            _controller.anuraHIstoryDetails.isEmpty
                 ? ShimmerLoadingScreen()
                 : ListView.separated(
                   padding: EdgeInsets.all(20),
-                  itemCount: _controller.binahHIstoryDetails.length,
+                  itemCount: _controller.anuraHIstoryDetails.length,
                   itemBuilder: (context, index) {
-                    var result = _controller.binahHIstoryDetails[index];
+                    var result = _controller.anuraHIstoryDetails[index];
                     return Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Row(

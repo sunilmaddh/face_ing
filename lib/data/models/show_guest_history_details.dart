@@ -78,7 +78,7 @@ class ShowGuestHistoryDetails {
         "key":
             "Blood Pressure"
             "",
-        "value": guestAnuraHistory.bPSystolic,
+        "value": guestAnuraHistory.bPSystolic ?? '5',
       },
 
       {
