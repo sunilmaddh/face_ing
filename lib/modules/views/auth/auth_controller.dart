@@ -52,6 +52,7 @@ class AuthController extends GetxController
       int statusCode = response['statusCode'];
 
       if (statusCode == 200) {
+        AppNavigation.off(AppRoutes.homeScreen);
         var header = response["header"];
         var accessToken = header["accesstoken"];
         var refereshToken = header["refreshtoken"];

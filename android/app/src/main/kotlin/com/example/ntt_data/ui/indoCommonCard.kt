@@ -204,26 +204,26 @@ fun IndoCommonCard(
                        }
                 }
             }
-            Box(
-                modifier = Modifier
-                    .height(2.dp)
-
-                    .fillMaxWidth()
-                    .background(color = Color(0xffD9D9D9))
-            )
-            Box (modifier = Modifier.padding(10.dp).align(alignment = Alignment.End)){
-                Image(
-                    painter = painterResource(id = R.drawable.info),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(20.dp)
-
-                        .clickable {
-                            isExpanded = !isExpanded
-                        }
-                )
-            }
+//            Box(
+//                modifier = Modifier
+//                    .height(2.dp)
+//
+//                    .fillMaxWidth()
+//                    .background(color = Color(0xffD9D9D9))
+//            )
+//            Box (modifier = Modifier.padding(10.dp).align(alignment = Alignment.End)){
+//                Image(
+//                    painter = painterResource(id = R.drawable.info),
+//                    contentDescription = null,
+//                    contentScale = ContentScale.Crop,
+//                    modifier = Modifier
+//                        .size(20.dp)
+//
+//                        .clickable {
+//                            isExpanded = !isExpanded
+//                        }
+//                )
+//            }
 //            Box(
 //                modifier = Modifier
 //                    .height(2.dp)

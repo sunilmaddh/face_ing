@@ -86,7 +86,7 @@ fun HealthResultScreen(
             Box(modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)) {
-               HealthDataList(results = measurementResults)
+              CustomTabBar(tabTitles = tabs, tabContents = contents)
             }
         } else {
             Box(
