@@ -27,11 +27,39 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.ntt_data.R
 import com.example.ntt_data.measurement.AnuraExampleMeasurementActivity.Companion.TAG
-
+import com.example.ntt_data.utils.CARDIAC_DIS
+import com.example.ntt_data.utils.CARDIOVASCULAR_DISEASE_RISK
+import com.example.ntt_data.utils.FATTY_LIVER_DISEASE_RISK
+import com.example.ntt_data.utils.FATTY_LIV_DIA_RISK_DIS
+import com.example.ntt_data.utils.HEART_ATTACK_RISK
+import com.example.ntt_data.utils.HEART_ATTACK_RISK_DIS
+import com.example.ntt_data.utils.HYPERCHOLESTEROLEMIA_RISK
+import com.example.ntt_data.utils.HYPERCHOLE_EMIA_RISK_DIS
+import com.example.ntt_data.utils.HYPERTENSION_RISK
+import com.example.ntt_data.utils.HYPERTENTION_RISK_DIS
+import com.example.ntt_data.utils.HYPERTRIGLYCERIDEMIA_RISK
+import com.example.ntt_data.utils.HYPERTRIGLY_EMIA_RISK_DIS
+import com.example.ntt_data.utils.HealthStatusEvaluator
+import com.example.ntt_data.utils.MENTAL_SCORE
+import com.example.ntt_data.utils.MENTAL_SCORE_DIS
+import com.example.ntt_data.utils.METABOLIC_HEALTH_RISK
+import com.example.ntt_data.utils.OVERALL_METABOLIC_HEALTH_RISK_DIS
+import com.example.ntt_data.utils.PHYSICAL_SCORE
+import com.example.ntt_data.utils.PHYSICAL_SCORE_DIS
+import com.example.ntt_data.utils.PHYSIOLOGICAL_SCORE
+import com.example.ntt_data.utils.PHYSIOLOGICAL_SCORE_DIS
+import com.example.ntt_data.utils.RISKS_SCORE
+import com.example.ntt_data.utils.RISK_SCORE_DIS
+import com.example.ntt_data.utils.STROKE_RISK
+import com.example.ntt_data.utils.STROKE_RISK_DIS
+import com.example.ntt_data.utils.TYPE_2_DIABETES_RISK
+import com.example.ntt_data.utils.TYPE_DIAB_RISK_DIS
+import com.example.ntt_data.utils.VITALS_SCORE
+import com.example.ntt_data.utils.VITAL_SCORE_DIS
 
 
 @Composable
-fun WellnessScreen(results: MeasurementResults,modifier: Modifier = Modifier) {
+fun GeneralRisks(results: MeasurementResults,modifier: Modifier = Modifier) {
 
     val scrollState = rememberScrollState()
     val sortedSignalIDs = remember(results) { results.allResults.keys.sorted() }
@@ -54,173 +82,362 @@ fun WellnessScreen(results: MeasurementResults,modifier: Modifier = Modifier) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            Column {
-                dynamicMap["BMI_CALC"]?.let {
-                    CommonCard(
-                        title = "Body Mass Index(BMI)",
-                        subtitle = it
-                    )
-                }
-                dynamicMap["ABSI"]?.let {  CommonCard(
-                    title = "Body Shape Index",
-                    subtitle = it,
-                ) }
+        dynamicMap["BP_CVD"]?.let {
+            val formatted = formatMixedValue(it)
+            val riskValue = formatted.toString().toDoubleOrNull() ?: 0.0
 
+            val vitalStatus = when {
+                riskValue <= 30 -> "Low"
+                riskValue <= 70 -> "Medium"
+                else -> "High"
             }
-            dynamicMap["HR_BPM"]?.let {  FullImageContentCard(
-                title = "Heart Rate",
-                centerText = it,
-                mass =  "bpm",
-                imageRes = R.drawable.heart_rate
-            ) }
 
+            IndoCommonCard(
+                vitalName = "Cardiovascular Risk Level",
+                vitalValue = formatted,
+                vitalmass = "%",
+                vitalDescription = CARDIAC_DIS,
+                vitalHeading = CARDIOVASCULAR_DISEASE_RISK,
+                isLowGood = true,
+                vitalCondition = "AVG 31 – 70",
+                vitalStatus =  HealthStatusEvaluator.evaluateCardiovascularDiseaseRiskStatus(riskValue)
+            )
         }
 
-        Row {
-            dynamicMap["HRV_SDNN"]?.let { CommonCard(
-                title = "Heart Rate Variability",
-                subtitle = it,
-                mass = "ms"
 
-            )}
-            dynamicMap["BP_RPP"]?.let {CommonCard(
-                title = "Rate Pressure Product (RPP)",
-                subtitle = it,
-            )}
+        dynamicMap["BP_HEART_ATTACK"]?.let {
+            val formatted = formatMixedValue(it)
+            val riskValue = formatted.toString().toDoubleOrNull() ?: 0.0
+
+            val vitalStatus = when {
+                riskValue <= 30 -> "Low"
+                riskValue <= 70 -> "Medium"
+                else -> "High"
+            }
+
+            IndoCommonCard(
+                vitalName = "Heart Attack Risk",
+                vitalValue = formatted,
+                vitalmass = "%",
+                vitalDescription = HEART_ATTACK_RISK_DIS,
+                vitalHeading = HEART_ATTACK_RISK,
+                isLowGood = true,
+                vitalCondition = "AVG 31 – 70",
+                vitalStatus =  HealthStatusEvaluator.evaluate1HeartAttackRiskStatus(riskValue)
+            )
 
 
-        }
-        dynamicMap["BP_SYSTOLIC"]?.let { systolic ->
-            val systolicInt = (dynamicMap["BP_SYSTOLIC"]?.toString()?.toDoubleOrNull())?.toInt()
-            val diastolicInt = (dynamicMap["BP_DIASTOLIC"]?.toString()?.toDoubleOrNull())?.toInt()
-            if (systolicInt != null && diastolicInt != null) {
-                InfoCard(
-                    title = "Blood Pressure (Systolic/Diastolic)",
-                    subtitle = "$systolicInt/$diastolicInt",
-                    mass = "mmHg",
-                    imageRes = R.drawable.mask_group
+
+
+//                    Row {
+            dynamicMap["BP_STROKE"]?.let {
+                val formatted = formatMixedValue(it)
+                val strokeRisk = formatted.toString().toDoubleOrNull() ?: 0.0
+
+
+                IndoCommonCard(
+                    vitalName = "Stroke Risk",
+                    vitalValue = formatted,
+                    vitalmass = "%",
+                    vitalDescription = STROKE_RISK_DIS,
+                    vitalHeading = STROKE_RISK,
+                    vitalCondition = "AVG 31 – 70",
+                    isLowGood = true,
+                    vitalStatus =  HealthStatusEvaluator.evaluateStrokeRiskStatus(strokeRisk)
                 )
             }
+
+        } }
+
+
+}}
+@Composable
+fun MetabolicRisks(results: MeasurementResults,modifier: Modifier = Modifier) {
+
+    val scrollState = rememberScrollState()
+    val sortedSignalIDs = remember(results) { results.allResults.keys.sorted() }
+    val dynamicMap = mutableMapOf<String, String>()
+    for(res in sortedSignalIDs){
+
+        val siggResult =   results.result(res)
+        dynamicMap[res]=siggResult.toString();
+        Log.d(TAG, "sortedSignalIDs: $res")
+        Log.d(TAG, "dynamicMap: $dynamicMap")
+        Log.d(TAG, "sortedSignalIDs: $siggResult")
+    }
+    Card(colors = CardDefaults.cardColors(
+        containerColor = Color(0xFFF7FAFD), // Light cyan background
+        contentColor = Color.Black          // Text and icon color
+    ),) {  Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        dynamicMap["DBT_RISK_PROB"]?.let {
+            val formatted = formatMixedValue(it).toDoubleOrNull()?:0.0
+            IndoCommonCard(
+                vitalName = " Diabetes Risk",
+                vitalValue = formatted.toString(),
+                vitalDescription = TYPE_DIAB_RISK_DIS,
+                vitalHeading = TYPE_2_DIABETES_RISK,
+                vitalmass = "%",
+                isLowGood = true,
+                vitalCondition = "AVG 31 – 70",
+                vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(formatted)
+
+
+
+            )
+        }
+
+        dynamicMap["FLD_RISK_PROB"]?.let {
+            val formatted = formatMixedValue(it)
+            val riskValue = formatted.toString().toDoubleOrNull() ?: 0.0
+
+            val vitalStatus = when {
+                riskValue <= 30 -> "Low"
+                riskValue <= 70 -> "Medium"
+                else -> "High"
+            }
+
+            IndoCommonCard(
+                vitalName = "Fatty Liver Disease Risk",
+                vitalValue = formatted,
+                vitalmass = "%",
+                vitalDescription = FATTY_LIV_DIA_RISK_DIS,
+                vitalHeading = FATTY_LIVER_DISEASE_RISK,
+                vitalCondition = "AVG 31 – 70",
+                isLowGood = true,
+                vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(riskValue)
+            )
+        }
+
+        dynamicMap["HDLTC_RISK_PROB"]?.let {
+            val formatted = formatMixedValue(it)
+            val riskValue = formatted.toString().toDoubleOrNull() ?: 0.0
+
+            val vitalStatus = when {
+                riskValue <= 30 -> "Low"
+                riskValue <= 70 -> "Medium"
+                else -> "High"
+            }
+
+            IndoCommonCard(
+                vitalName = "Hypercholesterolemia Risk",
+                vitalValue = formatted,
+                vitalmass = "%",
+                vitalDescription = HYPERCHOLE_EMIA_RISK_DIS,
+                vitalHeading = HYPERCHOLESTEROLEMIA_RISK,
+                isLowGood = true,
+                vitalCondition = "AVG 31 – 70",
+                vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(riskValue)
+            )
         }
 
 
-//        dynamicMap["BP_SYSTOLIC"]?.let {InfoCard(
-//            title = "Blood Pressure (Systolic/Diastolic)",
-//            subtitle = "${it.toIntOrNull()}/${dynamicMap["BP_DIASTOLIC"]?.toIntOrNull()}",
-//            mass = "mmHg",
-//            imageRes = R.drawable.mask_group
-//        )}
+        dynamicMap["HPT_RISK_PROB"]?.let {
+            val formatted = formatMixedValue(it)
+            val value = formatted.toString().toDoubleOrNull() ?: 0.0
 
+            val vitalStatus = when {
+                value <= 30 -> "Low"
+                value <= 70 -> "Medium"
+                else -> "High"
+            }
 
-        Row {
-            dynamicMap["WAIST_CIRCUM"]?.let {CommonCard(
-                title = "  Waist Circumference",
-                subtitle = it,
-                mass = "cm"
-
-            )}
-            dynamicMap["BP_TAU"]?.let { CommonCard(
-                title = "Arterial Compliance",
-                subtitle = it,
-
-                )}
-
-
-        }
-//        dynamicMap["MENTAL_SCORE"]?.let {   SelectableCardRow(3)}
-
-
-
-        Row {
-            dynamicMap["IHB_COUNT"]?.let {    CenteredContentCard(
-                title = "Hemoglobin Level",
-                subtitle = it,
-                mass = "g/dl",
-                imageRes = R.drawable.blood
-            )}
-
-            dynamicMap["AGE"]?.let {     CenteredContentCard(
-                title = "Age",
-                isWidget = true,
-                borderColor = Color(0xFF0072BC).copy(alpha = 0.2f),
-                drawArcColor = Color(0xFF0072BC),
-                value = it.toDouble(),
-                maxProgress = 100f
-
-            )}
-
+            IndoCommonCard(
+                vitalName = "Hypertension Risk",
+                vitalValue = formatted,
+                vitalmass = "%",
+                vitalDescription = HYPERTENTION_RISK_DIS,
+                vitalHeading = HYPERTENSION_RISK,
+                vitalCondition = "AVG 31 – 70",
+                vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(value)
+            )
         }
 
-        Row {
-            dynamicMap["HEALTH_SCORE"]?.let {      CenteredContentCard(
-                title = "Overall Health Score",
-                isWidgetWithText = true,
-                borderColor = Color(0xFFFFFDDF),
-                drawArcColor = Color(0xFFF7D100),
-                value = it.toDouble(),
-                maxProgress = 100f
 
-            )}
+        dynamicMap["OVERALL_METABOLIC_RISK_PROB"]?.let {
+            val formatted = formatMixedValue(it)
+            val value = formatted.toString().toDoubleOrNull() ?: 0.0
 
-            dynamicMap["MENTAL_SCORE"]?.let {      CenteredContentCard(
-                title = "Mental Wellness Score",
-                borderColor = Color(0xFF0072BC).copy(alpha = .53f),
-                drawArcColor = Color(0xFF0072BC),
-                value = it.toDouble(),
-                isWidgetWithText = true,
-                maxProgress = 5f
+            val vitalStatus = when {
+                value <= 30 -> "Low"
+                value <= 70 -> "Medium"
+                else -> "High"
+            }
 
-            )}
-
-
+            IndoCommonCard(
+                vitalName = "Overall Metabolic Health Risk",
+                vitalValue = formatted,
+                vitalmass = "%",
+                vitalDescription = OVERALL_METABOLIC_HEALTH_RISK_DIS,
+                vitalHeading = METABOLIC_HEALTH_RISK,
+                vitalCondition = "AVG 31 – 70",
+                vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(value)
+            )
         }
-        Row {
-            dynamicMap["VITAL_SCORE"]?.let {      TitleWithImageSubtitleCard(
-                title = "Vital Signs Score",
-                subtitle = it,
-                imageRes = R.drawable.vital_sign
-            )}
-            dynamicMap["PHYSICAL_SCORE"]?.let {      TitleWithImageSubtitleCard(
 
-                title = "Physical Wellness Score",
-                subtitle = it,
-                imageRes = R.drawable.pws
-            )}
+//                    }
+//                    Row {
+        dynamicMap["TG_RISK_PROB"]?.let {
+            val formatted = formatMixedValue(it)
+            val value = formatted.toString().toDoubleOrNull() ?: 0.0
 
+            val vitalStatus = when {
+                value <= 30 -> "Low"
+                value <= 70 -> "Medium"
+                else -> "High"
+            }
 
+            IndoCommonCard(
+                vitalName = "Hypertriglyceridemia Risk",
+                vitalValue = formatted,
+                vitalmass = "%",
+                vitalDescription = HYPERTRIGLY_EMIA_RISK_DIS,
+                vitalHeading = HYPERTRIGLYCERIDEMIA_RISK,
+                vitalCondition = "AVG 31 – 70",
+                vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(value)
+            )
         }
-        Row {
-            dynamicMap["BP_HEART_ATTACK"]?.let {        CenteredContentCard(
-                title = "Heart Attack Risk Level",
-                subtitle =it,
-                imageRes = R.drawable.heart_risk_level
-            )}
-            dynamicMap["MSI"]?.let {         CenteredContentCard(
-                title = "Metabolic Health Score (MSI)",
-                subtitle = it,
-                imageRes = R.drawable.msh
-            )}
 
+    } }}
+
+
+
+@Composable
+fun HealthScore(results: MeasurementResults,modifier: Modifier = Modifier) {
+
+    val scrollState = rememberScrollState()
+    val sortedSignalIDs = remember(results) { results.allResults.keys.sorted() }
+    val dynamicMap = mutableMapOf<String, String>()
+    for(res in sortedSignalIDs){
+
+        val siggResult =   results.result(res)
+        dynamicMap[res]=siggResult.toString();
+        Log.d(TAG, "sortedSignalIDs: $res")
+        Log.d(TAG, "dynamicMap: $dynamicMap")
+        Log.d(TAG, "sortedSignalIDs: $siggResult")
+    }
+    Card(colors = CardDefaults.cardColors(
+        containerColor = Color(0xFFF7FAFD), // Light cyan background
+        contentColor = Color.Black          // Text and icon color
+    ),) {  Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        dynamicMap["MENTAL_SCORE"]?.let {
+            val formatted = formatMixedValue(it)
+            val numericValue = formatted.toIntOrNull() ?: 0 // safely convert to Int
+
+            IndoCommonCard(
+                vitalName = "Mental Score",
+                vitalValue = formatted,
+                vitalDescription = MENTAL_SCORE_DIS,
+                vitalHeading = MENTAL_SCORE,
+                vitalCondition = "AVG 3",
+                vitalStatus = when (numericValue) {
+                    1 -> "Very Low"
+                    2->"Low"
+                    3 -> "Medium"
+                    4 -> "High"
+                    5->"Very High"
+                    else -> "Unknown"
+                }
+            )
         }
-        dynamicMap["BP_STROKE"]?.let {         InfoCard(
-            title = "Stroke Risk Level",
-            subtitle = it,
-            imageRes = R.drawable.mask_group
-        )}
 
-        Row {
-            dynamicMap["BP_CVD"]?.let {          CommonCard(
-                title = "Cardiovascular Risk Level",
-                subtitle = it
-            )}
-            dynamicMap["RISKS_SCORE"]?.let {          CommonCard(
-                title = "Overall Risk Score",
-                subtitle = it,
-            )}
+//                    }
+//                    Row {
+        dynamicMap["PHYSICAL_SCORE"]?.let {
+            val formatted = formatMixedValue(it)
+            val numericValue = formatted.toIntOrNull() ?: 0 // Safely parse to Int
 
+            IndoCommonCard(
+                vitalName = "Physical Score",
+                vitalValue = formatted,
+                vitalDescription = PHYSICAL_SCORE_DIS,
+                vitalHeading = PHYSICAL_SCORE,
+                vitalCondition = "AVG 3",
+                vitalStatus = when (numericValue) {
+                    1 -> "Very Low"
+                    2->"Low"
+                    3 -> "Medium"
+                    4 -> "High"
+                    5->"Very High"
+                    else -> "Unknown"
+                }
+            )
         }
-        dynamicMap["SNR"]?.let {SNRCard(title = "Signal Quality(SNR)", subtitle =  results.snr.toString(), imageRes = R.drawable.snr)
+
+        dynamicMap["PHYSIO_SCORE"]?.let {
+            val formatted = formatMixedValue(it)
+            val numericValue = formatted.toIntOrNull() ?: 0 // safely convert to Int
+
+            IndoCommonCard(
+                vitalName = "Physiological Score",
+                vitalValue = formatted,
+                vitalDescription = PHYSIOLOGICAL_SCORE_DIS,
+                vitalHeading = PHYSIOLOGICAL_SCORE,
+                vitalCondition = "AVG 3",
+                vitalStatus = when (numericValue) {
+                    1 -> "Very Low"
+                    2->"Low"
+                    3 -> "Medium"
+                    4 -> "High"
+                    5->"Very High"
+                    else -> "Unknown"
+                }
+            )
+        }
+
+//                    }
+//                    Row {
+        dynamicMap["RISKS_SCORE"]?.let {
+            val formatted = formatMixedValue(it)
+            val numericValue = formatted.toIntOrNull() ?: 0
+
+            IndoCommonCard(
+                vitalName = "Risk Score",
+                vitalValue = formatted,
+                vitalDescription = RISK_SCORE_DIS,
+                vitalHeading = RISKS_SCORE,
+                vitalCondition = "AVG 3",
+                vitalStatus = when (numericValue) {
+                    1 -> "Very Low"
+                    2->"Low"
+                    3 -> "Medium"
+                    4 -> "High"
+                    5->"Very High"
+                    else -> "Unknown"
+                }
+            )
+        }
+
+        dynamicMap["VITAL_SCORE"]?.let {
+            val formatted = formatMixedValue(it)
+            val numericValue = formatted.toIntOrNull() ?: 0
+
+            IndoCommonCard(
+                vitalName = "Vital Signs Score",
+                vitalValue = formatted,
+                vitalDescription = VITAL_SCORE_DIS,
+                vitalHeading = VITALS_SCORE,
+                vitalCondition = "AVG 3",
+                vitalStatus = when (numericValue) {
+                    1 -> "Very Low"
+                    2->"Low"
+                    3 -> "Medium"
+                    4 -> "High"
+                    5->"Very High"
+                    else -> "Unknown"
+                }
+            )
         }
 
     } }

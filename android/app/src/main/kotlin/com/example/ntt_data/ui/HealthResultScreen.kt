@@ -26,7 +26,7 @@ fun HealthResultScreen(
     measurementResults: MeasurementResults?,
     onBackPressed: () -> Unit
 ) {
-    val tabs = listOf("All", "Vital", "Wellness", "Additional")
+    val tabs = listOf("All", "Vitals", "Blood Biomarkers", "General Risks","Metabolic Risks","Health Score","Mental","Physiological","Physical","Meta Data")
 
     val contents = listOf<@Composable () -> Unit>(
 
@@ -40,12 +40,43 @@ fun HealthResultScreen(
             )
         },
         {
-            WellnessScreen(
+            BloodBiomarkers(
                 results = measurementResults!!
             )
         },
         {
-            AdditionalScreen(
+            GeneralRisks(
+                results = measurementResults!!
+            )
+        },
+
+        {
+            MetabolicRisks(
+                results = measurementResults!!
+            )
+        },
+        {
+            HealthScore(
+                results = measurementResults!!
+            )
+        },
+        {
+            Mental(
+                results = measurementResults!!
+            )
+        },
+        {
+            Physiological(
+                results = measurementResults!!
+            )
+        }, {
+            Physical(
+                results = measurementResults!!
+            )
+        },
+
+        {
+            Metadata(
                 results = measurementResults!!
             )
         }

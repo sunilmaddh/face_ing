@@ -34,23 +34,43 @@ fun IndoCommonCard(
     vitalDescription: String = "",
     vitalCondition: String = "",
     vitalmass: String = "",
+    isLowGood:Boolean=false,
+    isHighGood:Boolean=true
+
 ) {
-    val statusLower = vitalStatus.lowercase()
+
+    val statusLower = vitalStatus
 
     val imageRes = when (statusLower) {
-        "high" -> R.drawable.high
-        "medium" -> R.drawable.medium
-        else -> R.drawable.low
+        "Very Low" -> if (isLowGood) R.drawable.high_imo else R.drawable.low_imo
+        "Low" ->if (isLowGood) R.drawable.high_imo else R.drawable.low_imo
+        "Normal" -> R.drawable.mild_imo
+        "Medium" -> R.drawable.mild_imo
+        "High" -> if (isLowGood) R.drawable.low_imo else R.drawable.high_imo
+            "Very HIgh"->R.drawable.very_high_imo
+        "Optimal"->R.drawable.mild_imo
+        else -> R.drawable.very_high_imo
     }
     val colors = when (statusLower) {
-        "high" -> Color(0xFF1BC76D)
-        "medium" -> Color(0xFFEEC000)
-        else -> Color(0xFFFA704E)
+        "Very Low" ->if(isLowGood)Color(0xFF9ED042)else Color(0xFFFA704E)
+        "Low" -> if(isLowGood)Color(0xFF9ED042)else Color(0xFFFA704E)
+        "Normal" -> Color(0xFFEEC000)
+        "Medium" ->Color(0xFFEEC000)
+        "Optimal"->Color(0xFFEEC000)
+        "High" ->if(isLowGood)Color(0xFFFA704E)else Color(0xFF9ED042)
+        else-> Color(0xFF1BC76D)
+
+
+
     }
     val status = when (statusLower) {
-        "high" -> "High"
-        "medium" -> "Medium"
-        else -> "Low"
+        "Very Low" -> "Very Low"
+        "Low" -> "Low"
+        "Normal" -> "Normal"
+        "Medium" -> "Medium"
+        "High" -> "High"
+        "Optimal"->"Optimal"
+        else -> "Very High"
     }
 
 
@@ -71,7 +91,7 @@ fun IndoCommonCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(182.dp)
+                    .height(210.dp)
                     .background(Color.White)
             ) {
                 Box(
@@ -145,7 +165,7 @@ fun IndoCommonCard(
 
                 Box(
                     modifier = Modifier
-                        .height(180.dp)
+                        .height(195.dp)
                         .background(color = Color.White)
                 ) {
                     Column(

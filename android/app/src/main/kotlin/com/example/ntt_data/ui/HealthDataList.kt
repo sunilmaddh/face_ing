@@ -57,6 +57,7 @@ import com.example.ntt_data.utils.HYPERTENSION_RISK
 import com.example.ntt_data.utils.HYPERTENTION_RISK_DIS
 import com.example.ntt_data.utils.HYPERTRIGLYCERIDEMIA_RISK
 import com.example.ntt_data.utils.HYPERTRIGLY_EMIA_RISK_DIS
+import com.example.ntt_data.utils.HealthStatusEvaluator
 import com.example.ntt_data.utils.IRREGULAR_HEARTBEAT_COUNT
 import com.example.ntt_data.utils.IRREGULAR_HEART_DIS
 import com.example.ntt_data.utils.MENNTAL_STRESS_DIS
@@ -99,7 +100,6 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
     val sortedSignalIDs = remember(results) { results.allResults.keys.sorted() }
     val dynamicMap = mutableMapOf<String, String>()
     for (res in sortedSignalIDs) {
-
         val siggResult = results.result(res)
         dynamicMap[res] = siggResult.toString();
         Log.d(TAG, "sortedSignalIDs: $res")
@@ -120,17 +120,17 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             dynamicMap["HEALTH_SCORE"]?.let {
-                val formatted = formatMixedValue(it)
+                val formatted = formatMixedValue(it).toDoubleOrNull()?:0.0
                 // Log original and formatted values
                 Log.d("HealthScoreDebug", "Original value: $it")
                 Log.d("HealthScoreDebug", "Formatted value: $formatted")
                 IndoCommonCard(
-                    vitalValue = formatted,
-                    vitalName = "Wellness Index",
+                    vitalValue = formatted.toString(),
+                    vitalName = "General Wellness Score",
                     vitalDescription = general_health_des,
                     vitalHeading = GENERAL_WELLNESS_SCORE,
-                    vitalCondition = "AVG 40 – 69",
-                    vitalStatus = if(formatted<4.toString())"Low" else if(formatted> 6.toString())"High" else "Medium"
+
+                    vitalStatus = HealthStatusEvaluator.evaluateMentalStressIndexStatus(formatted)
 
                 )
             }
@@ -150,11 +150,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         vitalDescription = BREATHIN_RATW_DIS,
                         vitalHeading = BREATHING_RATE,
                         vitalCondition = "AVG 12 – 20",
-                        vitalStatus = when {
-                            value < 12 -> "Low"
-                            value > 20 -> "High"
-                            else -> "Medium"
-                        }
+                        vitalStatus =HealthStatusEvaluator.elevateBreathingStatus(value)
                     )
                 }
 
@@ -179,7 +175,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                     vitalDescription = HEART_RATE,
                     vitalHeading = PULSE_RATE,
                     vitalCondition = "AVG 60 – 100",
-                    vitalStatus = vitalStatus
+                    vitalStatus = HealthStatusEvaluator.evaluatePulseStatus(heartRate)
                 )
             }
 
@@ -190,26 +186,38 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
 
 //            }
             dynamicMap["BP_SYSTOLIC"]?.let { systolic ->
-                val systolicInt = dynamicMap["BP_SYSTOLIC"]?.toString()?.toDoubleOrNull()?.toInt()
-                val diastolicInt = dynamicMap["BP_DIASTOLIC"]?.toString()?.toDoubleOrNull()?.toInt()
-
-                if (systolicInt != null && diastolicInt != null) {
-                    val vitalStatus = when {
-                        systolicInt < 90 || diastolicInt < 60 -> "Low"
-                        systolicInt > 120 || diastolicInt > 80 -> "High"
-                        else -> "Medium"
-                    }
-
+                val systolicInt = dynamicMap["BP_SYSTOLIC"]?.toString()?.toDoubleOrNull()?:0.0
                     IndoCommonCard(
-                        vitalName = "Blood Pressure",
-                        vitalValue = "$systolicInt/$diastolicInt",
+                        vitalName = "Blood Systolic",
+                        vitalValue = systolicInt.toString(),
                         vitalmass = "mmHg",
                         vitalHeading = BLOOD_PRESSURE_head,
                         vitalDescription = BLOOD_PRESSURE,
                         vitalCondition = "AVG 90 – 120 / 60 – 80",
-                        vitalStatus = vitalStatus
+                        vitalStatus = HealthStatusEvaluator.evaluateSystolicStatus(systolicInt)
                     )
                 }
+                dynamicMap["BP_DIASTOLIC"]?.let { systolic ->
+//                    val systolicInt = dynamicMap["BP_SYSTOLIC"]?.toString()?.toDoubleOrNull()?.toInt()
+                    val diastolicInt = dynamicMap["BP_DIASTOLIC"]?.toString()?.toDoubleOrNull()?:0.0
+
+//                    if (systolicInt != null && diastolicInt != null) {
+//                        val vitalStatus = when {
+//                            systolicInt < 90 || diastolicInt < 60 -> "Low"
+//                            systolicInt > 120 || diastolicInt > 80 -> "High"
+//                            else -> "Medium"
+//                        }
+
+                        IndoCommonCard(
+                            vitalName = "Blood Diastolic",
+                            vitalValue = diastolicInt.toString(),
+                            vitalmass = "mmHg",
+                            vitalHeading = BLOOD_PRESSURE_head,
+                            vitalDescription = BLOOD_PRESSURE,
+                            vitalCondition = "AVG 90 – 120 / 60 – 80",
+                            vitalStatus = HealthStatusEvaluator.evaluateDiastolicStatus(diastolicInt)
+                        )
+                    }
 
 
 
@@ -252,24 +260,12 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         vitalDescription = HEMOGLOBIN_A1_DIS,
                         vitalHeading = HEMOGLOBIN_A1C_RISK,
                         vitalCondition = "AVG 31 – 70",
-                        vitalStatus = vitalStatus
+                        isLowGood = true,
+                        vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(riskProb)
                     )
                 }
 
-//            dynamicMap["HRV_SDNN"]?.let { CommonCard(
-//                title = "Heart Rate Variability",
-//                subtitle = it,
-//                mass = "ms"
-//
-//            )}
-//            dynamicMap["BP_RPP"]?.let {CommonCard(
-//                title = "Rate Pressure Product (RPP)",
-//                subtitle = it,
-//            )}
 
-
-//                }
-//                Row {
                 dynamicMap["MFBG_RISK_PROB"]?.let {
                     val formatted = formatMixedValue(it)
                     val riskProb = formatted.toString().toDoubleOrNull() ?: 0.0
@@ -286,8 +282,9 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         vitalmass = "%",
                         vitalDescription = FASTING_GLUCOSE_RISK_DIS,
                         vitalHeading = FASTING_BLOOD_GLUCOSE_RISK,
+                        isLowGood = true,
                         vitalCondition = "AVG 31 – 70",
-                        vitalStatus = vitalStatus
+                        vitalStatus =  HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(riskProb)
                     )
                 }
 
@@ -307,24 +304,12 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         vitalmass = "%",
                         vitalDescription = CARDIAC_DIS,
                         vitalHeading = CARDIOVASCULAR_DISEASE_RISK,
+                        isLowGood = true,
                         vitalCondition = "AVG 31 – 70",
-                        vitalStatus = vitalStatus
+                        vitalStatus =  HealthStatusEvaluator.evaluateCardiovascularDiseaseRiskStatus(riskValue)
                     )
                 }
 
-//            dynamicMap["HRV_SDNN"]?.let { CommonCard(
-//                title = "Heart Rate Variability",
-//                subtitle = it,
-//                mass = "ms"
-//
-//            )}
-//            dynamicMap["BP_RPP"]?.let {CommonCard(
-//                title = "Rate Pressure Product (RPP)",
-//                subtitle = it,
-//            )}
-
-
-//                }
 
                 dynamicMap["BP_HEART_ATTACK"]?.let {
                     val formatted = formatMixedValue(it)
@@ -342,8 +327,9 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         vitalmass = "%",
                         vitalDescription = HEART_ATTACK_RISK_DIS,
                         vitalHeading = HEART_ATTACK_RISK,
+                        isLowGood = true,
                         vitalCondition = "AVG 31 – 70",
-                        vitalStatus = vitalStatus
+                        vitalStatus =  HealthStatusEvaluator.evaluate1HeartAttackRiskStatus(riskValue)
                     )
 
 
@@ -354,11 +340,6 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                         val formatted = formatMixedValue(it)
                         val strokeRisk = formatted.toString().toDoubleOrNull() ?: 0.0
 
-                        val vitalStatus = when {
-                            strokeRisk <= 30 -> "Low"
-                            strokeRisk <= 70 -> "Medium"
-                            else -> "High"
-                        }
 
                         IndoCommonCard(
                             vitalName = "Stroke Risk",
@@ -367,40 +348,29 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalDescription = STROKE_RISK_DIS,
                             vitalHeading = STROKE_RISK,
                             vitalCondition = "AVG 31 – 70",
-                            vitalStatus = vitalStatus
+                            isLowGood = true,
+                            vitalStatus =  HealthStatusEvaluator.evaluateStrokeRiskStatus(strokeRisk)
                         )
                     }
 
 
                     dynamicMap["DBT_RISK_PROB"]?.let {
-                            val formatted = formatMixedValue(it)
+                            val formatted = formatMixedValue(it).toDoubleOrNull()?:0.0
                             IndoCommonCard(
                                 vitalName = " Diabetes Risk",
-                                vitalValue = formatted,
+                                vitalValue = formatted.toString(),
                                 vitalDescription = TYPE_DIAB_RISK_DIS,
                                 vitalHeading = TYPE_2_DIABETES_RISK,
                                 vitalmass = "%",
+                                isLowGood = true,
                                 vitalCondition = "AVG 31 – 70",
-                                vitalStatus = if(formatted< 31.toString())"Low" else if(formatted> 70.toString())"High" else "Medium"
-
+                                vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(formatted)
 
 
 
                             )
                         }
-//                    }
 
-
-//        dynamicMap["BP_SYSTOLIC"]?.let {InfoCard(
-//            title = "Blood Pressure (Systolic/Diastolic)",
-//            subtitle = "${it.toIntOrNull()}/${dynamicMap["BP_DIASTOLIC"]?.toIntOrNull()}",
-//            mass = "mmHg",
-//            imageRes = R.drawable.mask_group
-//        )}
-
-
-//                    Row {
-                    // Fatty Liver Disease Risk
                     dynamicMap["FLD_RISK_PROB"]?.let {
                         val formatted = formatMixedValue(it)
                         val riskValue = formatted.toString().toDoubleOrNull() ?: 0.0
@@ -418,11 +388,11 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalDescription = FATTY_LIV_DIA_RISK_DIS,
                             vitalHeading = FATTY_LIVER_DISEASE_RISK,
                             vitalCondition = "AVG 31 – 70",
-                            vitalStatus = vitalStatus
+                            isLowGood = true,
+                            vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(riskValue)
                         )
                     }
 
-// Hypercholesterolemia Risk
                     dynamicMap["HDLTC_RISK_PROB"]?.let {
                         val formatted = formatMixedValue(it)
                         val riskValue = formatted.toString().toDoubleOrNull() ?: 0.0
@@ -439,15 +409,13 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalmass = "%",
                             vitalDescription = HYPERCHOLE_EMIA_RISK_DIS,
                             vitalHeading = HYPERCHOLESTEROLEMIA_RISK,
+                            isLowGood = true,
                             vitalCondition = "AVG 31 – 70",
-                            vitalStatus = vitalStatus
+                            vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(riskValue)
                         )
                     }
 
 
-
-//                    }
-//                    Row {
                     dynamicMap["HPT_RISK_PROB"]?.let {
                         val formatted = formatMixedValue(it)
                         val value = formatted.toString().toDoubleOrNull() ?: 0.0
@@ -463,9 +431,10 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalValue = formatted,
                             vitalmass = "%",
                             vitalDescription = HYPERTENTION_RISK_DIS,
+                            isLowGood = true,
                             vitalHeading = HYPERTENSION_RISK,
                             vitalCondition = "AVG 31 – 70",
-                            vitalStatus = vitalStatus
+                            vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(value)
                         )
                     }
 
@@ -486,8 +455,9 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalmass = "%",
                             vitalDescription = OVERALL_METABOLIC_HEALTH_RISK_DIS,
                             vitalHeading = METABOLIC_HEALTH_RISK,
+                            isLowGood = true,
                             vitalCondition = "AVG 31 – 70",
-                            vitalStatus = vitalStatus
+                            vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(value)
                         )
                     }
 
@@ -509,8 +479,9 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalmass = "%",
                             vitalDescription = HYPERTRIGLY_EMIA_RISK_DIS,
                             vitalHeading = HYPERTRIGLYCERIDEMIA_RISK,
+                            isLowGood = true,
                             vitalCondition = "AVG 31 – 70",
-                            vitalStatus = vitalStatus
+                            vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(value)
                         )
                     }
 
@@ -525,9 +496,11 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalHeading = MENTAL_SCORE,
                             vitalCondition = "AVG 3",
                             vitalStatus = when (numericValue) {
-                                1, 2 -> "Low"
+                                1 -> "Very Low"
+                                2->"Low"
                                 3 -> "Medium"
-                                4, 5 -> "High"
+                                4 -> "High"
+                                5->"Very High"
                                 else -> "Unknown"
                             }
                         )
@@ -546,9 +519,11 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalHeading = PHYSICAL_SCORE,
                             vitalCondition = "AVG 3",
                             vitalStatus = when (numericValue) {
-                                1, 2 -> "Low"
+                                1 -> "Very Low"
+                                2->"Low"
                                 3 -> "Medium"
-                                4, 5 -> "High"
+                                4 -> "High"
+                                5->"Very High"
                                 else -> "Unknown"
                             }
                         )
@@ -565,9 +540,11 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalHeading = PHYSIOLOGICAL_SCORE,
                             vitalCondition = "AVG 3",
                             vitalStatus = when (numericValue) {
-                                1, 2 -> "Low"
+                                1 -> "Very Low"
+                                2->"Low"
                                 3 -> "Medium"
-                                4, 5 -> "High"
+                                4 -> "High"
+                                5->"Very High"
                                 else -> "Unknown"
                             }
                         )
@@ -586,9 +563,11 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalHeading = RISKS_SCORE,
                             vitalCondition = "AVG 3",
                             vitalStatus = when (numericValue) {
-                                1, 2 -> "Low"
+                                1 -> "Very Low"
+                                2->"Low"
                                 3 -> "Medium"
-                                4, 5 -> "High"
+                                4 -> "High"
+                                5->"Very High"
                                 else -> "Unknown"
                             }
                         )
@@ -605,9 +584,11 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalHeading = VITALS_SCORE,
                             vitalCondition = "AVG 3",
                             vitalStatus = when (numericValue) {
-                                1, 2 -> "Low"
+                                1 -> "Very Low"
+                                2->"Low"
                                 3 -> "Medium"
-                                4, 5 -> "High"
+                                4 -> "High"
+                                5->"Very High"
                                 else -> "Unknown"
                             }
                         )
@@ -624,10 +605,13 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalDescription = MENNTAL_STRESS_DIS,
                             vitalHeading = MENTAL_SCORE,
                             vitalCondition = "AVG 3",
+                            isLowGood = true,
                             vitalStatus = when (numericValue) {
-                                1, 2 -> "Low"
+                                1 -> "Very Low"
+                                2->"Low"
                                 3 -> "Medium"
-                                4, 5 -> "High"
+                                4 -> "High"
+                                5->"Very High"
                                 else -> "Unknown"
                             }
                         )
@@ -635,52 +619,45 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
 
 //                    Row {
                         dynamicMap["BP_RPP"]?.let {
-                            val formatted = formatMixedValue(it)
+                            val formatted = formatMixedValue(it).toDoubleOrNull()?:0.0
                             IndoCommonCard(
                                 vitalName = "Cardiac Workload",
-                                vitalValue = formatted,
-
-
+                                vitalValue = formatted.toString(),
                                 vitalmass = "dB",
                                 vitalDescription = CARDIAC_DIS,
                                 vitalHeading = CARDIAC_WORKLOAD,
                                 vitalCondition = "AVG 3.8– 4.1",
-                                vitalStatus = if(formatted< 3.8.toString())"Low" else if(formatted> 4.1.toString())"High" else "Medium"
-
+                                isLowGood = true,
+                                vitalStatus = HealthStatusEvaluator.evaluateMentalStressIndexStatus(formatted)
 
                             )
                         }
                         dynamicMap["BP_TAU"]?.let {
-                            val formatted = formatMixedValue(it)
+                            val formatted = formatMixedValue(it).toDoubleOrNull()?:0.0
                             IndoCommonCard(
                                 vitalName = "Vascular Capacity",
-                                vitalValue = formatted,
+                                vitalValue = formatted.toString(),
                                 vitalmass = "seconds",
 
                                 vitalDescription = VASCULAR_CAPACITY_DIS,
                                 vitalHeading = VASCULAR_CAPACITY,
                                 vitalCondition = "AVG 1 – 2.5",
-                                        vitalStatus = if(formatted< 1.toString())"Low" else if(formatted> 2.5.toString())"High" else "Medium"
-
+                                        vitalStatus = HealthStatusEvaluator.evaluateVascularCapacityStatus(formatted)
                             )
                         }
 //                    }
                     dynamicMap["HRV_SDNN"]?.let {
-                        val formatted = formatMixedValue(it)
+                        val formatted = formatMixedValue(it).toDoubleOrNull()?:0.0
                         IndoCommonCard(
                             vitalName = "Heart Rate Variability",
-                            vitalValue = formatted,
+                            vitalValue = formatted.toString(),
                             vitalmass = "ms",
                             vitalDescription = HEART_RATE_VARIABILITY_DIS,
                             vitalHeading = HEART_RATE_VARIABILITY,
                             vitalCondition = "AVG 20 – 50",
-                            vitalStatus = if(formatted< 20.toString())"Low" else if(formatted> 50.toString())"High" else "Medium"
-                        )
+                            vitalStatus = HealthStatusEvaluator.evaluateHeartRateVariabilityStatus(formatted))
                     }
 
-//                    Row(
-//                        horizontalArrangement =Arrangement.Start ,
-//                        ) {
                         dynamicMap["AGE"]?.let {
                             val formatted = formatMixedValue(it)
                             IndoCommonCard(
@@ -689,7 +666,7 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                                 vitalmass = "years",
                                 vitalDescription = FACIAL_SKIN_AGE_DIS,
                                 vitalHeading = FACIAL_SKIN_AGE, vitalCondition = "AVG 20 – 50",
-                                vitalStatus = if(formatted< 20.toString())"Low" else if(formatted> 50.toString())"High" else "Medium"
+//                                vitalStatus = if(formatted< 20.toString())"Low" else if(formatted> 50.toString())"High" else "Medium"
                             )
                         }
                     dynamicMap["SNR"]?.let {
@@ -703,11 +680,11 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
                             vitalDescription = S_N_R_Description,
                             vitalHeading = S_N_R,
                             vitalCondition = "AVG -10 to 20",
-                            vitalStatus = when {
-                                numericValue < -10 -> "Low"
-                                numericValue > 20 -> "High"
-                                else -> "Medium"
-                            }
+//                            vitalStatus = when {
+//                                numericValue < -10 -> "Low"
+//                                numericValue > 20 -> "High"
+//                                else -> "Medium"
+//                            }
                         )
                     }
 
@@ -722,5 +699,5 @@ fun HealthDataList(results: MeasurementResults, modifier: Modifier = Modifier) {
 
 
 
-}
+
 

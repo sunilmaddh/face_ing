@@ -29,7 +29,8 @@ fun CustomTabBar(
             .fillMaxSize()
     ) {
         Surface(modifier = Modifier.padding(4.dp).clip(RoundedCornerShape(24.dp)).background(Color.Gray), tonalElevation = 4.dp) {
-            TabRow(
+            ScrollableTabRow(
+                edgePadding = 0.dp,
                 selectedTabIndex = pagerState.currentPage,
                 containerColor = Color.Transparent,
 
