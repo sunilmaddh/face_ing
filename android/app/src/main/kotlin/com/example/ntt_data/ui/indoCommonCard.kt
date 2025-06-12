@@ -34,33 +34,32 @@ fun IndoCommonCard(
     vitalDescription: String = "",
     vitalCondition: String = "",
     vitalmass: String = "",
+    isBlood:Boolean=false,
     isLowGood:Boolean=false,
     isHighGood:Boolean=true
 
 ) {
 
     val statusLower = vitalStatus
-
     val imageRes = when (statusLower) {
-        "Very Low" -> if (isLowGood) R.drawable.high_imo else R.drawable.low_imo
-        "Low" ->if (isLowGood) R.drawable.high_imo else R.drawable.low_imo
-        "Normal" -> R.drawable.mild_imo
+        "Very Low" ->if(isBlood)R.drawable.low_imo   else if (isLowGood) R.drawable.very_high_imo else R.drawable.low_imo
+        "Low" ->if (isLowGood) R.drawable.high_imo else R.drawable.normal_imo
+        "Normal" -> R.drawable.very_high_imo
         "Medium" -> R.drawable.mild_imo
-        "High" -> if (isLowGood) R.drawable.low_imo else R.drawable.high_imo
-            "Very HIgh"->R.drawable.very_high_imo
-        "Optimal"->R.drawable.mild_imo
+        "High" -> if (isLowGood) R.drawable.normal_imo else R.drawable.high_imo
+            "Very High"-> if(isBlood)R.drawable.low_imo   else if(isLowGood) R.drawable.low_imo else R.drawable.very_high_imo
+        "Optimal"->R.drawable.very_high_imo
         else -> R.drawable.very_high_imo
     }
     val colors = when (statusLower) {
-        "Very Low" ->if(isLowGood)Color(0xFF9ED042)else Color(0xFFFA704E)
-        "Low" -> if(isLowGood)Color(0xFF9ED042)else Color(0xFFFA704E)
-        "Normal" -> Color(0xFFEEC000)
+        "Very Low" ->if(isBlood)Color(0xFFFA704E)   else if(isLowGood)Color(0xFF1BC76D)else Color(0xFFFA704E)
+        "Low" -> if(isLowGood)Color(0xFF9ED042)else Color(0xFFED9A33)
+        "Normal" -> Color(0xFF1BC76D)
         "Medium" ->Color(0xFFEEC000)
-        "Optimal"->Color(0xFFEEC000)
-        "High" ->if(isLowGood)Color(0xFFFA704E)else Color(0xFF9ED042)
-        else-> Color(0xFF1BC76D)
-
-
+        "Optimal"->Color(0xFF1BC76D)
+        "Very High" ->if(isLowGood)Color(0xFFFA704E)else Color(0xFF1BC76D)
+        "High" ->if(isBlood)Color(0xFFED9A33) else if(isLowGood)Color(0xFFED9A33)else Color(0xFF9ED042)
+        else-> Color(0xFFFFFFFF)
 
     }
     val status = when (statusLower) {
@@ -70,11 +69,9 @@ fun IndoCommonCard(
         "Medium" -> "Medium"
         "High" -> "High"
         "Optimal"->"Optimal"
-        else -> "Very High"
+        "Very High"->"Very High"
+        else -> ""
     }
-
-
-    var isExpanded by remember { mutableStateOf(false) }
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -103,15 +100,16 @@ fun IndoCommonCard(
                     Column(
                         horizontalAlignment = Alignment.Start,
                         modifier = Modifier
-                            .padding(15.dp)
+                            .padding(horizontal = 5.dp, vertical = 10.dp)
                             .fillMaxSize()
                     ) {
-                        Image(
-                            painter = painterResource(id = imageRes),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.size(37.dp)
-                        )
+                     if (vitalStatus.isNotEmpty()){ Image(
+                         painter = painterResource(id = imageRes),
+                         contentDescription = null,
+                         contentScale = ContentScale.Crop,
+                         modifier = Modifier.size(37.dp)
+                     )}
+
                         Spacer(Modifier.height(5.dp))
                         Text(
                             text = vitalName,
@@ -194,6 +192,7 @@ fun IndoCommonCard(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            if(vitalStatus.isNotEmpty())
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Card(
                                     shape = CircleShape,
@@ -212,14 +211,23 @@ fun IndoCommonCard(
                                 )
                             }
 
-                            Image(
-                                painter = painterResource(id = R.drawable.info),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(20.dp)
 
-                            )
+
+//                            Box(
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .padding(end = 8.dp, bottom = 8.dp),
+//                                contentAlignment = Alignment.BottomEnd
+//                            ) {
+//                                Image(
+//                                    painter = painterResource(id = R.drawable.info),
+//                                    contentDescription = null,
+//                                    contentScale = ContentScale.Crop,
+//                                    modifier = Modifier
+//                                        .size(20.dp)
+//                                        .clickable { /* Handle info click */ }
+//                                )
+//                            }
                         }
                        }
                 }

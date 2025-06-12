@@ -30,11 +30,22 @@ object HealthStatusEvaluator {
     }
     fun evaluateDiastolicStatus(value: Double): String {
         return when {
-            value < 60 -> "Low"
-            value < 70 -> "Optimal"
-            value < 80 -> "Medium"
+            value <= 60 -> "Low"
+            value <= 70 -> "Optimal"
+            value <= 80 -> "Medium"
             value < 90 -> "High"
-            else -> "Very High"
+            value>=90->"Very High"
+            else -> ""
+        }
+    }
+    fun evaluateWellnessScoreStatus(value: Double): String {
+        return when {
+            value <20 -> "Very Low"
+            value <= 40 -> "Low"
+                value <=60-> "Medium"
+                value <=80-> "High"
+                value <=100-> "Very High"
+            else -> ""
         }
     }
     fun evaluateHoemoglobinA1CRiskStatus(value: Double): String {
@@ -75,11 +86,22 @@ object HealthStatusEvaluator {
     }
     fun evaluateMentalStressIndexStatus(value: Double): String {
         return when {
-            value < 1 -> "Very Low"
-            value < 2 -> "Low"
-            value < 3 -> "Medium"
-            value < 4 -> "High"
-            else -> "Very High"
+            value <= 1.5 -> "Very Low"
+            value <= 2.5 -> "Low"
+            value <= 3.5 -> "Medium"
+            value <= 4.5 -> "High"
+            value>4.5->"Very High"
+            else -> ""
+        }
+    }
+    fun evaluateMentalStressIndexStatus1(value: Double): String {
+        return when {
+            value <2 -> "Very Low"
+            value <=3 -> "Low"
+            value <=4 -> "Medium"
+            value <= 5 -> "High"
+            value>=5->"Very High"
+            else -> ""
         }
     }
     fun evaluateCardiacWorkloadStatus(value: Double): String {
