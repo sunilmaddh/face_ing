@@ -28,6 +28,10 @@ import androidx.compose.ui.unit.dp
 import com.example.ntt_data.R
 import com.example.ntt_data.measurement.AnuraExampleMeasurementActivity.Companion.TAG
 import com.example.ntt_data.utils.BLOOD_PRESSURE
+import com.example.ntt_data.utils.BLOOD_PRESSURE_DIASTOLIC
+import com.example.ntt_data.utils.BLOOD_PRESSURE_DI_DIS
+import com.example.ntt_data.utils.BLOOD_PRESSURE_SYSTOLIC
+import com.example.ntt_data.utils.BLOOD_PRESSURE_SY_DIS
 import com.example.ntt_data.utils.BLOOD_PRESSURE_head
 import com.example.ntt_data.utils.BREATHING_RATE
 import com.example.ntt_data.utils.BREATHIN_RATW_DIS
@@ -81,19 +85,18 @@ fun VitalScreen(results: MeasurementResults,modifier: Modifier = Modifier) {
         ) {
             dynamicMap["BR_BPM"]?.let {
                 val formatted = formatMixedValue(it)
-
-                // Remove non-numeric characters except dot
                 val numericPart = formatted.replace(Regex("[^0-9.]"), "")
                 val value = numericPart.toDoubleOrNull() ?: 0.0
 
                 IndoCommonCard(
                     vitalName = "Breathing Rate",
-                    vitalValue = formatted, // still shows "20.0 rpm"
+                    vitalValue = formatted,
                     vitalmass = "rpm",
                     vitalDescription = BREATHIN_RATW_DIS,
                     vitalHeading = BREATHING_RATE,
+                    isBreathing = true,
                     vitalCondition = "AVG 12 – 25",
-                    vitalStatus = HealthStatusEvaluator.elevateBreathingStatus(value)
+                    vitalStatus =HealthStatusEvaluator.elevateBreathingStatus(value)
                 )
             }
 
@@ -104,12 +107,10 @@ fun VitalScreen(results: MeasurementResults,modifier: Modifier = Modifier) {
                 val numericString = formatted.toString().replace(Regex("[^\\d.]"), "")
                 val heartRate = numericString.toDoubleOrNull() ?: 0.0
                 println("Parsed heartRate: $heartRate")
-
-
-
                 IndoCommonCard(
                     vitalName = "Heart Rate",
                     vitalValue = formatted,
+                    isBreathing = true,
                     vitalmass = "bpm",
                     vitalDescription = HEART_RATE,
                     vitalHeading = PULSE_RATE,
@@ -117,21 +118,15 @@ fun VitalScreen(results: MeasurementResults,modifier: Modifier = Modifier) {
                     vitalStatus = HealthStatusEvaluator.evaluatePulseStatus(heartRate)
                 )
             }
-
-
-
-
-
-
-//            }
             dynamicMap["BP_SYSTOLIC"]?.let { systolic ->
                 val systolicInt = dynamicMap["BP_SYSTOLIC"]?.toString()?.toDoubleOrNull()?:0.0
                 IndoCommonCard(
                     vitalName = "Blood Systolic",
                     vitalValue = formatMixedValue(systolicInt),
                     vitalmass = "mmHg",
-                    vitalHeading = BLOOD_PRESSURE_head,
-                    vitalDescription = BLOOD_PRESSURE,
+                    vitalHeading = BLOOD_PRESSURE_SYSTOLIC,
+                    vitalDescription = BLOOD_PRESSURE_SY_DIS,
+                    isBlood = true,
                     vitalCondition = "AVG 100 – 139",
                     vitalStatus = HealthStatusEvaluator.evaluateSystolicStatus(systolicInt)
                 )
@@ -142,13 +137,14 @@ fun VitalScreen(results: MeasurementResults,modifier: Modifier = Modifier) {
                     vitalName = "Blood Diastolic",
                     vitalValue = formatMixedValue(diastolicInt),
                     vitalmass = "mmHg",
-                    vitalHeading = BLOOD_PRESSURE_head,
-                    vitalDescription = BLOOD_PRESSURE,
-                    vitalCondition = "AVG 60-89",
+                    vitalHeading = BLOOD_PRESSURE_DIASTOLIC,
+                    vitalDescription = BLOOD_PRESSURE_DI_DIS,
+                    vitalCondition = "AVG 60 – 89",
+                    isBlood = true,
+                    isLowGood = true,
                     vitalStatus = HealthStatusEvaluator.evaluateDiastolicStatus(diastolicInt)
                 )
             }
-
             dynamicMap["IHB_COUNT"]?.let {
                 val formatted = formatMixedValue(it)
                 IndoCommonCard(
@@ -156,9 +152,9 @@ fun VitalScreen(results: MeasurementResults,modifier: Modifier = Modifier) {
                     vitalValue = formatted,
                     vitalDescription = IRREGULAR_HEART_DIS,
                     vitalHeading = IRREGULAR_HEARTBEAT_COUNT,
-
                 )
             }
+
 
         }
 
@@ -193,24 +189,19 @@ fun BloodBiomarkers(results: MeasurementResults,modifier: Modifier = Modifier) {
             dynamicMap["HBA1C_RISK_PROB"]?.let {
                 val formatted = formatMixedValue(it)
                 val riskProb = formatted.toString().toDoubleOrNull() ?: 0.0
-
                 IndoCommonCard(
                     vitalName = "Hemoglobin A1C Risk",
                     vitalValue = formatted,
                     vitalmass = "%",
                     vitalDescription = HEMOGLOBIN_A1_DIS,
                     vitalHeading = HEMOGLOBIN_A1C_RISK,
-
                     isLowGood = true,
                     vitalStatus = HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(riskProb)
                 )
             }
-
-
             dynamicMap["MFBG_RISK_PROB"]?.let {
                 val formatted = formatMixedValue(it)
                 val riskProb = formatted.toString().toDoubleOrNull() ?: 0.0
-
                 IndoCommonCard(
                     vitalName = "Fasting Blood Glucose Risk",
                     vitalValue = formatted,
@@ -218,11 +209,9 @@ fun BloodBiomarkers(results: MeasurementResults,modifier: Modifier = Modifier) {
                     vitalDescription = FASTING_GLUCOSE_RISK_DIS,
                     vitalHeading = FASTING_BLOOD_GLUCOSE_RISK,
                     isLowGood = true,
-
                     vitalStatus =  HealthStatusEvaluator.evaluateHoemoglobinA1CRiskStatus(riskProb)
                 )
             }
-
         }}
 }
 @Composable
@@ -272,11 +261,10 @@ fun Physiological(results: MeasurementResults,modifier: Modifier = Modifier) {
 
                     vitalDescription = VASCULAR_CAPACITY_DIS,
                     vitalHeading = VASCULAR_CAPACITY,
-
                     vitalStatus = HealthStatusEvaluator.evaluateVascularCapacityStatus(formatted)
                 )
             }
-//                    }
+
             dynamicMap["HRV_SDNN"]?.let {
                 val formatted = formatMixedValue(it).toDoubleOrNull()?:0.0
                 IndoCommonCard(
@@ -285,7 +273,6 @@ fun Physiological(results: MeasurementResults,modifier: Modifier = Modifier) {
                     vitalmass = "ms",
                     vitalDescription = HEART_RATE_VARIABILITY_DIS,
                     vitalHeading = HEART_RATE_VARIABILITY,
-
                     vitalStatus = HealthStatusEvaluator.evaluateHeartRateVariabilityStatus(formatted))
             }
 
@@ -322,7 +309,8 @@ fun Physical(results: MeasurementResults,modifier: Modifier = Modifier) {
                     vitalValue = formatted,
                     vitalmass = "years",
                     vitalDescription = FACIAL_SKIN_AGE_DIS,
-                       )
+                    vitalHeading = FACIAL_SKIN_AGE,
+                )
             }
         }}
 }
@@ -352,7 +340,6 @@ fun Metadata(results: MeasurementResults,modifier: Modifier = Modifier) {
         ) {
             dynamicMap["SNR"]?.let {
                 val formatted = formatMixedValue(it)
-                val numericValue = formatted.toDoubleOrNull() ?: 0.0
                 IndoCommonCard(
                     vitalName = "Signal-to-Noise Ratio",
                     vitalValue = formatted,
@@ -360,8 +347,8 @@ fun Metadata(results: MeasurementResults,modifier: Modifier = Modifier) {
                     vitalDescription = S_N_R_Description,
                     vitalHeading = S_N_R,
 
-                )
-            }
+
+                    )}
         }}
 }
 @Composable
@@ -397,8 +384,9 @@ fun Mental(results: MeasurementResults,modifier: Modifier = Modifier) {
                     vitalValue = formatted,
                     vitalDescription = MENNTAL_STRESS_DIS,
                     vitalHeading = MENTAL_SCORE,
+
                     isLowGood = true,
-                    vitalStatus = HealthStatusEvaluator.evaluateMentalStressIndexStatus(numericValue)
+                    vitalStatus = HealthStatusEvaluator.evaluateMentalStressIndexStatus1(numericValue)
                 )
             }
 

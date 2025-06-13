@@ -36,29 +36,29 @@ fun IndoCommonCard(
     vitalmass: String = "",
     isBlood:Boolean=false,
     isLowGood:Boolean=false,
-    isHighGood:Boolean=true
+    isBreathing:Boolean=false
 
 ) {
 
     val statusLower = vitalStatus
     val imageRes = when (statusLower) {
-        "Very Low" ->if(isBlood)R.drawable.low_imo   else if (isLowGood) R.drawable.very_high_imo else R.drawable.low_imo
+        "Very Low" ->if(isBreathing)R.drawable.mild_imo else if(isBlood)R.drawable.low_imo   else if (isLowGood) R.drawable.very_high_imo else R.drawable.low_imo
         "Low" ->if (isLowGood) R.drawable.high_imo else R.drawable.normal_imo
         "Normal" -> R.drawable.very_high_imo
         "Medium" -> R.drawable.mild_imo
-        "High" -> if (isLowGood) R.drawable.normal_imo else R.drawable.high_imo
+        "High" ->if(isBreathing)R.drawable.mild_imo else if (isLowGood) R.drawable.normal_imo else R.drawable.high_imo
             "Very High"-> if(isBlood)R.drawable.low_imo   else if(isLowGood) R.drawable.low_imo else R.drawable.very_high_imo
         "Optimal"->R.drawable.very_high_imo
         else -> R.drawable.very_high_imo
     }
     val colors = when (statusLower) {
         "Very Low" ->if(isBlood)Color(0xFFFA704E)   else if(isLowGood)Color(0xFF1BC76D)else Color(0xFFFA704E)
-        "Low" -> if(isLowGood)Color(0xFF9ED042)else Color(0xFFED9A33)
+        "Low" -> if(isBreathing)Color(0xFFEEC000) else if(isLowGood)Color(0xFF9ED042)else Color(0xFFED9A33)
         "Normal" -> Color(0xFF1BC76D)
         "Medium" ->Color(0xFFEEC000)
         "Optimal"->Color(0xFF1BC76D)
         "Very High" ->if(isLowGood)Color(0xFFFA704E)else Color(0xFF1BC76D)
-        "High" ->if(isBlood)Color(0xFFED9A33) else if(isLowGood)Color(0xFFED9A33)else Color(0xFF9ED042)
+        "High" ->if(isBreathing)Color(0xFFEEC000) else if(isBlood)Color(0xFFED9A33) else if(isLowGood)Color(0xFFED9A33)else Color(0xFF9ED042)
         else-> Color(0xFFFFFFFF)
 
     }

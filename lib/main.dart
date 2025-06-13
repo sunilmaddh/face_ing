@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/bindings/app_bindings.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart';
 import 'package:ntt_data/routes/app_pages.dart';
 
@@ -11,6 +12,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  IndoSharedPreference.instance.init();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     // DeviceOrientation.portraitDown, // optional if you want upside-down
@@ -36,7 +38,6 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(backgroundColor: AppColors.btntext),
         ),
 
-        initialBinding: AppBindings(),
         initialRoute: AppRoutes.splashScreen,
         getPages: AppPages.getPages,
       ),
