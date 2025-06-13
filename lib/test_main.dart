@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/test_main_expand_widget.dart';
 
@@ -386,19 +387,23 @@ class IndoCommonCard extends StatefulWidget {
   final String vitalDescription;
   final String vitalCondition;
   final String vitalMass;
+  final String imageAsset;
   final bool isExpand;
+  final bool isVitalActive;
   final Widget expandedWidget;
 
   const IndoCommonCard({
     Key? key,
     this.vitalName = "",
     this.vitalStatus = "",
+    this.imageAsset = "",
     this.vitalValue = "",
     this.vitalHeading = "",
     this.vitalDescription = "",
     this.vitalCondition = "",
     this.vitalMass = "",
     this.isExpand = false,
+    this.isVitalActive = true,
     this.expandedWidget = const SizedBox(), // fixed default widget
   }) : super(key: key);
   @override
@@ -411,32 +416,21 @@ class _CommonCardState extends State<IndoCommonCard> {
   @override
   Widget build(BuildContext context) {
     Color statusColor;
-    String imageAsset;
+    // String imageAsset;
 
-    switch (widget.vitalStatus) {
-      case 'Normal':
+    switch (widget.imageAsset) {
+      case AppAssets.mediumAsset:
         statusColor = const Color(0xFFFFD700); // Yellow color
-        imageAsset = AppAssets.mediumAsset;
         break;
-      case 'High':
+      case AppAssets.lighthigh:
+        statusColor = const Color(0xFF9ED042); // Yellow color
+        break;
+      case AppAssets.goodAsset:
         statusColor = const Color(0xFF1BC76D); // Green color
-        imageAsset = AppAssets.highAsset;
         break;
-      case 'Low':
+      case AppAssets.lowAsset:
       default:
         statusColor = const Color(0xFFE53935); // Red color
-        imageAsset = AppAssets.lowAsset;
-    }
-
-    switch (widget.vitalStatus) {
-      case 'Normal':
-        imageAsset = AppAssets.mediumAsset;
-        break;
-      case 'High':
-        imageAsset = AppAssets.highAsset;
-        break;
-      default:
-        imageAsset = AppAssets.lowAsset;
     }
 
     return CommonCard(
@@ -454,9 +448,16 @@ class _CommonCardState extends State<IndoCommonCard> {
                   width: 150,
                   padding: const EdgeInsets.all(15),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SvgPicture.asset(imageAsset, width: 37, height: 37),
+                      widget.imageAsset.isNotEmpty
+                          ? SvgPicture.asset(
+                            widget.imageAsset,
+                            width: 37,
+                            height: 37,
+                          )
+                          : SizedBox(),
                       const SizedBox(height: 10),
                       Text(
                         widget.vitalName,
@@ -465,7 +466,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff575656),
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
                       ),
                       Text(
                         widget.vitalCondition,
@@ -479,16 +480,18 @@ class _CommonCardState extends State<IndoCommonCard> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: widget.vitalValue,
+                              text: widget.vitalValue.toFirstCaps(),
                               style: const TextStyle(
-                                fontSize: 26,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w400,
                                 color: Color(0xff4A4949),
                               ),
                             ),
                             TextSpan(
-                              text: widget.vitalMass,
+                              text:
+                                  ' ${widget.vitalMass}', // Add space before vitalMass
                               style: const TextStyle(
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
@@ -533,30 +536,34 @@ class _CommonCardState extends State<IndoCommonCard> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
+                        widget.imageAsset.isNotEmpty
+                            ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CircleAvatar(
-                                  radius: 10.5,
-                                  backgroundColor: statusColor,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  widget.vitalStatus,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: statusColor,
-                                  ),
-                                ),
+                                widget.isVitalActive
+                                    ? Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 10.5,
+                                          backgroundColor: statusColor,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          widget.vitalStatus.toFirstCaps(),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: statusColor,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                    : SizedBox(),
+                                Icon(Icons.info_rounded),
+                                // SvgPicture.asset(imageAsset, width: 20, height: 20),
                               ],
-                            ),
-                            Icon(Icons.info_rounded),
-                            // SvgPicture.asset(imageAsset, width: 20, height: 20),
-                          ],
-                        ),
+                            )
+                            : SizedBox(),
                       ],
                     ),
                   ),
@@ -589,8 +596,9 @@ class _CommonCardState extends State<IndoCommonCard> {
 
             // Show detailed card only when expanded AND vitalName is stress or blood pressure
             if (isExpanded &&
-                (widget.vitalName.toLowerCase() == "stress" ||
-                    widget.vitalName == "HRV SDNN"))
+                (widget.vitalName.toLowerCase() == "stress level" ||
+                    widget.vitalName == "HRV SDNN" ||
+                    widget.vitalName == 'Blood Pressure'))
               widget.expandedWidget,
             // StressInfoCard(
             //   vitalName: widget.vitalName.toLowerCase(),

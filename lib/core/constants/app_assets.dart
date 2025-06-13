@@ -37,6 +37,8 @@ class AppAssets {
       faceD = "$baseUrlPng/face_d.png",
       lowAsset = "$baseUrlSvg/low.svg",
       mediumAsset = "$baseUrlSvg/medium.svg",
-      highAsset = "$baseUrlSvg/high.svg",
-      homeMenu = "$baseUrlSvg/home_menu.svg";
+      goodAsset = "$baseUrlSvg/high.svg",
+      homeMenu = "$baseUrlSvg/home_menu.svg",
+      lighthigh = "$baseUrlSvg/highimge.svg",
+      orengeAsset = "$baseUrlSvg/orangeasset.svg";
 }

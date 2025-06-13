@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/utils/extentions.dart';
 
 class StressInfoCard extends StatelessWidget {
   final String vitalName;
@@ -7,6 +10,7 @@ class StressInfoCard extends StatelessWidget {
   final String statusText;
   final String valueText;
   final String unitText;
+  final String imageAsset;
 
   const StressInfoCard({
     Key? key,
@@ -16,6 +20,7 @@ class StressInfoCard extends StatelessWidget {
     required this.statusText,
     required this.valueText,
     required this.unitText,
+    this.imageAsset = "",
   }) : super(key: key);
 
   @override
@@ -38,12 +43,16 @@ class StressInfoCard extends StatelessWidget {
                       color: Color(0xff575656),
                     ),
                   ),
-                  Text(
-                    statusText,
-                    style: const TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff575656),
+                  Spacer(),
+                  Expanded(
+                    child: Text(
+                      statusText.toFirstCaps(),
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff575656),
+                      ),
                     ),
                   ),
                 ],
@@ -66,6 +75,7 @@ class StressInfoCard extends StatelessWidget {
                         TextSpan(
                           text: unitText,
                           style: const TextStyle(
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
@@ -73,7 +83,19 @@ class StressInfoCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Icon(Icons.info_rounded),
+                  Row(
+                    children: [
+                      this.imageAsset.isNotEmpty
+                          ? SvgPicture.asset(
+                            this.imageAsset,
+                            width: 20,
+                            height: 20,
+                          )
+                          : SizedBox(),
+                      const SizedBox(width: 10),
+                      Icon(Icons.info_rounded),
+                    ],
+                  ),
                 ],
               ),
             ],

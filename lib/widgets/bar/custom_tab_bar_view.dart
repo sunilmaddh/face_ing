@@ -18,13 +18,20 @@ class CustomTabBarView extends StatelessWidget {
       child: DefaultTabController(
         length: 7, // Number of tabs
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+              // alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
                 color: AppColors.tabBackgroundColor,
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: TabBar(
+                tabAlignment: TabAlignment.start, // add this line
+
+                padding: EdgeInsets.zero,
                 isScrollable: true,
                 labelStyle: TextStyle(
                   fontSize: AppDimensions.font(16),
@@ -60,6 +67,7 @@ class CustomTabBarView extends StatelessWidget {
                     }).toList(),
               ),
             ),
+
             Expanded(child: TabBarView(children: tabBarWidgets)),
           ],
         ),

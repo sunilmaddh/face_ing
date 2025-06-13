@@ -229,7 +229,7 @@ class MeasurementController extends GetxController
             .storeBinahHealthForUser(vitalsResults.value)
             .whenComplete(() {
               AppNavigation.off(
-                AppRoutes.allReportScreen,
+                AppRoutes.analyzingHealthData,
                 action: () {
                   _geustController.clearData();
                   _geustController.getGeustHistory();
