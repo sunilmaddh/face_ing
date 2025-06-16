@@ -46,10 +46,10 @@ class LoginResponseModel {
             json["commonUserDetailsDao"] != null
                 ? CommonUserDetailsDao.fromJson(json["commonUserDetailsDao"])
                 : CommonUserDetailsDao(),
-        success: json["success"] ?? false,
-        onBoarded: json["onBoarded"] ?? false,
-        otpverified: json["otpverified"] ?? false,
-        blocked: json["blocked"] ?? false,
+        success: json["success"] ?? "false",
+        onBoarded: json["onBoarded"] ?? "false",
+        otpverified: json["otpverified"] ?? "false",
+        blocked: json["blocked"] ?? "false",
       );
 }
 
