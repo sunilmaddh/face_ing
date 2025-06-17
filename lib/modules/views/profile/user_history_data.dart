@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart' show AppColors;
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -48,7 +49,7 @@ class UserHistoryData extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CommonText.text(
-                                  "Scan Id",
+                                  AppConstents.scanId,
                                   fontSize: AppDimensions.font(14),
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.primary,
@@ -60,9 +61,10 @@ class UserHistoryData extends StatelessWidget {
                               ],
                             ),
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CommonText.text(
-                                  "Date",
+                                  AppConstents.dateTime,
                                   fontSize: AppDimensions.font(14),
                                   fontWeight: FontWeight.w500,
                                 ),

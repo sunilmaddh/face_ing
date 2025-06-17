@@ -14,6 +14,7 @@ import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/guest_history_details_model.dart';
 import 'package:ntt_data/data/models/guest_list_response_model.dart';
+import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/models/show_guest_history_details.dart';
 import 'package:ntt_data/data/repository/services/geust_services.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -42,6 +43,8 @@ class GeustController extends GetxController
   RxString genderType = "".obs;
   RxString geustDob = ''.obs;
   RxBool isTermAccepted = false.obs;
+  RxList<HealthDetailList> healthDetailsList = <HealthDetailList>[].obs;
+
   Future<void> getGeustHistory() async {
     var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID};
@@ -57,11 +60,14 @@ class GeustController extends GetxController
       guestList.clear();
     } else {
       guestList.clear();
-      AppSnackbar.show(
-        title: "Error",
-        message: "Something went wrong",
-        isError: true,
-      );
+
+      //todo: update api handle 404
+
+      // AppSnackbar.show(
+      //   title: "Error",
+      //   message: "Something went wrong",
+      //   isError: true,
+      // );
     }
   }
 
@@ -77,11 +83,11 @@ class GeustController extends GetxController
       var data = GuestHistoryDetailsModel.fromJson(
         resposneData["responseBody"],
       );
-      // anuraHIstoryDetails.value = await ShowGuestHistoryDetails()
-      //     .fetchHistoryAnuraDetails(data.guestHealthAnuraHistory!);
+      anuraHIstoryDetails.value = await ShowGuestHistoryDetails()
+          .fetchHistoryAnuraDetails(data.guestHealthAnuraHistory!);
 
-      binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-          .fetchHistoryBinahDetails(data.guestHealthBinahHistory!);
+      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
+      //     .fetchHistoryBinahDetails(data.guestHealthBinahHistory!);
 
       AppNavigation.to(AppRoutes.guestHistoryDetails);
 

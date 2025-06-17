@@ -50,14 +50,16 @@ class AuthController extends GetxController
       Map<String, dynamic> response = await _authServices.userLogin(data: data);
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
-
       if (statusCode == 200) {
         var header = response["header"];
-        var accessToken = header["accesstoken"];
-        var refereshToken = header["refreshtoken"];
+        var accessToken = header["accesstoken"] ?? "";
+        // var refereshToken = header["refreshtoken"];
         debugPrint("Access token ${header["accesstoken"]}");
-        await IndoSharedPreference.instance.saveAccessToken(accessToken);
-        await IndoSharedPreference.instance.saveRefreshToken(refereshToken);
+        if (accessToken != null) {
+          await IndoSharedPreference.instance.saveAccessToken(accessToken);
+        }
+
+        // await IndoSharedPreference.instance.saveRefreshToken(refereshToken);
         var result = LoginResponseModel.fromJson(response["responseBody"]);
         loginResponseModel.value = result;
 
@@ -306,7 +308,7 @@ class AuthController extends GetxController
           "userWeight": weightController.text,
           "userHeight": heightController.text,
           "userDOB": dateController.text,
-          "userImage": profileUrl.value.path,
+          "userImage": userImage.value,
           "smokerType": smokerType.value,
         },
         "helthDetailsListDao": dataList,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -41,10 +39,7 @@ class UserHealthDetails extends StatelessWidget {
                             fontSize: AppDimensions.font(14),
                             fontWeight: FontWeight.w500,
                           ),
-                          CommonText.text(
-                            result["value"] ?? "",
-                            // result["value"]
-                          ),
+                          CommonText.text(result["value"] ?? ""),
                         ],
                       ),
                     );
@@ -53,11 +48,6 @@ class UserHealthDetails extends StatelessWidget {
                     return Divider(color: Color(0xffFAF7F7));
                   },
                 ),
-
-        // ListView.builder(
-
-        //   },
-        // ),
       ),
     );
   }

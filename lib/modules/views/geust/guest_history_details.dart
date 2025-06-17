@@ -24,32 +24,47 @@ class GuestHistoryDetails extends StatelessWidget {
 
       body: Obx(
         () =>
-            _controller.binahHIstoryDetails.isEmpty
+            _controller.healthDetailsList.isEmpty
                 ? ShimmerLoadingScreen()
-                : ListView.separated(
-                  padding: EdgeInsets.all(20),
-                  itemCount: _controller.binahHIstoryDetails.length,
+                : ListView.builder(
+                  itemCount: _controller.healthDetailsList.length,
                   itemBuilder: (context, index) {
-                    var result = _controller.binahHIstoryDetails[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CommonText.text(
-                            result["key"],
-                            fontSize: AppDimensions.font(14),
-                            fontWeight: FontWeight.w500,
-                          ),
-                          CommonText.text(result["value"] ?? ""),
-                        ],
-                      ),
+                    var result = _controller.healthDetailsList[index];
+                    return IndoCommonCard(
+                      vitalName: result.name!,
+                      vitalCondition: result.range!,
+                      vitalDescription: result.desc!,
+                      vitalStatus: result.status!,
+                      vitalValue: result.actualValue!,
                     );
                   },
-                  separatorBuilder: (context, index) {
-                    return Divider(color: Color(0xffFAF7F7));
-                  },
                 ),
+        // _controller.anuraHIstoryDetails.isEmpty
+        //     ? ShimmerLoadingScreen()
+        //     : ListView.separated(
+        //       padding: EdgeInsets.all(20),
+        //       itemCount: _controller.anuraHIstoryDetails.length,
+        //       itemBuilder: (context, index) {
+        //         var result = _controller.anuraHIstoryDetails[index];
+        //         return Padding(
+        //           padding: const EdgeInsets.only(top: 10),
+        //           child: Row(
+        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //             children: [
+        //               CommonText.text(
+        //                 result["key"],
+        //                 fontSize: AppDimensions.font(14),
+        //                 fontWeight: FontWeight.w500,
+        //               ),
+        //               CommonText.text(result["value"] ?? ""),
+        //             ],
+        //           ),
+        //         );
+        //       },
+        //       separatorBuilder: (context, index) {
+        //         return Divider(color: Color(0xffFAF7F7));
+        //       },
+        //     ),
 
         // ListView.builder(
 

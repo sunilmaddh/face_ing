@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
 
 class CommonDropdown<T> extends StatelessWidget {
   final List<T> items;
@@ -8,22 +9,23 @@ class CommonDropdown<T> extends StatelessWidget {
   final String Function(T) itemToString;
 
   const CommonDropdown({
-    Key? key,
+    super.key,
     required this.items,
     required this.onChanged,
     required this.label,
     required this.itemToString,
     this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<T>(
       value: value,
       decoration: InputDecoration(
+        labelStyle: TextStyle(color: AppColors.blackColor),
         labelText: label,
         filled: true,
-        fillColor: Colors.grey[100],
+        fillColor: AppColors.btntext,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       ),

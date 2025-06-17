@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -33,15 +35,15 @@ class CreateAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: PrimaryButton(
-        text: AppConstents.continueBtn,
-        onPressed: () {
-          debugPrint(_authController.userId.value);
-          if (_formKey.currentState!.validate()) {
-            _profileController.getMedicalQeustionList();
-          }
-        },
-      ),
+      // floatingActionButton: PrimaryButton(
+      //   text: AppConstents.continueBtn,
+      //   onPressed: () {
+      //     debugPrint(_authController.userId.value);
+      //     if (_formKey.currentState!.validate()) {
+      //       _profileController.getMedicalQeustionList();
+      //     }
+      //   },
+      // ),
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         onTop: () {
@@ -137,29 +139,63 @@ class CreateAccountScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: Stack(
                     children: [
-                      DottedBorder(
-                        dashPattern: [6, 5],
-                        strokeWidth: 3.0,
-                        borderType: BorderType.RRect,
-                        radius: Radius.circular(10),
-                        color: AppColors.dottedBorderColor,
-                        child: Container(
-                          height: AppDimensions.height(161),
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(8.0),
-
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(9.0),
-                            color: AppColors.uploadCardColor,
-                          ),
-                          child: Obx(
-                            () =>
-                                _authController.isProfile.isTrue
-                                    ? Image.file(
-                                      _authController.profileUrl.value,
-                                      fit: BoxFit.cover,
-                                    )
-                                    : InkWell(
+                      Obx(
+                        () =>
+                            _authController.isProfile.isTrue
+                                ? Container(
+                                  height: AppDimensions.height(180),
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.dottedBorderColor,
+                                    borderRadius: BorderRadius.circular(9.0),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.file(
+                                          _authController.profileUrl.value,
+                                          fit: BoxFit.fill,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: Card(
+                                          child: InkWell(
+                                            onTap: () {
+                                              _authController.isProfile.value =
+                                                  false;
+                                              _authController
+                                                  .profileUrl
+                                                  .value = File("");
+                                            },
+                                            child: Icon(
+                                              Icons.close_rounded,
+                                              color: AppColors.primary,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                : DottedBorder(
+                                  dashPattern: [6, 5],
+                                  strokeWidth: 3.0,
+                                  borderType: BorderType.RRect,
+                                  radius: Radius.circular(10),
+                                  color: AppColors.dottedBorderColor,
+                                  child: Container(
+                                    height: AppDimensions.height(161),
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9.0),
+                                      color: AppColors.uploadCardColor,
+                                    ),
+                                    child: InkWell(
                                       onTap: () {
                                         ImagePickerBottomsheet.showImagePickerBottomSheet(
                                           onGalleryTap: () async {
@@ -195,10 +231,22 @@ class CreateAccountScreen extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                          ),
-                        ),
+                                  ),
+                                ),
                       ),
                     ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: PrimaryButton(
+                    text: AppConstents.continueBtn,
+                    onPressed: () {
+                      debugPrint(_authController.userId.value);
+                      if (_formKey.currentState!.validate()) {
+                        _profileController.getMedicalQeustionList();
+                      }
+                    },
                   ),
                 ),
               ],

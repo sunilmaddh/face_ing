@@ -18,6 +18,8 @@ class AppConstents {
   statusCode = "statusCode",
   response = "responseBody",
   upload = "Upload",
+  scanId = "Scan Id",
+  dateTime = "Date & Time",
   continueBtn = "Continue",
   uploadPhotoHeading = "Upload photo for creating you account",
   name = "Name",
@@ -25,12 +27,16 @@ class AppConstents {
   dob = 'Date of Birth',
   weight = "Weight (kg)",
   height = "Height (cm)",
+  message =
+      "This application is not a medical device. Measurement results cannot be used for the diagnosis, treatment or prevention of disease.If you are unsure about your health, please use medical equipment to measure the exact value.",
   congractText = " Congratulation! Your Account created successfully. ",
   congractDis =
       " We are thrilled to extend a warm welcome to all newcomers and returning members alike. ",
   male = "Male",
   female = "Female",
-  scanDiscri = "Measurement stared please hold face in the frame",
+  scanDiscri = "Measurement will start please hold face in the frame",
+  notDiscription =
+      "Kindly make sure your battery is above 30% and Power Saving Mode is disabled before starting.",
   createAccount = 'Create Account',
   termMeassaga =
       "Accept to the legal terms by clicking on the check box to be able to provide services";

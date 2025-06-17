@@ -59,7 +59,12 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
         );
       },
       child: Scaffold(
-        appBar: CustomAppBar(title: "Measurment", onTop: () {}),
+        appBar: CustomAppBar(
+          title: "Measurment",
+          onTop: () {
+            Get.back();
+          },
+        ),
         backgroundColor: Colors.transparent,
         body: Column(
           children: [
@@ -186,6 +191,7 @@ class MeasurmentProgress extends StatelessWidget {
               child: LottieBuilder.asset(
                 AppAssets.heartRateAnim,
                 fit: BoxFit.fill,
+                repeat: true,
               ),
             ),
 

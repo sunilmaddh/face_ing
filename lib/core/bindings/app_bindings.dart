@@ -10,11 +10,10 @@ class AppBindings extends Bindings {
   @override
   void dependencies() {
     // Get.lazyPut<ApiServices>(() => ApiServices(), fenix: true);
-    IndoSharedPreference.instance.init();
     Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
     Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
     Get.put(OnboardController());
-    // Get.lazyPut<OnboardController>(() => OnboardController(), fenix: true);
+
     Get.lazyPut<GeustController>(() => GeustController(), fenix: true);
     Get.lazyPut<MeasurementController>(
       () => MeasurementController(),

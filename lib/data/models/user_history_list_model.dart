@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:ntt_data/core/utils/utils_methods.dart';
+
 UserHistoryListModel userHistoryListModelFromJson(String str) =>
     UserHistoryListModel.fromJson(json.decode(str));
 
@@ -19,8 +21,8 @@ class UserHistoryListModel {
 
   factory UserHistoryListModel.fromJson(Map<String, dynamic> json) =>
       UserHistoryListModel(
-        msg: json["msg"] ?? "",
-        success: json["success"] ?? "",
+        msg: UtilMethods.stringParser(json["msg"]),
+        success: UtilMethods.stringParser(json["success"]),
         userHealthList:
             json["userHealthList"] != null
                 ? List<UserHealthList>.from(
@@ -45,8 +47,8 @@ class UserHealthList {
   UserHealthList({this.scanId, this.dateOfScan});
 
   factory UserHealthList.fromJson(Map<String, dynamic> json) => UserHealthList(
-    scanId: json["scanId"] ?? "",
-    dateOfScan: json["dateOfScan"] ?? "",
+    scanId: UtilMethods.stringParser(json["scanId"]),
+    dateOfScan: UtilMethods.stringParser(json["dateOfScan"]),
   );
 
   Map<String, dynamic> toJson() => {"scanId": scanId, "dateOfScan": dateOfScan};
