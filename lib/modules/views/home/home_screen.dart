@@ -81,66 +81,29 @@ class HomeScreen extends StatelessWidget {
                     width: AppDimensions.height(230),
 
                     onPressed: () async {
-                      // AppNavigation.to(AppRoutes.allReportScreen);
-                      String userName =
-                          await IndoSharedPreference.instance.getUserName();
-                      String genderType =
-                          await IndoSharedPreference.instance.getGenderType();
-                      String dob = await IndoSharedPreference.instance.getAge();
-                      String height =
-                          await IndoSharedPreference.instance.getHeight();
-                      String weight =
-                          await IndoSharedPreference.instance.getWeight();
-                      controller.weight.value = double.parse(weight);
-                      controller.height.value = double.parse(height);
-                      controller.genderType.value = genderType;
+                      // String userName =
+                      //     await IndoSharedPreference.instance.getUserName();
+                      // String genderType =
+                      //     await IndoSharedPreference.instance.getGenderType();
+                      // String dob = await IndoSharedPreference.instance.getAge();
+                      // String height =
+                      //     await IndoSharedPreference.instance.getHeight();
+                      // String weight =
+                      //     await IndoSharedPreference.instance.getWeight();
+                      // controller.weight.value = double.parse(weight);
+                      // controller.height.value = double.parse(height);
+                      // controller.genderType.value = genderType;
 
-                      DateTime parsedDate = DateTime.parse(
-                        dob.replaceAll("/", "-"),
-                      );
-                      controller.age.value =
-                          gcontroller.calculateAge(parsedDate).toDouble();
+                      // DateTime parsedDate = DateTime.parse(
+                      //   dob.replaceAll("/", "-"),
+                      // );
+                      // controller.age.value =
+                      //     gcontroller.calculateAge(parsedDate).toDouble();
 
-                      AppNavigation.to(
-                        AppRoutes.mesurementScreen,
-                        arguments: {"scanType": "user", "userName": userName},
-                      );
-
-                      // // var userID = await StorageHelper.read("userID");
-                      // // var accessToken = await StorageHelper.read("access-token");
-                      // // Map<String, dynamic> data = {
-                      // //   "userId": userID,
-                      // //   "token": accessToken,
-                      // //   "scanType": "user",
-                      // // };
-                      // controller.isMeasurementCanceled.value = false;
-                      // Future.delayed(Duration(seconds: 2), () {
-                      //   gcontroller.isLoading.value = false;
-
-                      //   debugPrint(
-                      //     "User data $weight ,$height, ${result.userGender},$age",
-                      //   );
-
-                      //   AppNavigation.to(
-                      //     AppRoutes.mesurementScreen,
-                      //     arguments: {"scanType": "user"},
-                      //   );
-
-                      //   // NativeCaller.startFaceScan(data);
-                      //   // controller
-                      //   //     .screenInFocus(
-                      //   //       result.userGender ?? "",
-                      //   //       age,
-                      //   //       weight,
-                      //   //       height,
-                      //   //     )
-                      //   //     .whenComplete(() {
-                      //   //       AppNavigation.to(
-                      //   //         AppRoutes.mesurementScreen,
-                      //   //         arguments: {"scanType": "user"},
-                      //   //       );
-                      //   //     });
-                      // });
+                      // AppNavigation.to(
+                      //   AppRoutes.mesurementScreen,
+                      //   arguments: {"scanType": "user", "userName": userName},
+                      // );
                     },
                   ),
                 ),

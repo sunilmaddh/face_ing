@@ -209,106 +209,45 @@ class AddNewGuestScreen extends StatelessWidget {
                                         message: "Please select smoker type",
                                       );
                                     } else {
-                                      // DateTime birthDate = DateTime.parse(
-                                      //   _geustController.dobTextController.text,
+                                      // DateTime parsedDate = DateTime.parse(
+                                      //   _geustController.dobTextController.text
+                                      //       .replaceAll("/", "-"),
                                       // );
-                                      DateTime parsedDate = DateTime.parse(
-                                        _geustController.dobTextController.text
-                                            .replaceAll("/", "-"),
-                                      );
-                                      controller.age.value =
-                                          _geustController
-                                              .calculateAge(parsedDate)
-                                              .toDouble();
+                                      // controller.age.value =
+                                      //     _geustController
+                                      //         .calculateAge(parsedDate)
+                                      //         .toDouble();
 
-                                      controller.weight.value = double.parse(
-                                        _geustController
-                                            .weightTextController
-                                            .text,
-                                      );
-                                      controller.height.value = double.parse(
-                                        _geustController
-                                            .heightTextController
-                                            .text,
-                                      );
-                                      controller.genderType.value =
-                                          _geustController.selectionType.value;
-
-                                      var userID =
-                                          await IndoSharedPreference.instance
-                                              .getUserId();
-                                      var accessToken =
-                                          await IndoSharedPreference.instance
-                                              .getAccessToken();
-                                      _geustController.scanType.value = "guest";
-                                      AppNavigation.off(
-                                        AppRoutes.mesurementScreen,
-                                        arguments: {
-                                          "scanType": "add-guest",
-                                          "userName":
-                                              _geustController
-                                                  .nameTextController
-                                                  .text,
-                                        },
-                                      );
-                                      // debugPrint(
-                                      //   "user Information ${_geustController.selectionType.value}s$weight$height,$age",
+                                      // controller.weight.value = double.parse(
+                                      //   _geustController
+                                      //       .weightTextController
+                                      //       .text,
                                       // );
-
-                                      // controller
-                                      //     .screenInFocus(
-                                      //       _geustController
-                                      //           .selectionType
-                                      //           .value,
-                                      //       age,
-                                      //       weight,
-                                      //       height,
-                                      //     )
-                                      //     .whenComplete(() {
-                                      //       _geustController.scanType.value =
-                                      //           "guest";
-                                      //       AppNavigation.off(
-                                      //         AppRoutes.mesurementScreen,
-                                      //         arguments: {
-                                      //           "scanType": "add-guest",
-                                      //         },
-                                      //       );
-                                      //     });
-                                      // "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAzc3VuaWxtYWRkaGVzaXlhNDI4QGdtYWlsLmNvbSIsImlhdCI6MTc0NjY5ODgxMCwiZXhwIjoxNzQ2Nzg1MjEwfQ.77fVLLy1ha1zdWOnNCZOX6vgHTMMjZXXGXrFnixBpbc";
-                                      // await StorageHelper.read(
-                                      //   "access-token",
+                                      // controller.height.value = double.parse(
+                                      //   _geustController
+                                      //       .heightTextController
+                                      //       .text,
                                       // );
-                                      // Map<String, dynamic> data = {
-                                      //   "userId": userID,
-                                      //   "name":
-                                      //       _geustController
-                                      //           .nameTextController
-                                      //           .text,
-                                      //   "gender":
-                                      //       _geustController
-                                      //           .selectionType
-                                      //           .value,
-                                      //   "dob":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text, // Keep as string unless using DateTime
-                                      //   "weight":
-                                      //       _geustController
-                                      //           .weightTextController
-                                      //           .text,
-                                      //   "height":
-                                      //       _geustController
-                                      //           .heightTextController
-                                      //           .text,
-                                      //   "emailId":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text,
-                                      //   "token": accessToken,
-                                      //   "scanType": "guest-user",
-                                      // };
+                                      // controller.genderType.value =
+                                      //     _geustController.selectionType.value;
 
-                                      // NativeCaller.startFaceScan(data);
+                                      // var userID =
+                                      //     await IndoSharedPreference.instance
+                                      //         .getUserId();
+                                      // var accessToken =
+                                      //     await IndoSharedPreference.instance
+                                      //         .getAccessToken();
+                                      // _geustController.scanType.value = "guest";
+                                      // AppNavigation.off(
+                                      //   AppRoutes.mesurementScreen,
+                                      //   arguments: {
+                                      //     "scanType": "add-guest",
+                                      //     "userName":
+                                      //         _geustController
+                                      //             .nameTextController
+                                      //             .text,
+                                      //   },
+                                      // );
                                     }
                                   }
                                 },
