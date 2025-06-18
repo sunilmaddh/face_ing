@@ -37,7 +37,7 @@ class _CommonCardState extends State<IndoCommonCard> {
     late String imageAsset;
     switch (widget.vitalStatus.toLowerCase()) {
       case 'high':
-        imageAsset = AppAssets.highAsset;
+        imageAsset = AppAssets.goodAsset;
         break;
       case 'medium':
         imageAsset = AppAssets.mediumAsset;

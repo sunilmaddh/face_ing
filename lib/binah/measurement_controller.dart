@@ -217,7 +217,7 @@ class MeasurementController extends GetxController
       if (scanType.value == "add-guest") {
         _geustController.addGuest(vitalsResults.value).whenComplete(() {
           AppNavigation.off(
-            AppRoutes.allReportScreen,
+            AppRoutes.analyzingHealthData,
             action: () {
               _geustController.clearData();
               _geustController.getGeustHistory();
@@ -229,7 +229,7 @@ class MeasurementController extends GetxController
             .storeBinahHealthForUser(vitalsResults.value)
             .whenComplete(() {
               AppNavigation.off(
-                AppRoutes.allReportScreen,
+                AppRoutes.analyzingHealthData,
                 action: () {
                   _geustController.clearData();
                   _geustController.getGeustHistory();

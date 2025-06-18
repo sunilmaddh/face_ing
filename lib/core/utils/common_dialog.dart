@@ -136,7 +136,7 @@ class CommonDialog {
               children: [
                 SizedBox(
                   height: AppDimensions.height(40),
-                  width: AppDimensions.width(125),
+                  width: AppDimensions.width(120),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context); // Close dialog
@@ -157,7 +157,7 @@ class CommonDialog {
                 SizedBox(width: AppDimensions.width(2)),
                 SizedBox(
                   height: AppDimensions.height(40),
-                  width: AppDimensions.width(125),
+                  width: AppDimensions.width(120),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context); // Close dialog

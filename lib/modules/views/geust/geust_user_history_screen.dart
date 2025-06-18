@@ -68,52 +68,77 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.all(AppDimensions.padding(15)),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CustomFormField(
-                prefixIcon: Icon(Icons.search, color: AppColors.searchColor),
-                label: "",
-                hint: "Type to search",
-                controller: _searchController,
+        child: ListView(
+          children: [
+            CustomFormField(
+              prefixIcon: Icon(Icons.search, color: AppColors.searchColor),
+              label: "",
+              hint: "Type to search",
+              controller: _searchController,
+            ),
+            SizedBox(height: 20),
+            Obx(
+              () => ListView.builder(
+                shrinkWrap: true,
+                itemCount: _controller.guestList.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (contex, index) {
+                  var result = _controller.guestList[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: GeustUserHistoryCard(
+                      gender: result.gender.toString(),
+                      name: result.name.toString(),
+                      height: result.height.toString(),
+                      weight: result.weight.toString(),
+                      time: result.date.toString(),
+                      onTop: () {
+                        _controller.getGeustDetails(result.guestId.toString());
+                      },
+                      onDelete: () {
+                        _controller.removeGuest(guestId: result.guestId);
+                      },
+                    ),
+                  );
+                },
               ),
-              SizedBox(height: 20),
+            ),
+          ],
 
-              Obx(
-                () =>
-                    _controller.guestList.isNotEmpty
-                        ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _controller.guestList.length,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (contex, index) {
-                            var result = _controller.guestList[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: GeustUserHistoryCard(
-                                gender: result.gender.toString(),
-                                name: result.name.toString(),
-                                height: result.height.toString(),
-                                weight: result.weight.toString(),
-                                time: result.date.toString(),
-                                onTop: () {
-                                  _controller.getGeustDetails(
-                                    result.guestId.toString(),
-                                  );
-                                },
-                                onDelete: () {
-                                  _controller.removeGuest(
-                                    guestId: result.guestId,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        )
-                        : ShimmerLoadingScreen(),
-              ),
-            ],
-          ),
+          //   Obx(
+          //     () =>
+          //         _controller.guestList.isNotEmpty
+          //             ? ListView.builder(
+          //               shrinkWrap: true,
+          //               itemCount: _controller.guestList.length,
+          //               physics: NeverScrollableScrollPhysics(),
+          //               itemBuilder: (contex, index) {
+          //                 var result = _controller.guestList[index];
+          //                 return Padding(
+          //                   padding: const EdgeInsets.only(bottom: 10),
+          //                   child: GeustUserHistoryCard(
+          //                     gender: result.gender.toString(),
+          //                     name: result.name.toString(),
+          //                     height: result.height.toString(),
+          //                     weight: result.weight.toString(),
+          //                     time: result.date.toString(),
+          //                     onTop: () {
+          //                       _controller.getGeustDetails(
+          //                         result.guestId.toString(),
+          //                       );
+          //                     },
+          //                     onDelete: () {
+          //                       _controller.removeGuest(
+          //                         guestId: result.guestId,
+          //                       );
+          //                     },
+          //                   ),
+          //                 );
+          //               },
+          //             )
+          //             : ShimmerLoadingScreen(),
+          //   ),
+          // ],
         ),
       ),
     );

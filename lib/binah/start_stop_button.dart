@@ -81,31 +81,28 @@ class ImageValidityScan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MeasurementController>();
-    return Obx(
-      () => Padding(
+    return Obx(() {
+      final imageData = controller.imageData.value;
+
+      return Padding(
         padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(45)),
         child: Visibility(
           visible:
-              controller.imageData.value != null &&
-              controller.imageData.value!.imageValidity !=
-                  ImageValidity.valid &&
+              imageData != null &&
+              imageData.imageValidity != ImageValidity.valid &&
               controller.isStarted.value == true,
           child: Column(
             children: [
               Text(
                 textAlign: TextAlign.center,
-                controller.imageData.value!.imageValidity ==
-                            ImageValidity.faceTooFar ||
-                        controller.imageData.value!.imageValidity ==
-                            ImageValidity.invalidRoi
+                imageData?.imageValidity == ImageValidity.faceTooFar ||
+                        imageData?.imageValidity == ImageValidity.invalidRoi
                     ? "Face too far"
-                    : controller.imageData.value!.imageValidity ==
-                        ImageValidity.tiltedHead
+                    : imageData?.imageValidity == ImageValidity.tiltedHead
                     ? "Tilted Head"
-                    : controller.imageData.value!.imageValidity ==
-                        ImageValidity.unevenLight
+                    : imageData?.imageValidity == ImageValidity.unevenLight
                     ? "Uneven light"
-                    : controller.imageData.value!.imageValidity ==
+                    : imageData?.imageValidity ==
                         ImageValidity.invalidDeviceOrientation
                     ? "Invalid device orientation"
                     : "",
@@ -124,7 +121,7 @@ class ImageValidityScan extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
