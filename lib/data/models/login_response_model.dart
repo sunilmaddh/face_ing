@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:ntt_data/core/utils/utils_methods.dart';
+
 LoginResponseModel loginResponseModelFromJson(String? str) =>
     LoginResponseModel.fromJson(json.decode(str.toString()));
 
@@ -34,10 +36,10 @@ class LoginResponseModel {
 
   factory LoginResponseModel.fromJson(Map<String?, dynamic> json) =>
       LoginResponseModel(
-        message: json["message"] ?? "",
-        otp: json["otp"] ?? "",
-        userId: json["userId"] ?? "",
-        emailId: json["emailId"] ?? "",
+        message: UtilMethods.stringParser(json["message"]),
+        otp: UtilMethods.stringParser(json["otp"]),
+        userId: UtilMethods.stringParser(json["userId"]),
+        emailId: UtilMethods.stringParser(json["emailId"]),
         sdkInfo:
             json["sdkInfo"] != null
                 ? List<dynamic>.from(json["sdkInfo"].map((x) => x))
@@ -46,10 +48,10 @@ class LoginResponseModel {
             json["commonUserDetailsDao"] != null
                 ? CommonUserDetailsDao.fromJson(json["commonUserDetailsDao"])
                 : CommonUserDetailsDao(),
-        success: json["success"] ?? "false",
-        onBoarded: json["onBoarded"] ?? "false",
-        otpverified: json["otpverified"] ?? "false",
-        blocked: json["blocked"] ?? "false",
+        success: UtilMethods.boolAsStringParser(json["success"]),
+        onBoarded: UtilMethods.boolAsStringParser(json["onBoarded"]),
+        otpverified: UtilMethods.boolAsStringParser(json["otpverified"]),
+        blocked: UtilMethods.boolAsStringParser(json["blocked"]),
       );
 }
 
@@ -78,14 +80,16 @@ class CommonUserDetailsDao {
 
   factory CommonUserDetailsDao.fromJson(Map<String?, dynamic> json) =>
       CommonUserDetailsDao(
-        userId: json["userId"] ?? "",
-        userEmail: json["userEmail"] ?? "",
-        userPersonalDetailId: json["userPersonalDetailId"] ?? "",
-        userName: json["userName"] ?? "",
-        userGender: json["userGender"] ?? "",
-        userDob: json["userDOB"] ?? "",
-        userWeight: json["userWeight"] ?? "",
-        userHeight: json["userHeight"] ?? "",
-        userImage: json["userImage"] ?? "",
+        userId: UtilMethods.stringParser(json["userId"]),
+        userEmail: UtilMethods.stringParser(json["userEmail"]),
+        userPersonalDetailId: UtilMethods.stringParser(
+          json["userPersonalDetailId"],
+        ),
+        userName: UtilMethods.stringParser(json["userName"]),
+        userGender: UtilMethods.stringParser(json["userGender"]),
+        userDob: UtilMethods.stringParser(json["userDOB"]),
+        userWeight: UtilMethods.stringParser(json["userWeight"]),
+        userHeight: UtilMethods.stringParser(json["userHeight"]),
+        userImage: UtilMethods.stringParser(json["userImage"]),
       );
 }

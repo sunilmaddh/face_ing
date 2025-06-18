@@ -6,14 +6,11 @@ class ShimmerLoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Shimmer Animation')),
-      body: ListView.builder(
-        itemCount: 8,
-        itemBuilder: (context, index) {
-          return const ShimmerListItem();
-        },
-      ),
+    return ListView.builder(
+      itemCount: 8,
+      itemBuilder: (context, index) {
+        return const ShimmerListItem();
+      },
     );
   }
 }

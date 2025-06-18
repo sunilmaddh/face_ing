@@ -12,7 +12,7 @@ GuestListResponseModel guestListResponseModelFromJson(String str) =>
 
 class GuestListResponseModel {
   String? msg;
-  int? userId;
+  String? userId;
   List<GuestList>? guestList;
   String? success;
 
@@ -21,7 +21,7 @@ class GuestListResponseModel {
   factory GuestListResponseModel.fromJson(Map<String, dynamic> json) =>
       GuestListResponseModel(
         msg: json["msg"] ?? "",
-        userId: json["userId"] ?? 0,
+        userId: json["userId"] ?? "",
         guestList:
             json["GuestList"] != null
                 ? List<GuestList>.from(
@@ -40,7 +40,7 @@ class GuestList {
   String? age;
   String? weight;
   String? height;
-  int? userId;
+  String? userId;
   String? guestId;
   String? dob;
 
@@ -66,7 +66,7 @@ class GuestList {
     weight: json["weight"] ?? "",
     height: json["height"] ?? "",
 
-    userId: json["userId"] ?? 0,
+    userId: json["userId"] ?? "",
     guestId: json["guestId"] ?? "",
     dob: json["dob"] ?? "",
   );

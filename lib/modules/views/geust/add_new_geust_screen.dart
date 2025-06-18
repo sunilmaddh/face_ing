@@ -18,6 +18,7 @@ import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_dropmenu.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 import 'package:ntt_data/widgets/gender_widget.dart';
 
@@ -139,20 +140,9 @@ class AddNewGuestScreen extends StatelessWidget {
                                 onChanged: (value) {
                                   controller.smokerType.value = value!;
                                 },
-                                label: "Select smoker type",
+                                label: "Select Smoker type",
                                 itemToString: (smokerType) => smokerType,
                               ),
-                              // CustomFormField(
-                              //   validator: (name) {
-                              //     if (name == null || name.isEmpty) {
-                              //       return "Please enter name";
-                              //     }
-                              //     return null;
-                              //   },
-                              //   label: "Patiant Id",
-                              //   hint: "Enter your name",
-                              //   controller: _geustController.nameTextController,
-                              // ),
                             ],
                           ),
                         ),
@@ -170,88 +160,121 @@ class AddNewGuestScreen extends StatelessWidget {
                     child: SizedBox(
                       height:
                           MediaQuery.of(context).size.height -
-                          AppDimensions.height(590),
+                          AppDimensions.height(570),
                       width: MediaQuery.of(context).size.width,
                       child: Stack(
                         children: [
                           TermsCheckboxWidget(
-                            message:
-                                "This application is not a medical device. Measurement results cannot be used for the diagnosis, treatment or prevention of disease.If you are unsure about your health, please use medical equipment to measure the exact value.",
+                            message: AppConstents.message,
                             controller: _geustController,
                           ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: SizedBox(
-                              width: AppDimensions.width(230),
-                              child: ScanButton(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    if (_geustController
-                                        .selectionType
-                                        .isEmpty) {
-                                      AppSnackbar.show(
-                                        isError: true,
-                                        title: "Error",
-                                        message: "Please select gender",
-                                      );
-                                    } else if (_geustController
-                                        .isChecked
-                                        .isFalse) {
-                                      AppSnackbar.show(
-                                        isError: true,
-                                        title: "Error",
-                                        message:
-                                            "Please accept term and conditions",
-                                      );
-                                    } else if (controller.smokerType.isEmpty) {
-                                      AppSnackbar.show(
-                                        title: "Error",
-                                        message: "Please select smoker type",
-                                      );
-                                    } else {
-                                      // var userID =
-                                      //     await IndoSharedPreference.instance
-                                      //         .getUserId();
-                                      // var accessToken =
-                                      //     await IndoSharedPreference.instance
-                                      //         .getAccessToken();
+                          SizedBox(height: AppDimensions.height(30)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: SizedBox(
+                                  width: AppDimensions.width(230),
+                                  child: ScanButton(
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        if (_geustController
+                                            .selectionType
+                                            .isEmpty) {
+                                          AppSnackbar.show(
+                                            isError: true,
+                                            title: "Error",
+                                            message: "Please select gender",
+                                          );
+                                        } else if (_geustController
+                                            .isChecked
+                                            .isFalse) {
+                                          AppSnackbar.show(
+                                            isError: true,
+                                            title: "Error",
+                                            message:
+                                                "Please accept term and conditions",
+                                          );
+                                        } else if (controller
+                                            .smokerType
+                                            .isEmpty) {
+                                          AppSnackbar.show(
+                                            title: "Error",
+                                            message:
+                                                "Please select smoker type",
+                                          );
+                                        } else {
+                                          DateTime parsedDate = DateTime.parse(
+                                            _geustController
+                                                .dobTextController
+                                                .text
+                                                .replaceAll("/", "-"),
+                                          );
+                                          controller.age.value =
+                                              _geustController
+                                                  .calculateAge(parsedDate)
+                                                  .toDouble();
 
-                                      // Map<String, dynamic> data = {
-                                      //   "userId": userID,
-                                      //   "name":
-                                      //       _geustController
-                                      //           .nameTextController
-                                      //           .text,
-                                      //   "gender":
-                                      //       _geustController
-                                      //           .selectionType
-                                      //           .value,
-                                      //   "dob":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text, // Keep as string unless using DateTime
-                                      //   "weight":
-                                      //       _geustController
-                                      //           .weightTextController
-                                      //           .text,
-                                      //   "height":
-                                      //       _geustController
-                                      //           .heightTextController
-                                      //           .text,
-                                      //   "emailId":
-                                      //       _geustController
-                                      //           .dobTextController
-                                      //           .text,
-                                      //   "token": accessToken,
-                                      //   "scanType": "guest-user",
-                                      // };
+                                          controller
+                                              .weight
+                                              .value = double.parse(
+                                            _geustController
+                                                .weightTextController
+                                                .text,
+                                          );
+                                          controller
+                                              .height
+                                              .value = double.parse(
+                                            _geustController
+                                                .heightTextController
+                                                .text,
+                                          );
+                                          controller.genderType.value =
+                                              _geustController
+                                                  .selectionType
+                                                  .value;
 
-                                      // NativeCaller.startFaceScan(data);
-                                    }
-                                  }
-                                },
+                                          var userID =
+                                              await IndoSharedPreference
+                                                  .instance
+                                                  .getUserId();
+                                          var accessToken =
+                                              await IndoSharedPreference
+                                                  .instance
+                                                  .getAccessToken();
+                                          _geustController.scanType.value =
+                                              "guest";
+                                          AppNavigation.off(
+                                            AppRoutes.mesurementScreen,
+                                            arguments: {
+                                              "scanType": "add-guest",
+                                              "userName":
+                                                  _geustController
+                                                      .nameTextController
+                                                      .text,
+                                            },
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ),
                               ),
-                            ),
+
+                              SizedBox(height: AppDimensions.height(10)),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: CommonText.text(
+                                  "Note: ${AppConstents.notDiscription}",
+                                  fontSize: AppDimensions.font(12),
+                                  fontWeight: FontWeight.w500,
+                                  maxLines: 2,
+                                  color: Colors.grey,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

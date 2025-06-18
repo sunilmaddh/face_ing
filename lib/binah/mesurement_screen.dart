@@ -34,6 +34,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    controller.scanType.value = scanType;
     final Size screenSize = MediaQuery.of(context).size;
     final double ovalWidth = screenSize.width * 0.8;
     final double ovalHeight = screenSize.height * 0.5;
@@ -59,7 +60,12 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
         );
       },
       child: Scaffold(
-        appBar: CustomAppBar(title: "Measurment", onTop: () {}),
+        appBar: CustomAppBar(
+          title: "Measurment",
+          onTop: () {
+            Get.back();
+          },
+        ),
         backgroundColor: Colors.transparent,
         body: Column(
           children: [
@@ -67,9 +73,9 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
               child: Stack(
                 children: [
                   CameraPreview(controller: controller),
-                  Obx(() {
-                    return Positioned.fill(
-                      child: CustomPaint(
+                  Positioned.fill(
+                    child: Obx(() {
+                      return CustomPaint(
                         painter: OverlayWithOvalHolePainter(
                           center: Offset(
                             screenSize.width / 2,
@@ -89,9 +95,9 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                   )
                                   : Colors.black.withOpacity(0.3),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
 
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -109,47 +115,49 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                           topRight: Radius.circular(40),
                         ),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Obx(
-                            () => Visibility(
-                              visible: controller.isStarted.value == true,
-                              child: SafeArea(
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: TextButton(
-                                    onPressed: () {
-                                      CommonDialog().showDeleteUserDialog(
-                                        context: context,
-                                        onConfirm: () {
-                                          controller.stopMeasuring();
-                                        },
-                                        title: 'Measurement',
-                                        message:
-                                            'The measurement is not completed yet. Are you sure?',
-                                        confirmText: "Yes",
-                                      );
-                                    },
-                                    child: CommonText.text(
-                                      "Stop",
-                                      color: AppColors.blackColor,
-                                      fontSize: AppDimensions.font(18),
-                                      fontWeight: FontWeight.w600,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Obx(
+                              () => Visibility(
+                                visible: controller.isStarted.value == true,
+                                child: SafeArea(
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        CommonDialog().showDeleteUserDialog(
+                                          context: context,
+                                          onConfirm: () {
+                                            controller.stopMeasuring();
+                                          },
+                                          title: 'Measurement',
+                                          message:
+                                              'The measurement is not completed yet. Are you sure?',
+                                          confirmText: "Yes",
+                                        );
+                                      },
+                                      child: CommonText.text(
+                                        "Stop",
+                                        color: AppColors.blackColor,
+                                        fontSize: AppDimensions.font(18),
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
 
-                          SizedBox(height: AppDimensions.height(10)),
-                          ImageValidityScan(),
-                          MeasurmentProgress(controller: controller),
-                          SizedBox(height: AppDimensions.height(10)),
-                          StartStopButton(userName: userName),
-                        ],
+                            SizedBox(height: AppDimensions.height(10)),
+                            ImageValidityScan(),
+                            MeasurmentProgress(controller: controller),
+                            SizedBox(height: AppDimensions.height(10)),
+                            StartStopButton(userName: userName),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -186,6 +194,7 @@ class MeasurmentProgress extends StatelessWidget {
               child: LottieBuilder.asset(
                 AppAssets.heartRateAnim,
                 fit: BoxFit.fill,
+                repeat: true,
               ),
             ),
 

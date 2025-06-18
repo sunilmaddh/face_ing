@@ -85,8 +85,8 @@ class CommonDialog {
     required TextEditingController dateController,
   }) async {
     DateTime currentDate = DateTime.now();
-    DateTime minDate = DateTime(1900, 1, 1);
-    DateTime maxDate = DateTime(2100, 12, 31);
+    DateTime minDate = DateTime(1970, 1, 1);
+    DateTime maxDate = DateTime.now();
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: currentDate.isBefore(maxDate) ? currentDate : maxDate,
@@ -136,7 +136,7 @@ class CommonDialog {
               children: [
                 SizedBox(
                   height: AppDimensions.height(40),
-                  width: AppDimensions.width(125),
+                  width: AppDimensions.width(120),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context); // Close dialog
@@ -157,7 +157,7 @@ class CommonDialog {
                 SizedBox(width: AppDimensions.width(2)),
                 SizedBox(
                   height: AppDimensions.height(40),
-                  width: AppDimensions.width(125),
+                  width: AppDimensions.width(120),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context); // Close dialog

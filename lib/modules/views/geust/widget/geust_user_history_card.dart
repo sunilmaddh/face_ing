@@ -213,7 +213,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                CommonAssets.svgAsset(AppAssets.share),
+                                // CommonAssets.svgAsset(AppAssets.share),
                               ],
                             ),
                           ],

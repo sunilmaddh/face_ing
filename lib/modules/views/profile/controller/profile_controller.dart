@@ -8,6 +8,7 @@ import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
+import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
 import 'package:ntt_data/data/models/show_guest_history_details.dart';
 import 'package:ntt_data/data/models/user_health_details.dart';
@@ -29,8 +30,9 @@ class ProfileController extends GetxController
   final TextEditingController heightController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   RxList<UserHealthList> userHealthList = <UserHealthList>[].obs;
-  RxList<Map<String, dynamic>> binahHIstoryDetails =
-      <Map<String, dynamic>>[].obs;
+  // RxList<Map<String, dynamic>> binahHIstoryDetails =
+  //     <Map<String, dynamic>>[].obs;
+  RxList<HealthDetailList> binahHIstoryDetails = <HealthDetailList>[].obs;
 
   Rx<AnlyzeHealthDataResponseModel> anlyzeHealthDataResponseModel =
       AnlyzeHealthDataResponseModel().obs;
@@ -97,13 +99,15 @@ class ProfileController extends GetxController
     int statusCode = responseData[AppConstents.statusCode];
     if (statusCode == 200) {
       binahHIstoryDetails.clear();
-      var result = UserHistoryDetailsModel.fromJson(
+      var result = HealthDetailsResponseModel.fromJson(
         responseData["responseBody"],
       );
 
+      binahHIstoryDetails.value = result.healthDetail!;
+
       ///this is for binah
-      binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-          .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
+      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
+      //     .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
 
       ///this is for anura
       // binahHIstoryDetails.value = await ShowGuestHistoryDetails()

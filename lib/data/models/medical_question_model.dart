@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:ntt_data/core/utils/utils_methods.dart';
+
 // To parse this JSON data, do
 //
 //     final medicalQuestionListModel = medicalQuestionListModelFromJson(jsonString);
@@ -20,7 +22,7 @@ class MedicalQuestionModels {
 
   factory MedicalQuestionModels.fromJson(Map<String, dynamic> json) =>
       MedicalQuestionModels(
-        message: json["message"] ?? "",
+        message: UtilMethods.stringParser(json["message"]),
         list:
             json["list"] == null
                 ? []
@@ -30,36 +32,6 @@ class MedicalQuestionModels {
         isSuccess: json["success"],
       );
 }
-
-// class ListElement {
-//   String id;
-//   String onBoardingQuestionName;
-//   List<String> onBoardingOptions;
-//   dynamic answer;
-
-//   ListElement({
-//     required this.id,
-//     required this.onBoardingQuestionName,
-//     required this.onBoardingOptions,
-//     required this.answer,
-//   });
-
-//   factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
-//     id: json["id"],
-//     onBoardingQuestionName: json["onBoardingQuestionName"],
-//     onBoardingOptions: List<String>.from(
-//       json["onBoardingOptions"].map((x) => x),
-//     ),
-//     answer: json["answer"],
-//   );
-
-//   Map<String, dynamic> toJson() => {
-//     "id": id,
-//     "onBoardingQuestionName": onBoardingQuestionName,
-//     "onBoardingOptions": List<dynamic>.from(onBoardingOptions.map((x) => x)),
-//     "answer": answer,
-//   };
-// }
 
 class MedicalQuestionListModel {
   String? id;
@@ -76,12 +48,14 @@ class MedicalQuestionListModel {
 
   factory MedicalQuestionListModel.fromJson(Map<String, dynamic> json) =>
       MedicalQuestionListModel(
-        id: json["id"] ?? "",
-        onBoardingQuestionName: json["onBoardingQuestionName"] ?? "",
+        id: UtilMethods.stringParser(json["id"]),
+        onBoardingQuestionName: UtilMethods.stringParser(
+          json["onBoardingQuestionName"],
+        ),
         onBoardingOptions:
             json["onBoardingOptions"] == null
                 ? []
                 : List<String>.from(json["onBoardingOptions"].map((x) => x)),
-        answer: json["answer"],
+        answer: UtilMethods.stringParser(json["answer"]),
       );
 }

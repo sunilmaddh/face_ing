@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:ntt_data/core/utils/utils_methods.dart';
+
 ErrorResponseModel errorResponseModelFromJson(String str) =>
     ErrorResponseModel.fromJson(json.decode(str));
 
@@ -27,11 +29,11 @@ class ErrorResponseModel {
 
   factory ErrorResponseModel.fromJson(Map<String, dynamic> json) =>
       ErrorResponseModel(
-        message: json["message"] ?? "",
-        otpverified: json["otpverified"] ?? "",
-        onBoarded: json["onBoarded"] ?? "",
-        blocked: json["blocked"] ?? "",
-        success: json["success"] ?? "",
+        message: UtilMethods.stringParser(json["message"]),
+        otpverified: UtilMethods.stringParser(json["otpverified"]),
+        onBoarded: UtilMethods.stringParser(json["onBoarded"]),
+        blocked: UtilMethods.stringParser(json["blocked"]),
+        success: UtilMethods.stringParser(json["success"]),
       );
 
   Map<String, dynamic> toJson() => {

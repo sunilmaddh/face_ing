@@ -35,5 +35,15 @@ class AppAssets {
       heartRateAnim = "$baseUrlLottie/heart_rate_animation.json",
       faceDetact = "$baseUrlSvg/face_detection.svg",
       faceD = "$baseUrlPng/face_d.png",
-      homeMenu = "$baseUrlSvg/home_menu.svg";
+      lowAsset = "$baseUrlSvg/low.svg",
+      mediumAsset = "$baseUrlSvg/medium.svg",
+      goodAsset = "$baseUrlSvg/high.svg",
+      homeMenu = "$baseUrlSvg/home_menu.svg",
+      lighthigh = "$baseUrlSvg/highimge.svg",
+      orengeAsset = "$baseUrlSvg/orangeasset.svg",
+      lowImage = "$baseUrlSvg/low_im",
+      mediumImage = "$baseUrlSvg/meduim.svg",
+      veryHighImage = "$baseUrlSvg/very_high_im.svg",
+      veryLowImage = "$baseUrlSvg/very_low.svg",
+      highImage = "$baseUrlSvg/high_im.svg";
 }

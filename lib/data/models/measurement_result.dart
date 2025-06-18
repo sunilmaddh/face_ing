@@ -1,3 +1,5 @@
+import 'package:ntt_data/core/utils/utils_methods.dart';
+
 class MeasurementResults {
   final String? measurementID;
   final ErrorDetails? error;
@@ -15,7 +17,7 @@ class MeasurementResults {
 
   factory MeasurementResults.fromJson(Map<String, dynamic> json) {
     return MeasurementResults(
-      measurementID: json['measurementID'] ?? "",
+      measurementID: UtilMethods.stringParser(json['measurementID']),
       error:
           json['error'] != null
               ? ErrorDetails.fromJson(json['error'])
@@ -40,7 +42,7 @@ class ErrorDetails {
 
   factory ErrorDetails.fromJson(Map<String, dynamic> json) {
     return ErrorDetails(
-      code: json['code'] ?? "",
+      code: UtilMethods.stringParser(json['code']),
       errors: json['errors'] ? Map<String, dynamic>.from(json['errors']) : {},
     );
   }

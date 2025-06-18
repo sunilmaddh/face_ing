@@ -14,6 +14,7 @@ import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/guest_history_details_model.dart';
 import 'package:ntt_data/data/models/guest_list_response_model.dart';
+import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/models/show_guest_history_details.dart';
 import 'package:ntt_data/data/repository/services/geust_services.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -42,6 +43,7 @@ class GeustController extends GetxController
   RxString genderType = "".obs;
   RxString geustDob = ''.obs;
   RxBool isTermAccepted = false.obs;
+  RxList<HealthDetailList> healthDetailsList = <HealthDetailList>[].obs;
 
   Future<void> getGeustHistory() async {
     var userID = await IndoSharedPreference.instance.getUserId();
@@ -371,6 +373,8 @@ class GeustController extends GetxController
     );
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
+      final _geustController = Get.find<GeustController>();
+      _geustController.getGeustHistory();
     } else if (statusCode == 500) {
     } else {
       AppSnackbar.show(

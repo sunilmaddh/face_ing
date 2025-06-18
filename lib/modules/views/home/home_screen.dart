@@ -4,12 +4,10 @@ import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
-import 'package:ntt_data/data/repository/services/native_caller_services.dart'
-    show NativeCaller;
+import 'package:ntt_data/data/repository/services/native_caller_services.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
@@ -36,6 +34,7 @@ class HomeScreen extends StatelessWidget {
             vertical: AppDimensions.width(30.0),
           ),
           child: ListView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               Row(
                 children: [
@@ -82,25 +81,37 @@ class HomeScreen extends StatelessWidget {
                 () => Center(
                   child: ScanButton(
                     isLoading: gcontroller.isLoading.value,
-                    width: AppDimensions.height(230),
+                    width: AppDimensions.width(230),
 
                     onPressed: () async {
-                      // gcontroller.isLoading.value = true;
-                      // var userID =
-                      //     await IndoSharedPreference.instance.getUserId();
-                      // var accessToken =
-                      //     await IndoSharedPreference.instance.getAccessToken();
-                      // Map<String, dynamic> data = {
-                      //   "userId": userID,
-                      //   "token": accessToken,
-                      //   "scanType": "user",
-                      // };
-                      // Future.delayed(Duration(seconds: 2), () {
-                      //   gcontroller.isLoading.value = false;
-                      //   NativeCaller.startFaceScan(data);
-                      // });
+                      gcontroller.isLoading.value = true;
+                      var userID =
+                          await IndoSharedPreference.instance.getUserId();
+                      var accessToken =
+                          await IndoSharedPreference.instance.getAccessToken();
+                      Map<String, dynamic> data = {
+                        "userId": userID,
+                        "token": accessToken,
+                        "scanType": "user",
+                      };
+                      Future.delayed(Duration(seconds: 2), () {
+                        gcontroller.isLoading.value = false;
+                        NativeCaller.startFaceScan(data);
+                      });
                     },
                   ),
+                ),
+              ),
+              SizedBox(height: AppDimensions.height(15)),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: CommonText.text(
+                  "Note: ${AppConstents.notDiscription}",
+                  fontSize: AppDimensions.font(12),
+                  fontWeight: FontWeight.w500,
+                  maxLines: 2,
+                  color: Colors.grey,
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],
