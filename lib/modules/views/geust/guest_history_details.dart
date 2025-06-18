@@ -29,11 +29,11 @@ class GuestHistoryDetails extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var result = _controller.healthDetailsList[index];
                     return IndoCommonCard(
-                      vitalName: result.name!,
-                      vitalCondition: result.range!,
-                      vitalDescription: result.desc!,
-                      vitalStatus: result.status!,
-                      vitalValue: result.actualValue!,
+                      vitalName: result.vitalName!,
+                      vitalCondition: result.vitalRange!,
+                      vitalDescription: result.vitalDescription!,
+                      vitalStatus: result.vitalStatus!,
+                      vitalValue: result.vitalName!,
                     );
                   },
                 ),

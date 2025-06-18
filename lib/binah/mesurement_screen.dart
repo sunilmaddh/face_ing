@@ -34,6 +34,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    controller.scanType.value = scanType;
     final Size screenSize = MediaQuery.of(context).size;
     final double ovalWidth = screenSize.width * 0.8;
     final double ovalHeight = screenSize.height * 0.5;

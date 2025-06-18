@@ -39,58 +39,50 @@ class HealthDetailsResponseModel {
 }
 
 class HealthDetailList {
-  String? key;
-  String? maxValue;
-  String? minValue;
-  String? actualValue;
-  String? status;
-  String? range;
-  String? emoji;
-  String? name;
-  String? healthLine;
-  String? desc;
-  String? detail;
+  String? vitalKey;
+  String? vitalValue;
+  String? vitalStatus;
+  String? vitalRange;
+  String? isTypeVital;
+  String? vitalName;
+  String? vitalHeading;
+  String? vitalDescription;
+  String? vitalUnit;
 
   HealthDetailList({
-    this.key,
-    this.maxValue,
-    this.minValue,
-    this.actualValue,
-    this.status,
-    this.range,
-    this.emoji,
-    this.name,
-    this.healthLine,
-    this.desc,
-    this.detail,
+    this.vitalKey,
+    this.vitalValue,
+    this.vitalStatus,
+    this.vitalRange,
+    this.isTypeVital,
+    this.vitalName,
+    this.vitalHeading,
+    this.vitalDescription,
+    this.vitalUnit,
   });
 
   factory HealthDetailList.fromJson(Map<String, dynamic> json) =>
       HealthDetailList(
-        key: UtilMethods.stringParser(json["key"]),
-        maxValue: UtilMethods.stringParser(json["maxValue"]),
-        minValue: UtilMethods.stringParser(json["minValue"]),
-        actualValue: UtilMethods.stringParser(json["actualValue"]),
-        status: UtilMethods.stringParser(json["status"]),
-        range: UtilMethods.stringParser(json["range"]),
-        emoji: UtilMethods.stringParser(json["emoji"]),
-        name: UtilMethods.stringParser(json["name"]),
-        healthLine: UtilMethods.stringParser(json["healthLine"]),
-        desc: UtilMethods.stringParser(json["desc"]),
-        detail: UtilMethods.stringParser(json["detail"]),
+        vitalKey: UtilMethods.stringParser(json["vitalKey"]),
+        vitalValue: UtilMethods.stringParser(json["vitalValue"]),
+        vitalStatus: UtilMethods.stringParser(json["vitalStatus"]),
+        vitalRange: UtilMethods.stringParser(json["vitalRange"]),
+        isTypeVital: UtilMethods.stringParser(json["isTypeVital"]),
+        vitalName: UtilMethods.stringParser(json["vitalName"]),
+        vitalHeading: UtilMethods.stringParser(json["vitalHeading"]),
+        vitalDescription: UtilMethods.stringParser(json["vitalDescription"]),
+        vitalUnit: UtilMethods.stringParser(json["vitalUnit"]),
       );
 
   Map<String, dynamic> toJson() => {
-    "key": key,
-    "maxValue": maxValue,
-    "minValue": minValue,
-    "actualValue": actualValue,
-    "status": status,
-    "range": range,
-    "emoji": emoji,
-    "name": name,
-    "healthLine": healthLine,
-    "desc": desc,
-    "detail": detail,
+    "vitalKey": vitalKey,
+    "vitalValue": vitalValue,
+    "vitalStatus": vitalStatus,
+    "vitalRange": vitalRange,
+    "isTypeVital": isTypeVital,
+    "vitalName": vitalName,
+    "vitalHeading": vitalHeading,
+    "vitalDescription": vitalDescription,
+    "vitalUnit": vitalUnit,
   };
 }
