@@ -12,11 +12,11 @@ class indoSakuraCommonCard extends StatelessWidget {
   final String vitalDescription;
   final String vitalCondition;
   final String vitalMass;
-  final bool isBlood;
+  bool isBlood;
   final bool isLowGood;
-  final bool isBreathing;
+  bool isBreathing;
 
-  const indoSakuraCommonCard({
+  indoSakuraCommonCard({
     super.key,
     this.vitalName = '',
     this.vitalStatus = '',
@@ -32,6 +32,13 @@ class indoSakuraCommonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isLowGood == true) {
+      if (vitalName == "Breathing Rate" || vitalName == "Heart Rate") {
+        isBreathing = true;
+      } else if (vitalName == "Blood Systolic") {
+        isBlood = true;
+      }
+    }
     final imageRes = _getImageResource();
     final color = _getColor();
     final status = _getStatus();
@@ -112,7 +119,7 @@ class indoSakuraCommonCard extends StatelessWidget {
                       children: [
                         CommonText.text(
                           maxLines: 2,
-                          "$vitalHeading $status",
+                          vitalHeading,
                           fontSize: 16,
                           color: Color(0xff5E5D5D),
                         ),
