@@ -13,6 +13,7 @@ import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
+import 'package:ntt_data/widgets/indo_common_card.dart';
 
 class AllReportScreen extends StatefulWidget {
   AllReportScreen({super.key});

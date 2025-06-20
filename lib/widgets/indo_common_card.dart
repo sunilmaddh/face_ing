@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
-import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 
 class IndoCommonCard extends StatefulWidget {
@@ -12,18 +12,25 @@ class IndoCommonCard extends StatefulWidget {
   final String vitalDescription;
   final String vitalCondition;
   final String vitalMass;
+  final String imageAsset;
+  final bool isExpand;
+  final bool isVitalActive;
+  final Widget expandedWidget;
 
   const IndoCommonCard({
-    Key? key,
+    super.key,
     this.vitalName = "",
     this.vitalStatus = "",
+    this.imageAsset = "",
     this.vitalValue = "",
     this.vitalHeading = "",
     this.vitalDescription = "",
     this.vitalCondition = "",
     this.vitalMass = "",
-  }) : super(key: key);
-
+    this.isExpand = false,
+    this.isVitalActive = true,
+    this.expandedWidget = const SizedBox(), // fixed default widget
+  });
   @override
   State<IndoCommonCard> createState() => _CommonCardState();
 }
@@ -33,25 +40,28 @@ class _CommonCardState extends State<IndoCommonCard> {
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor = const Color(0xFF1BC76D);
-    late String imageAsset;
-    switch (widget.vitalStatus.toLowerCase()) {
-      case 'high':
-        imageAsset = AppAssets.goodAsset;
+    Color statusColor;
+    // String imageAsset;
+
+    switch (widget.imageAsset) {
+      case AppAssets.mediumAsset:
+        statusColor = const Color(0xFFFFD700); // Yellow color
         break;
-      case 'medium':
-        imageAsset = AppAssets.mediumAsset;
+      case AppAssets.lighthigh:
+        statusColor = const Color(0xFF9ED042); // Yellow color
         break;
+      case AppAssets.goodAsset:
+        statusColor = const Color(0xFF1BC76D); // Green color
+        break;
+      case AppAssets.lowAsset:
       default:
-        imageAsset = AppAssets.lowAsset;
+        statusColor = const Color(0xFFE53935); // Red color
     }
 
     return CommonCard(
-      widget: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppDimensions.height(10),
-          vertical: AppDimensions.height(10),
-        ),
+      widget: Container(
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -61,11 +71,18 @@ class _CommonCardState extends State<IndoCommonCard> {
                 // Left section
                 Container(
                   width: 150,
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(15),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SvgPicture.asset(imageAsset, width: 37, height: 37),
+                      widget.imageAsset.isNotEmpty
+                          ? SvgPicture.asset(
+                            widget.imageAsset,
+                            width: 37,
+                            height: 37,
+                          )
+                          : SizedBox(),
                       const SizedBox(height: 10),
                       Text(
                         widget.vitalName,
@@ -74,7 +91,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff575656),
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
                       ),
                       Text(
                         widget.vitalCondition,
@@ -88,16 +105,18 @@ class _CommonCardState extends State<IndoCommonCard> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: widget.vitalValue,
+                              text: widget.vitalValue.toFirstCaps(),
                               style: const TextStyle(
-                                fontSize: 26,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w400,
                                 color: Color(0xff4A4949),
                               ),
                             ),
                             TextSpan(
-                              text: widget.vitalMass,
+                              text:
+                                  ' ${widget.vitalMass}', // Add space before vitalMass
                               style: const TextStyle(
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
@@ -112,7 +131,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                 // Divider
                 Container(
                   width: 1,
-                  // Adjust height as needed
+                  height: 150, // Adjust height as needed
                   color: const Color(0xffD9D9D9),
                 ),
 
@@ -125,7 +144,6 @@ class _CommonCardState extends State<IndoCommonCard> {
                       children: [
                         Text(
                           widget.vitalHeading,
-
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -143,128 +161,70 @@ class _CommonCardState extends State<IndoCommonCard> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
+                        widget.imageAsset.isNotEmpty
+                            ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CircleAvatar(
-                                  radius: 10.5,
-                                  backgroundColor: statusColor,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  widget.vitalStatus,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: statusColor,
-                                  ),
-                                ),
+                                widget.isVitalActive
+                                    ? Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 10.5,
+                                          backgroundColor: statusColor,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          widget.vitalStatus.toFirstCaps(),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: statusColor,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                    : SizedBox(),
+                                Icon(Icons.info_rounded),
+                                // SvgPicture.asset(imageAsset, width: 20, height: 20),
                               ],
-                            ),
-                            SvgPicture.asset(imageAsset, width: 20, height: 20),
-                          ],
-                        ),
+                            )
+                            : SizedBox(),
                       ],
                     ),
                   ),
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 15, bottom: 15),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isExpanded = !isExpanded;
-                    });
-                  },
-                  child: SvgPicture.asset(imageAsset, width: 20, height: 20),
-                ),
-              ),
-            ),
-            if (isExpanded)
-              Container(
-                height: 1, // Adjust height as needed
-                color: const Color(0xffD9D9D9),
-              ),
-
-            if (isExpanded)
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: 2,
-                itemBuilder: (contect, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              widget.vitalCondition,
-                              style: const TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff575656),
-                              ),
-                            ),
-                            Text(
-                              widget.vitalCondition,
-                              style: const TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff575656),
-                              ),
-                            ),
-                            SvgPicture.asset(imageAsset, width: 20, height: 20),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: widget.vitalValue,
-                                    style: const TextStyle(
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xff4A4949),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: widget.vitalMass,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            SvgPicture.asset(imageAsset, width: 20, height: 20),
-                          ],
-                        ),
-                      ],
+            // Expand/Collapse button ONLY if isExpand prop is true
+            widget.isExpand
+                ? Padding(
+                  padding: const EdgeInsets.only(right: 8, bottom: 15),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isExpanded = !isExpanded;
+                        });
+                      },
+                      child:
+                          (widget.vitalName.toLowerCase() == "stress" ||
+                                      widget.vitalName.toLowerCase() ==
+                                          "blood pressure") &&
+                                  isExpanded
+                              ? const Icon(Icons.minimize_outlined)
+                              : const Icon(Icons.add_outlined),
                     ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                    indent: 16,
-                    endIndent: 16,
-                  );
-                },
-              ),
+                  ),
+                )
+                : const SizedBox(),
+
+            // Show detailed card only when expanded AND vitalName is stress or blood pressure
+            if (isExpanded &&
+                (widget.vitalName.toLowerCase() == "stress level" ||
+                    widget.vitalName == "HRV SDNN" ||
+                    widget.vitalName == 'Blood Pressure'))
+              widget.expandedWidget,
           ],
         ),
       ),

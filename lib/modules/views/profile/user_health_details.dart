@@ -7,6 +7,7 @@ import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
+import 'package:ntt_data/widgets/indo_sakura_common_card.dart';
 
 class UserHealthDetails extends StatelessWidget {
   UserHealthDetails({super.key});
@@ -29,12 +30,17 @@ class UserHealthDetails extends StatelessWidget {
                   itemCount: _profileController.binahHIstoryDetails.length,
                   itemBuilder: (context, index) {
                     var result = _profileController.binahHIstoryDetails[index];
-                    return IndoCommonCard(
+
+                    return IndoSakuraCommonCard(
+                      isSdkType: true,
+                      isLowGood: stringToBool(result.isTypeVital!),
                       vitalName: result.vitalName!,
                       vitalCondition: result.vitalRange!,
                       vitalDescription: result.vitalDescription!,
                       vitalStatus: result.vitalStatus!,
-                      vitalValue: result.vitalName!,
+                      vitalValue: result.vitalValue!,
+                      vitalHeading: result.vitalHeading!,
+                      vitalMass: result.vitalUnit!,
                     );
                   },
                 ),
@@ -64,5 +70,9 @@ class UserHealthDetails extends StatelessWidget {
         // ),
       ),
     );
+  }
+
+  bool stringToBool(String value) {
+    return value.toLowerCase() == 'true';
   }
 }

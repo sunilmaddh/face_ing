@@ -205,56 +205,56 @@ class AddNewGuestScreen extends StatelessWidget {
                                                 "Please select smoker type",
                                           );
                                         } else {
-                                          // DateTime parsedDate = DateTime.parse(
-                                          //   _geustController
-                                          //       .dobTextController
-                                          //       .text
-                                          //       .replaceAll("/", "-"),
-                                          // );
-                                          // controller.age.value =
-                                          //     _geustController
-                                          //         .calculateAge(parsedDate)
-                                          //         .toDouble();
+                                          DateTime parsedDate = DateTime.parse(
+                                            _geustController
+                                                .dobTextController
+                                                .text
+                                                .replaceAll("/", "-"),
+                                          );
+                                          controller.age.value =
+                                              _geustController
+                                                  .calculateAge(parsedDate)
+                                                  .toDouble();
 
-                                          // controller
-                                          //     .weight
-                                          //     .value = double.parse(
-                                          //   _geustController
-                                          //       .weightTextController
-                                          //       .text,
-                                          // );
-                                          // controller
-                                          //     .height
-                                          //     .value = double.parse(
-                                          //   _geustController
-                                          //       .heightTextController
-                                          //       .text,
-                                          // );
-                                          // controller.genderType.value =
-                                          //     _geustController
-                                          //         .selectionType
-                                          //         .value;
+                                          controller
+                                              .weight
+                                              .value = double.parse(
+                                            _geustController
+                                                .weightTextController
+                                                .text,
+                                          );
+                                          controller
+                                              .height
+                                              .value = double.parse(
+                                            _geustController
+                                                .heightTextController
+                                                .text,
+                                          );
+                                          controller.genderType.value =
+                                              _geustController
+                                                  .selectionType
+                                                  .value;
 
-                                          // var userID =
-                                          //     await IndoSharedPreference
-                                          //         .instance
-                                          //         .getUserId();
-                                          // var accessToken =
-                                          //     await IndoSharedPreference
-                                          //         .instance
-                                          //         .getAccessToken();
-                                          // _geustController.scanType.value =
-                                          //     "guest";
-                                          // AppNavigation.off(
-                                          //   AppRoutes.mesurementScreen,
-                                          //   arguments: {
-                                          //     "scanType": "add-guest",
-                                          //     "userName":
-                                          //         _geustController
-                                          //             .nameTextController
-                                          //             .text,
-                                          //   },
-                                          // );
+                                          var userID =
+                                              await IndoSharedPreference
+                                                  .instance
+                                                  .getUserId();
+                                          var accessToken =
+                                              await IndoSharedPreference
+                                                  .instance
+                                                  .getAccessToken();
+                                          _geustController.scanType.value =
+                                              "guest";
+                                          AppNavigation.off(
+                                            AppRoutes.mesurementScreen,
+                                            arguments: {
+                                              "scanType": "add-guest",
+                                              "userName":
+                                                  _geustController
+                                                      .nameTextController
+                                                      .text,
+                                            },
+                                          );
                                         }
                                       }
                                     },

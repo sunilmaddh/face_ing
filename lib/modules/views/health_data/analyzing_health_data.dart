@@ -14,6 +14,7 @@ import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
+import 'package:ntt_data/widgets/indo_common_card.dart';
 import 'package:ntt_data/widgets/test_main_expand_widget.dart';
 
 // ignore: must_be_immutable
@@ -181,29 +182,6 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         imageAsset: CommonHealthAsset().getSystolicBPAsset(
           statusHelper.getBpSystolic(systolic, 100, 129),
         ),
-        // expandedWidget: Column(
-        //   children: [
-        //     StressInfoCard(
-        //       vitalName: 'Blood Pressure (Systolic)',
-        //       isExpanded: true,
-        //       titleText: "Blood Pressure (Systolic)",
-        //       statusText: _getVitalStatus(systolic, 100, 129),
-        //       valueText: systolic?.toString() ?? '',
-        //       unitText: "mmHg",
-        //       imageAsset: CommonHealthAsset().getSystolicBPAsset(
-        //         _getVitalStatus(systolic, 100, 129),
-        //       ),
-        //     ),
-        //     StressInfoCard(
-        //       vitalName: 'Blood Pressure (Diastolic)',
-        //       isExpanded: true,
-        //       titleText: "Blood Pressure (Diastolic)",
-        //       statusText: _getVitalStatus(diastolic, 60, 80),
-        //       valueText: diastolic?.toString() ?? '',
-        //       unitText: "mmHg",
-        //     ),
-        //   ],
-        // ),
       ),
 
       buildCard(
@@ -312,9 +290,6 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalDescription: WellnessMetricDescriptionsLong.ascvdRisk,
       ),
       buildCard(
-        // imageAsset: CommonHealthAsset().getHeartAgeAsset(
-        //   getVitalValue(VitalSignTypes.heartAge),
-        // ),
         vitalName: "Heart Age ",
         vitalValue: getVitalValue(VitalSignTypes.heartAge),
         vitalMass: "years",
