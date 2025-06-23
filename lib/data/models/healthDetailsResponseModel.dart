@@ -48,6 +48,7 @@ class HealthDetailList {
   String? vitalHeading;
   String? vitalDescription;
   String? vitalUnit;
+  List<HealthDetailList>? vitalSubList;
 
   HealthDetailList({
     this.vitalKey,
@@ -59,6 +60,7 @@ class HealthDetailList {
     this.vitalHeading,
     this.vitalDescription,
     this.vitalUnit,
+    this.vitalSubList,
   });
 
   factory HealthDetailList.fromJson(Map<String, dynamic> json) =>
@@ -72,6 +74,14 @@ class HealthDetailList {
         vitalHeading: UtilMethods.stringParser(json["vitalHeading"]),
         vitalDescription: UtilMethods.stringParser(json["vitalDescription"]),
         vitalUnit: UtilMethods.stringParser(json["vitalUnit"]),
+        vitalSubList:
+            json["vitalSubList"] == null
+                ? []
+                : List<HealthDetailList>.from(
+                  json["vitalSubList"]!.map(
+                    (x) => HealthDetailList.fromJson(x),
+                  ),
+                ),
       );
 
   Map<String, dynamic> toJson() => {

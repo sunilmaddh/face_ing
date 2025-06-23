@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 // ignore: camel_case_types
@@ -12,10 +14,12 @@ class IndoSakuraCommonCard extends StatelessWidget {
   final String vitalDescription;
   final String vitalCondition;
   final String vitalMass;
+  final List<HealthDetailList> vitalSubList;
   bool isBlood;
   final bool isLowGood;
   bool isBreathing;
   final bool isSdkType;
+  RxBool isExpanded = false.obs;
 
   String imageRes = "";
   Color color = Colors.white;
@@ -34,6 +38,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
     this.isLowGood = false,
     this.isBreathing = false,
     this.isSdkType = false,
+    required this.vitalSubList,
   });
 
   @override
@@ -59,8 +64,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
       }
     }
     if (isSdkType == true) {
-      imageRes = _getImageResourceBinah();
-      color = _getColorBinah();
+      imageRes = _getImageResourceBinah(vitalStatus);
+      color = _getColorBinah(vitalStatus);
     } else {
       imageRes = _getImageResource();
       color = _getColor();
@@ -72,19 +77,22 @@ class IndoSakuraCommonCard extends StatelessWidget {
       color: Colors.white,
       margin: const EdgeInsets.all(8),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
             children: [
               SizedBox(
-                width: 120,
+                width: 140,
                 height: 210,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 5,
+                    horizontal: 10,
                     vertical: 10,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (vitalStatus.isNotEmpty)
                         SvgPicture.asset(
@@ -95,9 +103,10 @@ class IndoSakuraCommonCard extends StatelessWidget {
                         ),
                       const SizedBox(height: 5),
                       CommonText.text(
-                        maxLines: 2,
+                        maxLines: 3,
                         vitalName,
                         fontSize: 14,
+                        fontWeight: FontWeight.w400,
                         color: Color(0xff575656),
                       ),
                       const SizedBox(height: 5),
@@ -111,7 +120,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: vitalValue,
+                              text: capitalizeFirst(vitalValue),
                               style: const TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.w400,
@@ -140,11 +149,13 @@ class IndoSakuraCommonCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CommonText.text(
                           maxLines: 2,
                           vitalHeading,
                           fontSize: 16,
+                          fontWeight: FontWeight.w400,
                           color: Color(0xff5E5D5D),
                         ),
                         const SizedBox(height: 10),
@@ -181,12 +192,145 @@ class IndoSakuraCommonCard extends StatelessWidget {
               ),
             ],
           ),
+          Obx(
+            () => Visibility(
+              visible: vitalSubList != null && vitalSubList.isNotEmpty,
+              child: Padding(
+                padding: EdgeInsets.only(right: 15, bottom: 15),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      isExpanded.value = !isExpanded.value;
+                    },
+                    child:
+                        isExpanded.value
+                            ? const Icon(Icons.minimize_outlined)
+                            : const Icon(Icons.add_outlined),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Obx(
+            () =>
+                isExpanded.value
+                    ? Container(
+                      height: 1, // Adjust height as needed
+                      color: const Color(0xffD9D9D9),
+                    )
+                    : SizedBox.shrink(),
+          ),
+
+          Obx(
+            () =>
+                isExpanded.value
+                    ? ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: vitalSubList.length,
+                      physics: NeverScrollableScrollPhysics(),
+
+                      itemBuilder: (contect, index) {
+                        var result = vitalSubList[index];
+                        if (isSdkType) {
+                          imageRes = _getImageResourceBinah(
+                            result.vitalStatus.toString(),
+                          );
+                        }
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 10,
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    result.vitalName.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xff575656),
+                                    ),
+                                  ),
+                                  Text(
+                                    result.vitalHeading.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xff575656),
+                                    ),
+                                  ),
+                                  SvgPicture.asset(
+                                    imageRes,
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: result.vitalValue,
+                                          style: const TextStyle(
+                                            fontSize: 26,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color(0xff4A4949),
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: result.vitalUnit,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // SvgPicture.asset(
+                                  //   imageRes,
+                                  //   width: 20,
+                                  //   height: 20,
+                                  // ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const Divider(
+                          color: Colors.grey,
+                          thickness: 1,
+                          indent: 16,
+                          endIndent: 16,
+                        );
+                      },
+                    )
+                    : SizedBox.shrink(),
+          ),
         ],
       ),
     );
   }
 
-  String _getImageResourceBinah() {
+  String capitalizeFirst(String word) {
+    if (word.isEmpty) return word;
+    return word[0].toUpperCase() + word.substring(1).toLowerCase();
+  }
+
+  String _getImageResourceBinah(String vitalStatus) {
     switch (vitalStatus) {
       case 'Low':
         return isBreathing
@@ -196,9 +340,9 @@ class IndoSakuraCommonCard extends StatelessWidget {
             : AppAssets.veryLowImage;
       case 'Normal':
         return isBreathing
-            ? AppAssets.mediumImage
+            ? AppAssets.veryHighImage
             : isLowGood
-            ? AppAssets.highImage
+            ? AppAssets.mediumAsset
             : AppAssets.veryHighImage;
       case "Medium":
         return AppAssets.mediumImage;
@@ -219,7 +363,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
     }
   }
 
-  Color _getColorBinah() {
+  Color _getColorBinah(String vitalStatus) {
     switch (vitalStatus) {
       case 'Low':
         return isBreathing
@@ -229,9 +373,9 @@ class IndoSakuraCommonCard extends StatelessWidget {
             : const Color(0xFFFA704E);
       case 'Normal':
         return isBreathing
-            ? const Color(0xFFEEC000)
+            ? const Color(0xFF1BC76D)
             : isLowGood
-            ? const Color(0xFFED9A33)
+            ? const Color(0xFFEEC000)
             : const Color(0xFF1BC76D);
       case 'Medium':
         return const Color(0xFFEEC000);

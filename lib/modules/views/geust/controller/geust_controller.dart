@@ -80,11 +80,12 @@ class GeustController extends GetxController
         .getGeustDetailsService(data: data);
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
-      var data = GuestHistoryDetailsModel.fromJson(
+      var data = HealthDetailsResponseModel.fromJson(
         resposneData["responseBody"],
       );
-      anuraHIstoryDetails.value = await ShowGuestHistoryDetails()
-          .fetchHistoryAnuraDetails(data.guestHealthAnuraHistory!);
+      healthDetailsList.value = data.healthDetail!;
+      // anuraHIstoryDetails.value = await ShowGuestHistoryDetails()
+      //     .fetchHistoryAnuraDetails(data.guestHealthAnuraHistory!);
 
       // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
       //     .fetchHistoryBinahDetails(data.guestHealthBinahHistory!);

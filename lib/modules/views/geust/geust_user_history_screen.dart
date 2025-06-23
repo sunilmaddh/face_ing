@@ -79,6 +79,7 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
             SizedBox(height: 20),
             Obx(
               () => ListView.builder(
+                reverse: true,
                 shrinkWrap: true,
                 itemCount: _controller.guestList.length,
                 physics: NeverScrollableScrollPhysics(),

@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 
 abstract class BaseApiService {
   final String baseUrl = ApiEndpoints.baseUrl;
@@ -71,6 +72,7 @@ abstract class BaseApiService {
 
       return _processResponse(response);
     } catch (e) {
+      AppSnackbar.show(title: "Exception", message: e.toString());
       throw Exception("Error: $e");
     }
   }
@@ -99,6 +101,7 @@ abstract class BaseApiService {
       debugPrint(response.body.toString());
       return _processResponse(response);
     } catch (e) {
+      AppSnackbar.show(title: "Exception", message: e.toString());
       throw Exception("Error: $e");
     }
   }
@@ -113,8 +116,10 @@ abstract class BaseApiService {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data),
       );
+
       return _processResponse(response);
     } catch (e) {
+      AppSnackbar.show(title: "Exception", message: e.toString());
       throw Exception("Error: $e");
     }
   }
@@ -125,6 +130,7 @@ abstract class BaseApiService {
       debugPrint(response.headers["accessToken"]);
       return _processResponse(response);
     } catch (e) {
+      AppSnackbar.show(title: "Exception", message: e.toString());
       throw Exception("Error: $e");
     }
   }

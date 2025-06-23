@@ -321,9 +321,11 @@ class AuthController extends GetxController
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
-        IndoSharedPreference.instance.saveOnBoard(
-          loginResponseModel.value.onBoarded!,
-        );
+        AppNavigation.to(AppRoutes.congratulationsScreen);
+        if (loginResponseModel.value.success == "true") {
+          IndoSharedPreference.instance.saveOnBoard("true");
+        }
+
         userImage.value =
             loginResponseModel.value.commonUserDetailsDao!.userImage!;
         userEmail.value =
