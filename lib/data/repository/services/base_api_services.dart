@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 
 abstract class BaseApiService {
@@ -137,45 +138,53 @@ abstract class BaseApiService {
 
   Map<String, dynamic> _processResponse(http.Response response) {
     debugPrint(response.statusCode.toString() + response.body.toString());
-    switch (response.statusCode) {
-      case 200:
-      case 201:
-        return {
-          "statusCode": response.statusCode,
-          "responseBody": jsonDecode(response.body),
-          "header": response.headers,
-        };
-      case 400:
-        return {
-          "statusCode": response.statusCode,
-          "responseBody": jsonDecode(
-            response.body,
-          ), // Ensure it's parsed as JSON
-        };
-      case 401:
-      case 403:
-        return {
-          "statusCode": response.statusCode,
-          "responseBody": jsonDecode(response.body),
-          // Ensure it's parsed as JSON
-        };
-      case 404:
-        return {
-          "statusCode": response.statusCode,
-          "responseBody": jsonDecode(
-            response.body,
-          ), // Ensure it's parsed as JSON
-        };
-      case 500:
-        return {
-          "statusCode": response.statusCode,
-          "responseBody": jsonDecode(
-            response.body,
-          ), // Ensure it's parsed as JSON
-        };
-      default:
-        throw Exception("Unknown Error: ${response.statusCode}");
+    if (response.statusCode == 401) {
+      AppMethods().logout();
+      AppSnackbar.show(title: "Error", message: "Session expire");
+    } else {
+      switch (response.statusCode) {
+        case 200:
+        case 201:
+          return {
+            "statusCode": response.statusCode,
+            "responseBody": jsonDecode(response.body),
+            "header": response.headers,
+          };
+        case 400:
+          return {
+            "statusCode": response.statusCode,
+            "responseBody": jsonDecode(
+              response.body,
+            ), // Ensure it's parsed as JSON
+          };
+        case 401:
+        case 403:
+          return {
+            "statusCode": response.statusCode,
+            "responseBody": jsonDecode(response.body),
+
+            // Ensure it's parsed as JSON
+          };
+
+        case 404:
+          return {
+            "statusCode": response.statusCode,
+            "responseBody": jsonDecode(
+              response.body,
+            ), // Ensure it's parsed as JSON
+          };
+        case 500:
+          return {
+            "statusCode": response.statusCode,
+            "responseBody": jsonDecode(
+              response.body,
+            ), // Ensure it's parsed as JSON
+          };
+        default:
+          throw Exception("Unknown Error: ${response.statusCode}");
+      }
     }
+    return {};
   }
 
   Future<http.Response?> uploadImage(
