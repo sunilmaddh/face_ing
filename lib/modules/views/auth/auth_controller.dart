@@ -9,6 +9,7 @@ import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/login_response_model.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
+import 'package:ntt_data/data/models/user_create_response_model.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/data/repository/services/auth_services.dart';
@@ -30,6 +31,7 @@ class AuthController extends GetxController
   final TextEditingController dateController = TextEditingController();
   final TextEditingController forgotEmailController = TextEditingController();
   final passwordForgotController = TextEditingController();
+  Rx<UserCreateResponseModel> userCreateModel = UserCreateResponseModel().obs;
   final confirmPasswordController = TextEditingController();
   final RxString smokerType = "".obs;
   var dataList = <Map<String, dynamic>>[].obs;
@@ -321,34 +323,31 @@ class AuthController extends GetxController
       debugPrint(response["responseBody"].toString());
       int statusCode = response['statusCode'];
       if (statusCode == 200) {
-        AppNavigation.to(AppRoutes.congratulationsScreen);
-        if (loginResponseModel.value.success == "true") {
-          IndoSharedPreference.instance.saveOnBoard("true");
-        }
-
+        var result = UserCreateResponseModel.fromJson(response["responseBody"]);
+        userCreateModel.value = result;
+        IndoSharedPreference.instance.saveOnBoard("true");
         userImage.value =
-            loginResponseModel.value.commonUserDetailsDao!.userImage!;
+            userCreateModel.value.commonUserDetailsDao!.userImage!;
         userEmail.value =
-            loginResponseModel.value.commonUserDetailsDao!.userEmail!;
-        userName.value =
-            loginResponseModel.value.commonUserDetailsDao!.userName!;
+            userCreateModel.value.commonUserDetailsDao!.userEmail!;
+        userName.value = userCreateModel.value.commonUserDetailsDao!.userName!;
         await IndoSharedPreference.instance.saveUserName(
-          loginResponseModel.value.commonUserDetailsDao!.userName!,
+          userCreateModel.value.commonUserDetailsDao!.userName!,
         );
 
         await IndoSharedPreference.instance.saveGenderType(
-          loginResponseModel.value.commonUserDetailsDao!.userGender.toString(),
+          userCreateModel.value.commonUserDetailsDao!.userGender.toString(),
         );
 
         await IndoSharedPreference.instance.saveHeight(
-          loginResponseModel.value.commonUserDetailsDao!.userHeight.toString(),
+          userCreateModel.value.commonUserDetailsDao!.userHeight.toString(),
         );
 
         await IndoSharedPreference.instance.saveWeight(
-          loginResponseModel.value.commonUserDetailsDao!.userWeight.toString(),
+          userCreateModel.value.commonUserDetailsDao!.userWeight.toString(),
         );
         await IndoSharedPreference.instance.saveAge(
-          loginResponseModel.value.commonUserDetailsDao!.userDob.toString(),
+          userCreateModel.value.commonUserDetailsDao!.userDob.toString(),
         );
         AppNavigation.to(AppRoutes.congratulationsScreen);
       } else if (statusCode == 405) {

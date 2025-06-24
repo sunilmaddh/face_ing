@@ -22,6 +22,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
   RxBool isExpanded = false.obs;
 
   String imageRes = "";
+  String imageResSub = "";
   Color color = Colors.white;
   String status = "";
 
@@ -233,7 +234,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                       itemBuilder: (contect, index) {
                         var result = vitalSubList[index];
                         if (isSdkType) {
-                          imageRes = _getImageResourceBinah(
+                          imageResSub = _getImageResourceBinah(
                             result.vitalStatus.toString(),
                           );
                         }
@@ -265,7 +266,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                     ),
                                   ),
                                   SvgPicture.asset(
-                                    imageRes,
+                                    imageResSub,
                                     width: 20,
                                     height: 20,
                                   ),
@@ -358,6 +359,10 @@ class IndoSakuraCommonCard extends StatelessWidget {
             : AppAssets.veryLowImage;
       case 'Very High':
         return AppAssets.veryLowImage;
+      case 'Prediabetes':
+        return AppAssets.mediumImage;
+      case 'Diabetes':
+        return AppAssets.veryLowImage;
       default:
         return AppAssets.veryHighImage;
     }
@@ -391,6 +396,10 @@ class IndoSakuraCommonCard extends StatelessWidget {
             : isBlood
             ? const Color(0xFFED9A33)
             : const Color(0xFFFA704E);
+      case 'Prediabetes':
+        return const Color(0xFFEEC000);
+      case 'Diabetes':
+        return const Color(0xFFFA704E);
       default:
         return Colors.white;
     }
@@ -426,6 +435,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
             : AppAssets.veryHighImage;
       case 'Optimal':
         return AppAssets.veryHighImage;
+
       default:
         return AppAssets.veryHighImage;
     }
@@ -473,6 +483,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
       case 'High':
       case 'Optimal':
       case 'Very High':
+      case 'Prediabetes':
+      case 'Diabetes':
         return vitalStatus;
       default:
         return '';

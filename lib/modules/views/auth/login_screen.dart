@@ -63,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 20),
                     CustomFormField(
+                      obscureText: true,
                       validator: (password) {
                         if (password == null || password.isEmpty) {
                           return "Please enter password";

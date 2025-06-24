@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/state_manager.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
@@ -8,7 +10,7 @@ class CustomFormField extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   final TextInputType keyboardType;
-  final bool obscureText;
+  bool obscureText;
   final String? Function(String?)? validator;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -17,8 +19,9 @@ class CustomFormField extends StatelessWidget {
   final bool readOnly;
   final bool enable;
   final double borderRadius;
+  RxBool isObscureText = false.obs;
 
-  const CustomFormField({
+  CustomFormField({
     super.key,
     required this.label,
     required this.hint,
@@ -37,6 +40,7 @@ class CustomFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    isObscureText.value = obscureText;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -49,43 +53,59 @@ class CustomFormField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 3),
-        TextFormField(
-          readOnly: readOnly,
-          enabled: enable,
-          controller: controller,
-          keyboardType: keyboardType,
-          obscureText: obscureText,
-          validator: validator,
-          decoration: InputDecoration(
-            labelStyle: TextStyle(color: AppColors.textFieldValueColor),
-            hintText: hint,
-            hintStyle: TextStyle(
-              color: AppColors.searchColor,
-              fontSize: AppDimensions.font(16),
-              fontWeight: FontWeight.w400,
-              fontFamily: "Suisse Intl",
-            ),
-            prefixIcon: prefixIcon,
-            suffixIcon:
-                suffixIcon != null
-                    ? GestureDetector(onTap: onSuffixTap, child: suffixIcon)
-                    : null,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(color: borderColor, width: 1),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(color: AppColors.primary, width: 1),
-            ),
+        Obx(
+          () => TextFormField(
+            readOnly: readOnly,
+            enabled: enable,
+            controller: controller,
+            keyboardType: keyboardType,
+            obscureText: isObscureText.value,
+            validator: validator,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: AppColors.textFieldValueColor),
+              hintText: hint,
+              hintStyle: TextStyle(
+                color: AppColors.searchColor,
+                fontSize: AppDimensions.font(16),
+                fontWeight: FontWeight.w400,
+                fontFamily: "Suisse Intl",
+              ),
+              suffix: Visibility(
+                visible: obscureText,
+                child: InkWell(
+                  onTap: () {
+                    isObscureText.value = !isObscureText.value;
+                  },
+                  child: Icon(
+                    isObscureText.value
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                  ),
+                ),
+              ),
 
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(color: borderColor, width: 1),
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              vertical: AppDimensions.height(12),
-              horizontal: AppDimensions.width(15.0),
+              prefixIcon: prefixIcon,
+              suffixIcon:
+                  suffixIcon != null
+                      ? GestureDetector(onTap: onSuffixTap, child: suffixIcon)
+                      : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide(color: borderColor, width: 1),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide(color: AppColors.primary, width: 1),
+              ),
+
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide(color: borderColor, width: 1),
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                vertical: AppDimensions.height(12),
+                horizontal: AppDimensions.width(15.0),
+              ),
             ),
           ),
         ),
