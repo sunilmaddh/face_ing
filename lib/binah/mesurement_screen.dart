@@ -251,5 +251,10 @@ class OverlayWithOvalHolePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant OverlayWithOvalHolePainter oldDelegate) {
+    return oldDelegate.center != center ||
+        oldDelegate.radiusX != radiusX ||
+        oldDelegate.radiusY != radiusY ||
+        oldDelegate.overlayColor != overlayColor;
+  }
 }

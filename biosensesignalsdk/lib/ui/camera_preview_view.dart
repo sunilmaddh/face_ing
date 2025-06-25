@@ -10,31 +10,27 @@ class CameraPreviewView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Use MediaQuery to get screen size
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    // Set responsive size (adjust as needed)
-    final double width = screenWidth * 0.80; // 85% of screen width
-    final double height = screenHeight * 0.90; // 45% of screen height
+    final double width = screenWidth * 0.80;
+    final double height = screenHeight * 0.90;
 
     Widget createNativeView() {
       if (defaultTargetPlatform == TargetPlatform.android) {
-        return Positioned.fill(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: height,
-            child: const AndroidView(
-              viewType: _viewType,
-              creationParams: null,
-              creationParamsCodec: StandardMessageCodec(),
-            ),
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: height,
+          child: const AndroidView(
+            viewType: _viewType,
+            creationParams: null,
+            creationParamsCodec: StandardMessageCodec(),
           ),
         );
       } else if (defaultTargetPlatform == TargetPlatform.iOS) {
         return SizedBox(
-          width: width + 10,
-          height: height + 20, // slightly taller for iOS if needed
+          width: width,
+          height: height,
           child: const UiKitView(
             viewType: _viewType,
             creationParams: null,
@@ -46,6 +42,8 @@ class CameraPreviewView extends StatelessWidget {
       }
     }
 
-    return Center(child: createNativeView()); // Center the view in its parent
+    return Center(
+      child: createNativeView(),
+    );
   }
 }
