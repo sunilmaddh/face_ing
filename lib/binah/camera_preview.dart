@@ -19,23 +19,20 @@ class _CameraPreviewState extends State<CameraPreview> {
   Widget build(BuildContext context) {
     return WidgetSize(
       onChange: (newSize) => setState(() => size = newSize),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppDimensions.height(0)),
-        child: SizedBox(
-          width: double.infinity,
-          child: AspectRatio(
-            aspectRatio: 0.7,
-            child: Stack(
-              children: [
-                const CameraPreviewView(),
+      child: SizedBox(
+        width: double.infinity,
+        child: AspectRatio(
+          aspectRatio: 0.7,
+          child: Stack(
+            children: [
+              const CameraPreviewView(),
 
-                // Align(
-                //   alignment: Alignment.center,
-                //   child: FaceDetectionCircleWidget(),
-                // ),
-                FaceDetectionView(size: size),
-              ],
-            ),
+              // Align(
+              //   alignment: Alignment.center,
+              //   child: FaceDetectionCircleWidget(),
+              // ),
+              FaceDetectionView(size: size),
+            ],
           ),
         ),
       ),

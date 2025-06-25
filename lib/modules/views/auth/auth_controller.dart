@@ -94,6 +94,10 @@ class AuthController extends GetxController
               loginResponseModel.value.commonUserDetailsDao!.userName!,
             );
 
+            await IndoSharedPreference.instance.saveUserEmail(
+              loginResponseModel.value.commonUserDetailsDao!.userEmail!,
+            );
+
             await IndoSharedPreference.instance.saveGenderType(
               loginResponseModel.value.commonUserDetailsDao!.userGender
                   .toString(),

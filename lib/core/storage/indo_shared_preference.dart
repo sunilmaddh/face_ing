@@ -73,6 +73,16 @@ class IndoSharedPreference {
     return _preferences!.getString("user_name") ?? "";
   }
 
+  Future<void> saveUserEmail(String userEmail) async {
+    _checkInit();
+    await _preferences!.setString("user_email", userEmail);
+  }
+
+  Future<String> getUserEmail() async {
+    _checkInit();
+    return _preferences!.getString("user_email") ?? "";
+  }
+
   Future<void> saveRefreshToken(String refreshToken) async {
     _checkInit();
     await _preferences!.setString("refresh_token", refreshToken);
