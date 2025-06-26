@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,12 +8,10 @@ import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/guest_history_details_model.dart';
 import 'package:ntt_data/data/models/guest_list_response_model.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
-import 'package:ntt_data/data/models/show_guest_history_details.dart';
 import 'package:ntt_data/data/repository/services/geust_services.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -34,8 +30,7 @@ class GeustController extends GetxController
       <GuestHealthAnuraHistory>[].obs;
   RxList<Map<String, dynamic>> anuraHIstoryDetails =
       <Map<String, dynamic>>[].obs;
-  RxList<Map<String, dynamic>> binahHIstoryDetails =
-      <Map<String, dynamic>>[].obs;
+  RxList<HealthDetailList> binahHIstoryDetails = <HealthDetailList>[].obs;
 
   RxBool isLoading = false.obs;
   RxList<GuestList> guestList = <GuestList>[].obs;
@@ -53,21 +48,13 @@ class GeustController extends GetxController
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
       guestList.clear();
-      // var jsonString = jsonDecode(resposneData["responseBody"]);
       var data = GuestListResponseModel.fromJson(resposneData["responseBody"]);
       guestList.value = data.guestList!;
     } else if (statusCode == 500) {
       guestList.clear();
     } else {
       guestList.clear();
-
-      //todo: update api handle 404
-
-      // AppSnackbar.show(
-      //   title: "Error",
-      //   message: "Something went wrong",
-      //   isError: true,
-      // );
+      AppSnackbar.show(title: "Error", message: "Something went wrong");
     }
   }
 
@@ -83,18 +70,15 @@ class GeustController extends GetxController
       var data = HealthDetailsResponseModel.fromJson(
         resposneData["responseBody"],
       );
+
       healthDetailsList.value = data.healthDetail!;
-      // anuraHIstoryDetails.value = await ShowGuestHistoryDetails()
-      //     .fetchHistoryAnuraDetails(data.guestHealthAnuraHistory!);
-
-      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-      //     .fetchHistoryBinahDetails(data.guestHealthBinahHistory!);
-
       AppNavigation.to(AppRoutes.guestHistoryDetails);
 
       debugPrint(data.toString());
     } else if (statusCode == 500) {
-    } else {}
+    } else {
+      AppSnackbar.show(title: "Error", message: "Something went wrong");
+    }
   }
 
   Future<void> storeBinahHealthForUser(

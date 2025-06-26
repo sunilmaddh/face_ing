@@ -73,14 +73,24 @@ class IndoSharedPreference {
     return _preferences!.getString("user_name") ?? "";
   }
 
-  Future<void> saveUserEmail(String userEmail) async {
+  Future<void> saveUserEmail(String userName) async {
     _checkInit();
-    await _preferences!.setString("user_email", userEmail);
+    await _preferences!.setString("user_email", userName);
   }
 
   Future<String> getUserEmail() async {
     _checkInit();
     return _preferences!.getString("user_email") ?? "";
+  }
+
+  Future<void> saveUserImage(String userName) async {
+    _checkInit();
+    await _preferences!.setString("user_image", userName);
+  }
+
+  Future<String> getUserImage() async {
+    _checkInit();
+    return _preferences!.getString("user_image") ?? "";
   }
 
   Future<void> saveRefreshToken(String refreshToken) async {

@@ -2,16 +2,13 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
-import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/core/utils/enum/health_data_enum.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/health_data/all_report_screen.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/common_health_asset.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/getvitalStatus.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/indo_common_card.dart';
@@ -675,12 +672,12 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         isCenterTitle: false,
         title: "Analyzing health data",
         textColor: AppColors.blackColor,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: CommonAssets.svgAsset(AppAssets.downloadIcon),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 10.0),
+        //     child: CommonAssets.svgAsset(AppAssets.downloadIcon),
+        //   ),
+        // ],
       ),
       body: CustomTabBarView(tabWidgets: tabWidgets, tabBarWidgets: barWidgets),
     );

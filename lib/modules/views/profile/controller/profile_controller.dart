@@ -4,14 +4,11 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
-import 'package:ntt_data/data/models/show_guest_history_details.dart';
-import 'package:ntt_data/data/models/user_health_details.dart';
 import 'package:ntt_data/data/models/user_history_list_model.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -22,18 +19,8 @@ class ProfileController extends GetxController
     with GenderStateMixin, CommonMixin {
   final _authController = Get.find<AuthController>();
   RxBool isLoading = false.obs;
-  RxString userID = ''.obs;
-  Map<String, dynamic> selectedAnswerList = {};
-  List<Map<String, dynamic>> medicalQuestionData = [];
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController weightController = TextEditingController();
-  final TextEditingController heightController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
   RxList<UserHealthList> userHealthList = <UserHealthList>[].obs;
-  // RxList<Map<String, dynamic>> binahHIstoryDetails =
-  //     <Map<String, dynamic>>[].obs;
   RxList<HealthDetailList> binahHIstoryDetails = <HealthDetailList>[].obs;
-
   Rx<AnlyzeHealthDataResponseModel> anlyzeHealthDataResponseModel =
       AnlyzeHealthDataResponseModel().obs;
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
@@ -102,28 +89,11 @@ class ProfileController extends GetxController
       var result = HealthDetailsResponseModel.fromJson(
         responseData["responseBody"],
       );
-
       binahHIstoryDetails.value = result.healthDetail!;
-
-      ///this is for binah
-      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-      //     .fetchUserHistoryBinahDetails(result.userHealthBinahHistory!);
-
-      ///this is for anura
-      // binahHIstoryDetails.value = await ShowGuestHistoryDetails()
-      //     .fetchUserHistoryAnuraDetails(result.userHealthAnuraDetail!);
       AppNavigation.to(AppRoutes.userHealthDatails);
     } else {
       binahHIstoryDetails.clear();
       AppSnackbar.show(title: "Error", message: "Something went wrong");
     }
-  }
-
-  Future<void> storeHealthData() async {
-    var userID = await IndoSharedPreference.instance.getUserId();
-    var data = {};
-
-    Map<String, dynamic> responseData = await ProfileServices()
-        .storeUserHealthDataService(data: data);
   }
 }

@@ -16,12 +16,29 @@ import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final controller = Get.find<MeasurementController>();
+
   final gcontroller = Get.find<GeustController>();
+
   final authController = Get.find<AuthController>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    authController.initializedData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       child: CommonAssets.svgAsset(
-                        AppAssets.faceLogo,
+                        AppAssets.logo,
                       ), // Keeps in the center
                     ),
                   ),

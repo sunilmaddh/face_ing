@@ -97,6 +97,9 @@ class AuthController extends GetxController
             await IndoSharedPreference.instance.saveUserEmail(
               loginResponseModel.value.commonUserDetailsDao!.userEmail!,
             );
+            await IndoSharedPreference.instance.saveUserImage(
+              loginResponseModel.value.commonUserDetailsDao!.userImage!,
+            );
 
             await IndoSharedPreference.instance.saveGenderType(
               loginResponseModel.value.commonUserDetailsDao!.userGender
@@ -331,14 +334,20 @@ class AuthController extends GetxController
         userCreateModel.value = result;
         IndoSharedPreference.instance.saveOnBoard("true");
         userImage.value =
-            userCreateModel.value.commonUserDetailsDao!.userImage!;
+            userCreateModel.value.commonUserDetailsDao!.userImage.toString();
         userEmail.value =
-            userCreateModel.value.commonUserDetailsDao!.userEmail!;
-        userName.value = userCreateModel.value.commonUserDetailsDao!.userName!;
+            userCreateModel.value.commonUserDetailsDao!.userEmail.toString();
+        userName.value =
+            userCreateModel.value.commonUserDetailsDao!.userName.toString();
         await IndoSharedPreference.instance.saveUserName(
-          userCreateModel.value.commonUserDetailsDao!.userName!,
+          userCreateModel.value.commonUserDetailsDao!.userName.toString(),
         );
-
+        await IndoSharedPreference.instance.saveUserEmail(
+          userCreateModel.value.commonUserDetailsDao!.userEmail.toString(),
+        );
+        await IndoSharedPreference.instance.saveUserImage(
+          userCreateModel.value.commonUserDetailsDao!.userImage.toString(),
+        );
         await IndoSharedPreference.instance.saveGenderType(
           userCreateModel.value.commonUserDetailsDao!.userGender.toString(),
         );
@@ -411,8 +420,11 @@ class AuthController extends GetxController
         print("Added new entry: ${dataList.last}");
       }
     }
+  }
 
-    // print("Updated existing entry: ${dataList.toString()}");
-    // healthMenuData.value = dataList.value;
+  Future<void> initializedData() async {
+    userName.value = await IndoSharedPreference.instance.getUserName();
+    userEmail.value = await IndoSharedPreference.instance.getUserEmail();
+    userImage.value = await IndoSharedPreference.instance.getUserImage();
   }
 }

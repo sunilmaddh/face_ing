@@ -12,7 +12,6 @@ import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart' show AppNavigation;
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
@@ -35,15 +34,6 @@ class CreateAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: PrimaryButton(
-      //   text: AppConstents.continueBtn,
-      //   onPressed: () {
-      //     debugPrint(_authController.userId.value);
-      //     if (_formKey.currentState!.validate()) {
-      //       _profileController.getMedicalQeustionList();
-      //     }
-      //   },
-      // ),
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         onTop: () {

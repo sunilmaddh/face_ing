@@ -15,7 +15,7 @@ import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 
 // ignore: must_be_immutable
 class GeustUserHistoryScreen extends StatefulWidget {
-  GeustUserHistoryScreen({super.key});
+  const GeustUserHistoryScreen({super.key});
 
   @override
   State<GeustUserHistoryScreen> createState() => _GeustUserHistoryScreenState();
@@ -23,17 +23,7 @@ class GeustUserHistoryScreen extends StatefulWidget {
 
 class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
   final _controller = Get.find<GeustController>();
-
   final _searchController = TextEditingController();
-
-  List<Widget> tabWidgets = [
-    Tab(text: "Vitals"),
-    Tab(text: "Wellness"),
-    Tab(text: "Additional"),
-  ];
-
-  List<Widget> tabBarWidgets = [VitalsDataScreen()];
-
   @override
   void initState() {
     _controller.getGeustHistory();

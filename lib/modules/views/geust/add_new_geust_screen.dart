@@ -5,11 +5,9 @@ import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/storage/storage_helper.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
-import 'package:ntt_data/data/repository/services/native_caller_services.dart';
 import 'package:ntt_data/modules/views/auth/widgets/terms_checkbox_widget.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -22,6 +20,7 @@ import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 import 'package:ntt_data/widgets/gender_widget.dart';
 
+// ignore: must_be_immutable
 class AddNewGuestScreen extends StatelessWidget {
   AddNewGuestScreen({super.key});
 
