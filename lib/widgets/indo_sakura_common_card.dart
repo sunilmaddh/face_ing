@@ -20,6 +20,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
   bool isBreathing;
   bool isHighLow = false;
   bool isStress = false;
+  bool isWellnessScore = false;
   final bool isSdkType;
   RxBool isExpanded = false.obs;
 
@@ -64,6 +65,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
           isHighLow = true;
         } else if (vitalName == "Stress Level") {
           isStress = true;
+        } else if (vitalName == "Wellness Score") {
+          isWellnessScore = true;
         }
       }
     } else {
@@ -368,6 +371,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
       case 'Low':
         return isBreathing
             ? AppAssets.mediumImage
+            : isWellnessScore
+            ? AppAssets.veryLowImage
             : isLowGood
             ? AppAssets.veryHighImage
             : AppAssets.veryLowImage;
@@ -411,6 +416,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
       case 'Low':
         return isBreathing
             ? const Color(0xFFEEC000)
+            : isWellnessScore
+            ? const Color(0xFFFA704E)
             : isLowGood
             ? const Color(0xFF1BC76D)
             : const Color(0xFFFA704E);
@@ -429,10 +436,10 @@ class IndoSakuraCommonCard extends StatelessWidget {
       case 'High':
         return isBreathing
             ? const Color(0xFFEEC000)
-            : isLowGood
-            ? const Color(0xFF1BC76D)
             : isBlood
             ? const Color(0xFFED9A33)
+            : isLowGood
+            ? const Color(0xFF1BC76D)
             : const Color(0xFFFA704E);
       case 'Prediabetes':
         return const Color(0xFFEEC000);

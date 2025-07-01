@@ -18,9 +18,7 @@ void main() async {
     // DeviceOrientation.portraitDown, // optional if you want upside-down
   ]);
   AppBindings().dependencies();
-
   NativeCaller().setupResultListener();
-
   runApp(const MyApp());
 }
 

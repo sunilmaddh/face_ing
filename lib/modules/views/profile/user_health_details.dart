@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
-import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/indo_sakura_common_card.dart';
 
 class UserHealthDetails extends StatelessWidget {
