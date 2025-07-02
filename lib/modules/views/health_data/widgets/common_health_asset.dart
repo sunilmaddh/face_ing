@@ -82,6 +82,8 @@ class CommonHealthAsset {
     switch (vitalStatus) {
       case 'medium':
         return AppAssets.goodAsset;
+      case 'normal':
+        return AppAssets.goodAsset;
       case 'high':
         return AppAssets.mediumAsset;
       case 'low':
@@ -229,7 +231,7 @@ class CommonHealthAsset {
 
   String getHrvSdnnAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'normal':
+      case 'Normal':
         return AppAssets.goodAsset;
       case 'low':
         return AppAssets.lowAsset;
@@ -242,7 +244,7 @@ class CommonHealthAsset {
 
   String getMeanRRiAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'medium':
+      case 'Normal':
         return AppAssets.mediumAsset;
       case 'high':
         return AppAssets.goodAsset;
@@ -253,7 +255,7 @@ class CommonHealthAsset {
 
   String getRmssdAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'normal':
+      case 'Normal':
         return AppAssets.mediumAsset;
       case 'high':
         return AppAssets.goodAsset;
@@ -304,6 +306,8 @@ class CommonHealthAsset {
       case 'low':
         return AppAssets.goodAsset;
       case 'medium':
+        return AppAssets.mediumAsset;
+      case 'Normal':
         return AppAssets.mediumAsset;
       default:
         return AppAssets.lowAsset;

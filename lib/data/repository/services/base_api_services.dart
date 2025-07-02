@@ -136,48 +136,30 @@ abstract class BaseApiService {
   }
 
   Map<String, dynamic> _processResponse(http.Response response) {
-    debugPrint(response.statusCode.toString() + response.body.toString());
+    // Decode with UTF-8 to avoid weird symbols
+    final decodedBody = utf8.decode(response.bodyBytes);
+    debugPrint("${response.statusCode} $decodedBody");
+
     if (response.statusCode == 401) {
       AppMethods().logout();
-      AppSnackbar.show(title: "Error", message: "Session expire");
+      AppSnackbar.show(title: "Error", message: "Session expired");
     } else {
+      final responseBody = jsonDecode(decodedBody);
       switch (response.statusCode) {
         case 200:
         case 201:
           return {
             "statusCode": response.statusCode,
-            "responseBody": jsonDecode(response.body),
+            "responseBody": responseBody,
             "header": response.headers,
           };
         case 400:
-          return {
-            "statusCode": response.statusCode,
-            "responseBody": jsonDecode(
-              response.body,
-            ), // Ensure it's parsed as JSON
-          };
-        case 401:
         case 403:
-          return {
-            "statusCode": response.statusCode,
-            "responseBody": jsonDecode(response.body),
-
-            // Ensure it's parsed as JSON
-          };
-
         case 404:
-          return {
-            "statusCode": response.statusCode,
-            "responseBody": jsonDecode(
-              response.body,
-            ), // Ensure it's parsed as JSON
-          };
         case 500:
           return {
             "statusCode": response.statusCode,
-            "responseBody": jsonDecode(
-              response.body,
-            ), // Ensure it's parsed as JSON
+            "responseBody": responseBody,
           };
         default:
           throw Exception("Unknown Error: ${response.statusCode}");
@@ -185,6 +167,57 @@ abstract class BaseApiService {
     }
     return {};
   }
+
+  // Map<String, dynamic> _processResponse(http.Response response) {
+  //   debugPrint(response.statusCode.toString() + response.body.toString());
+  //   if (response.statusCode == 401) {
+  //     AppMethods().logout();
+  //     AppSnackbar.show(title: "Error", message: "Session expire");
+  //   } else {
+  //     switch (response.statusCode) {
+  //       case 200:
+  //       case 201:
+  //         return {
+  //           "statusCode": response.statusCode,
+  //           "responseBody": jsonDecode(response.body),
+  //           "header": response.headers,
+  //         };
+  //       case 400:
+  //         return {
+  //           "statusCode": response.statusCode,
+  //           "responseBody": jsonDecode(
+  //             response.body,
+  //           ), // Ensure it's parsed as JSON
+  //         };
+  //       case 401:
+  //       case 403:
+  //         return {
+  //           "statusCode": response.statusCode,
+  //           "responseBody": jsonDecode(response.body),
+
+  //           // Ensure it's parsed as JSON
+  //         };
+
+  //       case 404:
+  //         return {
+  //           "statusCode": response.statusCode,
+  //           "responseBody": jsonDecode(
+  //             response.body,
+  //           ), // Ensure it's parsed as JSON
+  //         };
+  //       case 500:
+  //         return {
+  //           "statusCode": response.statusCode,
+  //           "responseBody": jsonDecode(
+  //             response.body,
+  //           ), // Ensure it's parsed as JSON
+  //         };
+  //       default:
+  //         throw Exception("Unknown Error: ${response.statusCode}");
+  //     }
+  //   }
+  //   return {};
+  // }
 
   Future<http.Response?> uploadImage(
     String endpoint,

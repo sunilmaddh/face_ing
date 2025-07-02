@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/enum/health_data_enum.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
+import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/health_data/all_report_screen.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/common_health_asset.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/getvitalStatus.dart';
@@ -61,6 +64,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
 
   final _measurementController = Get.find<MeasurementController>();
   final _authController = Get.find<AuthController>();
+  final _geustController = Get.find<GeustController>();
+
   String getVitalValue(type) {
     final result = _measurementController.vitalsResults.value.getResult(type);
     final value = result?.value;
@@ -205,16 +210,16 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
   }
 
   List<Widget> bloodlessBloodTests() {
-    final isMale =
-        _authController
-            .loginResponseModel
-            .value
-            .commonUserDetailsDao
-            ?.userGender ==
-        'male';
-
-    final hemoglobinMin = isMale ? 14.0 : 12.0;
-    final hemoglobinMax = isMale ? 18.0 : 16.0;
+    bool isMale = false;
+    var hemoglobinMin = 0.0;
+    var hemoglobinMax = 0.0;
+    if (_geustController.selectionType.isNotEmpty) {
+      isMale = _geustController.selectionType.value == "Male";
+    } else {
+      isMale = _measurementController.genderType.toLowerCase() == 'male';
+    }
+    hemoglobinMin = isMale ? 14.0 : 12.0;
+    hemoglobinMax = isMale ? 18.0 : 16.0;
 
     final a1cValueStr = statusHelper.getVitalValue(
       VitalSignTypes.hemoglobinA1C,
@@ -225,7 +230,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     String a1cConditionText = '';
 
     if (a1cValue != null) {
-      if (a1cValue < 5.6) {
+      if (a1cValue <= 5.6) {
         a1cStatus = 'low';
         a1cConditionText = 'Normal';
       } else if (a1cValue <= 6.4) {
@@ -247,7 +252,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           ),
         ),
         vitalName: "Hemoglobin",
-        vitalValue: a1cValueStr,
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.hemoglobin),
         vitalCondition: "",
         vitalMass: "g/dL",
         vitalStatus: statusHelper.getHemoglobin(
@@ -403,8 +408,12 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               isExpanded: true,
               titleText: "Stress Index",
               statusText:
-                  "Your Stress Index is ${getVitalValue(VitalSignTypes.stressIndex)}", //need to get it with avg
-              valueText: getVitalValue(VitalSignTypes.stressIndex),
+                  "Your Stress Index is ${_measurementController.vitalsResults.value.getResult(VitalSignTypes.stressIndex)!.value.toString()}", //need to get it with avg
+              valueText:
+                  _measurementController.vitalsResults.value
+                      .getResult(VitalSignTypes.stressIndex)!
+                      .value
+                      .toString(),
 
               unitText: " ",
             ),
@@ -515,12 +524,12 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       ),
       buildCard(
         imageAsset: CommonHealthAsset().getSnsIndexAsset(
-          _getVitalStatus(VitalSignTypes.snsIndex, 1, 100),
+          _getVitalStatus(VitalSignTypes.snsIndex, -1, 1),
         ),
         vitalName: "SNS Index",
         vitalValue: getVitalValue(VitalSignTypes.snsIndex),
         vitalCondition: 'Avg 1 - 1',
-        vitalStatus: _getVitalStatus(VitalSignTypes.snsIndex, 1, 1),
+        vitalStatus: _getVitalStatus(VitalSignTypes.snsIndex, -1, 1),
         vitalHeading: WellnessMetricDescriptions.snsIndex,
         vitalDescription: WellnessMetricDescriptionsLong.snsIndex,
       ),
@@ -541,7 +550,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         //   // getVitalValue(VitalSignTypes.sd2),
         // ),
         vitalName: "SD2",
-        vitalValue: getVitalValue(VitalSignTypes.snsIndex),
+        vitalValue: getVitalValue(VitalSignTypes.sd2),
         vitalCondition: '',
         vitalStatus: _getVitalStatus(VitalSignTypes.sd1, 4, 7),
         vitalHeading: WellnessMetricDescriptions.sd2,
@@ -561,19 +570,19 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalDescription: WellnessMetricDescriptionsLong.lfHf,
         isVitalActive: true,
       ),
-      buildCard(
-        // imageAsset: CommonHealthAsset().getRRiDataAsset(
-        //   // getVitalValue(VitalSignTypes.rri),
-        // ),
-        vitalName: "RRi Data ",
-        vitalMass: '',
-        vitalValue: VitalSignTypes.rri.toString(),
-        vitalCondition: '',
-        vitalStatus: _getVitalStatus(VitalSignTypes.rri, 0.5, 2),
-        vitalHeading: WellnessMetricDescriptions.RRiData,
-        vitalDescription: WellnessMetricDescriptionsLong.rriData,
-        isVitalActive: false,
-      ),
+      // buildCard(
+      //   // imageAsset: CommonHealthAsset().getRRiDataAsset(
+      //   //   // getVitalValue(VitalSignTypes.rri),
+      //   // ),
+      //   vitalName: "RRi Data ",
+      //   vitalMass: '',
+      //   vitalValue: VitalSignTypes.rri.toString(),
+      //   vitalCondition: '',
+      //   vitalStatus: _getVitalStatus(VitalSignTypes.rri, 0.5, 2),
+      //   vitalHeading: WellnessMetricDescriptions.RRiData,
+      //   vitalDescription: WellnessMetricDescriptionsLong.rriData,
+      //   isVitalActive: false,
+      // ),
       // You also mentioned SD1, SD2, LF/HF, RRi Data but no cards provided, add if you want.
     ];
   }
@@ -584,7 +593,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     if (value == null) return '';
     if (value < min) return 'low';
     if (value > max) return 'high';
-    return 'medium';
+    return 'Normal';
   }
 
   String _getVitalStatusBloodPressure(vitalType, num min, num max) {

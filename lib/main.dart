@@ -35,7 +35,6 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(backgroundColor: AppColors.btntext),
         ),
-
         initialRoute: AppRoutes.splashScreen,
         getPages: AppPages.getPages,
       ),

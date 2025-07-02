@@ -60,7 +60,7 @@ class GuestList {
   factory GuestList.fromJson(Map<String, dynamic> json) => GuestList(
     email: json["email"] ?? "",
     name: json["name"] ?? "",
-    date: json["date"] ?? "",
+    date: json["scannedDate"] ?? "",
     gender: json["gender"] ?? "",
     age: json["age"] ?? "",
     weight: json["weight"] ?? "",

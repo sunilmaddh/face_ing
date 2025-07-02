@@ -211,7 +211,10 @@ class MeasurementController extends GetxController
       vitalsResults.value.getResult(VitalSignTypes.sdnn).toString(),
       vitalsResults.value.getResult(VitalSignTypes.lfhf).toString(),
     ];
-
+    debugPrint("Stress index $vitlaList");
+    debugPrint(
+      "Stress index${vitalsResults.value.getResult(VitalSignTypes.stressIndex)}",
+    );
     if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
       startStopButtonClicked();
       if (scanType.value == "add-guest") {

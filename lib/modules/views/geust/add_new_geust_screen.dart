@@ -178,6 +178,12 @@ class AddNewGuestScreen extends StatelessWidget {
                                   child: ScanButton(
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
+                                        var height = int.parse(
+                                          _geustController
+                                                  .heightTextController
+                                                  .text ??
+                                              "0",
+                                        );
                                         if (_geustController
                                             .selectionType
                                             .isEmpty) {
@@ -185,6 +191,21 @@ class AddNewGuestScreen extends StatelessWidget {
                                             isError: true,
                                             title: "Error",
                                             message: "Please select gender",
+                                          );
+                                        } else if (height < 130) {
+                                          AppSnackbar.show(
+                                            isError: true,
+                                            title: "Error",
+                                            message:
+                                                "Please enter a height greater than or equal to 130.",
+                                          );
+                                        } else if (controller
+                                            .smokerType
+                                            .isEmpty) {
+                                          AppSnackbar.show(
+                                            title: "Error",
+                                            message:
+                                                "Please select smoker type",
                                           );
                                         } else if (_geustController
                                             .isChecked

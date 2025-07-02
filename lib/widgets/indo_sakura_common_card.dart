@@ -54,7 +54,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
             vitalName == "PRQ" ||
             vitalName == "Hemoglobin") {
           isBreathing = true;
-        } else if (vitalName == "Blood Systolic") {
+        } else if (vitalName == "Blood Pressure") {
           isBlood = true;
         } else if (vitalName == "High Blood Pressure Risk" ||
             vitalName == "High HbA1c Risk" ||
@@ -67,6 +67,14 @@ class IndoSakuraCommonCard extends StatelessWidget {
           isStress = true;
         } else if (vitalName == "Wellness Score") {
           isWellnessScore = true;
+        } else if (vitalName == "PNS Index" && vitalStatus == "Low") {
+          isLowGood = false;
+        } else if (vitalName == "LF/HF" && vitalStatus == "Low") {
+          isLowGood = false;
+        } else if (vitalName == "ASCVD Risk" && vitalStatus == "High") {
+          isLowGood = false;
+        } else if (vitalName == "SNS Index" && vitalStatus == "High") {
+          isLowGood = false;
         }
       }
     } else {
@@ -257,6 +265,11 @@ class IndoSakuraCommonCard extends StatelessWidget {
                               isBreathing = true;
                             } else if (vitalName == "Blood Systolic") {
                               isBlood = true;
+                            } else if (result.vitalName == "Mean RRi" &&
+                                    result.vitalStatus == "Low" ||
+                                result.vitalName == "RMSSD" &&
+                                    result.vitalStatus == "Low") {
+                              isLowGood = false;
                             } else {
                               isLowGood = stringToBool(
                                 result.isTypeVital.toString(),
@@ -368,11 +381,13 @@ class IndoSakuraCommonCard extends StatelessWidget {
 
   String _getImageResourceBinah(String vitalStatus) {
     switch (vitalStatus) {
-      case 'Low':
+      case 'Low' || 'low':
         return isBreathing
             ? AppAssets.mediumImage
             : isWellnessScore
             ? AppAssets.veryLowImage
+            : isBlood
+            ? AppAssets.mediumImage
             : isLowGood
             ? AppAssets.veryHighImage
             : AppAssets.veryLowImage;
@@ -381,6 +396,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
             ? AppAssets.veryHighImage
             : isStress
             ? AppAssets.highImage
+            : isBlood
+            ? AppAssets.veryHighImage
             : isLowGood
             ? AppAssets.mediumAsset
             : AppAssets.veryHighImage;
@@ -394,7 +411,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
             : isStress
             ? AppAssets.lowImage
             : isBlood
-            ? AppAssets.lowImage
+            ? AppAssets.veryLowImage
             : isHighLow
             ? AppAssets.veryLowImage
             : isLowGood
@@ -418,6 +435,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
             ? const Color(0xFFEEC000)
             : isWellnessScore
             ? const Color(0xFFFA704E)
+            : isBlood
+            ? const Color(0xFFEEC000)
             : isLowGood
             ? const Color(0xFF1BC76D)
             : const Color(0xFFFA704E);
@@ -521,6 +540,10 @@ class IndoSakuraCommonCard extends StatelessWidget {
 
   String _getStatus() {
     switch (vitalStatus) {
+      case 'Diabetes':
+        return 'Diabetes risk';
+      case 'Prediabetes':
+        return 'Prediabetes risk';
       case 'Very Low':
       case 'Low':
       case 'Normal':
@@ -528,9 +551,10 @@ class IndoSakuraCommonCard extends StatelessWidget {
       case 'High':
       case 'Optimal':
       case 'Very High':
-      case 'Prediabetes':
-      case 'Diabetes':
+      case 'Prediabetes risk':
+      case 'Diabetes risk':
         return vitalStatus;
+
       default:
         return '';
     }

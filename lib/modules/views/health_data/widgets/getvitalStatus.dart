@@ -71,7 +71,8 @@ class Getvitalstatus {
   }
 
   String getHemoglobin(vitalType, num min, num max) {
-    final value = double.tryParse(vitalType.toString());
+    final rawValue = getVitalValue(vitalType);
+    final value = double.tryParse(rawValue.toString());
     debugPrint("Systolic value $value");
     if (value == null) return '';
     if (value < min) return 'low';

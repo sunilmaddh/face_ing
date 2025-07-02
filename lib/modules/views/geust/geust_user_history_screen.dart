@@ -54,19 +54,19 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
             AppNavigation.back();
           });
         },
-        title: "Geust user",
+        title: "Guest user",
       ),
       body: Padding(
         padding: EdgeInsets.all(AppDimensions.padding(15)),
         child: ListView(
           children: [
-            CustomFormField(
-              prefixIcon: Icon(Icons.search, color: AppColors.searchColor),
-              label: "",
-              hint: "Type to search",
-              controller: _searchController,
-            ),
-            SizedBox(height: 20),
+            // CustomFormField(
+            //   prefixIcon: Icon(Icons.search, color: AppColors.searchColor),
+            //   label: "",
+            //   hint: "Type to search",
+            //   controller: _searchController,
+            // ),
+            // SizedBox(height: 20),
             Obx(
               () => ListView.builder(
                 reverse: true,

@@ -264,7 +264,7 @@ class GeustController extends GetxController
                 .toString(),
         "stressIndex":
             vitalSignResult
-                .getResult(VitalSignTypes.snsIndex)
+                .getResult(VitalSignTypes.stressIndex)
                 ?.value
                 .toString(),
         "meanRri":

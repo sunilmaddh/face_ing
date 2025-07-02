@@ -36,6 +36,7 @@ class AuthController extends GetxController
   final RxString smokerType = "".obs;
   var dataList = <Map<String, dynamic>>[].obs;
   RxString emailId = ''.obs;
+  RxString selectionGenderType = "".obs;
   RxBool isLoading = false.obs;
   RxString date = "".obs;
   var selectedDate = DateTime.now().obs;
