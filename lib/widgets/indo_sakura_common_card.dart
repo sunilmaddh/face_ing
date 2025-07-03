@@ -107,7 +107,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
             children: [
               SizedBox(
                 width: 140,
-                height: 210,
+                height: 215,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,

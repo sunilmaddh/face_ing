@@ -65,7 +65,7 @@ class AddNewGuestScreen extends StatelessWidget {
                                   }
                                   return null;
                                 },
-                                label: "Patiant Id",
+                                label: "Patient ID",
                                 hint: "Enter your name",
                                 controller: _geustController.nameTextController,
                               ),

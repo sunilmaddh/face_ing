@@ -28,7 +28,7 @@ class AppConstents {
   weight = "Weight (kg)",
   height = "Height (cm)",
   message =
-      "This application is not a medical device. Measurement results cannot be used for the diagnosis, treatment or prevention of disease.If you are unsure about your health, please use medical equipment to measure the exact value.",
+      "This application is not a medical device. Measurement results cannot be used for the diagnosis, treatment or prevention of disease. If you are unsure about your health, please use medical equipment to measure the exact value.",
   congractText = " Congratulation! Your Account created successfully. ",
   congractDis =
       " We are thrilled to extend a warm welcome to all newcomers and returning members alike. ",
