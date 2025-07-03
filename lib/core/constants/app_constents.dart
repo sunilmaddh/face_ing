@@ -269,37 +269,4 @@ class WellnessMetricDescriptionsLong {
       'LF and HF stand for Low-Frequency and High-Frequency bands, which represent the Sympathetic and Parasympathetic activity, respectively.';
   static const String rriData =
       'The RR interval is the time between the "R" peaks of successive heartbeats, in milliseconds.';
-
-  static const List<String> all = [
-    wellnessScore,
-    breathingRate,
-    pulseRate,
-    prq,
-    bpSystolic,
-    bpDiastolic,
-    oxygenSaturation,
-    hemoglobin,
-    hemoglobinA1C,
-    ascvdRisk,
-    heartAge,
-    highBloodPressureRisk,
-    highHbA1cRisk,
-    highFastingGlucoseRisk,
-    highTotalCholesterolRisk,
-    lowHemoglobinRisk,
-    stressLevel,
-    stressIndex,
-    normalizedStressIndex,
-    hrvSDNN,
-    meanRRi,
-    rmssd,
-    recoveryAbility,
-    pnsIndex,
-    stressResponse,
-    snsIndex,
-    sd1,
-    sd2,
-    lfHf,
-    rriData,
-  ];
 }

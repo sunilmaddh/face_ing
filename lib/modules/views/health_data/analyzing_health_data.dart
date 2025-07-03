@@ -103,6 +103,82 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     );
   }
 
+  List<Widget> allVitalSigns() {
+    final bpValue = getVitalValue(VitalSignTypes.bloodPressure);
+    final bpParts = bpValue?.split('/') ?? [];
+    final systolic = bpParts.isNotEmpty ? int.tryParse(bpParts[0]) : null;
+    final diastolic = bpParts.length > 1 ? int.tryParse(bpParts[1]) : null;
+
+    return [
+      buildCard(
+        imageAsset: CommonHealthAsset().getBreathingRateAsset(
+          statusHelper.getBreathingRate(VitalSignTypes.respirationRate, 12, 20),
+        ),
+        vitalName: "Breathing Rate ",
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.respirationRate),
+        vitalCondition: 'Avg 12 - 20',
+        vitalStatus: statusHelper.getBreathingRate(
+          VitalSignTypes.respirationRate,
+          12,
+          20,
+        ),
+        vitalHeading: WellnessMetricDescriptions.BreathingRate,
+        vitalDescription: WellnessMetricDescriptionsLong.breathRate,
+        vitalMass: 'rpm',
+      ),
+      buildCard(
+        imageAsset: CommonHealthAsset().getPulseRateAsset(
+          statusHelper.getPulseRate(VitalSignTypes.pulseRate, 60, 100),
+        ),
+        vitalName: "Pulse rate (Heart Rate)",
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.pulseRate),
+        vitalCondition: 'Avg 60 - 100',
+        vitalMass: "bpm",
+        vitalStatus: statusHelper.getPulseRate(
+          VitalSignTypes.pulseRate,
+          60,
+          100,
+        ),
+        vitalHeading: WellnessMetricDescriptions.pulseRate,
+        vitalDescription: WellnessMetricDescriptionsLong.pulseRate,
+      ),
+      buildCard(
+        vitalName: "Blood Pressure",
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.bloodPressure),
+        vitalCondition: '',
+        vitalMass: "mmHg",
+        vitalStatus: statusHelper.getBpSystolic(systolic, 100, 129),
+        vitalHeading: WellnessMetricDescriptions.bloodPressureDiastolic,
+        vitalDescription: WellnessMetricDescriptionsLong.bpSystolic,
+
+        imageAsset: CommonHealthAsset().getSystolicBPAsset(
+          statusHelper.getBpSystolic(systolic, 100, 129),
+        ),
+      ),
+
+      buildCard(
+        imageAsset: CommonHealthAsset().getOxygenSaturationAsset(
+          statusHelper.getOxygenSaturation(
+            VitalSignTypes.oxygenSaturation,
+            94,
+            95,
+          ),
+        ),
+        vitalName: "Oxygen Saturation",
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.oxygenSaturation),
+        vitalCondition: '',
+        vitalMass: "%",
+        vitalStatus: statusHelper.getOxygenSaturation(
+          VitalSignTypes.oxygenSaturation,
+          94,
+          95,
+        ),
+        vitalHeading: WellnessMetricDescriptions.oxygenSaturation,
+        vitalDescription: WellnessMetricDescriptionsLong.oxygenSaturation,
+      ),
+    ];
+  }
+
   final statusHelper = Getvitalstatus();
 
   List<Widget> basicVitalSigns() {
@@ -621,12 +697,12 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
 
   List<Widget> allCards() {
     return [
-      ...basicVitalSigns(),
+      ...allVitalSigns(),
       ...bloodlessBloodTests(),
-      ...risks(),
-      ...stress(),
-      ...heartRateVariability(),
-      ...advancedHeartRateVariability(),
+      // ...risks(),
+      // ...stress(),
+      // ...heartRateVariability(),
+      // ...advancedHeartRateVariability(),
     ];
   }
 
