@@ -681,7 +681,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           AppNavigation.back();
         },
         isCenterTitle: false,
-        title: "Analyzing health data",
+        title: "Health data report",
         textColor: AppColors.blackColor,
         // actions: [
         //   Padding(

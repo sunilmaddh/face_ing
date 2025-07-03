@@ -443,6 +443,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
       case 'Normal':
         return isBreathing
             ? const Color(0xFF1BC76D)
+            : isBlood
+            ? const Color(0xFF1BC76D)
             : isLowGood
             ? const Color(0xFFEEC000)
             : const Color(0xFF1BC76D);

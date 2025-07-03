@@ -61,7 +61,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
       },
       child: Scaffold(
         appBar: CustomAppBar(
-          title: "Measurment",
+          title: "Measurement",
           onTop: () {
             Get.back();
           },
