@@ -60,15 +60,50 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
         padding: EdgeInsets.all(AppDimensions.padding(15)),
         child: ListView(
           children: [
-            // CustomFormField(
-            //   prefixIcon: Icon(Icons.search, color: AppColors.searchColor),
-            //   label: "",
-            //   hint: "Type to search",
-            //   controller: _searchController,
-            // ),
-            // SizedBox(height: 20),
+            CustomFormField(
+              prefixIcon: Icon(Icons.search, color: AppColors.searchColor),
+              label: "",
+              hint: "Type to search",
+              controller: _searchController,
+              onChanged: (query) {
+                // _controller.search(query!);
+              },
+            ),
+            SizedBox(height: 20),
             Obx(
-              () => ListView.builder(
+              () =>
+              // _controller.filteredItems.isNotEmpty
+              //     ? ListView.builder(
+              //       reverse: true,
+              //       shrinkWrap: true,
+              //       itemCount: _controller.filteredItems.length,
+              //       physics: NeverScrollableScrollPhysics(),
+              //       itemBuilder: (contex, index) {
+              //         var result = _controller.filteredItems[index];
+              //         return Padding(
+              //           padding: const EdgeInsets.only(bottom: 10),
+              //           child: GeustUserHistoryCard(
+              //             gender: result.gender.toString(),
+              //             name: result.name.toString(),
+              //             height: result.height.toString(),
+              //             weight: result.weight.toString(),
+              //             time: result.date.toString(),
+              //             onTop: () {
+              //               _controller.getGeustDetails(
+              //                 result.guestId.toString(),
+              //               );
+              //             },
+              //             onDelete: () {
+              //               _controller.removeGuest(
+              //                 guestId: result.guestId,
+              //               );
+              //             },
+              //           ),
+              //         );
+              //       },
+              //     )
+              // :
+              ListView.builder(
                 reverse: true,
                 shrinkWrap: true,
                 itemCount: _controller.guestList.length,

@@ -20,6 +20,7 @@ class CustomFormField extends StatelessWidget {
   final bool enable;
   final double borderRadius;
   RxBool isObscureText = false.obs;
+  final void Function(String?)? onChanged;
 
   CustomFormField({
     super.key,
@@ -35,6 +36,7 @@ class CustomFormField extends StatelessWidget {
     this.borderColor = AppColors.textFieldColor,
     this.borderRadius = 8.0,
     this.suffixIcon,
+    this.onChanged,
     this.onSuffixTap,
   });
 
@@ -55,6 +57,7 @@ class CustomFormField extends StatelessWidget {
         const SizedBox(height: 3),
         Obx(
           () => TextFormField(
+            onChanged: onChanged,
             readOnly: readOnly,
             enabled: enable,
             controller: controller,

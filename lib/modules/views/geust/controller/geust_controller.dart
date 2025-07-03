@@ -39,6 +39,7 @@ class GeustController extends GetxController
   RxString geustDob = ''.obs;
   RxBool isTermAccepted = false.obs;
   RxList<HealthDetailList> healthDetailsList = <HealthDetailList>[].obs;
+  RxList<GuestList> filteredItems = <GuestList>[].obs;
 
   Future<void> getGeustHistory() async {
     var userID = await IndoSharedPreference.instance.getUserId();
@@ -48,12 +49,15 @@ class GeustController extends GetxController
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
       guestList.clear();
+      filteredItems.clear();
       var data = GuestListResponseModel.fromJson(resposneData["responseBody"]);
       guestList.value = data.guestList!;
     } else if (statusCode == 500) {
       guestList.clear();
+      filteredItems.clear();
     } else {
       guestList.clear();
+      filteredItems.clear();
       AppSnackbar.show(title: "Error", message: "Something went wrong");
     }
   }
@@ -421,5 +425,19 @@ class GeustController extends GetxController
     }
 
     return age;
+  }
+
+  void search(String query) {
+    if (query.isEmpty) {
+      filteredItems.clear();
+    } else {
+      filteredItems.value =
+          guestList
+              .where(
+                (item) =>
+                    item.name!.toLowerCase().contains(query.toLowerCase()),
+              )
+              .toList();
+    }
   }
 }
