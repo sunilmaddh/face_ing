@@ -119,7 +119,10 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                       weight: result.weight.toString(),
                       time: result.date.toString(),
                       onTop: () {
-                        _controller.getGeustDetails(result.guestId.toString());
+                        _controller.getGeustDetails(
+                          result.guestId.toString(),
+                          true,
+                        );
                       },
                       onDelete: () {
                         _controller.removeGuest(guestId: result.guestId);

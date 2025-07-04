@@ -40,6 +40,7 @@ class UserHistoryData extends StatelessWidget {
                         onTap: () {
                           _profileController.getUserHealthDetails(
                             healthId: result.scanId,
+                            isFullHistory: true,
                           );
                         },
                         child: Row(

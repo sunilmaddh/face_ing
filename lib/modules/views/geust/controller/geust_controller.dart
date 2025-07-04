@@ -62,9 +62,13 @@ class GeustController extends GetxController
     }
   }
 
-  Future<void> getGeustDetails(String guestID) async {
+  Future<void> getGeustDetails(String guestID, bool isFullHistory) async {
     var userID = await IndoSharedPreference.instance.getUserId();
-    var data = {"userId": userID, "guestId": guestID};
+    var data = {
+      "userId": userID,
+      "guestId": guestID,
+      "isFullHistory": isFullHistory,
+    };
 
     debugPrint(data.toString());
     Map<String, dynamic> resposneData = await GeustServices()
@@ -239,6 +243,7 @@ class GeustController extends GetxController
         "dob": dobTextController.text,
         "weight": weightTextController.text,
         "height": heightTextController.text,
+        "smokerType": "Non smoker",
       },
       "binahDetails": {
         "pulseRate":
