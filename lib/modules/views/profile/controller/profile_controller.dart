@@ -76,9 +76,16 @@ class ProfileController extends GetxController
     }
   }
 
-  Future<void> getUserHealthDetails({required var healthId}) async {
+  Future<void> getUserHealthDetails({
+    required var healthId,
+    required var isFullHistory,
+  }) async {
     var userID = await IndoSharedPreference.instance.getUserId();
-    var data = {"userId": userID, "healthId": healthId};
+    var data = {
+      "userId": userID,
+      "healthId": healthId,
+      "isFullHistory": isFullHistory,
+    };
 
     Map<String, dynamic> responseData = await _profileService
         .getUserHealthDetailsService(data: data);
