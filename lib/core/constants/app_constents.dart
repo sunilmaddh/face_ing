@@ -43,6 +43,7 @@ class AppConstents {
   static const String breathingRate = 'Breathing Rate';
   static const String pulseRate = 'Pulse Rate (Heart Rate)';
   static const String prq = 'PRQ';
+  static const String bloodPressure = 'Blood Pressure';
   static const String bloodPressureSystolic = 'Blood Pressure Systolic';
   static const String bloodPressureDiastolic = 'Blood Pressure Diastolic';
   static const String oxygenSaturation = 'Oxygen Saturation';
@@ -71,7 +72,7 @@ class AppConstents {
   static const String rriData = 'RRi Data';
 }
 
-class WellnessMetricDescriptions {
+class WellnessMetricHeading {
   static const String wellnessScore = 'Your Wellness Score is';
   static const String breathingRate = 'Your Breathing Rate is';
   static const String pulseRate = 'Your Pulse Rate (Heart Rate) is';

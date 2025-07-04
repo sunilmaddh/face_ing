@@ -85,7 +85,7 @@ class CommonDialog {
     required TextEditingController dateController,
   }) async {
     DateTime currentDate = DateTime.now();
-    DateTime minDate = DateTime(1970, 1, 1);
+    DateTime minDate = DateTime(1925, 1, 1);
     DateTime maxDate = DateTime.now();
     DateTime? pickedDate = await showDatePicker(
       context: context,

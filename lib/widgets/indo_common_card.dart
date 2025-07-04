@@ -143,7 +143,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.vitalHeading,
+                          "${widget.vitalHeading} ${widget.vitalStatus}",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -184,7 +184,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                                       ],
                                     )
                                     : SizedBox(),
-                                Icon(Icons.info_rounded),
+                                // Icon(Icons.info_rounded),
                                 // SvgPicture.asset(imageAsset, width: 20, height: 20),
                               ],
                             )

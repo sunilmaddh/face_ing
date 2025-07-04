@@ -47,24 +47,11 @@ class IndoSakuraCommonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isSdkType) {
-      if (isLowGood == true) {
-        if (vitalName == "Breathing Rate" ||
-            vitalName == "Pulse Rate(Heart Rate)" ||
-            vitalName == "Hemoglobin") {
-          isBreathing = true;
-        } else if (vitalName == "Blood Pressure") {
-          isBlood = true;
-        }
-      }
-    } else {
-      if (isLowGood == true) {
-        if (vitalName == "Breathing Rate" || vitalName == "Heart Rate") {
-          isBreathing = true;
-        } else if (vitalName == "Blood Systolic") {
-          isBlood = true;
-        }
-      }
+    if (isSdkType &&
+        isLowGood &&
+        vitalName == "Blood Pressure" &&
+        vitalStatus == "High") {
+      isLowGood = false;
     }
     if (isSdkType == true) {
       imageRes = _getImageResourceBinah(vitalStatus);
@@ -361,65 +348,25 @@ class IndoSakuraCommonCard extends StatelessWidget {
 
   String _getImageResourceBinah(String vitalStatus) {
     switch (vitalStatus) {
-      case 'Low':
-        return isBreathing
-            ? AppAssets.mediumImage
-            : isBlood
-            ? AppAssets.mediumImage
-            : isLowGood
-            ? AppAssets.veryHighImage
-            : AppAssets.veryLowImage;
       case 'low':
-        return isBreathing
-            ? AppAssets.mediumImage
-            : isBlood
-            ? AppAssets.mediumImage
-            : isLowGood
-            ? AppAssets.veryHighImage
-            : AppAssets.veryLowImage;
-      case 'Normal':
-        return isBreathing
-            ? AppAssets.veryHighImage
-            : isBlood
-            ? AppAssets.veryHighImage
-            : isLowGood
-            ? AppAssets.mediumAsset
-            : AppAssets.veryHighImage;
+      case 'Low':
+        return isLowGood ? AppAssets.mediumAsset : AppAssets.veryLowImage;
       case "normal":
-        return isBreathing
-            ? AppAssets.veryHighImage
-            : isBlood
-            ? AppAssets.veryHighImage
-            : isLowGood
-            ? AppAssets.mediumAsset
-            : AppAssets.veryHighImage;
+      case 'Normal':
+        return AppAssets.veryHighImage;
       case "Medium":
-        return AppAssets.mediumImage;
       case "medium":
         return AppAssets.mediumImage;
       case "Mild":
         return AppAssets.mediumImage;
       case 'High':
-        return isBreathing
-            ? AppAssets.mediumImage
-            : isBlood
-            ? AppAssets.veryLowImage
-            : isLowGood
-            ? AppAssets.veryHighImage
-            : AppAssets.veryLowImage;
       case 'high':
-        return isBreathing
-            ? AppAssets.mediumImage
-            : isBlood
-            ? AppAssets.veryLowImage
-            : isLowGood
-            ? AppAssets.veryHighImage
-            : AppAssets.veryLowImage;
-      case 'Very High':
-        return AppAssets.veryLowImage;
+        return isLowGood ? AppAssets.mediumAsset : AppAssets.veryLowImage;
       case 'Prediabetes risk':
+      case 'Prediabetes':
         return AppAssets.mediumImage;
       case 'Diabetes risk':
+      case 'Diabetes':
         return AppAssets.veryLowImage;
       default:
         return AppAssets.veryHighImage;
@@ -429,38 +376,20 @@ class IndoSakuraCommonCard extends StatelessWidget {
   Color _getColorBinah(String vitalStatus) {
     switch (vitalStatus) {
       case 'Low':
-        return isBreathing
-            ? const Color(0xFFEEC000)
-            : isBlood
-            ? const Color(0xFFEEC000)
-            : isLowGood
-            ? const Color(0xFF1BC76D)
-            : const Color(0xFFFA704E);
+        return isLowGood ? const Color(0xFFEEC000) : const Color(0xFFFA704E);
       case 'Normal':
-        return isBreathing
-            ? const Color(0xFF1BC76D)
-            : isBlood
-            ? const Color(0xFF1BC76D)
-            : isLowGood
-            ? const Color(0xFFEEC000)
-            : const Color(0xFF1BC76D);
+        return const Color(0xFF1BC76D);
       case 'Medium':
         return const Color(0xFFEEC000);
       case 'Mild':
         return const Color(0xFFEEC000);
-      case 'Very High':
-        return isLowGood ? const Color(0xFFFA704E) : const Color(0xFF1BC76D);
       case 'High':
-        return isBreathing
-            ? const Color(0xFFEEC000)
-            : isBlood
-            ? const Color(0xFFFA704E)
-            : isLowGood
-            ? const Color(0xFF1BC76D)
-            : const Color(0xFFFA704E);
+        return isLowGood ? const Color(0xFFEEC000) : const Color(0xFFFA704E);
       case 'Prediabetes risk':
+      case 'Prediabetes':
         return const Color(0xFFEEC000);
       case 'Diabetes risk':
+      case 'Diabetes':
         return const Color(0xFFFA704E);
       default:
         return Colors.white;

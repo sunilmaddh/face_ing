@@ -66,7 +66,7 @@ class Getvitalstatus {
     debugPrint("Systolic value $value");
     if (value == null) return '';
     if (value < min) return 'low';
-    if (value > max) return 'normal';
+    if (value >= max) return 'normal';
     return 'normal';
   }
 

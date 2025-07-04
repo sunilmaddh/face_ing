@@ -33,7 +33,7 @@ class _AllReportScreenState extends State<AllReportScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _geustController.addGuest(_measurementController.vitalsResults.value);
+    // _geustController.addGuest(_measurementController.vitalsResults.value);
   }
 
   // Helper to build IndoCommonCard with less repetition
@@ -85,7 +85,7 @@ class _AllReportScreenState extends State<AllReportScreen>
           12,
           20,
         ),
-        vitalHeading: WellnessMetricDescriptions.BreathingRate,
+        vitalHeading: WellnessMetricHeading.breathingRate,
         vitalDescription: WellnessMetricDescriptionsLong.breathRate,
         vitalMass: 'rpm',
       ),
@@ -93,7 +93,7 @@ class _AllReportScreenState extends State<AllReportScreen>
         imageAsset: CommonHealthAsset().getPulseRateAsset(
           statusHelper.getPulseRate(VitalSignTypes.pulseRate, 60, 100),
         ),
-        vitalName: "Pulse rate (Heart Rate)",
+        vitalName: AppConstents.pulseRate,
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.pulseRate),
         vitalCondition: 'Avg 60 - 100',
         vitalMass: "bpm",
@@ -102,16 +102,16 @@ class _AllReportScreenState extends State<AllReportScreen>
           60,
           100,
         ),
-        vitalHeading: WellnessMetricDescriptions.pulseRate,
+        vitalHeading: WellnessMetricHeading.pulseRate,
         vitalDescription: WellnessMetricDescriptionsLong.pulseRate,
       ),
       buildCard(
-        vitalName: "Blood Pressure",
+        vitalName: AppConstents.bloodPressure,
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.bloodPressure),
         vitalCondition: '',
         vitalMass: "mmHg",
         vitalStatus: statusHelper.getBpSystolic(systolic, 100, 129),
-        vitalHeading: WellnessMetricDescriptions.bloodPressureDiastolic,
+        vitalHeading: WellnessMetricHeading.bloodPressureDiastolic,
         vitalDescription: WellnessMetricDescriptionsLong.bpSystolic,
 
         imageAsset: CommonHealthAsset().getSystolicBPAsset(
@@ -127,16 +127,16 @@ class _AllReportScreenState extends State<AllReportScreen>
             95,
           ),
         ),
-        vitalName: "Oxygen Saturation",
+        vitalName: AppConstents.oxygenSaturation,
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.oxygenSaturation),
         vitalCondition: '',
         vitalMass: "%",
         vitalStatus: statusHelper.getOxygenSaturation(
           VitalSignTypes.oxygenSaturation,
-          94,
+          95,
           95,
         ),
-        vitalHeading: WellnessMetricDescriptions.oxygenSaturation,
+        vitalHeading: WellnessMetricHeading.oxygenSaturation,
         vitalDescription: WellnessMetricDescriptionsLong.oxygenSaturation,
       ),
     ];
@@ -184,7 +184,7 @@ class _AllReportScreenState extends State<AllReportScreen>
             hemoglobinMax,
           ),
         ),
-        vitalName: "Hemoglobin",
+        vitalName: AppConstents.hemoglobin,
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.hemoglobin),
         vitalCondition: "",
         vitalMass: "g/dL",
@@ -194,17 +194,17 @@ class _AllReportScreenState extends State<AllReportScreen>
           hemoglobinMax,
         ),
 
-        vitalHeading: WellnessMetricDescriptions.hemoglobin,
+        vitalHeading: WellnessMetricHeading.hemoglobin,
         vitalDescription: WellnessMetricDescriptionsLong.hemoglobin,
       ),
       buildCard(
         imageAsset: CommonHealthAsset().getHbA1cAsset(a1cStatus),
-        vitalName: "Hemoglobin A1C",
+        vitalName: AppConstents.hemoglobinA1C,
         vitalValue: a1cValueStr,
         vitalCondition: '', // 👈 status text like Prediabetes risk
         vitalMass: "%",
         vitalStatus: a1cConditionText,
-        vitalHeading: WellnessMetricDescriptions.hemoglobinA1C,
+        vitalHeading: WellnessMetricHeading.hemoglobinA1C,
         vitalDescription: WellnessMetricDescriptionsLong.hemoglobinA1C,
       ),
     ];
