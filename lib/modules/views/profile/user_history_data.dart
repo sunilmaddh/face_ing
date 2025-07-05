@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart' show AppColors;
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
@@ -23,12 +24,22 @@ class UserHistoryData extends StatelessWidget {
         onTop: () {
           AppNavigation.back();
         },
-        title: "User History list",
+        title: "User History",
       ),
       body: Obx(
         () =>
-            _profileController.userHealthList.isEmpty
+            _profileController.isLoading.isTrue
                 ? ShimmerLoadingScreen()
+                : _profileController.userHealthList.isEmpty
+                ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Image.asset(
+                      AppAssets.noDataImage,
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                )
                 : ListView.separated(
                   padding: EdgeInsets.all(20),
                   itemCount: _profileController.userHealthList.length,

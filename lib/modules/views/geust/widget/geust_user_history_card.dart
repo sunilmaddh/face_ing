@@ -25,8 +25,8 @@ class GeustUserHistoryCard extends StatelessWidget {
   final String height;
   final String weight;
   final String gender;
-  final String time;
   final String guestImage;
+  final String time;
   final VoidCallback onTop;
   final VoidCallback onDelete;
 
@@ -51,16 +51,19 @@ class GeustUserHistoryCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomCircularAvatar(
-                        image: guestImage ?? "",
-                        widget: CommonText.text(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          name.isNotEmpty
-                              ? name.substring(0, 1).toUpperCase()
-                              : "",
-                          color: AppColors.btntext,
-                        ),
-
+                        color: AppColors.guestIconColor,
+                        image: guestImage,
+                        widget:
+                            guestImage.isEmpty
+                                ? CommonText.text(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  name.isNotEmpty
+                                      ? name.substring(0, 1).toUpperCase()
+                                      : "",
+                                  color: AppColors.btntext,
+                                )
+                                : SizedBox.shrink(),
                         radius: AppDimensions.padding(24.0),
                       ),
                       SizedBox(height: 10),
@@ -86,10 +89,12 @@ class GeustUserHistoryCard extends StatelessWidget {
                           );
                         },
                         child: CustomCircularAvatar(
-                          widget: Icon(Icons.close),
-
-                          radius: AppDimensions.padding(20.0),
-                          image: '',
+                          widget: Icon(
+                            Icons.close,
+                            color: AppColors.blackColor,
+                          ),
+                          color: AppColors.btntext,
+                          radius: AppDimensions.padding(15.0),
                         ),
                       ),
                       SizedBox(height: 15),

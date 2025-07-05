@@ -45,5 +45,6 @@ class AppAssets {
       mediumImage = "$baseUrlSvg/meduim.svg",
       veryHighImage = "$baseUrlSvg/very_high_im.svg",
       veryLowImage = "$baseUrlSvg/very_low.svg",
+      noDataImage = "$baseUrlPng/nodata.jpg",
       highImage = "$baseUrlSvg/high_im.svg";
 }

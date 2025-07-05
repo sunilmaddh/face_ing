@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
-import 'package:ntt_data/widgets/indo_common_card.dart';
 import 'package:ntt_data/widgets/indo_sakura_common_card.dart';
 
 class GuestHistoryDetails extends StatelessWidget {
@@ -19,7 +17,7 @@ class GuestHistoryDetails extends StatelessWidget {
         onTop: () {
           AppNavigation.back();
         },
-        title: "Health details",
+        title: "Guest Health Reports",
       ),
 
       body: Obx(

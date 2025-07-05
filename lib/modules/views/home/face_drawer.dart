@@ -103,6 +103,7 @@ class FaceDrawer extends StatelessWidget {
                           children: [
                             Obx(
                               () => CustomCircularAvatar(
+                                color: AppColors.guestIconColor,
                                 image:
                                     _profileController
                                                 .uploadImageResponseModel
@@ -125,7 +126,6 @@ class FaceDrawer extends StatelessWidget {
                                   fontSize: AppDimensions.font(30),
                                   fontWeight: FontWeight.w700,
                                 ),
-                                radius: AppDimensions.padding(24.0),
                               ),
                             ),
                             Align(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
@@ -26,6 +27,9 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
   final _searchController = TextEditingController();
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.getGeustHistory();
+    });
     _controller.getGeustHistory();
     super.initState();
   }
@@ -54,121 +58,136 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
             AppNavigation.back();
           });
         },
-        title: "Guest user",
+        title: "Guest History",
       ),
       body: Padding(
         padding: EdgeInsets.all(AppDimensions.padding(15)),
-        child: ListView(
-          children: [
-            CustomFormField(
-              prefixIcon: Icon(Icons.search, color: AppColors.searchColor),
-              label: "",
-              hint: "Type to search",
-              controller: _searchController,
-              onChanged: (query) {
-                // _controller.search(query!);
-              },
-            ),
-            SizedBox(height: 20),
-            Obx(
-              () =>
-              // _controller.filteredItems.isNotEmpty
-              //     ? ListView.builder(
-              //       reverse: true,
-              //       shrinkWrap: true,
-              //       itemCount: _controller.filteredItems.length,
-              //       physics: NeverScrollableScrollPhysics(),
-              //       itemBuilder: (contex, index) {
-              //         var result = _controller.filteredItems[index];
-              //         return Padding(
-              //           padding: const EdgeInsets.only(bottom: 10),
-              //           child: GeustUserHistoryCard(
-              //             gender: result.gender.toString(),
-              //             name: result.name.toString(),
-              //             height: result.height.toString(),
-              //             weight: result.weight.toString(),
-              //             time: result.date.toString(),
-              //             onTop: () {
-              //               _controller.getGeustDetails(
-              //                 result.guestId.toString(),
-              //               );
-              //             },
-              //             onDelete: () {
-              //               _controller.removeGuest(
-              //                 guestId: result.guestId,
-              //               );
-              //             },
-              //           ),
-              //         );
-              //       },
-              //     )
-              // :
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: _controller.guestList.length,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (contex, index) {
-                  var result = _controller.guestList[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: GeustUserHistoryCard(
-                      guestImage: result.guestImage.toString(),
-                      gender: result.gender.toString(),
-                      name: result.name.toString(),
-                      height: result.height.toString(),
-                      weight: result.weight.toString(),
-                      time: result.date.toString(),
-
-                      onTop: () {
-                        _controller.getGeustDetails(
-                          result.guestId.toString(),
-                          true,
-                        );
-                      },
-                      onDelete: () {
-                        _controller.removeGuest(guestId: result.guestId);
-                      },
+        child: Obx(
+          () =>
+              _controller.isLoading.isTrue
+                  ? ShimmerLoadingScreen()
+                  : _controller.guestList.isEmpty
+                  ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Image.asset(
+                        AppAssets.noDataImage,
+                        alignment: Alignment.center,
+                      ),
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
+                  )
+                  : ListView(
+                    children: [
+                      // CustomFormField(
+                      //   prefixIcon: Icon(Icons.search, color: AppColors.searchColor),
+                      //   label: "",
+                      //   hint: "Type to search",
+                      //   controller: _searchController,
+                      //   onChanged: (query) {
+                      //     // _controller.search(query!);
+                      //   },
+                      // ),
+                      // SizedBox(height: 20),
 
-          //   Obx(
-          //     () =>
-          //         _controller.guestList.isNotEmpty
-          //             ? ListView.builder(
-          //               shrinkWrap: true,
-          //               itemCount: _controller.guestList.length,
-          //               physics: NeverScrollableScrollPhysics(),
-          //               itemBuilder: (contex, index) {
-          //                 var result = _controller.guestList[index];
-          //                 return Padding(
-          //                   padding: const EdgeInsets.only(bottom: 10),
-          //                   child: GeustUserHistoryCard(
-          //                     gender: result.gender.toString(),
-          //                     name: result.name.toString(),
-          //                     height: result.height.toString(),
-          //                     weight: result.weight.toString(),
-          //                     time: result.date.toString(),
-          //                     onTop: () {
-          //                       _controller.getGeustDetails(
-          //                         result.guestId.toString(),
-          //                       );
-          //                     },
-          //                     onDelete: () {
-          //                       _controller.removeGuest(
-          //                         guestId: result.guestId,
-          //                       );
-          //                     },
-          //                   ),
-          //                 );
-          //               },
-          //             )
-          //             : ShimmerLoadingScreen(),
-          //   ),
-          // ],
+                      // _controller.filteredItems.isNotEmpty
+                      //     ? ListView.builder(
+                      //       reverse: true,
+                      //       shrinkWrap: true,
+                      //       itemCount: _controller.filteredItems.length,
+                      //       physics: NeverScrollableScrollPhysics(),
+                      //       itemBuilder: (contex, index) {
+                      //         var result = _controller.filteredItems[index];
+                      //         return Padding(
+                      //           padding: const EdgeInsets.only(bottom: 10),
+                      //           child: GeustUserHistoryCard(
+                      //             gender: result.gender.toString(),
+                      //             name: result.name.toString(),
+                      //             height: result.height.toString(),
+                      //             weight: result.weight.toString(),
+                      //             time: result.date.toString(),
+                      //             onTop: () {
+                      //               _controller.getGeustDetails(
+                      //                 result.guestId.toString(),
+                      //               );
+                      //             },
+                      //             onDelete: () {
+                      //               _controller.removeGuest(
+                      //                 guestId: result.guestId,
+                      //               );
+                      //             },
+                      //           ),
+                      //         );
+                      //       },
+                      //     )
+                      // :
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _controller.guestList.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (contex, index) {
+                          var result = _controller.guestList[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 30),
+                            child: GeustUserHistoryCard(
+                              guestImage: result.guestImage.toString(),
+                              gender: result.gender.toString(),
+                              name: result.name.toString(),
+                              height: result.height.toString(),
+                              weight: result.weight.toString(),
+                              time: result.date.toString(),
+
+                              onTop: () {
+                                _controller.getGeustDetails(
+                                  result.guestId.toString(),
+                                  true,
+                                );
+                              },
+                              onDelete: () {
+                                _controller.removeGuest(
+                                  guestId: result.guestId,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+
+                    //   Obx(
+                    //     () =>
+                    //         _controller.guestList.isNotEmpty
+                    //             ? ListView.builder(
+                    //               shrinkWrap: true,
+                    //               itemCount: _controller.guestList.length,
+                    //               physics: NeverScrollableScrollPhysics(),
+                    //               itemBuilder: (contex, index) {
+                    //                 var result = _controller.guestList[index];
+                    //                 return Padding(
+                    //                   padding: const EdgeInsets.only(bottom: 10),
+                    //                   child: GeustUserHistoryCard(
+                    //                     gender: result.gender.toString(),
+                    //                     name: result.name.toString(),
+                    //                     height: result.height.toString(),
+                    //                     weight: result.weight.toString(),
+                    //                     time: result.date.toString(),
+                    //                     onTop: () {
+                    //                       _controller.getGeustDetails(
+                    //                         result.guestId.toString(),
+                    //                       );
+                    //                     },
+                    //                     onDelete: () {
+                    //                       _controller.removeGuest(
+                    //                         guestId: result.guestId,
+                    //                       );
+                    //                     },
+                    //                   ),
+                    //                 );
+                    //               },
+                    //             )
+                    //             : ShimmerLoadingScreen(),
+                    //   ),
+                    // ],
+                  ),
         ),
       ),
     );

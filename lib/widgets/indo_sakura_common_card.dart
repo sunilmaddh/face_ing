@@ -152,7 +152,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                           color: Color(0xff5E5D5D),
                         ),
                         const SizedBox(height: 20),
-                        if (vitalStatus.isNotEmpty)
+                        if (status.isNotEmpty)
                           Row(
                             children: [
                               Container(

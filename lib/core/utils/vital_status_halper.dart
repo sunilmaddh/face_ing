@@ -177,20 +177,20 @@ class BinahVitalHelper {
   }
 
   String getStatus() {
-    switch (vitalStatus.toLowerCase()) {
-      case 'diabetes':
+    switch (vitalStatus) {
+      case 'Diabetes':
         return 'Diabetes risk';
-      case 'drediabetes':
+      case 'Drediabetes':
         return 'Prediabetes risk';
-      case 'very low':
-      case 'low':
-      case 'normal':
-      case 'medium':
-      case 'high':
-      case 'optimal':
-      case 'very High':
-      case 'prediabetes risk':
-      case 'diabetes risk':
+      case 'Very low':
+      case 'Low':
+      case 'Normal':
+      case 'Medium':
+      case 'High':
+      case 'Optimal':
+      case 'Very High':
+      case 'Prediabetes risk':
+      case 'Diabetes risk':
         return vitalStatus;
 
       default:
