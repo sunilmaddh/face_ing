@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:ntt_data/core/constants/app_colors.dart';
 
 class CustomCircularAvatar extends StatelessWidget {
+  final String image;
+  final Widget widget;
+  final double radius;
+
   const CustomCircularAvatar({
     super.key,
-    this.radius = 50.0,
-    this.image = "",
-    this.color = AppColors.primary,
-    this.widget = const SizedBox(),
+    required this.image,
+    required this.widget,
+    required this.radius,
   });
-  final double radius;
-  final String image;
-  final Color color;
-  final Widget widget;
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: CircleAvatar(
-        radius: radius, // Size of the circle
-        backgroundImage: NetworkImage(image),
-        //  AssetImage(""), // Background color
-        child: image.isEmpty ? Center(child: widget) : SizedBox(),
-      ),
+    final hasImage = image.isNotEmpty;
+
+    return CircleAvatar(
+      radius: radius,
+
+      backgroundImage: hasImage ? NetworkImage(image) : null,
+      child:
+          hasImage ? null : widget, // Show fallback widget (like initial text)
     );
   }
 }

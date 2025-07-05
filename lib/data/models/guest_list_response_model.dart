@@ -43,7 +43,7 @@ class GuestList {
   String? userId;
   String? guestId;
   String? dob;
-
+  String? guestImage;
   GuestList({
     this.email,
     this.name,
@@ -55,6 +55,7 @@ class GuestList {
     this.userId,
     this.guestId,
     this.dob,
+    this.guestImage,
   });
 
   factory GuestList.fromJson(Map<String, dynamic> json) => GuestList(
@@ -65,11 +66,22 @@ class GuestList {
     age: json["age"] ?? "",
     weight: json["weight"] ?? "",
     height: json["height"] ?? "",
-
+    guestImage: _cleanImage(json['guestImage']),
     userId: json["userId"] ?? "",
     guestId: json["guestId"] ?? "",
     dob: json["dob"] ?? "",
   );
+
+  static String _cleanImage(dynamic value) {
+    if (value == null) return "";
+    return value
+        .toString()
+        .replaceAll(RegExp(r'[\u200B\u200C\u200D\uFEFF]'), '')
+        .trim();
+  }
+
+  bool get hasValidImage =>
+      guestImage!.isNotEmpty && guestImage!.startsWith('http');
 
   // Map<String, dynamic> toJson() => {
   //   "email": email,

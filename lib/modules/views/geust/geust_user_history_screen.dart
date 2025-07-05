@@ -104,7 +104,6 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
               //     )
               // :
               ListView.builder(
-                reverse: true,
                 shrinkWrap: true,
                 itemCount: _controller.guestList.length,
                 physics: NeverScrollableScrollPhysics(),
@@ -113,11 +112,13 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: GeustUserHistoryCard(
+                      guestImage: result.guestImage.toString(),
                       gender: result.gender.toString(),
                       name: result.name.toString(),
                       height: result.height.toString(),
                       weight: result.weight.toString(),
                       time: result.date.toString(),
+
                       onTop: () {
                         _controller.getGeustDetails(
                           result.guestId.toString(),
