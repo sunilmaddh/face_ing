@@ -51,6 +51,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomCircularAvatar(
+                        color: AppColors.guestIconColor,
                         image: guestImage,
                         widget:
                             guestImage.isEmpty
@@ -88,9 +89,12 @@ class GeustUserHistoryCard extends StatelessWidget {
                           );
                         },
                         child: CustomCircularAvatar(
-                          widget: Icon(Icons.close),
+                          widget: Icon(
+                            Icons.close,
+                            color: AppColors.blackColor,
+                          ),
                           color: AppColors.btntext,
-                          radius: AppDimensions.padding(20.0),
+                          radius: AppDimensions.padding(15.0),
                         ),
                       ),
                       SizedBox(height: 15),

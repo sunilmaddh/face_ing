@@ -44,10 +44,12 @@ class GeustController extends GetxController
   RxList<GuestList> filteredItems = <GuestList>[].obs;
 
   Future<void> getGeustHistory() async {
+    isLoading(true);
     var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID};
     Map<String, dynamic> resposneData = await GeustServices()
         .getGeustHistoryService(data: data);
+    isLoading(false);
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
       guestList.clear();

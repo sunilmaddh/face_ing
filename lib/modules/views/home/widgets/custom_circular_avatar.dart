@@ -17,6 +17,7 @@ class CustomCircularAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasImage = image.isNotEmpty;
     return CircleAvatar(
+      backgroundColor: color,
       radius: radius,
       backgroundImage: hasImage ? NetworkImage(image) : null,
       child:

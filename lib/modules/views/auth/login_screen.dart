@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
@@ -33,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
+        isLeading: false,
         onTop: () {
           AppNavigation.back();
         },
@@ -50,6 +53,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: AppDimensions.height(30)),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(AppAssets.logo),
+                    ),
+                    SizedBox(height: AppDimensions.height(45)),
                     CustomFormField(
                       validator: (email) {
                         if (email == null || email.isEmpty) {

@@ -11,6 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isCenterTitle;
   final Color textColor;
   final VoidCallback onTop;
+  final bool isLeading;
 
   const CustomAppBar({
     super.key,
@@ -19,6 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor = Colors.white,
     this.textColor = AppColors.primary,
     this.leading,
+    this.isLeading = true,
 
     required this.onTop,
     this.isCenterTitle = true,
@@ -27,10 +29,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 10.0),
-        child: RoundedButton(onPressed: onTop),
-      ),
+      leading:
+          isLeading
+              ? Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: RoundedButton(onPressed: onTop),
+              )
+              : SizedBox.shrink(),
       title: Text(
         title,
         style: TextStyle(fontWeight: FontWeight.w700, color: textColor),

@@ -19,7 +19,7 @@ class GuestHistoryDetails extends StatelessWidget {
         onTop: () {
           AppNavigation.back();
         },
-        title: "Health details",
+        title: "Guest Health Reports",
       ),
 
       body: Obx(

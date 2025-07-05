@@ -17,7 +17,7 @@ class UserHealthDetails extends StatelessWidget {
         onTop: () {
           AppNavigation.back();
         },
-        title: "User Health Details",
+        title: "User Health Reports",
       ),
       body: Obx(
         () =>
