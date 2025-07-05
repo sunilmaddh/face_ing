@@ -52,9 +52,9 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
       ),
       appBar: CustomAppBar(
         onTop: () {
-          // WidgetsBinding.instance.addPostFrameCallback((_) {
-          //   AppNavigation.back();
-          // });
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            AppNavigation.back();
+          });
         },
         title: "Guest History",
       ),
