@@ -15,13 +15,12 @@ class CustomCircularAvatar extends StatelessWidget {
   final Widget widget;
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: CircleAvatar(
-        radius: radius, // Size of the circle
-        backgroundImage: NetworkImage(image),
-        //  AssetImage(""), // Background color
-        child: image.isEmpty ? Center(child: widget) : SizedBox(),
-      ),
+    final hasImage = image.isNotEmpty;
+    return CircleAvatar(
+      radius: radius,
+      backgroundImage: hasImage ? NetworkImage(image) : null,
+      child:
+          hasImage ? null : widget, // Show fallback widget (like initial text)
     );
   }
 }

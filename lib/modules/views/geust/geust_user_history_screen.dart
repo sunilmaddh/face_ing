@@ -4,13 +4,10 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/widget/geust_user_history_card.dart';
-import 'package:ntt_data/modules/views/profile/vitals_data_screen.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
-import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/rounded_button.dart';
-import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 
 // ignore: must_be_immutable
@@ -104,7 +101,6 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
               //     )
               // :
               ListView.builder(
-                reverse: true,
                 shrinkWrap: true,
                 itemCount: _controller.guestList.length,
                 physics: NeverScrollableScrollPhysics(),
@@ -113,6 +109,7 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: GeustUserHistoryCard(
+                      guestImage: result.guestImage.toString(),
                       gender: result.gender.toString(),
                       name: result.name.toString(),
                       height: result.height.toString(),

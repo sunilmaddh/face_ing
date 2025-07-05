@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
 import 'package:flutter/cupertino.dart';
@@ -244,6 +246,7 @@ class GeustController extends GetxController
         "weight": weightTextController.text,
         "height": heightTextController.text,
         "smokerType": "Non smoker",
+        "guestImage": userImage.value,
       },
       "binahDetails": {
         "pulseRate":
@@ -409,6 +412,9 @@ class GeustController extends GetxController
     selectionType.value = "";
     isTermAccepted.value = false;
     isChecked.value = false;
+    userImage.value = "";
+    isProfile.value = false;
+    profileUrl.value = File("");
   }
 
   @override

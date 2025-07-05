@@ -18,12 +18,14 @@ class GeustUserHistoryCard extends StatelessWidget {
     required this.gender,
     required this.onTop,
     required this.onDelete,
+    required this.guestImage,
   });
 
   final String name;
   final String height;
   final String weight;
   final String gender;
+  final String guestImage;
   final String time;
   final VoidCallback onTop;
   final VoidCallback onDelete;
@@ -49,14 +51,18 @@ class GeustUserHistoryCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomCircularAvatar(
-                        widget: CommonText.text(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          name.isNotEmpty
-                              ? name.substring(0, 1).toUpperCase()
-                              : "",
-                          color: AppColors.btntext,
-                        ),
+                        image: guestImage,
+                        widget:
+                            guestImage.isEmpty
+                                ? CommonText.text(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  name.isNotEmpty
+                                      ? name.substring(0, 1).toUpperCase()
+                                      : "",
+                                  color: AppColors.btntext,
+                                )
+                                : SizedBox.shrink(),
                         radius: AppDimensions.padding(24.0),
                       ),
                       SizedBox(height: 10),
