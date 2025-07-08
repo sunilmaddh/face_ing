@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
@@ -147,6 +148,32 @@ class AddNewGuestScreen extends StatelessWidget {
                                 itemToString: (smokerType) => smokerType,
                               ),
                               SizedBox(height: 15),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Guest Image",
+                                        style: TextStyle(
+                                          fontSize: AppDimensions.font(16),
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: AppTextStyles.fontFamily,
+                                          color: AppColors.blackColor,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: "(optional)",
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xff4A4949),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
                               ProfileUploadCard(
                                 isProfile: _geustController.isProfile,
                                 profileUrl: _geustController.profileUrl,
