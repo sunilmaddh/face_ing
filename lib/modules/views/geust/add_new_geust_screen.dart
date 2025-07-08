@@ -6,12 +6,14 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/widgets/terms_checkbox_widget.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
+import 'package:ntt_data/modules/views/geust/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
@@ -146,6 +148,32 @@ class AddNewGuestScreen extends StatelessWidget {
                                 itemToString: (smokerType) => smokerType,
                               ),
                               SizedBox(height: 15),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Guest Image",
+                                        style: TextStyle(
+                                          fontSize: AppDimensions.font(16),
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: AppTextStyles.fontFamily,
+                                          color: AppColors.blackColor,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: "(optional)",
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xff4A4949),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
                               ProfileUploadCard(
                                 isProfile: _geustController.isProfile,
                                 profileUrl: _geustController.profileUrl,
@@ -247,56 +275,7 @@ class AddNewGuestScreen extends StatelessWidget {
                                                 "Please select smoker type",
                                           );
                                         } else {
-                                          DateTime parsedDate = DateTime.parse(
-                                            _geustController
-                                                .dobTextController
-                                                .text
-                                                .replaceAll("/", "-"),
-                                          );
-                                          controller.age.value =
-                                              _geustController
-                                                  .calculateAge(parsedDate)
-                                                  .toDouble();
-
-                                          controller
-                                              .weight
-                                              .value = double.parse(
-                                            _geustController
-                                                .weightTextController
-                                                .text,
-                                          );
-                                          controller
-                                              .height
-                                              .value = double.parse(
-                                            _geustController
-                                                .heightTextController
-                                                .text,
-                                          );
-                                          controller.genderType.value =
-                                              _geustController
-                                                  .selectionType
-                                                  .value;
-
-                                          var userID =
-                                              await IndoSharedPreference
-                                                  .instance
-                                                  .getUserId();
-                                          var accessToken =
-                                              await IndoSharedPreference
-                                                  .instance
-                                                  .getAccessToken();
-                                          _geustController.scanType.value =
-                                              "guest";
-                                          AppNavigation.off(
-                                            AppRoutes.mesurementScreen,
-                                            arguments: {
-                                              "scanType": "add-guest",
-                                              "userName":
-                                                  _geustController
-                                                      .nameTextController
-                                                      .text,
-                                            },
-                                          );
+                                          GuestHalper().callMeasurement();
                                         }
                                       }
                                     },

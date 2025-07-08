@@ -101,38 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: AppDimensions.width(230),
 
                     onPressed: () async {
-                      String userName =
-                          await IndoSharedPreference.instance.getUserName();
-                      String genderType =
-                          await IndoSharedPreference.instance.getGenderType();
-                      String dobRaw =
-                          await IndoSharedPreference.instance.getAge();
-                      String height =
-                          await IndoSharedPreference.instance.getHeight();
-                      String weight =
-                          await IndoSharedPreference.instance.getWeight();
-                      controller.weight.value = double.parse(weight);
-                      controller.height.value = double.parse(height);
-                      controller.genderType.value = genderType;
-                      // Clean the DOB string safely
-                      String cleanDob =
-                          dobRaw
-                              .replaceAll("/", "-")
-                              .replaceAll(
-                                RegExp(r'[^\x00-\x7F]'),
-                                '',
-                              ) // remove non-ASCII chars
-                              .trim();
-
-                      // Parse the cleaned date
-                      DateTime parsedDate = DateTime.parse(cleanDob);
-                      controller.age.value =
-                          gcontroller.calculateAge(parsedDate).toDouble();
-
-                      AppNavigation.to(
-                        AppRoutes.mesurementScreen,
-                        arguments: {"scanType": "user", "userName": "fff"},
-                      );
+                      controller.callMeasurement();
                     },
                   ),
                 ),

@@ -67,104 +67,145 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
           },
         ),
         backgroundColor: Colors.transparent,
-        body: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  CameraPreview(controller: controller),
-                  Positioned.fill(
-                    child: Obx(() {
-                      return CustomPaint(
-                        painter: OverlayWithOvalHolePainter(
-                          center: Offset(
-                            screenSize.width / 2,
-                            screenSize.height / 2.6,
+        body: Obx(
+          () =>
+              controller.isScanningDone.isTrue
+                  ? Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 300,
+                          child: LottieBuilder.asset(
+                            AppAssets.scanAnimation,
+                            fit: BoxFit.fill,
+                            repeat: true,
                           ),
-                          radiusX: ovalWidth / 2,
-                          radiusY: ovalHeight / 2,
-                          overlayColor:
-                              controller.imageData.value != null &&
-                                      controller
-                                              .imageData
-                                              .value!
-                                              .imageValidity !=
-                                          ImageValidity.valid
-                                  ? AppColors.camreraPreviewColor.withOpacity(
-                                    0.6,
-                                  )
-                                  : Colors.black.withOpacity(0.3),
                         ),
-                      );
-                    }),
-                  ),
-
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: AppDimensions.height(250),
-                      padding: EdgeInsets.only(
-                        bottom: AppDimensions.height(20),
-                        top: AppDimensions.height(8.0),
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(40),
-                          topRight: Radius.circular(40),
+                        SizedBox(height: 30),
+                        CommonText.text(
+                          "Generating Health Report",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
                         ),
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                      ],
+                    ),
+                  )
+                  : Column(
+                    children: [
+                      Expanded(
+                        child: Stack(
                           children: [
-                            Obx(
-                              () => Visibility(
-                                visible: controller.isStarted.value == true,
-                                child: SafeArea(
-                                  child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: TextButton(
-                                      onPressed: () {
-                                        CommonDialog().showDeleteUserDialog(
-                                          context: context,
-                                          onConfirm: () {
-                                            controller.stopMeasuring();
-                                          },
-                                          title: 'Measurement',
-                                          message:
-                                              'The measurement is not completed yet. Are you sure?',
-                                          confirmText: "Yes",
-                                        );
-                                      },
-                                      child: CommonText.text(
-                                        "Stop",
-                                        color: AppColors.blackColor,
-                                        fontSize: AppDimensions.font(18),
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                            CameraPreview(controller: controller),
+                            Positioned.fill(
+                              child: Obx(() {
+                                return CustomPaint(
+                                  painter: OverlayWithOvalHolePainter(
+                                    center: Offset(
+                                      screenSize.width / 2,
+                                      screenSize.height / 2.6,
                                     ),
+                                    radiusX: ovalWidth / 2,
+                                    radiusY: ovalHeight / 2,
+                                    overlayColor:
+                                        controller.imageData.value != null &&
+                                                controller
+                                                        .imageData
+                                                        .value!
+                                                        .imageValidity !=
+                                                    ImageValidity.valid
+                                            ? AppColors.camreraPreviewColor
+                                                .withOpacity(0.6)
+                                            : Colors.black.withOpacity(0.3),
+                                  ),
+                                );
+                              }),
+                            ),
+
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: AppDimensions.height(250),
+                                padding: EdgeInsets.only(
+                                  bottom: AppDimensions.height(20),
+                                  top: AppDimensions.height(8.0),
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(40),
+                                    topRight: Radius.circular(40),
+                                  ),
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Obx(
+                                        () => Visibility(
+                                          visible:
+                                              controller.isStarted.value ==
+                                              true,
+                                          child: SafeArea(
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  CommonDialog()
+                                                      .showDeleteUserDialog(
+                                                        context: context,
+                                                        onConfirm: () {
+                                                          controller
+                                                              .stopMeasuring();
+                                                        },
+                                                        title: 'Measurement',
+                                                        message:
+                                                            'The measurement is not completed yet. Are you sure?',
+                                                        confirmText: "Yes",
+                                                      );
+                                                },
+                                                child: CommonText.text(
+                                                  "Stop",
+                                                  color: AppColors.blackColor,
+                                                  fontSize: AppDimensions.font(
+                                                    18,
+                                                  ),
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                      SizedBox(
+                                        height: AppDimensions.height(10),
+                                      ),
+                                      ImageValidityScan(),
+                                      MeasurmentProgress(
+                                        controller: controller,
+                                      ),
+                                      SizedBox(
+                                        height: AppDimensions.height(10),
+                                      ),
+                                      StartStopButton(userName: userName),
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
-
-                            SizedBox(height: AppDimensions.height(10)),
-                            ImageValidityScan(),
-                            MeasurmentProgress(controller: controller),
-                            SizedBox(height: AppDimensions.height(10)),
-                            StartStopButton(userName: userName),
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );
