@@ -38,6 +38,7 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
       floatingActionButton: RoundedButton(
         onPressed: () {
           WidgetsBinding.instance.addPostFrameCallback((_) {
+            _controller.clearData();
             AppNavigation.to(
               AppRoutes.addNewGeustScreen,
               action: () {

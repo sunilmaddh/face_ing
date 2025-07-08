@@ -6,6 +6,8 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_pulse_r
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -47,12 +49,15 @@ class MeasurementController extends GetxController
   final RxDouble age = 0.0.obs;
   final RxDouble weight = 0.0.obs;
   final RxDouble height = 0.0.obs;
+  @override
   final RxBool isStarted = false.obs;
+  final RxBool isScanningDone = false.obs;
   RxBool isLoading = false.obs;
   RxString smokerType = ''.obs;
   RxBool isMeasurementCanceled = false.obs;
   RxList<String> vitlaList = <String>[].obs;
   @override
+  // ignore: overridden_fields
   final RxBool showImageValidity = false.obs;
   Rx<VitalSignsResults> vitalsResults = VitalSignsResults().obs;
   final Rx<sdk_image_data.ImageData?> imageData = Rx<sdk_image_data.ImageData?>(
@@ -68,11 +73,13 @@ class MeasurementController extends GetxController
     animationController.addListener(() {
       progress.value = (animationController.value * 100).toInt();
       if (animationController.isCompleted) {
+        if (isStarted.isTrue) {
+          isScanningDone.value = true;
+        } else {
+          isScanningDone.value = false;
+        }
         isStarted.value = false;
       }
-    });
-    ever<String?>(warning, (value) {
-      if (value != null && value.isNotEmpty) {}
     });
 
     // Show alert on error
@@ -84,6 +91,7 @@ class MeasurementController extends GetxController
           stopProgress();
           startStopButtonClicked();
         });
+        // AppSnackbar.show(title: "Error", message: "Measurement canceled");
       }
     });
   }
@@ -180,41 +188,7 @@ class MeasurementController extends GetxController
     debugPrint(
       "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
     );
-    vitlaList.value = [
-      vitalsResults.value.getResult(VitalSignTypes.wellnessIndex).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.wellnessIndex).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.respirationRate).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.pulseRate).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.prq).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.bloodPressure).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.oxygenSaturation).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.hemoglobin).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.hemoglobinA1C).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.ascvdRisk).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.heartAge).toString(),
-      vitalsResults.value
-          .getResult(VitalSignTypes.highBloodPressureRisk)
-          .toString(),
-      vitalsResults.value
-          .getResult(VitalSignTypes.highHemoglobinA1CRisk)
-          .toString(),
-      vitalsResults.value
-          .getResult(VitalSignTypes.highFastingGlucoseRisk)
-          .toString(),
-      vitalsResults.value
-          .getResult(VitalSignTypes.highTotalCholesterolRisk)
-          .toString(),
-      vitalsResults.value
-          .getResult(VitalSignTypes.lowHemoglobinRisk)
-          .toString(),
-      vitalsResults.value.getResult(VitalSignTypes.stressIndex).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.sdnn).toString(),
-      vitalsResults.value.getResult(VitalSignTypes.lfhf).toString(),
-    ];
-    debugPrint("Stress index $vitlaList");
-    debugPrint(
-      "Stress index${vitalsResults.value.getResult(VitalSignTypes.stressIndex)}",
-    );
+
     if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
       startStopButtonClicked();
       if (scanType.value == "add-guest") {
@@ -222,6 +196,7 @@ class MeasurementController extends GetxController
           AppNavigation.off(
             AppRoutes.allReportScreen,
             action: () {
+              isScanningDone(false);
               _geustController.clearData();
               _geustController.getGeustHistory();
             },
@@ -234,8 +209,9 @@ class MeasurementController extends GetxController
               AppNavigation.off(
                 AppRoutes.allReportScreen,
                 action: () {
+                  isScanningDone(false);
                   _geustController.clearData();
-                  _geustController.getGeustHistory();
+                  // _geustController.getGeustHistory();
                 },
               );
             });
@@ -257,6 +233,7 @@ class MeasurementController extends GetxController
   @override
   void onError(ErrorData errorData) {
     error.value = "Error: ${errorData.code}";
+    // AppSnackbar.show(title: "Error", message: "Measurement has canceled");
   }
 
   @override
@@ -361,6 +338,36 @@ class MeasurementController extends GetxController
   Future<bool> _requestCameraPermission() async {
     final result = await Permission.camera.request();
     return result.isGranted;
+  }
+
+  void callMeasurement() {
+    _startMeasurement();
+  }
+
+  void _startMeasurement() async {
+    isScanningDone.value = false;
+    String genderType = await IndoSharedPreference.instance.getGenderType();
+    String dobRaw = await IndoSharedPreference.instance.getAge();
+    String height = await IndoSharedPreference.instance.getHeight();
+    String weight = await IndoSharedPreference.instance.getWeight();
+    this.weight.value = double.parse(weight);
+    this.height.value = double.parse(height);
+    this.genderType.value = genderType;
+    // Clean the DOB string safely
+    String cleanDob =
+        dobRaw
+            .replaceAll("/", "-")
+            .replaceAll(RegExp(r'[^\x00-\x7F]'), '') // remove non-ASCII chars
+            .trim();
+
+    // Parse the cleaned date
+    DateTime parsedDate = DateTime.parse(cleanDob);
+    age.value = await AppMethods().calculateAge(parsedDate);
+
+    AppNavigation.to(
+      AppRoutes.mesurementScreen,
+      arguments: {"scanType": "user", "userName": "fff"},
+    );
   }
 }
 

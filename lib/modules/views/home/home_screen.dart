@@ -3,16 +3,11 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
-import 'package:ntt_data/data/repository/services/native_caller_services.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
@@ -82,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(child: SizedBox()), // Balancing the layout
                 ],
               ),
-
               SizedBox(height: AppDimensions.height(30)),
               CommonAssets.svgAsset(AppAssets.scanIllustration),
               SizedBox(height: AppDimensions.height(30)),
@@ -99,40 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ScanButton(
                     isLoading: gcontroller.isLoading.value,
                     width: AppDimensions.width(230),
-
                     onPressed: () async {
-                      String userName =
-                          await IndoSharedPreference.instance.getUserName();
-                      String genderType =
-                          await IndoSharedPreference.instance.getGenderType();
-                      String dobRaw =
-                          await IndoSharedPreference.instance.getAge();
-                      String height =
-                          await IndoSharedPreference.instance.getHeight();
-                      String weight =
-                          await IndoSharedPreference.instance.getWeight();
-                      controller.weight.value = double.parse(weight);
-                      controller.height.value = double.parse(height);
-                      controller.genderType.value = genderType;
-                      // Clean the DOB string safely
-                      String cleanDob =
-                          dobRaw
-                              .replaceAll("/", "-")
-                              .replaceAll(
-                                RegExp(r'[^\x00-\x7F]'),
-                                '',
-                              ) // remove non-ASCII chars
-                              .trim();
-
-                      // Parse the cleaned date
-                      DateTime parsedDate = DateTime.parse(cleanDob);
-                      controller.age.value =
-                          gcontroller.calculateAge(parsedDate).toDouble();
-
-                      AppNavigation.to(
-                        AppRoutes.mesurementScreen,
-                        arguments: {"scanType": "user", "userName": "fff"},
-                      );
+                      controller.callMeasurement();
                     },
                   ),
                 ),
