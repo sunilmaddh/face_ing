@@ -59,11 +59,14 @@ class ProfileController extends GetxController
   }
 
   Future<void> getUserHistory() async {
+    isLoading(true);
     var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID};
 
     Map<String, dynamic> responseData = await _profileService
         .getUserHealthHistoryService(data: data);
+
+    isLoading(false);
 
     int statusCode = responseData[AppConstents.statusCode];
     if (statusCode == 200) {

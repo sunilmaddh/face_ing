@@ -416,9 +416,8 @@ class GeustController extends GetxController
     selectionType.value = "";
     isTermAccepted.value = false;
     isChecked.value = false;
-    userImage.value = "";
-    isProfile.value = false;
     profileUrl.value = File("");
+    isProfile.value = false;
   }
 
   @override
@@ -441,6 +440,64 @@ class GeustController extends GetxController
                     item.name!.toLowerCase().contains(query.toLowerCase()),
               )
               .toList();
+    }
+  }
+
+  Future<void> uploadProfileFromGallery(String imageType) async {
+    var imageUrl = await profileUploadService.pickImageFromGallery();
+    if (imageUrl != null) {
+      isProfile.value = true;
+      profileUrl.value = File(imageUrl.path);
+      var userID = await IndoSharedPreference.instance.getUserId();
+      Map<String, dynamic> responseData = await authServices.uploadDocument(
+        profileUrl.value,
+        userID,
+        imageType,
+      );
+      int statusCode = responseData["responseCode"];
+      debugPrint("uploadImageResponseModel $statusCode");
+      if (statusCode == 200) {
+        var result = responseData["response"];
+        debugPrint("uploadImageResponseModel ${result}");
+        uploadImageResponseModel.value = result;
+        userImage.value = uploadImageResponseModel.value.imagePath!;
+        debugPrint(
+          "uploadImageResponseModel ${uploadImageResponseModel.value}",
+        );
+      }
+    } else {
+      isProfile.value = false;
+      Get.snackbar("Upload Failed", "Please try again");
+    }
+  }
+
+  Future<void> uploadProfileFromCamera(String imageType) async {
+    var imageUrl = await profileUploadService.pickImageFromCamera();
+    if (imageUrl != null) {
+      isProfile.value = true;
+      profileUrl.value = File(imageUrl.path);
+      var userID = await IndoSharedPreference.instance.getUserId();
+      debugPrint("uploadImageResponseModel $imageUrl");
+      Map<String, dynamic> responseData = await authServices.uploadDocument(
+        profileUrl.value,
+        userID,
+        imageType,
+      );
+      int statusCode = responseData["responseCode"];
+      debugPrint("uploadImageResponseModel $statusCode");
+      if (statusCode == 200) {
+        var result = responseData["response"];
+        debugPrint("uploadImageResponseModel $result");
+
+        uploadImageResponseModel.value = result;
+        userImage.value = uploadImageResponseModel.value.imagePath!;
+        debugPrint(
+          "uploadImageResponseModel ${uploadImageResponseModel.value}",
+        );
+      }
+    } else {
+      isProfile.value = false;
+      Get.snackbar("Upload Failed", "Please try again");
     }
   }
 }

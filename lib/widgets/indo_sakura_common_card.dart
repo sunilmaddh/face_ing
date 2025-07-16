@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/utils/vital_status_halper.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
-// ignore: camel_case_types
+// ignore: camel_case_types, must_be_immutable
 class IndoSakuraCommonCard extends StatelessWidget {
   final String vitalName;
   final String vitalStatus;
@@ -47,20 +47,16 @@ class IndoSakuraCommonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isSdkType &&
-        isLowGood &&
-        vitalName == "Blood Pressure" &&
-        vitalStatus == "High") {
-      isLowGood = false;
-    }
-    if (isSdkType == true) {
-      imageRes = _getImageResourceBinah(vitalStatus);
-      color = _getColorBinah(vitalStatus);
-    } else {
-      imageRes = _getImageResource();
-      color = _getColor();
-    }
-    status = _getStatus();
+    final vitalHalper = BinahVitalHelper(
+      isSdkType: isSdkType,
+      vitalName: vitalName,
+      vitalStatus: vitalStatus,
+      isLowGood: isLowGood,
+    );
+
+    imageRes = vitalHalper.getImageResource(vitalStatus);
+    color = vitalHalper.getColor();
+    status = vitalHalper.getStatus();
 
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -150,13 +146,13 @@ class IndoSakuraCommonCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         CommonText.text(
-                          maxLines: 5,
+                          maxLines: 6,
                           vitalDescription,
                           fontSize: 12,
                           color: Color(0xff5E5D5D),
                         ),
                         const SizedBox(height: 20),
-                        if (vitalStatus.isNotEmpty)
+                        if (status.isNotEmpty)
                           Row(
                             children: [
                               Container(
@@ -169,7 +165,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                               ),
                               const SizedBox(width: 10),
                               CommonText.text(
-                                status,
+                                capitalizeFirst(status),
                                 fontSize: 14,
                                 color: color,
                               ),
@@ -222,33 +218,37 @@ class IndoSakuraCommonCard extends StatelessWidget {
 
                       itemBuilder: (contect, index) {
                         var result = vitalSubList[index];
-                        if (isSdkType) {
-                          if (stringToBool(result.isTypeVital.toString()) ==
-                              true) {
-                            if (vitalName == "Breathing Rate" ||
-                                vitalName == "Pulse Rate(Heart Rate)" ||
-                                vitalName == "PRQ" ||
-                                vitalName == "Hemoglobin") {
-                              isBreathing = true;
-                            } else if (vitalName == "Blood Systolic") {
-                              isBlood = true;
-                            } else if (result.vitalName == "Mean RRi" &&
-                                    result.vitalStatus == "Low" ||
-                                result.vitalName == "RMSSD" &&
-                                    result.vitalStatus == "Low") {
-                              isLowGood = false;
-                            } else {
-                              isLowGood = stringToBool(
-                                result.isTypeVital.toString(),
-                              );
-                            }
-                          }
-                        }
-                        if (isSdkType) {
-                          imageResSub = _getImageResourceBinah(
-                            result.vitalStatus.toString(),
-                          );
-                        }
+                        final vitalSubHalper = BinahVitalHelper(
+                          isSdkType: isSdkType,
+                          vitalName: result.vitalName!,
+                          vitalStatus: result.vitalStatus!,
+                          isLowGood: stringToBool(
+                            result.isTypeVital.toString(),
+                          ),
+                        );
+                        // if (isSdkType) {
+                        //   if (stringToBool(result.isTypeVital.toString()) ==
+                        //       true) {
+                        //    if (result.vitalName == "Mean RRi" &&
+                        //             result.vitalStatus == "Low" ||
+                        //         result.vitalName == "RMSSD" &&
+                        //             result.vitalStatus == "Low") {
+                        //       isLowGood = false;
+                        //     } else {
+                        //       isLowGood = stringToBool(
+                        //         result.isTypeVital.toString(),
+                        //       );
+                        //     }
+                        //   }
+                        // }
+                        // if (isSdkType) {
+                        //   imageResSub = vitalHalper.getImageResource(
+                        //     result.vitalStatus.toString(),
+                        //   );
+                        // }
+                        imageResSub = vitalSubHalper.getImageResource(
+                          result.vitalStatus.toString(),
+                        );
                         return Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: 15,
@@ -344,146 +344,5 @@ class IndoSakuraCommonCard extends StatelessWidget {
 
   bool stringToBool(String value) {
     return value.toLowerCase() == 'true';
-  }
-
-  String _getImageResourceBinah(String vitalStatus) {
-    switch (vitalStatus) {
-      case 'low':
-      case 'Low':
-        return isLowGood ? AppAssets.mediumAsset : AppAssets.veryLowImage;
-      case "normal":
-      case 'Normal':
-        return AppAssets.veryHighImage;
-      case "Medium":
-      case "medium":
-        return AppAssets.mediumImage;
-      case "Mild":
-        return AppAssets.mediumImage;
-      case 'High':
-      case 'high':
-        return isLowGood ? AppAssets.mediumAsset : AppAssets.veryLowImage;
-      case 'Prediabetes risk':
-      case 'Prediabetes':
-        return AppAssets.mediumImage;
-      case 'Diabetes risk':
-      case 'Diabetes':
-        return AppAssets.veryLowImage;
-      default:
-        return AppAssets.veryHighImage;
-    }
-  }
-
-  Color _getColorBinah(String vitalStatus) {
-    switch (vitalStatus) {
-      case 'Low':
-        return isLowGood ? const Color(0xFFEEC000) : const Color(0xFFFA704E);
-      case 'Normal':
-        return const Color(0xFF1BC76D);
-      case 'Medium':
-        return const Color(0xFFEEC000);
-      case 'Mild':
-        return const Color(0xFFEEC000);
-      case 'High':
-        return isLowGood ? const Color(0xFFEEC000) : const Color(0xFFFA704E);
-      case 'Prediabetes risk':
-      case 'Prediabetes':
-        return const Color(0xFFEEC000);
-      case 'Diabetes risk':
-      case 'Diabetes':
-        return const Color(0xFFFA704E);
-      default:
-        return Colors.white;
-    }
-  }
-
-  String _getImageResource() {
-    switch (vitalStatus) {
-      case 'Very Low':
-        return isBreathing
-            ? AppAssets.mediumImage
-            : isBlood
-            ? AppAssets.lowImage
-            : isLowGood
-            ? AppAssets.veryHighImage
-            : AppAssets.veryLowImage;
-      case 'Low':
-        return isLowGood ? AppAssets.highImage : AppAssets.lowImage;
-      case 'Normal':
-        return AppAssets.veryHighImage;
-      case 'Medium':
-        return AppAssets.mediumImage;
-      case 'High':
-        return isBreathing
-            ? AppAssets.mediumImage
-            : isLowGood
-            ? AppAssets.mediumImage
-            : AppAssets.highImage;
-      case 'Very High':
-        return isBlood
-            ? AppAssets.lowImage
-            : isLowGood
-            ? AppAssets.lowImage
-            : AppAssets.veryHighImage;
-      case 'Optimal':
-        return AppAssets.veryHighImage;
-
-      default:
-        return AppAssets.veryHighImage;
-    }
-  }
-
-  Color _getColor() {
-    switch (vitalStatus) {
-      case 'Very Low':
-        return isBlood
-            ? const Color(0xFFFA704E)
-            : isLowGood
-            ? const Color(0xFF1BC76D)
-            : const Color(0xFFFA704E);
-      case 'Low':
-        return isBreathing
-            ? const Color(0xFFEEC000)
-            : isLowGood
-            ? const Color(0xFF9ED042)
-            : const Color(0xFFED9A33);
-      case 'Normal':
-        return const Color(0xFF1BC76D);
-      case 'Medium':
-        return const Color(0xFFEEC000);
-      case 'Optimal':
-        return const Color(0xFF1BC76D);
-      case 'Very High':
-        return isLowGood ? const Color(0xFFFA704E) : const Color(0xFF1BC76D);
-      case 'High':
-        return isBreathing
-            ? const Color(0xFFEEC000)
-            : isBlood || isLowGood
-            ? const Color(0xFFED9A33)
-            : const Color(0xFF9ED042);
-      default:
-        return Colors.white;
-    }
-  }
-
-  String _getStatus() {
-    switch (vitalStatus) {
-      case 'Diabetes':
-        return 'Diabetes risk';
-      case 'Prediabetes':
-        return 'Prediabetes risk';
-      case 'Very Low':
-      case 'Low':
-      case 'Normal':
-      case 'Medium':
-      case 'High':
-      case 'Optimal':
-      case 'Very High':
-      case 'Prediabetes risk':
-      case 'Diabetes risk':
-        return vitalStatus;
-
-      default:
-        return '';
-    }
   }
 }

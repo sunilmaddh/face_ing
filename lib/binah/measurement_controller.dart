@@ -189,6 +189,10 @@ class MeasurementController extends GetxController
       "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
     );
 
+    debugPrint("Stress index $vitlaList");
+    debugPrint(
+      "Stress index${vitalsResults.value.getResult(VitalSignTypes.stressIndex)}",
+    );
     if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
       startStopButtonClicked();
       if (scanType.value == "add-guest") {

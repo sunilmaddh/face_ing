@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
@@ -134,6 +135,7 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                               height: result.height.toString(),
                               weight: result.weight.toString(),
                               time: result.date.toString(),
+
                               onTop: () {
                                 _controller.getGeustDetails(
                                   result.guestId.toString(),

@@ -44,7 +44,6 @@ class GuestList {
   String? guestId;
   String? dob;
   String? guestImage;
-
   GuestList({
     this.email,
     this.name,

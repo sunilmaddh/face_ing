@@ -198,6 +198,7 @@ class AddNewGuestScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 SizedBox(height: AppDimensions.height(48)),
                 CommonCard(
                   widget: Padding(
