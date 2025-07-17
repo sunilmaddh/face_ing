@@ -47,5 +47,7 @@ class AppAssets {
       veryLowImage = "$baseUrlSvg/very_low.svg",
       noDataImage = "$baseUrlPng/nodata.jpg",
       scanAnimation = "$baseUrlLottie/scan_animation.json",
+      scanError = "$baseUrlSvg/scan_error.svg",
+      cloaseDialog = "$baseUrlSvg/close_dialog.svg",
       highImage = "$baseUrlSvg/high_im.svg";
 }

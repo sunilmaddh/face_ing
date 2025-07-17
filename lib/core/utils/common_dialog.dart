@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
@@ -102,12 +105,14 @@ class CommonDialog {
   }
 
   // Show delete confirmation dialog
+  // Show delete confirmation dialog
   void showDeleteUserDialog({
     required BuildContext context,
     required VoidCallback onConfirm,
     required String title,
     required String message,
     required confirmText,
+    bool isShowCancelButton = true,
   }) {
     showDialog(
       context: context,
@@ -122,7 +127,7 @@ class CommonDialog {
           ),
           content: CommonText.text(
             message,
-            maxLines: 2,
+            maxLines: 5,
             fontSize: AppDimensions.font(15),
             fontWeight: FontWeight.w400,
             fontFamily: "Gilroy-Medium",
@@ -134,9 +139,105 @@ class CommonDialog {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Expanded(
+                  child: SizedBox(
+                    height: AppDimensions.height(40),
+                    // width:
+                    //     isShowCancelButton
+                    //         ? AppDimensions.width(120)
+                    //         : AppDimensions.width(240),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Close dialog
+                        onConfirm(); // Execute delete action
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                      child: CommonText.text(
+                        confirmText,
+                        color: AppColors.btntext,
+                      ),
+                    ),
+                  ),
+                ),
+                isShowCancelButton
+                    ? SizedBox(width: AppDimensions.width(10))
+                    : SizedBox.shrink(),
+                Visibility(
+                  visible: isShowCancelButton,
+                  child: Expanded(
+                    child: SizedBox(
+                      height: AppDimensions.height(40),
+
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context); // Close dialog
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                            side: BorderSide(color: AppColors.deleteDesColor),
+                          ),
+                        ),
+                        child: CommonText.text(
+                          "Cancel",
+                          color: AppColors.backArrowColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showScanDialog({
+    required BuildContext context,
+    required VoidCallback onConfirm,
+    required VoidCallback onCancel,
+    required String title,
+    required String message,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: SvgPicture.asset(AppAssets.cloaseDialog),
+                ),
+                SvgPicture.asset(AppAssets.scanError),
+                const SizedBox(height: 16),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Text(message, textAlign: TextAlign.center),
+                const SizedBox(height: 20),
                 SizedBox(
                   height: AppDimensions.height(40),
-                  width: AppDimensions.width(120),
+                  // width:
+                  //     isShowCancelButton
+                  //         ? AppDimensions.width(120)
+                  //         : AppDimensions.width(240),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context); // Close dialog
@@ -148,35 +249,34 @@ class CommonDialog {
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    child: CommonText.text(
-                      confirmText,
-                      color: AppColors.btntext,
-                    ),
+                    child: CommonText.text("SCAN", color: AppColors.btntext),
                   ),
                 ),
-                SizedBox(width: AppDimensions.width(2)),
-                SizedBox(
-                  height: AppDimensions.height(40),
-                  width: AppDimensions.width(120),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Close dialog
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                        side: BorderSide(color: AppColors.deleteDesColor),
-                      ),
-                    ),
-                    child: CommonText.text(
-                      "Cancel",
-                      color: AppColors.backArrowColor,
-                    ),
-                  ),
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     TextButton(
+                //       onPressed: () => Navigator.of(context).pop(),
+                //       child: const Text('Cancel'),
+                //     ),
+                //     ElevatedButton(
+                //       onPressed: () {
+                //         Navigator.of(context).pop();
+                //         // TODO: Add your scan logic here
+                //       },
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: Colors.deepPurple,
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(10),
+                //         ),
+                //       ),
+                //       child: const Text('Scan Now'),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
-          ],
+          ),
         );
       },
     );

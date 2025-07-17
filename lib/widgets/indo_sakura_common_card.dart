@@ -130,7 +130,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
               Container(width: 2, height: 180, color: const Color(0xffD9D9D9)),
               Expanded(
                 child: SizedBox(
-                  height: 195,
+                  height: 215,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -138,7 +138,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CommonText.text(
-                          maxLines: 2,
+                          maxLines: 3,
                           vitalHeading,
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -146,7 +146,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         CommonText.text(
-                          maxLines: 6,
+                          maxLines: 7,
                           vitalDescription,
                           fontSize: 12,
                           color: Color(0xff5E5D5D),

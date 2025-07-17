@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
+import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';

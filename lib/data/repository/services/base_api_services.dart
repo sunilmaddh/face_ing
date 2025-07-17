@@ -1,21 +1,33 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/core/utils/network_utils.dart';
 
 abstract class BaseApiService {
   final String baseUrl = ApiEndpoints.baseUrl;
+  final String api = "/api";
+  final isHttps = true;
   // var accessToken =
   //     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAxYWJjQGdtYWlsLmNvbSIsImlhdCI6MTc0NjcwNzc2MiwiZXhwIjoxNzQ2Nzk0MTYyfQ.7KEhC0SSYIgK0AZzOHUqsZesft8m5NuOHdLJOLXI4jU";
 
   Future<Map<String, dynamic>> getRequest(String endpoint) async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl$endpoint'));
+      Uri uri;
+      if (isHttps) {
+        uri = Uri.https(baseUrl, api + endpoint);
+      } else {
+        uri = Uri.http(baseUrl, endpoint);
+      }
+
+      final response = await http.get(uri);
       return _processResponse(response);
     } catch (e) {
+      NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
     }
   }
@@ -26,7 +38,13 @@ abstract class BaseApiService {
   }) async {
     var accessToken = await IndoSharedPreference.instance.getAccessToken();
     debugPrint("Access toke $accessToken");
-    Uri uri = Uri.http(baseUrl, endpoint);
+    Uri uri;
+    if (isHttps) {
+      uri = Uri.https(baseUrl, api + endpoint);
+    } else {
+      uri = Uri.http(baseUrl, endpoint);
+    }
+
     debugPrint(uri.toString());
     debugPrint("Access token $accessToken");
     try {
@@ -44,6 +62,7 @@ abstract class BaseApiService {
 
       return _processResponse(response);
     } catch (e) {
+      NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
     }
   }
@@ -54,7 +73,13 @@ abstract class BaseApiService {
   }) async {
     var accessToken = await IndoSharedPreference.instance.getAccessToken();
     debugPrint("Access toke $accessToken");
-    Uri uri = Uri.http(baseUrl, endpoint);
+    debugPrint("Access toke $baseUrl$endpoint");
+    Uri uri;
+    if (isHttps) {
+      uri = Uri.https(baseUrl, api + endpoint);
+    } else {
+      uri = Uri.http(baseUrl, endpoint);
+    }
     debugPrint(uri.toString());
     debugPrint("Access token $accessToken");
     try {
@@ -72,7 +97,7 @@ abstract class BaseApiService {
 
       return _processResponse(response);
     } catch (e) {
-      AppSnackbar.show(title: "Exception", message: e.toString());
+      NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
     }
   }
@@ -83,7 +108,12 @@ abstract class BaseApiService {
     try {
       var accessToken = "";
       debugPrint("Access toke $accessToken");
-      Uri uri = Uri.http(baseUrl, endpoint);
+      Uri uri;
+      if (isHttps) {
+        uri = Uri.https(baseUrl, api + endpoint);
+      } else {
+        uri = Uri.http(baseUrl, endpoint);
+      }
       debugPrint(uri.toString());
       debugPrint("Access token $accessToken");
       debugPrint(uri.toString());
@@ -101,7 +131,7 @@ abstract class BaseApiService {
       debugPrint(response.body.toString());
       return _processResponse(response);
     } catch (e) {
-      AppSnackbar.show(title: "Exception", message: e.toString());
+      NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
     }
   }
@@ -111,26 +141,37 @@ abstract class BaseApiService {
     Map<String, dynamic> data,
   ) async {
     try {
+      Uri uri;
+      if (isHttps) {
+        uri = Uri.https(baseUrl, api + endpoint);
+      } else {
+        uri = Uri.http(baseUrl, endpoint);
+      }
       final response = await http.put(
-        Uri.parse('$baseUrl$endpoint'),
+        uri,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data),
       );
-
       return _processResponse(response);
     } catch (e) {
-      AppSnackbar.show(title: "Exception", message: e.toString());
+      NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
     }
   }
 
   Future<dynamic> deleteRequest(String endpoint) async {
     try {
-      final response = await http.delete(Uri.parse('$baseUrl$endpoint'));
+      Uri uri;
+      if (isHttps) {
+        uri = Uri.https(baseUrl, api + endpoint);
+      } else {
+        uri = Uri.http(baseUrl, endpoint);
+      }
+      final response = await http.delete(uri);
       debugPrint(response.headers["accessToken"]);
       return _processResponse(response);
     } catch (e) {
-      AppSnackbar.show(title: "Exception", message: e.toString());
+      NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
     }
   }
@@ -139,6 +180,7 @@ abstract class BaseApiService {
     // Decode with UTF-8 to avoid weird symbols
     final decodedBody = utf8.decode(response.bodyBytes);
     debugPrint("${response.statusCode} $decodedBody");
+    NetworkUtil.checkInternet(Get.context!);
 
     if (response.statusCode == 401) {
       AppMethods().logout();

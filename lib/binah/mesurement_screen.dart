@@ -158,18 +158,22 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                               alignment: Alignment.topRight,
                                               child: TextButton(
                                                 onPressed: () {
-                                                  CommonDialog()
-                                                      .showDeleteUserDialog(
-                                                        context: context,
-                                                        onConfirm: () {
-                                                          controller
-                                                              .stopMeasuring();
-                                                        },
-                                                        title: 'Measurement',
-                                                        message:
-                                                            'The measurement is not completed yet. Are you sure?',
-                                                        confirmText: "Yes",
-                                                      );
+                                                  CommonDialog().showScanDialog(
+                                                    title: " 'Scan Failed'",
+                                                    message:
+                                                        "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
+                                                    context: Get.context!,
+                                                    onConfirm: () {
+                                                      controller
+                                                          .stopMeasuring();
+                                                      controller
+                                                          .startStopButtonClicked();
+                                                    },
+                                                    onCancel: () {
+                                                      controller
+                                                          .stopMeasuring();
+                                                    },
+                                                  );
                                                 },
                                                 child: CommonText.text(
                                                   "Stop",

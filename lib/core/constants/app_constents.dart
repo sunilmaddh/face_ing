@@ -38,6 +38,8 @@ class AppConstents {
   notDiscription =
       "Kindly make sure your battery is above 30% and Power Saving Mode is disabled before starting.",
   createAccount = 'Create Account',
+  networkErroMessage =
+      "We’re having trouble connecting to the server. Please check your internet connection and try again.",
   termMeassaga =
       "Accept to the legal terms by clicking on the check box to be able to provide services";
   static const String breathingRate = 'Breathing Rate';

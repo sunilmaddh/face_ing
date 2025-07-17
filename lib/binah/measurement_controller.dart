@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -193,33 +194,52 @@ class MeasurementController extends GetxController
     debugPrint(
       "Stress index${vitalsResults.value.getResult(VitalSignTypes.stressIndex)}",
     );
-    if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
-      startStopButtonClicked();
-      if (scanType.value == "add-guest") {
-        _geustController.addGuest(vitalsResults.value).whenComplete(() {
-          AppNavigation.off(
-            AppRoutes.allReportScreen,
-            action: () {
-              isScanningDone(false);
-              _geustController.clearData();
-              _geustController.getGeustHistory();
-            },
-          );
-        });
-      } else {
-        _geustController
-            .storeBinahHealthForUser(vitalsResults.value)
-            .whenComplete(() {
-              AppNavigation.off(
-                AppRoutes.allReportScreen,
-                action: () {
-                  isScanningDone(false);
-                  _geustController.clearData();
-                  // _geustController.getGeustHistory();
-                },
-              );
-            });
+    bool isVerifyResult = await ProgressHandlerMixin.verifyVitalResult(
+      vitalsResults.value,
+    );
+    if (isVerifyResult) {
+      if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
+        startStopButtonClicked();
+        if (scanType.value == "add-guest") {
+          _geustController.addGuest(vitalsResults.value).whenComplete(() {
+            AppNavigation.off(
+              AppRoutes.allReportScreen,
+              action: () {
+                isScanningDone(false);
+                _geustController.clearData();
+                _geustController.getGeustHistory();
+              },
+            );
+          });
+        } else {
+          _geustController
+              .storeBinahHealthForUser(vitalsResults.value)
+              .whenComplete(() {
+                AppNavigation.off(
+                  AppRoutes.allReportScreen,
+                  action: () {
+                    isScanningDone(false);
+                    _geustController.clearData();
+                    // _geustController.getGeustHistory();
+                  },
+                );
+              });
+        }
       }
+    } else {
+      CommonDialog().showScanDialog(
+        title: " 'Scan Failed'",
+        message:
+            "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
+        context: Get.context!,
+        onConfirm: () {
+          stopMeasuring();
+          _startMeasurement();
+        },
+        onCancel: () {
+          Get.back();
+        },
+      );
     }
   }
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
+import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
+import 'package:ntt_data/widgets/circular_image_with_shimmer.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class GeustUserHistoryCard extends StatelessWidget {
@@ -50,22 +50,22 @@ class GeustUserHistoryCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomCircularAvatar(
-                        color: AppColors.guestIconColor,
-                        image: guestImage,
-                        widget:
-                            guestImage.isEmpty
-                                ? CommonText.text(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                  name.isNotEmpty
-                                      ? name.substring(0, 1).toUpperCase()
-                                      : "",
-                                  color: AppColors.btntext,
-                                )
-                                : SizedBox.shrink(),
-                        radius: AppDimensions.padding(24.0),
-                      ),
+                      guestImage.isNotEmpty
+                          ? CircularImageWithShimmer(imageUrl: guestImage)
+                          : CustomCircularAvatar(
+                            color: AppColors.guestIconColor,
+
+                            widget: CommonText.text(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              name.isNotEmpty
+                                  ? name.substring(0, 1).toUpperCase()
+                                  : "",
+                              color: AppColors.btntext,
+                            ),
+
+                            radius: AppDimensions.padding(24.0),
+                          ),
                       SizedBox(height: 10),
                       CommonText.text(
                         name,
@@ -131,7 +131,8 @@ class GeustUserHistoryCard extends StatelessWidget {
                                   ), // Default style
                                   children: [
                                     TextSpan(
-                                      text: ' $time',
+                                      text:
+                                          " ${DateTimeHelper.formatUtcToLocal(time)}",
                                       style: TextStyle(
                                         fontSize: AppDimensions.font(14),
                                         color: Colors.black,

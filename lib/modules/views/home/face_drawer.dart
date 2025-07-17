@@ -6,14 +6,13 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
-import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
+import 'package:ntt_data/widgets/circular_image_with_shimmer.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class FaceDrawer extends StatelessWidget {
@@ -102,32 +101,48 @@ class FaceDrawer extends StatelessWidget {
                         child: Stack(
                           children: [
                             Obx(
-                              () => CustomCircularAvatar(
-                                color: AppColors.guestIconColor,
-                                image:
-                                    _profileController
-                                                .uploadImageResponseModel
-                                                .value
-                                                .imagePath !=
-                                            null
-                                        ? _profileController
-                                            .uploadImageResponseModel
-                                            .value
-                                            .imagePath
-                                            .toString()
-                                        : _profileController.userImage.value,
-                                widget: CommonText.text(
-                                  _profileController.userName.isNotEmpty
-                                      ? _profileController.userName
-                                          .substring(0, 1)
-                                          .toUpperCase()
-                                      : "",
-                                  color: AppColors.btntext,
-                                  fontSize: AppDimensions.font(30),
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
+                              () =>
+                                  _profileController
+                                                  .uploadImageResponseModel
+                                                  .value
+                                                  .imagePath !=
+                                              null ||
+                                          _profileController
+                                              .userImage
+                                              .isNotEmpty
+                                      ? CircularImageWithShimmer(
+                                        size: 95,
+                                        imageUrl:
+                                            _profileController
+                                                        .uploadImageResponseModel
+                                                        .value
+                                                        .imagePath !=
+                                                    null
+                                                ? _profileController
+                                                    .uploadImageResponseModel
+                                                    .value
+                                                    .imagePath
+                                                    .toString()
+                                                : _profileController
+                                                    .userImage
+                                                    .value,
+                                      )
+                                      : CustomCircularAvatar(
+                                        color: AppColors.guestIconColor,
+
+                                        widget: CommonText.text(
+                                          _profileController.userName.isNotEmpty
+                                              ? _profileController.userName
+                                                  .substring(0, 1)
+                                                  .toUpperCase()
+                                              : "",
+                                          color: AppColors.btntext,
+                                          fontSize: AppDimensions.font(30),
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
                             ),
+
                             Align(
                               alignment: Alignment.topRight,
                               child: InkWell(
