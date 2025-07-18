@@ -34,4 +34,9 @@ class GuestHalper {
       },
     );
   }
+
+  static bool isValidInput(String input) {
+    final regex = RegExp(r'^[a-zA-Z0-9.]+$');
+    return regex.hasMatch(input);
+  }
 }

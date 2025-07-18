@@ -7,8 +7,9 @@ class ApiEndpoints {
 
   ApiEndpoints._internal();
 
-  static const String baseUrl = "146.190.11.132";
-  //"146.190.11.132:8086";
+  static const String baseUrl =
+      // "146.190.11.132";
+      "146.190.11.132:8086";
   //'192.168.0.214:8085';
   // "192.168.1.161:8085";
   // "198.199.123.185:8085";

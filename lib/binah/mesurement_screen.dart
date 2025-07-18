@@ -158,18 +158,32 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                               alignment: Alignment.topRight,
                                               child: TextButton(
                                                 onPressed: () {
+                                                  controller.isScanStop.value =
+                                                      true;
                                                   CommonDialog().showScanDialog(
-                                                    title: " 'Scan Failed'",
+                                                    title: " 'Scan Alert'",
                                                     message:
-                                                        "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
+                                                        "The scan is still running. Do you really want to stop now?",
                                                     context: Get.context!,
                                                     onConfirm: () {
                                                       controller
                                                           .stopMeasuring();
-                                                      controller
-                                                          .startStopButtonClicked();
+                                                      // Future.delayed(
+                                                      //   const Duration(
+                                                      //     seconds: 3,
+                                                      //   ),
+                                                      //   () {
+                                                      //     controller
+                                                      //         .startStopButtonClicked();
+                                                      //   },
+                                                      // );
+
+                                                      // controller
+                                                      //     .isStarted
+                                                      //     .value = true;
                                                     },
                                                     onCancel: () {
+                                                      Get.back();
                                                       controller
                                                           .stopMeasuring();
                                                     },

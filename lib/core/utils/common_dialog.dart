@@ -219,9 +219,15 @@ class CommonDialog {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: SvgPicture.asset(AppAssets.cloaseDialog),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    onCancel();
+                  },
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: SvgPicture.asset(AppAssets.cloaseDialog),
+                  ),
                 ),
                 SvgPicture.asset(AppAssets.scanError),
                 const SizedBox(height: 16),

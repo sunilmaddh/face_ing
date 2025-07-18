@@ -11,7 +11,7 @@ import 'package:ntt_data/core/utils/network_utils.dart';
 abstract class BaseApiService {
   final String baseUrl = ApiEndpoints.baseUrl;
   final String api = "/api";
-  final isHttps = true;
+  final isHttps = false;
   // var accessToken =
   //     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAxYWJjQGdtYWlsLmNvbSIsImlhdCI6MTc0NjcwNzc2MiwiZXhwIjoxNzQ2Nzk0MTYyfQ.7KEhC0SSYIgK0AZzOHUqsZesft8m5NuOHdLJOLXI4jU";
 

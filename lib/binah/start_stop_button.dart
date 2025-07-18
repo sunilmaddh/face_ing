@@ -47,6 +47,7 @@ class StartStopButton extends StatelessWidget {
                 text: "Measure now",
                 onPressed: () {
                   controller.isLoading.value = true;
+                  controller.isScanStop.value = false;
                   controller.startStopButtonClicked();
                 },
               ),

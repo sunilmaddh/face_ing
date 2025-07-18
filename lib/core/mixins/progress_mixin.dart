@@ -51,8 +51,10 @@ mixin ProgressHandlerMixin on GetxController {
     super.onClose();
   }
 
-  static Future<bool> verifyVitalResult(VitalSignsResults vitalsResults) async {
-    List vitalList = [
+  static Future<List> storingVitalResult(
+    VitalSignsResults vitalsResults,
+  ) async {
+    var vitalList = [
       vitalsResults.getResult(VitalSignTypes.wellnessIndex).toString(),
       vitalsResults.getResult(VitalSignTypes.wellnessIndex).toString(),
       vitalsResults.getResult(VitalSignTypes.respirationRate).toString(),
@@ -76,11 +78,21 @@ mixin ProgressHandlerMixin on GetxController {
       vitalsResults.getResult(VitalSignTypes.lfhf).toString(),
     ];
 
-    for (var result in vitalList) {
+    return vitalList;
+  }
+
+  static Future<bool> checkingVitalResult(
+    VitalSignsResults vitalsResults,
+  ) async {
+    final list = await storingVitalResult(vitalsResults);
+    debugPrint(list.toString());
+
+    for (var result in list) {
       if (result == null) {
-        return false;
+        return true; // Stop loop and return true if any value is null
       }
     }
-    return true;
+
+    return false; // No null values found
   }
 }

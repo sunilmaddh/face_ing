@@ -67,6 +67,8 @@ class AddNewGuestScreen extends StatelessWidget {
                                 validator: (name) {
                                   if (name == null || name.isEmpty) {
                                     return "Please enter name";
+                                  } else if (!GuestHalper.isValidInput(name)) {
+                                    return "Please enter valid name";
                                   }
                                   return null;
                                 },

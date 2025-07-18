@@ -699,10 +699,10 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     return [
       ...allVitalSigns(),
       ...bloodlessBloodTests(),
-      // ...risks(),
-      // ...stress(),
-      // ...heartRateVariability(),
-      // ...advancedHeartRateVariability(),
+      ...risks(),
+      ...stress(),
+      ...heartRateVariability(),
+      ...advancedHeartRateVariability(),
     ];
   }
 

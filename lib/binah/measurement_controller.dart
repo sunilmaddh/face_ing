@@ -50,6 +50,7 @@ class MeasurementController extends GetxController
   final RxDouble age = 0.0.obs;
   final RxDouble weight = 0.0.obs;
   final RxDouble height = 0.0.obs;
+  final RxBool isScanStop = false.obs;
   @override
   final RxBool isStarted = false.obs;
   final RxBool isScanningDone = false.obs;
@@ -194,52 +195,53 @@ class MeasurementController extends GetxController
     debugPrint(
       "Stress index${vitalsResults.value.getResult(VitalSignTypes.stressIndex)}",
     );
-    bool isVerifyResult = await ProgressHandlerMixin.verifyVitalResult(
-      vitalsResults.value,
-    );
-    if (isVerifyResult) {
-      if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
-        startStopButtonClicked();
-        if (scanType.value == "add-guest") {
-          _geustController.addGuest(vitalsResults.value).whenComplete(() {
-            AppNavigation.off(
-              AppRoutes.allReportScreen,
-              action: () {
-                isScanningDone(false);
-                _geustController.clearData();
-                _geustController.getGeustHistory();
-              },
-            );
-          });
-        } else {
-          _geustController
-              .storeBinahHealthForUser(vitalsResults.value)
-              .whenComplete(() {
-                AppNavigation.off(
-                  AppRoutes.allReportScreen,
-                  action: () {
-                    isScanningDone(false);
-                    _geustController.clearData();
-                    // _geustController.getGeustHistory();
-                  },
-                );
-              });
+    bool isVerifyResultHaveNull =
+        await ProgressHandlerMixin.checkingVitalResult(vitalsResults.value);
+    if (isScanStop.isFalse) {
+      if (isVerifyResultHaveNull == false) {
+        if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
+          startStopButtonClicked();
+          if (scanType.value == "add-guest") {
+            _geustController.addGuest(vitalsResults.value).whenComplete(() {
+              AppNavigation.off(
+                AppRoutes.analyzingHealthData,
+                action: () {
+                  isScanningDone(false);
+                  _geustController.clearData();
+                  _geustController.getGeustHistory();
+                },
+              );
+            });
+          } else {
+            _geustController
+                .storeBinahHealthForUser(vitalsResults.value)
+                .whenComplete(() {
+                  AppNavigation.off(
+                    AppRoutes.analyzingHealthData,
+                    action: () {
+                      isScanningDone(false);
+                      _geustController.clearData();
+                      // _geustController.getGeustHistory();
+                    },
+                  );
+                });
+          }
         }
+      } else {
+        CommonDialog().showScanDialog(
+          title: " 'Scan Failed'",
+          message:
+              "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
+          context: Get.context!,
+          onConfirm: () {
+            stopMeasuring();
+            _startMeasurement();
+          },
+          onCancel: () {
+            Get.back();
+          },
+        );
       }
-    } else {
-      CommonDialog().showScanDialog(
-        title: " 'Scan Failed'",
-        message:
-            "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
-        context: Get.context!,
-        onConfirm: () {
-          stopMeasuring();
-          _startMeasurement();
-        },
-        onCancel: () {
-          Get.back();
-        },
-      );
     }
   }
 

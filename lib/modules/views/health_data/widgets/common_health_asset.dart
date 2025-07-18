@@ -324,7 +324,7 @@ class CommonHealthAsset {
 
   String getLfHfAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'medium':
+      case 'Normal':
         return AppAssets.mediumAsset;
       case 'high':
         return AppAssets.goodAsset;
