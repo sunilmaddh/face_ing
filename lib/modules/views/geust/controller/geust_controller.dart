@@ -17,6 +17,7 @@ import 'package:ntt_data/data/models/guest_history_details_model.dart';
 import 'package:ntt_data/data/models/guest_list_response_model.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/repository/services/geust_services.dart';
+import 'package:ntt_data/modules/views/geust/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
@@ -241,142 +242,28 @@ class GeustController extends GetxController
 
   Future<void> addGuest(VitalSignsResults vitalSignResult) async {
     var userID = await IndoSharedPreference.instance.getUserId();
-    var data = {
-      "guestDao": {
-        "userId": userID,
-        "name": nameTextController.text,
-        "gender": selectionType.value,
-        "dob": dobTextController.text,
-        "weight": weightTextController.text,
-        "height": heightTextController.text,
-        "smokerType": "Non smoker",
-        "guestImage": userImage.value,
-      },
-      "binahDetails": {
-        "pulseRate":
-            vitalSignResult
-                .getResult(VitalSignTypes.pulseRate)
-                ?.value
-                .toString(),
-        "respirationRate":
-            vitalSignResult
-                .getResult(VitalSignTypes.respirationRate)
-                ?.value
-                .toString(),
-        "oxygenSaturation":
-            vitalSignResult.getResult(VitalSignTypes.oxygenSaturation)?.value,
-        "sdnn":
-            vitalSignResult.getResult(VitalSignTypes.sdnn)?.value.toString(),
-        "stressLevel":
-            vitalSignResult
-                .getResult(VitalSignTypes.stressLevel)
-                ?.value
-                .toString(),
-        "rri": vitalSignResult.getResult(VitalSignTypes.rri)?.value.toString(),
-        "bloodPressure":
-            vitalSignResult
-                .getResult(VitalSignTypes.bloodPressure)
-                ?.value
-                .toString(),
-        "stressIndex":
-            vitalSignResult
-                .getResult(VitalSignTypes.stressIndex)
-                ?.value
-                .toString(),
-        "meanRri":
-            vitalSignResult.getResult(VitalSignTypes.meanRri)?.value.toString(),
-        "rmssd":
-            vitalSignResult.getResult(VitalSignTypes.rmssd)?.value.toString(),
-        "sd1": vitalSignResult.getResult(VitalSignTypes.sd1)?.value.toString(),
-        "sd2": vitalSignResult.getResult(VitalSignTypes.sd2)?.value.toString(),
-        "prq": vitalSignResult.getResult(VitalSignTypes.prq)?.value.toString(),
-        "pnsIndex":
-            vitalSignResult
-                .getResult(VitalSignTypes.pnsIndex)
-                ?.value
-                .toString(),
-        "pnsZone":
-            vitalSignResult.getResult(VitalSignTypes.pnsZone)?.value.toString(),
-        "snsIndex":
-            vitalSignResult
-                .getResult(VitalSignTypes.snsIndex)
-                ?.value
-                .toString(),
-        "snsZone":
-            vitalSignResult.getResult(VitalSignTypes.snsZone)?.value.toString(),
-        "wellnessIndex":
-            vitalSignResult
-                .getResult(VitalSignTypes.wellnessIndex)
-                ?.value
-                .toString(),
-        "wellnessLevel":
-            vitalSignResult
-                .getResult(VitalSignTypes.wellnessLevel)
-                ?.value
-                .toString(),
-        "lfhf":
-            vitalSignResult.getResult(VitalSignTypes.lfhf)?.value.toString(),
-        "hemoglobin":
-            vitalSignResult
-                .getResult(VitalSignTypes.hemoglobin)
-                ?.value
-                .toString(),
-        "hemoglobinA1C":
-            vitalSignResult
-                .getResult(VitalSignTypes.hemoglobinA1C)
-                ?.value
-                .toString(),
-        "highHemoglobinA1CRisk":
-            vitalSignResult
-                .getResult(VitalSignTypes.highHemoglobinA1CRisk)
-                ?.value
-                .toString(),
-        "highBloodPressureRisk":
-            vitalSignResult
-                .getResult(VitalSignTypes.highBloodPressureRisk)
-                ?.value
-                .toString(),
-        "ascvdRisk":
-            vitalSignResult
-                .getResult(VitalSignTypes.ascvdRisk)
-                ?.value
-                .toString(),
-        "normalizedStressIndex":
-            vitalSignResult
-                .getResult(VitalSignTypes.normalizedStressIndex)
-                ?.value
-                .toString(),
-        "heartAge":
-            vitalSignResult
-                .getResult(VitalSignTypes.heartAge)
-                ?.value
-                .toString(),
-        "highTotalCholesterolRisk":
-            vitalSignResult
-                .getResult(VitalSignTypes.highTotalCholesterolRisk)
-                ?.value
-                .toString(),
-        "highFastingGlucoseRisk":
-            vitalSignResult
-                .getResult(VitalSignTypes.highFastingGlucoseRisk)
-                ?.value
-                .toString(),
-        "lowHemoglobinRisk":
-            vitalSignResult
-                .getResult(VitalSignTypes.lowHemoglobinRisk)
-                ?.value
-                .toString(),
-      },
-    };
+    var data = await GuestHalper().mapData(
+      userId: userID,
+      name: nameTextController.text,
+      gender: selectionType.value,
+      dob: dobTextController.text,
+      weight: weightTextController.text,
+      height: heightTextController.text,
+      guestImage: userImage.value,
+      vitalSignResult: vitalSignResult,
+    );
     debugPrint(data.toString());
     Map<String, dynamic> resposneData = await GeustServices().addGeustService(
       data: data,
     );
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
-      final _geustController = Get.find<GeustController>();
-      _geustController.getGeustHistory();
     } else if (statusCode == 500) {
+      AppSnackbar.show(
+        title: "Error",
+        message: "Something went wrong",
+        isError: true,
+      );
     } else {
       AppSnackbar.show(
         title: "Error",
@@ -408,24 +295,10 @@ class GeustController extends GetxController
     }
   }
 
-  clearData() {
-    nameTextController.clear();
-    weightTextController.clear();
-    heightTextController.clear();
-    dobTextController.clear();
-    selectionType.value = "";
-    isTermAccepted.value = false;
-    isChecked.value = false;
-    profileUrl.value = File("");
-    isProfile.value = false;
-  }
-
   @override
   void dispose() {
-    // TODO: implement dispose
     guestList.clear();
-    clearData();
-
+    GuestHalper().clearData();
     super.dispose();
   }
 
@@ -440,64 +313,6 @@ class GeustController extends GetxController
                     item.name!.toLowerCase().contains(query.toLowerCase()),
               )
               .toList();
-    }
-  }
-
-  Future<void> uploadProfileFromGallery(String imageType) async {
-    var imageUrl = await profileUploadService.pickImageFromGallery();
-    if (imageUrl != null) {
-      isProfile.value = true;
-      profileUrl.value = File(imageUrl.path);
-      var userID = await IndoSharedPreference.instance.getUserId();
-      Map<String, dynamic> responseData = await authServices.uploadDocument(
-        profileUrl.value,
-        userID,
-        imageType,
-      );
-      int statusCode = responseData["responseCode"];
-      debugPrint("uploadImageResponseModel $statusCode");
-      if (statusCode == 200) {
-        var result = responseData["response"];
-        debugPrint("uploadImageResponseModel ${result}");
-        uploadImageResponseModel.value = result;
-        userImage.value = uploadImageResponseModel.value.imagePath!;
-        debugPrint(
-          "uploadImageResponseModel ${uploadImageResponseModel.value}",
-        );
-      }
-    } else {
-      isProfile.value = false;
-      Get.snackbar("Upload Failed", "Please try again");
-    }
-  }
-
-  Future<void> uploadProfileFromCamera(String imageType) async {
-    var imageUrl = await profileUploadService.pickImageFromCamera();
-    if (imageUrl != null) {
-      isProfile.value = true;
-      profileUrl.value = File(imageUrl.path);
-      var userID = await IndoSharedPreference.instance.getUserId();
-      debugPrint("uploadImageResponseModel $imageUrl");
-      Map<String, dynamic> responseData = await authServices.uploadDocument(
-        profileUrl.value,
-        userID,
-        imageType,
-      );
-      int statusCode = responseData["responseCode"];
-      debugPrint("uploadImageResponseModel $statusCode");
-      if (statusCode == 200) {
-        var result = responseData["response"];
-        debugPrint("uploadImageResponseModel $result");
-
-        uploadImageResponseModel.value = result;
-        userImage.value = uploadImageResponseModel.value.imagePath!;
-        debugPrint(
-          "uploadImageResponseModel ${uploadImageResponseModel.value}",
-        );
-      }
-    } else {
-      isProfile.value = false;
-      Get.snackbar("Upload Failed", "Please try again");
     }
   }
 }

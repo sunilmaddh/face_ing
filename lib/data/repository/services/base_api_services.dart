@@ -12,8 +12,6 @@ abstract class BaseApiService {
   final String baseUrl = ApiEndpoints.baseUrl;
   final String api = "/api";
   final isHttps = false;
-  // var accessToken =
-  //     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwMDAwMDAxYWJjQGdtYWlsLmNvbSIsImlhdCI6MTc0NjcwNzc2MiwiZXhwIjoxNzQ2Nzk0MTYyfQ.7KEhC0SSYIgK0AZzOHUqsZesft8m5NuOHdLJOLXI4jU";
 
   Future<Map<String, dynamic>> getRequest(String endpoint) async {
     try {
@@ -25,6 +23,12 @@ abstract class BaseApiService {
       }
 
       final response = await http.get(uri);
+      if (response.statusCode == 401) {
+        String? isAccessToken = await refreshToken();
+        if (isAccessToken != null && isAccessToken.isNotEmpty) {
+          return await getRequest(endpoint);
+        }
+      }
       return _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
@@ -59,7 +63,12 @@ abstract class BaseApiService {
       debugPrint("Access toke $accessToken");
       debugPrint(response.body.toString());
       debugPrint(response.headers.toString());
-
+      if (response.statusCode == 401) {
+        String? isAccessToken = await refreshToken();
+        if (isAccessToken != null && isAccessToken.isNotEmpty) {
+          return await postRequest(endpoint, data: data);
+        }
+      }
       return _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
@@ -94,7 +103,12 @@ abstract class BaseApiService {
       debugPrint("Access toke $accessToken");
       debugPrint(response.body.toString());
       debugPrint(response.headers.toString());
-
+      if (response.statusCode == 401) {
+        String? isAccessToken = await refreshToken();
+        if (isAccessToken != null && isAccessToken.isNotEmpty) {
+          return await loginPostRequest(endpoint, data: data);
+        }
+      }
       return _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
@@ -129,6 +143,12 @@ abstract class BaseApiService {
       );
       debugPrint(response.headers.toString());
       debugPrint(response.body.toString());
+      if (response.statusCode == 401) {
+        String? isAccessToken = await refreshToken();
+        if (isAccessToken != null && isAccessToken.isNotEmpty) {
+          return await postRequestWithoutBody(endpoint);
+        }
+      }
       return _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
@@ -152,6 +172,12 @@ abstract class BaseApiService {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data),
       );
+      if (response.statusCode == 401) {
+        String? isAccessToken = await refreshToken();
+        if (isAccessToken != null && isAccessToken.isNotEmpty) {
+          return await putRequest(endpoint, data);
+        }
+      }
       return _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
@@ -169,6 +195,12 @@ abstract class BaseApiService {
       }
       final response = await http.delete(uri);
       debugPrint(response.headers["accessToken"]);
+      if (response.statusCode == 401) {
+        String? isAccessToken = await refreshToken();
+        if (isAccessToken != null && isAccessToken.isNotEmpty) {
+          return await deleteRequest(endpoint);
+        }
+      }
       return _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
@@ -177,89 +209,30 @@ abstract class BaseApiService {
   }
 
   Map<String, dynamic> _processResponse(http.Response response) {
-    // Decode with UTF-8 to avoid weird symbols
     final decodedBody = utf8.decode(response.bodyBytes);
     debugPrint("${response.statusCode} $decodedBody");
     NetworkUtil.checkInternet(Get.context!);
-
-    if (response.statusCode == 401) {
-      AppMethods().logout();
-      AppSnackbar.show(title: "Error", message: "Session expired");
-    } else {
-      final responseBody = jsonDecode(decodedBody);
-      switch (response.statusCode) {
-        case 200:
-        case 201:
-          return {
-            "statusCode": response.statusCode,
-            "responseBody": responseBody,
-            "header": response.headers,
-          };
-        case 400:
-        case 403:
-        case 404:
-        case 500:
-          return {
-            "statusCode": response.statusCode,
-            "responseBody": responseBody,
-          };
-        default:
-          throw Exception("Unknown Error: ${response.statusCode}");
-      }
+    final responseBody = jsonDecode(decodedBody);
+    switch (response.statusCode) {
+      case 200:
+      case 201:
+        return {
+          "statusCode": response.statusCode,
+          "responseBody": responseBody,
+          "header": response.headers,
+        };
+      case 400:
+      case 403:
+      case 404:
+      case 500:
+        return {
+          "statusCode": response.statusCode,
+          "responseBody": responseBody,
+        };
+      default:
+        throw Exception("Unknown Error: ${response.statusCode}");
     }
-    return {};
   }
-
-  // Map<String, dynamic> _processResponse(http.Response response) {
-  //   debugPrint(response.statusCode.toString() + response.body.toString());
-  //   if (response.statusCode == 401) {
-  //     AppMethods().logout();
-  //     AppSnackbar.show(title: "Error", message: "Session expire");
-  //   } else {
-  //     switch (response.statusCode) {
-  //       case 200:
-  //       case 201:
-  //         return {
-  //           "statusCode": response.statusCode,
-  //           "responseBody": jsonDecode(response.body),
-  //           "header": response.headers,
-  //         };
-  //       case 400:
-  //         return {
-  //           "statusCode": response.statusCode,
-  //           "responseBody": jsonDecode(
-  //             response.body,
-  //           ), // Ensure it's parsed as JSON
-  //         };
-  //       case 401:
-  //       case 403:
-  //         return {
-  //           "statusCode": response.statusCode,
-  //           "responseBody": jsonDecode(response.body),
-
-  //           // Ensure it's parsed as JSON
-  //         };
-
-  //       case 404:
-  //         return {
-  //           "statusCode": response.statusCode,
-  //           "responseBody": jsonDecode(
-  //             response.body,
-  //           ), // Ensure it's parsed as JSON
-  //         };
-  //       case 500:
-  //         return {
-  //           "statusCode": response.statusCode,
-  //           "responseBody": jsonDecode(
-  //             response.body,
-  //           ), // Ensure it's parsed as JSON
-  //         };
-  //       default:
-  //         throw Exception("Unknown Error: ${response.statusCode}");
-  //     }
-  //   }
-  //   return {};
-  // }
 
   Future<http.Response?> uploadImage(
     String endpoint,
@@ -285,44 +258,26 @@ abstract class BaseApiService {
     var response = await request.send();
     http.Response responses = await http.Response.fromStream(response);
     print(response.statusCode);
-    // response.stream.transform(utf8.decoder).listen((value) {
-    //   print(value);
-    // });
+
     return responses;
   }
 
-  // Future<void> sendFormDataWithImage(String endpoint, filepath) async {
-  //   Uri uri = Uri.http(baseUrl, endpoint);
-  //   debugPrint('URL  $uri');
-  //   debugPrint('File  $filepath');
-  //   String endP = "$endpoint/${"1000000001"}";
-  //   final request = http.MultipartRequest('POST', Uri.http(baseUrl, endP));
-
-  //   // Add regular form fields
-  //   request.fields['isSignup'] = 'true';
-
-  //   // Detect MIME type (e.g., image/jpeg)
-  //   final mimeType = lookupMimeType(filepath.path);
-  //   final mimeSplit = mimeType?.split('/') ?? ['application', 'octet-stream'];
-
-  //   // Add image with proper Content-Type
-  //   request.files.add(
-  //     await http.MultipartFile.fromPath(
-  //       'file', // <-- your backend expects this field
-  //       filepath.path,
-  //       contentType: MediaType(mimeSplit[0], mimeSplit[1]),
-  //       // filename: basename(imageFile.path),
-  //     ),
-  //   );
-
-  //   // // Optional: headers like auth
-  //   // request.headers['Authorization'] = 'Bearer your_token';
-
-  //   // Send request
-  //   final response = await request.send();
-
-  //   final responseBody = await response.stream.bytesToString();
-  //   print('Status code: ${response.statusCode}');
-  //   print('Response body: $responseBody');
-  // }
+  Future<String?> refreshToken() async {
+    final refreshToken = await IndoSharedPreference.instance.getRefreshToken();
+    Uri uri = Uri.http(baseUrl, ApiEndpoints.refreshToken);
+    var header = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $refreshToken",
+    };
+    final response = await http.post(uri, headers: header);
+    if (response.statusCode == 200) {
+      var newAccessToken = header["accesstoken"] ?? "";
+      await IndoSharedPreference.instance.saveAccessToken(newAccessToken);
+      return newAccessToken;
+    } else {
+      AppMethods().logout();
+      AppSnackbar.show(title: "Error", message: "Session expired");
+      return null;
+    }
+  }
 }

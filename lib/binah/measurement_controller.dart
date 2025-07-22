@@ -10,6 +10,7 @@ import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
+import 'package:ntt_data/modules/views/geust/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -56,6 +57,7 @@ class MeasurementController extends GetxController
   final RxBool isScanningDone = false.obs;
   RxBool isLoading = false.obs;
   RxString smokerType = ''.obs;
+  final TextEditingController smokerTypeController = TextEditingController();
   RxBool isMeasurementCanceled = false.obs;
   RxList<String> vitlaList = <String>[].obs;
   @override
@@ -207,8 +209,9 @@ class MeasurementController extends GetxController
                 AppRoutes.analyzingHealthData,
                 action: () {
                   isScanningDone(false);
-                  _geustController.clearData();
+                  GuestHalper().clearData();
                   _geustController.getGeustHistory();
+                  Get.back();
                 },
               );
             });
@@ -220,8 +223,6 @@ class MeasurementController extends GetxController
                     AppRoutes.analyzingHealthData,
                     action: () {
                       isScanningDone(false);
-                      _geustController.clearData();
-                      // _geustController.getGeustHistory();
                     },
                   );
                 });
@@ -305,14 +306,16 @@ class MeasurementController extends GetxController
     }
     _reset();
 
-    debugPrint("user2 Information $genderType$weight$height,$age,$smokerType");
+    debugPrint(
+      "user2 Information $genderType$weight$height,$age,${smokerTypeController.text}",
+    );
     var userInformation = UserInformation(
       sex: genderType == "Male" ? Sex.male : Sex.female,
       age: 30.0,
       weight: weight,
       height: height,
       smokingStatus:
-          smokerType == "Smoker"
+          smokerTypeController.text == "Smoker"
               ? SmokingStatus.smoker
               : SmokingStatus.nonSmoker,
     );

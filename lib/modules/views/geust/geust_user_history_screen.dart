@@ -5,6 +5,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
+import 'package:ntt_data/modules/views/geust/guest_halper.dart';
 import 'package:ntt_data/modules/views/geust/widget/geust_user_history_card.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -39,11 +40,10 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
       floatingActionButton: RoundedButton(
         onPressed: () {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            _controller.clearData();
             AppNavigation.to(
               AppRoutes.addNewGeustScreen,
               action: () {
-                _controller.getGeustHistory();
+                // _controller.getGeustHistory();
               },
             );
           });

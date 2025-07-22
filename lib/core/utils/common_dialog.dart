@@ -1,3 +1,6 @@
+import 'package:bottom_picker/bottom_picker.dart';
+import 'package:bottom_picker/resources/arrays.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -81,6 +84,49 @@ class CommonDialog {
       ),
       barrierDismissible: false, // Prevent accidental closure
     );
+  }
+
+  static Future<void> openDatePicker({
+    required BuildContext context,
+    required TextEditingController dateController,
+  }) async {
+    BottomPicker.date(
+      closeWidget: InkWell(
+        onTap: () {
+          Get.back();
+        },
+        child: SvgPicture.asset(AppAssets.cloaseDialog),
+      ),
+      pickerTitle: Text(
+        'Select your Birthday',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+          color: AppColors.backArrowColor,
+        ),
+      ),
+      dateOrder: DatePickerDateOrder.dmy,
+      initialDateTime: DateTime.now(),
+      maxDateTime: DateTime.now(),
+      minDateTime: DateTime(1930),
+      pickerTextStyle: TextStyle(
+        color: Colors.blue,
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+      ),
+      onChange: (index) {
+        // print(index);
+      },
+      onSubmit: (index) {
+        String formattedDate = DateFormat('yyyy/MM/dd').format(index);
+        dateController.text = formattedDate;
+        print(index);
+      },
+      onDismiss: (p0) {
+        // print(p0);
+      },
+      bottomPickerTheme: BottomPickerTheme.plumPlate,
+    ).show(context);
   }
 
   static void selectDate({

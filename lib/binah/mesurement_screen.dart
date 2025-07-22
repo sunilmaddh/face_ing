@@ -108,7 +108,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                   painter: OverlayWithOvalHolePainter(
                                     center: Offset(
                                       screenSize.width / 2,
-                                      screenSize.height / 2.6,
+                                      screenSize.height / 2.7,
                                     ),
                                     radiusX: ovalWidth / 2,
                                     radiusY: ovalHeight / 2,
@@ -127,94 +127,83 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                               }),
                             ),
 
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: AppDimensions.height(250),
-                                padding: EdgeInsets.only(
-                                  bottom: AppDimensions.height(20),
-                                  top: AppDimensions.height(8.0),
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(40),
-                                    topRight: Radius.circular(40),
+                            SafeArea(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: AppDimensions.height(200),
+                                  padding: EdgeInsets.only(
+                                    // bottom: AppDimensions.height(20),
+                                    // top: AppDimensions.height(8.0),
                                   ),
-                                ),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Obx(
-                                        () => Visibility(
-                                          visible:
-                                              controller.isStarted.value ==
-                                              true,
-                                          child: SafeArea(
-                                            child: Align(
-                                              alignment: Alignment.topRight,
-                                              child: TextButton(
-                                                onPressed: () {
-                                                  controller.isScanStop.value =
-                                                      true;
-                                                  CommonDialog().showScanDialog(
-                                                    title: " 'Scan Alert'",
-                                                    message:
-                                                        "The scan is still running. Do you really want to stop now?",
-                                                    context: Get.context!,
-                                                    onConfirm: () {
-                                                      controller
-                                                          .stopMeasuring();
-                                                      // Future.delayed(
-                                                      //   const Duration(
-                                                      //     seconds: 3,
-                                                      //   ),
-                                                      //   () {
-                                                      //     controller
-                                                      //         .startStopButtonClicked();
-                                                      //   },
-                                                      // );
-
-                                                      // controller
-                                                      //     .isStarted
-                                                      //     .value = true;
-                                                    },
-                                                    onCancel: () {
-                                                      Get.back();
-                                                      controller
-                                                          .stopMeasuring();
-                                                    },
-                                                  );
-                                                },
-                                                child: CommonText.text(
-                                                  "Stop",
-                                                  color: AppColors.blackColor,
-                                                  fontSize: AppDimensions.font(
-                                                    18,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(40),
+                                      topRight: Radius.circular(40),
+                                    ),
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Obx(
+                                          () => Visibility(
+                                            visible:
+                                                controller.isStarted.value ==
+                                                true,
+                                            child: SafeArea(
+                                              child: Align(
+                                                alignment: Alignment.topRight,
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    controller.stopMeasuring();
+                                                    controller
+                                                        .isScanStop
+                                                        .value = true;
+                                                    CommonDialog().showScanDialog(
+                                                      title: " 'Scan Alert'",
+                                                      message:
+                                                          "The scan has been stopped. Do you want to start the scan again?",
+                                                      context: Get.context!,
+                                                      onConfirm: () {
+                                                        controller
+                                                            .stopMeasuring();
+                                                      },
+                                                      onCancel: () {
+                                                        Get.back();
+                                                      },
+                                                    );
+                                                  },
+                                                  child: CommonText.text(
+                                                    "Stop",
+                                                    color: AppColors.blackColor,
+                                                    fontSize:
+                                                        AppDimensions.font(18),
+                                                    fontWeight: FontWeight.w600,
                                                   ),
-                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
 
-                                      SizedBox(
-                                        height: AppDimensions.height(10),
-                                      ),
-                                      ImageValidityScan(),
-                                      MeasurmentProgress(
-                                        controller: controller,
-                                      ),
-                                      SizedBox(
-                                        height: AppDimensions.height(10),
-                                      ),
-                                      StartStopButton(userName: userName),
-                                    ],
+                                        // SizedBox(
+                                        //   height: AppDimensions.height(10),
+                                        // ),
+                                        ImageValidityScan(),
+                                        MeasurmentProgress(
+                                          controller: controller,
+                                        ),
+                                        SizedBox(
+                                          height: AppDimensions.height(10),
+                                        ),
+                                        StartStopButton(userName: userName),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

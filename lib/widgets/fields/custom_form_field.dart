@@ -88,10 +88,10 @@ class CustomFormField extends StatelessWidget {
               ),
 
               prefixIcon: prefixIcon,
-              suffixIcon:
-                  suffixIcon != null
-                      ? GestureDetector(onTap: onSuffixTap, child: suffixIcon)
-                      : null,
+              suffixIcon: suffixIcon,
+              // suffixIcon != null
+              //     ? GestureDetector(onTap: onSuffixTap, child: suffixIcon)
+              //     : null,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide(color: borderColor, width: 1),
@@ -102,6 +102,10 @@ class CustomFormField extends StatelessWidget {
               ),
 
               enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide(color: borderColor, width: 1),
+              ),
+              disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide(color: borderColor, width: 1),
               ),

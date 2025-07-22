@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
@@ -15,12 +16,11 @@ import 'package:ntt_data/modules/views/auth/widgets/terms_checkbox_widget.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/cards/profile_upload_card.dart';
-import 'package:ntt_data/widgets/fields/common_dropmenu.dart';
+import 'package:ntt_data/widgets/fields/common_dropdown_text_field.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 import 'package:ntt_data/widgets/gender_widget.dart';
@@ -32,8 +32,6 @@ class AddNewGuestScreen extends StatelessWidget {
   final _geustController = Get.find<GeustController>();
   final controller = Get.find<MeasurementController>();
   final _formKey = GlobalKey<FormState>();
-
-  List<String> smokerTypeList = ["Smoker", "Non Smoker"];
 
   @override
   Widget build(BuildContext context) {
@@ -81,74 +79,84 @@ class AddNewGuestScreen extends StatelessWidget {
                               SizedBox(height: 15),
 
                               /// Date of Birth Picker
-                              InkWell(
-                                onTap: () {
-                                  CommonDialog.selectDate(
-                                    context: context,
-                                    dateController:
-                                        _geustController.dobTextController,
-                                  );
+                              CustomFormField(
+                                validator: (dob) {
+                                  if (dob == null || dob.isEmpty) {
+                                    return "Please select DOB";
+                                  }
+                                  return null;
                                 },
-                                child: CustomFormField(
-                                  validator: (dob) {
-                                    if (dob == null || dob.isEmpty) {
-                                      return "Please select DOB";
-                                    }
-                                    return null;
+
+                                readOnly: true,
+                                suffixIcon: InkWell(
+                                  onTap: () async {
+                                    await CommonDialog.openDatePicker(
+                                      context: context,
+                                      dateController:
+                                          _geustController.dobTextController,
+                                    );
                                   },
-                                  enable: false,
-                                  readOnly: true,
-                                  suffixIcon: const Icon(
+                                  child: const Icon(
                                     Icons.date_range,
                                     color: AppColors.primary,
                                   ),
-                                  label: AppConstents.dob,
-                                  hint: "Select your date of birth",
-                                  controller:
-                                      _geustController.dobTextController,
                                 ),
+                                label: AppConstents.dob,
+                                hint: "Select your date of birth",
+                                controller: _geustController.dobTextController,
                               ),
                               SizedBox(height: 15),
-
-                              /// Weight Field
-                              CustomFormField(
-                                keyboardType: TextInputType.number,
+                              CommonDropdownTextField(
+                                hintText: "Enter your weight (kg)",
                                 validator: (weight) {
                                   if (weight == null || weight.isEmpty) {
                                     return "Please enter weight";
+                                  } else if (int.parse(weight) < 40) {
+                                    return "Weight must be 40 or greater";
                                   }
                                   return null;
                                 },
                                 label: AppConstents.weight,
-                                hint: "Enter your weight (kg)",
+                                options: GuestHalper.weightList,
+
                                 controller:
                                     _geustController.weightTextController,
                               ),
+
                               SizedBox(height: 15),
 
-                              /// Height Field
-                              CustomFormField(
-                                keyboardType: TextInputType.number,
+                              CommonDropdownTextField(
+                                hintText: "Enter your height (cm)",
                                 validator: (height) {
                                   if (height == null || height.isEmpty) {
                                     return "Please enter height";
+                                  } else if (int.parse(height) < 130) {
+                                    return "Height must be 130 or greater";
                                   }
                                   return null;
                                 },
                                 label: AppConstents.height,
-                                hint: "Enter your height (cm)",
+                                options: GuestHalper.heightList,
                                 controller:
                                     _geustController.heightTextController,
                               ),
+
                               SizedBox(height: 15),
-                              CommonDropdown(
-                                items: smokerTypeList,
-                                onChanged: (value) {
-                                  controller.smokerType.value = value!;
+                              CommonDropdownTextField(
+                                hintText: "Please select smoker type",
+                                readOnly: true,
+                                validator: (smokerType) {
+                                  if (smokerType == null ||
+                                      smokerType.isEmpty) {
+                                    return "Please select Smoker type";
+                                  }
+                                  return null;
                                 },
-                                label: "Select Smoker type",
-                                itemToString: (smokerType) => smokerType,
+                                label: "Smoker type",
+                                options: GuestHalper.smokerTypeList,
+                                controller: controller.smokerTypeController,
                               ),
+
                               SizedBox(height: 15),
                               Align(
                                 alignment: Alignment.centerLeft,
@@ -230,12 +238,6 @@ class AddNewGuestScreen extends StatelessWidget {
                                   child: ScanButton(
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        var height = int.parse(
-                                          _geustController
-                                                  .heightTextController
-                                                  .text ??
-                                              "0",
-                                        );
                                         if (_geustController
                                             .selectionType
                                             .isEmpty) {
@@ -243,21 +245,6 @@ class AddNewGuestScreen extends StatelessWidget {
                                             isError: true,
                                             title: "Error",
                                             message: "Please select gender",
-                                          );
-                                        } else if (height < 130) {
-                                          AppSnackbar.show(
-                                            isError: true,
-                                            title: "Error",
-                                            message:
-                                                "Please enter a height greater than or equal to 130.",
-                                          );
-                                        } else if (controller
-                                            .smokerType
-                                            .isEmpty) {
-                                          AppSnackbar.show(
-                                            title: "Error",
-                                            message:
-                                                "Please select smoker type",
                                           );
                                         } else if (_geustController
                                             .isChecked
@@ -267,14 +254,6 @@ class AddNewGuestScreen extends StatelessWidget {
                                             title: "Error",
                                             message:
                                                 "Please accept term and conditions",
-                                          );
-                                        } else if (controller
-                                            .smokerType
-                                            .isEmpty) {
-                                          AppSnackbar.show(
-                                            title: "Error",
-                                            message:
-                                                "Please select smoker type",
                                           );
                                         } else {
                                           GuestHalper().callMeasurement();

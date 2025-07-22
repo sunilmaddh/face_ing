@@ -51,48 +51,44 @@ mixin ProgressHandlerMixin on GetxController {
     super.onClose();
   }
 
-  static Future<List> storingVitalResult(
+  static Future<List<dynamic>> storingVitalResult(
     VitalSignsResults vitalsResults,
   ) async {
-    var vitalList = [
-      vitalsResults.getResult(VitalSignTypes.wellnessIndex).toString(),
-      vitalsResults.getResult(VitalSignTypes.wellnessIndex).toString(),
-      vitalsResults.getResult(VitalSignTypes.respirationRate).toString(),
-      vitalsResults.getResult(VitalSignTypes.pulseRate).toString(),
-      vitalsResults.getResult(VitalSignTypes.prq).toString(),
-      vitalsResults.getResult(VitalSignTypes.bloodPressure).toString(),
-      vitalsResults.getResult(VitalSignTypes.oxygenSaturation).toString(),
-      vitalsResults.getResult(VitalSignTypes.hemoglobin).toString(),
-      vitalsResults.getResult(VitalSignTypes.hemoglobinA1C).toString(),
-      vitalsResults.getResult(VitalSignTypes.ascvdRisk).toString(),
-      vitalsResults.getResult(VitalSignTypes.heartAge).toString(),
-      vitalsResults.getResult(VitalSignTypes.highBloodPressureRisk).toString(),
-      vitalsResults.getResult(VitalSignTypes.highHemoglobinA1CRisk).toString(),
-      vitalsResults.getResult(VitalSignTypes.highFastingGlucoseRisk).toString(),
-      vitalsResults
-          .getResult(VitalSignTypes.highTotalCholesterolRisk)
-          .toString(),
-      vitalsResults.getResult(VitalSignTypes.lowHemoglobinRisk).toString(),
-      vitalsResults.getResult(VitalSignTypes.stressIndex).toString(),
-      vitalsResults.getResult(VitalSignTypes.sdnn).toString(),
-      vitalsResults.getResult(VitalSignTypes.lfhf).toString(),
+    return [
+      vitalsResults.getResult(VitalSignTypes.wellnessIndex),
+      vitalsResults.getResult(VitalSignTypes.wellnessIndex),
+      vitalsResults.getResult(VitalSignTypes.respirationRate),
+      vitalsResults.getResult(VitalSignTypes.pulseRate),
+      vitalsResults.getResult(VitalSignTypes.prq),
+      vitalsResults.getResult(VitalSignTypes.bloodPressure),
+      vitalsResults.getResult(VitalSignTypes.oxygenSaturation),
+      vitalsResults.getResult(VitalSignTypes.hemoglobin),
+      vitalsResults.getResult(VitalSignTypes.hemoglobinA1C),
+      vitalsResults.getResult(VitalSignTypes.ascvdRisk),
+      vitalsResults.getResult(VitalSignTypes.heartAge),
+      vitalsResults.getResult(VitalSignTypes.highBloodPressureRisk),
+      vitalsResults.getResult(VitalSignTypes.highHemoglobinA1CRisk),
+      vitalsResults.getResult(VitalSignTypes.highFastingGlucoseRisk),
+      vitalsResults.getResult(VitalSignTypes.highTotalCholesterolRisk),
+      vitalsResults.getResult(VitalSignTypes.lowHemoglobinRisk),
+      vitalsResults.getResult(VitalSignTypes.stressIndex),
+      vitalsResults.getResult(VitalSignTypes.sdnn),
+      vitalsResults.getResult(VitalSignTypes.lfhf),
     ];
-
-    return vitalList;
   }
 
   static Future<bool> checkingVitalResult(
     VitalSignsResults vitalsResults,
   ) async {
     final list = await storingVitalResult(vitalsResults);
-    debugPrint(list.toString());
-
+    debugPrint("vital list null ${list.toString()} ");
     for (var result in list) {
-      if (result == null) {
-        return true; // Stop loop and return true if any value is null
+      debugPrint("Null or 0.0 value found: $result");
+      if (result == null || result == 0.0) {
+        debugPrint("Null or 0.0 value found: $result");
+        return true;
       }
     }
-
-    return false; // No null values found
+    return false;
   }
 }
