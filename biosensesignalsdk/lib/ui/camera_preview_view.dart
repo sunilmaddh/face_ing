@@ -10,20 +10,22 @@ class CameraPreviewView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return const AndroidView(
-        viewType: _viewType,
-        creationParams: null,
-        creationParamsCodec: StandardMessageCodec(),
-      );
-    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return const UiKitView(
-        viewType: _viewType,
-        creationParams: null,
-        creationParamsCodec: StandardMessageCodec(),
-      );
-    } else {
-      return const Center(child: Text("Platform not supported"));
+    Widget createNativeView() {
+      if (defaultTargetPlatform == TargetPlatform.android) {
+        return const AndroidView(
+            viewType: _viewType,
+            creationParams: null,
+            creationParamsCodec: StandardMessageCodec());
+      } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+        return const UiKitView(
+            viewType: _viewType,
+            creationParams: null,
+            creationParamsCodec: StandardMessageCodec());
+      } else {
+        return const Text("Not supported");
+      }
     }
+
+    return createNativeView();
   }
 }
