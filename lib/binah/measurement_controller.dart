@@ -5,9 +5,11 @@ import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_pulse_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/guest_halper.dart';
@@ -36,7 +38,11 @@ import 'package:biosensesignal_flutter_sdk/alerts/error_data.dart';
 import 'package:biosensesignal_flutter_sdk/health_monitor_exception.dart';
 
 class MeasurementController extends GetxController
-    with StateMixin, GetTickerProviderStateMixin, ProgressHandlerMixin
+    with
+        StateMixin,
+        GetTickerProviderStateMixin,
+        ProgressHandlerMixin,
+        RadioStateMixin
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
   final _geustController = Get.find<GeustController>();
   final licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
@@ -93,7 +99,22 @@ class MeasurementController extends GetxController
           isMeasurementCanceled.value = true;
           resetProgress();
           stopProgress();
-          startStopButtonClicked();
+          stopMeasuring();
+          // if(value==true)
+          // // CommonDialog().showScanDialog(
+          // //   title: " 'Scan Failed'",
+          // //   message:
+          // //       "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
+          // //   context: Get.context!,
+          // //   onConfirm: () {
+          // //     stopMeasuring();
+          // //     // _startMeasurement();
+          // //   },
+          // //   onCancel: () {
+          // //     Get.back();
+          // //   },
+          // // );
+          // AppSnackbar.show(title: "Error", message: "Measurement canceled");
         });
         // AppSnackbar.show(title: "Error", message: "Measurement canceled");
       }
@@ -192,7 +213,6 @@ class MeasurementController extends GetxController
     debugPrint(
       "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
     );
-
     debugPrint("Stress index $vitlaList");
     debugPrint(
       "Stress index${vitalsResults.value.getResult(VitalSignTypes.stressIndex)}",
@@ -305,17 +325,14 @@ class MeasurementController extends GetxController
       await _terminateSession();
     }
     _reset();
-
-    debugPrint(
-      "user2 Information $genderType$weight$height,$age,${smokerTypeController.text}",
-    );
+    debugPrint("user2 Information $genderType$weight$height,$age,$smokerType");
     var userInformation = UserInformation(
       sex: genderType == "Male" ? Sex.male : Sex.female,
-      age: 30.0,
+      age: age,
       weight: weight,
       height: height,
       smokingStatus:
-          smokerTypeController.text == "Smoker"
+          smokerType == "Smoker"
               ? SmokingStatus.smoker
               : SmokingStatus.nonSmoker,
     );
@@ -390,8 +407,8 @@ class MeasurementController extends GetxController
             .trim();
 
     // Parse the cleaned date
-    DateTime parsedDate = DateTime.parse(cleanDob);
-    age.value = await AppMethods().calculateAge(parsedDate);
+    // DateTime parsedDate = DateTime.parse(cleanDob);
+    age.value = await AppMethods().calculateAge(cleanDob);
 
     AppNavigation.to(
       AppRoutes.mesurementScreen,

@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
+import 'package:intl/intl.dart';
 
 class GuestHalper {
   final controller = Get.find<MeasurementController>();
@@ -18,10 +20,11 @@ class GuestHalper {
 
   _startMeasurement() async {
     controller.isScanningDone.value = false;
-    DateTime parsedDate = DateTime.parse(
-      _guestController.dobTextController.text.replaceAll("/", "-"),
+
+    controller.age.value = await AppMethods().calculateAge(
+      _guestController.dobTextController.text,
     );
-    controller.age.value = await AppMethods().calculateAge(parsedDate);
+    debugPrint("Age ${controller.age.value.toString()}");
     controller.weight.value = double.parse(
       _guestController.weightTextController.text,
     );
@@ -29,7 +32,6 @@ class GuestHalper {
       _guestController.heightTextController.text,
     );
     controller.genderType.value = _guestController.selectionType.value;
-    _guestController.scanType.value = "guest";
     AppNavigation.to(
       AppRoutes.mesurementScreen,
       arguments: {
@@ -40,7 +42,7 @@ class GuestHalper {
   }
 
   static bool isValidInput(String input) {
-    final regex = RegExp(r'^[a-zA-Z0-9.]+$');
+    final regex = RegExp(r'^[a-zA-Z0-9 .]+$');
     return regex.hasMatch(input);
   }
 
@@ -52,6 +54,7 @@ class GuestHalper {
     required String weight,
     required String height,
     required String guestImage,
+
     required VitalSignsResults vitalSignResult,
   }) async {
     var data = {
@@ -62,7 +65,7 @@ class GuestHalper {
         "dob": dob,
         "weight": weight,
         "height": height,
-        "smokerType": controller.smokerTypeController.text,
+        "smokerType": controller.selectionType,
         "guestImage": guestImage,
       },
       "binahDetails": {
@@ -195,6 +198,8 @@ class GuestHalper {
     _guestController.profileUrl.value = File("");
     _guestController.isProfile.value = false;
     controller.smokerTypeController.clear();
+    controller.selectionType.value = "";
+    _guestController.selectionType.value = "";
   }
 
   static List<String> weightList = List.generate(
@@ -206,4 +211,17 @@ class GuestHalper {
     121,
     (index) => (index + 130).toString(),
   );
+
+  Future<int> calcualteAge(String birthDate) async {
+    DateFormat format = DateFormat("yyyy/MM/dd");
+    DateTime parsedDate = format.parse(birthDate);
+    final today = DateTime.now();
+    int age = today.year - parsedDate.year;
+    // Adjust age if birth date hasn't occurred yet this year
+    if (today.month < parsedDate.month ||
+        (today.month == parsedDate.month && today.day < parsedDate.day)) {
+      age--;
+    }
+    return age;
+  }
 }

@@ -24,7 +24,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 class GeustController extends GetxController
     with
         CheckboxStateMixin,
-        GenderStateMixin,
+        RadioStateMixin,
         CommonMixin,
         ProgressHandlerMixin {
   final nameTextController = TextEditingController();
@@ -102,6 +102,7 @@ class GeustController extends GetxController
     var userID = await IndoSharedPreference.instance.getUserId();
     var data = {
       "userId": userID,
+
       "binahDetails": {
         "pulseRate":
             vitalSignResult

@@ -6,16 +6,25 @@ import 'package:ntt_data/modules/views/profile/controller/profile_controller.dar
 import 'package:ntt_data/widgets/button/custom_radio_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
-class GenderWidget extends StatelessWidget {
-  GenderWidget({super.key, required this.controller});
-  GenderStateMixin controller;
+class RadioWidget extends StatelessWidget {
+  RadioWidget({
+    super.key,
+    required this.controller,
+    required this.level,
+    required this.radioTextLeft,
+    required this.radioTextRight,
+  });
+  RadioStateMixin controller;
+  String level;
+  String radioTextLeft;
+  String radioTextRight;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CommonText.text(
-          "Gender",
+          level,
           fontSize: AppDimensions.font(16),
           fontWeight: FontWeight.w500,
         ),
@@ -23,18 +32,18 @@ class GenderWidget extends StatelessWidget {
         Row(
           children: [
             CustomRadioButton(
-              value: "Male".obs,
+              value: radioTextLeft.obs,
               groupValue: controller.selectionType, // Use without .value
-              label: "Male",
+              label: radioTextLeft,
               onChanged: (v) {
                 controller.selectionType.value = v;
               },
             ),
             SizedBox(width: AppDimensions.width(25)),
             CustomRadioButton(
-              value: "Female".obs,
+              value: radioTextRight.obs,
               groupValue: controller.selectionType, // Use without .value
-              label: "Female",
+              label: radioTextRight,
               onChanged: (v) {
                 controller.selectionType.value = v;
               },

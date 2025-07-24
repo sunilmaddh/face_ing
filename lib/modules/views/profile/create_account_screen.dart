@@ -64,7 +64,12 @@ class CreateAccountScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 15),
 
-                GenderWidget(controller: _authController),
+                RadioWidget(
+                  controller: _authController,
+                  level: 'Gender',
+                  radioTextRight: 'Female',
+                  radioTextLeft: 'Male',
+                ),
                 SizedBox(height: 15),
 
                 /// Date of Birth Picker

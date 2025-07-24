@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/vital_status_halper.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -66,71 +68,74 @@ class IndoSakuraCommonCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              SizedBox(
-                width: 140,
-                height: 215,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (vitalStatus.isNotEmpty)
-                        SvgPicture.asset(
-                          imageRes,
-                          width: 37,
-                          height: 37,
-                          fit: BoxFit.cover,
+          SizedBox(
+            height: AppDimensions.height(250),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: AppDimensions.width(120),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (vitalStatus.isNotEmpty)
+                          SvgPicture.asset(
+                            imageRes,
+                            width: AppDimensions.width(37),
+                            height: AppDimensions.height(37),
+                            fit: BoxFit.cover,
+                          ),
+                        SizedBox(height: AppDimensions.height(5)),
+                        CommonText.text(
+                          maxLines: 3,
+                          vitalName,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff575656),
                         ),
-                      const SizedBox(height: 5),
-                      CommonText.text(
-                        maxLines: 3,
-                        vitalName,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff575656),
-                      ),
-                      const SizedBox(height: 5),
-                      CommonText.text(
-                        vitalCondition,
-                        fontSize: 10,
-                        color: Color(0xff575656),
-                      ),
-                      const SizedBox(height: 10),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: capitalizeFirst(vitalValue),
-                              style: const TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff4A4949),
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' $vitalMass',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Color(0xff4A4949),
-                              ),
-                            ),
-                          ],
+                        SizedBox(height: AppDimensions.height(5)),
+                        CommonText.text(
+                          vitalCondition,
+                          fontSize: 10,
+                          color: Color(0xff575656),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: AppDimensions.height(10)),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: AppMethods.capitalizeFirst(vitalValue),
+                                style: const TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xff4A4949),
+                                ),
+                              ),
+                              TextSpan(
+                                text: ' $vitalMass',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xff4A4949),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Container(width: 2, height: 180, color: const Color(0xffD9D9D9)),
-              Expanded(
-                child: SizedBox(
-                  height: 215,
+                Container(
+                  width: 1,
+                  height: AppDimensions.height(250),
+                  color: const Color(0xffD9D9D9),
+                ),
+                Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -144,14 +149,14 @@ class IndoSakuraCommonCard extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff5E5D5D),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: AppDimensions.height(10)),
                         CommonText.text(
-                          maxLines: 7,
+                          maxLines: 9,
                           vitalDescription,
                           fontSize: 12,
                           color: Color(0xff5E5D5D),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: AppDimensions.height(10)),
                         if (status.isNotEmpty)
                           Row(
                             children: [
@@ -163,9 +168,9 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                   color: color,
                                 ),
                               ),
-                              const SizedBox(width: 10),
+                              SizedBox(width: AppDimensions.width(10)),
                               CommonText.text(
-                                capitalizeFirst(status),
+                                AppMethods.capitalizeFirst(status),
                                 fontSize: 14,
                                 color: color,
                               ),
@@ -175,8 +180,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Obx(
             () => Visibility(
@@ -201,10 +206,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
           Obx(
             () =>
                 isExpanded.value
-                    ? Container(
-                      height: 1, // Adjust height as needed
-                      color: const Color(0xffD9D9D9),
-                    )
+                    ? Container(height: 1, color: const Color(0xffD9D9D9))
                     : SizedBox.shrink(),
           ),
 
@@ -222,30 +224,11 @@ class IndoSakuraCommonCard extends StatelessWidget {
                           isSdkType: isSdkType,
                           vitalName: result.vitalName!,
                           vitalStatus: result.vitalStatus!,
-                          isLowGood: stringToBool(
+                          isLowGood: AppMethods.stringToBool(
                             result.isTypeVital.toString(),
                           ),
                         );
-                        // if (isSdkType) {
-                        //   if (stringToBool(result.isTypeVital.toString()) ==
-                        //       true) {
-                        //    if (result.vitalName == "Mean RRi" &&
-                        //             result.vitalStatus == "Low" ||
-                        //         result.vitalName == "RMSSD" &&
-                        //             result.vitalStatus == "Low") {
-                        //       isLowGood = false;
-                        //     } else {
-                        //       isLowGood = stringToBool(
-                        //         result.isTypeVital.toString(),
-                        //       );
-                        //     }
-                        //   }
-                        // }
-                        // if (isSdkType) {
-                        //   imageResSub = vitalHalper.getImageResource(
-                        //     result.vitalStatus.toString(),
-                        //   );
-                        // }
+
                         imageResSub = vitalSubHalper.getImageResource(
                           result.vitalStatus.toString(),
                         );
@@ -278,12 +261,12 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                   ),
                                   SvgPicture.asset(
                                     imageResSub,
-                                    width: 20,
-                                    height: 20,
+                                    width: AppDimensions.width(20),
+                                    height: AppDimensions.height(20),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: AppDimensions.height(10)),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -309,12 +292,6 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-
-                                  // SvgPicture.asset(
-                                  //   imageRes,
-                                  //   width: 20,
-                                  //   height: 20,
-                                  // ),
                                 ],
                               ),
                             ],
@@ -335,14 +312,5 @@ class IndoSakuraCommonCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String capitalizeFirst(String word) {
-    if (word.isEmpty) return word;
-    return word[0].toUpperCase() + word.substring(1).toLowerCase();
-  }
-
-  bool stringToBool(String value) {
-    return value.toLowerCase() == 'true';
   }
 }

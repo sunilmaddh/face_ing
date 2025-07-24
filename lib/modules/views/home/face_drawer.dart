@@ -210,6 +210,25 @@ class FaceDrawer extends StatelessWidget {
             ),
 
             Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CommonText.text(
+                  "Version: ",
+                  color: AppColors.powerBy,
+                  fontSize: AppDimensions.font(20),
+                  fontWeight: FontWeight.w700,
+                  fontFamily: "Open Sans",
+                ),
+                CommonText.text(
+                  "1.0.12",
+                  color: AppColors.powerBy,
+                  fontSize: AppDimensions.font(14),
+                  fontWeight: FontWeight.w700,
+                  fontFamily: "Open Sans",
+                ),
+              ],
+            ),
 
             /// **Powered By Section**
             Row(

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-mixin GenderStateMixin on GetxController {
+mixin RadioStateMixin on GetxController {
   RxBool isGenderType = false.obs;
   RxString selectionType = "".obs;
 }

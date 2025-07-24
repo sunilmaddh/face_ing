@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/common_dialog.dart';
 
 class CommonDropdownTextField extends StatelessWidget {
   final String label;
@@ -12,6 +14,9 @@ class CommonDropdownTextField extends StatelessWidget {
   final Color borderColor;
   final String hintText;
   final bool readOnly;
+  // final List<String> items;
+  final int columns;
+  final String title;
   final void Function(String?)? onChanged;
 
   const CommonDropdownTextField({
@@ -22,6 +27,8 @@ class CommonDropdownTextField extends StatelessWidget {
     this.onChanged,
     this.readOnly = false,
     this.hintText = "",
+    this.columns = 5,
+    this.title = "",
     this.borderColor = AppColors.textFieldColor,
     this.borderRadius = 8.0,
     this.validator,
@@ -67,20 +74,18 @@ class CommonDropdownTextField extends StatelessWidget {
               vertical: AppDimensions.height(12),
               horizontal: AppDimensions.width(15.0),
             ),
-            suffixIcon: PopupMenuButton<String>(
+            suffixIcon: IconButton(
+              onPressed: () {
+                CommonDialog.showFullWidthCupertinoPicker(
+                  context: context,
+                  title: title,
+                  list: options,
+                  selectedItem: (selectedItem) {
+                    controller.text = selectedItem;
+                  },
+                );
+              },
               icon: Icon(Icons.arrow_drop_down),
-              onSelected: (String value) {
-                controller.text = value;
-                debugPrint(controller.text);
-              },
-              itemBuilder: (BuildContext context) {
-                return options.map((String option) {
-                  return PopupMenuItem<String>(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList();
-              },
             ),
           ),
         ),

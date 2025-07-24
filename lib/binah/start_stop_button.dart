@@ -36,20 +36,22 @@ class StartStopButton extends StatelessWidget {
               ),
               SizedBox(height: AppDimensions.height(10)),
               CommonText.text(
-                maxLines: 2,
+                maxLines: 3,
                 textAlign: TextAlign.center,
                 "Sit still, ensure your face is evenly illuminated and there is no light source in the background.",
                 color: AppColors.searchColor,
               ),
-              SizedBox(height: AppDimensions.height(10)),
-              PrimaryButton(
-                isLoading: controller.isLoading.value,
-                text: "Measure now",
-                onPressed: () {
-                  controller.isLoading.value = true;
-                  controller.isScanStop.value = false;
-                  controller.startStopButtonClicked();
-                },
+              SizedBox(height: AppDimensions.height(40)),
+              SafeArea(
+                child: PrimaryButton(
+                  isLoading: controller.isLoading.value,
+                  text: "Measure now",
+                  onPressed: () {
+                    controller.isLoading.value = true;
+                    controller.isScanStop.value = false;
+                    controller.startStopButtonClicked();
+                  },
+                ),
               ),
             ],
           ),

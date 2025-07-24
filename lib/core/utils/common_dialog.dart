@@ -4,14 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
+import 'package:ntt_data/widgets/cards/common_dialog_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 
@@ -82,7 +81,7 @@ class CommonDialog {
           ),
         ),
       ),
-      barrierDismissible: false, // Prevent accidental closure
+      barrierDismissible: false,
     );
   }
 
@@ -164,6 +163,7 @@ class CommonDialog {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: AppColors.btntext,
           title: CommonText.text(
             title,
             maxLines: 2,
@@ -188,10 +188,6 @@ class CommonDialog {
                 Expanded(
                   child: SizedBox(
                     height: AppDimensions.height(40),
-                    // width:
-                    //     isShowCancelButton
-                    //         ? AppDimensions.width(120)
-                    //         : AppDimensions.width(240),
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context); // Close dialog
@@ -224,6 +220,7 @@ class CommonDialog {
                           Navigator.pop(context); // Close dialog
                         },
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.btntext,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6),
                             side: BorderSide(color: AppColors.deleteDesColor),
@@ -286,14 +283,11 @@ class CommonDialog {
                 const SizedBox(height: 20),
                 SizedBox(
                   height: AppDimensions.height(40),
-                  // width:
-                  //     isShowCancelButton
-                  //         ? AppDimensions.width(120)
-                  //         : AppDimensions.width(240),
+
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context); // Close dialog
-                      onConfirm(); // Execute delete action
+                      Navigator.pop(context);
+                      onConfirm();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
@@ -304,32 +298,64 @@ class CommonDialog {
                     child: CommonText.text("SCAN", color: AppColors.btntext),
                   ),
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     TextButton(
-                //       onPressed: () => Navigator.of(context).pop(),
-                //       child: const Text('Cancel'),
-                //     ),
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         Navigator.of(context).pop();
-                //         // TODO: Add your scan logic here
-                //       },
-                //       style: ElevatedButton.styleFrom(
-                //         backgroundColor: Colors.deepPurple,
-                //         shape: RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(10),
-                //         ),
-                //       ),
-                //       child: const Text('Scan Now'),
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
         );
+      },
+    );
+  }
+
+  static void showFullWidthCupertinoDatePicker({
+    required BuildContext context,
+    required Function(DateTime) onDateSelected,
+  }) {
+    DateTime now = DateTime.now();
+    DateTime initialDate = DateTime(now.year - 18, now.month, now.day);
+    DateTime selectedDate = initialDate;
+    commonDialogCard(
+      title: "Select Date of birth",
+      context: context,
+      widget: CupertinoDatePicker(
+        itemExtent: 50,
+        mode: CupertinoDatePickerMode.date,
+        dateOrder: DatePickerDateOrder.dmy,
+        initialDateTime: initialDate,
+        minimumDate: DateTime(1930),
+        maximumDate: initialDate,
+        onDateTimeChanged: (DateTime newDate) {
+          selectedDate = newDate;
+        },
+      ),
+      onConfirm: () {
+        onDateSelected(selectedDate);
+      },
+    );
+  }
+
+  static void showFullWidthCupertinoPicker({
+    required BuildContext context,
+    required String title,
+    required List<String> list,
+    required Function(String) selectedItem,
+  }) {
+    int selectedIndex = 0;
+    commonDialogCard(
+      title: title,
+      context: context,
+      widget: CupertinoPicker(
+        looping: true,
+
+        itemExtent: 32,
+        squeeze: 1.0,
+        diameterRatio: 2.0,
+        onSelectedItemChanged: (int index) {
+          selectedIndex = index;
+        },
+        children: list.map((e) => Text(e)).toList(),
+      ),
+      onConfirm: () {
+        selectedItem(list[selectedIndex]);
       },
     );
   }

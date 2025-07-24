@@ -57,13 +57,16 @@ class AppMethods {
     return animationController;
   }
 
-  Future<double> calculateAge(DateTime birthDate) async {
+  Future<double> calculateAge(String birthDate) async {
+    DateTime parsedDate = DateTime.parse(birthDate.replaceAll("/", "-"));
+    debugPrint("Age 4 ${parsedDate.toString()}, ${parsedDate.year}");
     DateTime today = DateTime.now();
-    int age = today.year - birthDate.year;
-    if (today.month < birthDate.month ||
-        (today.month == birthDate.month && today.day < birthDate.day)) {
+    int age = today.year - parsedDate.year;
+    if (today.month < parsedDate.month ||
+        (today.month == parsedDate.month && today.day < parsedDate.day)) {
       age--;
     }
+    debugPrint("Age ${age.toString()}");
     return age.toDouble();
   }
 
@@ -71,5 +74,14 @@ class AppMethods {
     await IndoSharedPreference.instance.saveUserId("");
     await IndoSharedPreference.instance.saveOnBoard("false");
     AppNavigation.offAll(AppRoutes.loginScreen);
+  }
+
+  static String capitalizeFirst(String word) {
+    if (word.isEmpty) return word;
+    return word[0].toUpperCase() + word.substring(1).toLowerCase();
+  }
+
+  static bool stringToBool(String value) {
+    return value.toLowerCase() == 'true';
   }
 }

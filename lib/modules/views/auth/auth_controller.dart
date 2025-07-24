@@ -15,7 +15,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/data/repository/services/auth_services.dart';
 
 class AuthController extends GetxController
-    with CheckboxStateMixin, GenderStateMixin, CommonMixin {
+    with CheckboxStateMixin, RadioStateMixin, CommonMixin {
   final _authServices = Get.put(AuthServices());
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
   Rx<LoginResponseModel> loginResponseModel = LoginResponseModel().obs;

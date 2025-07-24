@@ -16,7 +16,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
 
 class ProfileController extends GetxController
-    with GenderStateMixin, CommonMixin {
+    with RadioStateMixin, CommonMixin {
   final _authController = Get.find<AuthController>();
   RxBool isLoading = false.obs;
   RxList<UserHealthList> userHealthList = <UserHealthList>[].obs;

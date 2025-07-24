@@ -24,15 +24,14 @@ import 'package:ntt_data/widgets/fields/common_dropdown_text_field.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 import 'package:ntt_data/widgets/gender_widget.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class AddNewGuestScreen extends StatelessWidget {
   AddNewGuestScreen({super.key});
-
   final _geustController = Get.find<GeustController>();
   final controller = Get.find<MeasurementController>();
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,11 +74,17 @@ class AddNewGuestScreen extends StatelessWidget {
                                 controller: _geustController.nameTextController,
                               ),
                               SizedBox(height: 15),
-                              GenderWidget(controller: _geustController),
+                              RadioWidget(
+                                controller: _geustController,
+                                level: 'Gender',
+                                radioTextRight: 'Female',
+                                radioTextLeft: 'Male',
+                              ),
                               SizedBox(height: 15),
 
                               /// Date of Birth Picker
                               CustomFormField(
+                                keyboardType: TextInputType.datetime,
                                 validator: (dob) {
                                   if (dob == null || dob.isEmpty) {
                                     return "Please select DOB";
@@ -87,13 +92,18 @@ class AddNewGuestScreen extends StatelessWidget {
                                   return null;
                                 },
 
-                                readOnly: true,
                                 suffixIcon: InkWell(
                                   onTap: () async {
-                                    await CommonDialog.openDatePicker(
+                                    CommonDialog.showFullWidthCupertinoDatePicker(
                                       context: context,
-                                      dateController:
-                                          _geustController.dobTextController,
+                                      onDateSelected: (selectedDate) {
+                                        String formattedDate = DateFormat(
+                                          'yyyy/MM/dd',
+                                        ).format(selectedDate);
+                                        _geustController
+                                            .dobTextController
+                                            .text = formattedDate;
+                                      },
                                     );
                                   },
                                   child: const Icon(
@@ -107,6 +117,8 @@ class AddNewGuestScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               CommonDropdownTextField(
+                                title: "Select your weight",
+                                columns: 5,
                                 hintText: "Enter your weight (kg)",
                                 validator: (weight) {
                                   if (weight == null || weight.isEmpty) {
@@ -126,6 +138,8 @@ class AddNewGuestScreen extends StatelessWidget {
                               SizedBox(height: 15),
 
                               CommonDropdownTextField(
+                                title: "Select your height",
+                                columns: 5,
                                 hintText: "Enter your height (cm)",
                                 validator: (height) {
                                   if (height == null || height.isEmpty) {
@@ -140,23 +154,13 @@ class AddNewGuestScreen extends StatelessWidget {
                                 controller:
                                     _geustController.heightTextController,
                               ),
-
                               SizedBox(height: 15),
-                              CommonDropdownTextField(
-                                hintText: "Please select smoker type",
-                                readOnly: true,
-                                validator: (smokerType) {
-                                  if (smokerType == null ||
-                                      smokerType.isEmpty) {
-                                    return "Please select Smoker type";
-                                  }
-                                  return null;
-                                },
-                                label: "Smoker type",
-                                options: GuestHalper.smokerTypeList,
-                                controller: controller.smokerTypeController,
+                              RadioWidget(
+                                controller: controller,
+                                level: 'Smoker type',
+                                radioTextLeft: 'Smoker',
+                                radioTextRight: 'No Smoker',
                               ),
-
                               SizedBox(height: 15),
                               Align(
                                 alignment: Alignment.centerLeft,
@@ -245,6 +249,15 @@ class AddNewGuestScreen extends StatelessWidget {
                                             isError: true,
                                             title: "Error",
                                             message: "Please select gender",
+                                          );
+                                        } else if (controller
+                                            .selectionType
+                                            .isEmpty) {
+                                          AppSnackbar.show(
+                                            isError: true,
+                                            title: "Error",
+                                            message:
+                                                "Please select Smoker type",
                                           );
                                         } else if (_geustController
                                             .isChecked
