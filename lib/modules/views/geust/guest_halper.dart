@@ -20,7 +20,6 @@ class GuestHalper {
 
   _startMeasurement() async {
     controller.isScanningDone.value = false;
-
     controller.age.value = await AppMethods().calculateAge(
       _guestController.dobTextController.text,
     );

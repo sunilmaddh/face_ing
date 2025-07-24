@@ -8,7 +8,6 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/data/repository/services/native_caller_services.dart';
 import 'package:ntt_data/routes/app_pages.dart';
-
 import 'package:ntt_data/routes/app_routes.dart';
 
 void main() async {

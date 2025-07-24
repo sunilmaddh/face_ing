@@ -10,15 +10,17 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
+import 'package:ntt_data/modules/views/geust/guest_halper.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart' show AppNavigation;
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
-import 'package:ntt_data/widgets/fields/common_dropmenu.dart';
+import 'package:ntt_data/widgets/fields/common_dropdown_text_field.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 import 'package:ntt_data/widgets/gender_widget.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class CreateAccountScreen extends StatelessWidget {
@@ -46,11 +48,10 @@ class CreateAccountScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: ListView(
               children: [
                 SizedBox(height: AppDimensions.height(0)),
-
-                /// Name Field
                 CustomFormField(
                   validator: (name) {
                     if (name == null || name.isEmpty) {
@@ -63,71 +64,93 @@ class CreateAccountScreen extends StatelessWidget {
                   controller: _authController.nameController,
                 ),
                 SizedBox(height: 15),
-
                 RadioWidget(
-                  controller: _authController,
                   level: 'Gender',
-                  radioTextRight: 'Female',
                   radioTextLeft: 'Male',
+                  radioTextRight: 'Female',
+                  onSelectionChanged: (value) {
+                    _authController.selectionType.value = value;
+                  },
+                  selectionType: _authController.selectionType,
                 ),
                 SizedBox(height: 15),
-
-                /// Date of Birth Picker
                 CustomFormField(
-                  readOnly: true,
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      CommonDialog.selectDate(
+                  keyboardType: TextInputType.datetime,
+                  validator: (dob) {
+                    if (dob == null || dob.isEmpty) {
+                      return "Please select DOB";
+                    }
+                    return null;
+                  },
+
+                  suffixIcon: InkWell(
+                    onTap: () async {
+                      CommonDialog.showFullWidthCupertinoDatePicker(
                         context: context,
-                        dateController: _authController.dateController,
+                        onDateSelected: (selectedDate) {
+                          String formattedDate = DateFormat(
+                            'yyyy/MM/dd',
+                          ).format(selectedDate);
+                          _authController.dateController.text = formattedDate;
+                        },
                       );
                     },
-                    icon: Icon(Icons.date_range, color: AppColors.primary),
+                    child: const Icon(
+                      Icons.date_range,
+                      color: AppColors.primary,
+                    ),
                   ),
                   label: AppConstents.dob,
                   hint: "Select your date of birth",
                   controller: _authController.dateController,
                 ),
                 SizedBox(height: 15),
-
-                /// Weight Field
-                CustomFormField(
+                CommonDropdownTextField(
+                  title: "Select your weight",
+                  columns: 5,
+                  hintText: "Enter your weight (kg)",
                   validator: (weight) {
                     if (weight == null || weight.isEmpty) {
                       return "Please enter weight";
+                    } else if (int.parse(weight) < 40) {
+                      return "Weight must be 40 or greater";
                     }
                     return null;
                   },
-                  keyboardType: TextInputType.number,
                   label: AppConstents.weight,
-                  hint: "Enter your weight (kg)",
+                  options: GuestHalper.weightList,
+
                   controller: _authController.weightController,
                 ),
+
                 SizedBox(height: 15),
 
-                /// Height Field
-                CustomFormField(
+                CommonDropdownTextField(
+                  title: "Select your height",
+                  columns: 5,
+                  hintText: "Enter your height (cm)",
                   validator: (height) {
                     if (height == null || height.isEmpty) {
                       return "Please enter height";
+                    } else if (int.parse(height) < 130) {
+                      return "Height must be 130 or greater";
                     }
                     return null;
                   },
-                  keyboardType: TextInputType.number,
                   label: AppConstents.height,
-                  hint: "Enter your height (cm)",
+                  options: GuestHalper.heightList,
                   controller: _authController.heightController,
                 ),
                 SizedBox(height: 15),
-                CommonDropdown(
-                  items: smokerTypeList,
-                  onChanged: (selectedValue) {
-                    _authController.smokerType.value = selectedValue.toString();
+                RadioWidget(
+                  selectionType: _authController.smokerType,
+                  level: 'Smoker type',
+                  radioTextLeft: 'Smoker',
+                  radioTextRight: 'No Smoker',
+                  onSelectionChanged: (value) {
+                    _authController.smokerType.value = value;
                   },
-                  label: "Select smoker type",
-                  itemToString: (smoker) => smoker,
                 ),
-
                 SizedBox(height: 15),
                 SizedBox(
                   height: AppDimensions.height(190),

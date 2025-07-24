@@ -4,6 +4,7 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
+import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/circular_image_with_shimmer.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -200,28 +201,21 @@ class GeustUserHistoryCard extends StatelessWidget {
                               children: [
                                 InkWell(
                                   onTap: onTop,
-                                  // onTap: () {
-                                  //   CustomBottomSheet.show(
-                                  //     title: "19 March, 2025",
-                                  //     content: SizedBox(
-                                  //       height: 500,
-                                  //       width:
-                                  //           MediaQuery.of(
-                                  //             context,
-                                  //           ).size.width,
-                                  //       child: CustomTabBarView(
-                                  //         tabWidgets: tabWidgets,
-                                  //         tabBarWidgets: tabBarWidgets,
-                                  //       ),
-                                  //     ),
-                                  //   );
-                                  // },
+
                                   child: CommonText.text(
                                     "View history",
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w600,
                                     fontSize: AppDimensions.font(14),
                                     decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: AppDimensions.height(40),
+                                  width: AppDimensions.width(103),
+                                  child: PrimaryButton(
+                                    text: "R-SCAN",
+                                    onPressed: () {},
                                   ),
                                 ),
                                 // CommonAssets.svgAsset(AppAssets.share),

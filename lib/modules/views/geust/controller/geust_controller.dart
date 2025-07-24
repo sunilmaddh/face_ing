@@ -102,7 +102,6 @@ class GeustController extends GetxController
     var userID = await IndoSharedPreference.instance.getUserId();
     var data = {
       "userId": userID,
-
       "binahDetails": {
         "pulseRate":
             vitalSignResult

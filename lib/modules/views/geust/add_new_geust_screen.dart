@@ -75,10 +75,14 @@ class AddNewGuestScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               RadioWidget(
-                                controller: _geustController,
+                                selectionType: _geustController.selectionType,
+
                                 level: 'Gender',
                                 radioTextRight: 'Female',
                                 radioTextLeft: 'Male',
+                                onSelectionChanged: (value) {
+                                  _geustController.selectionType.value = value;
+                                },
                               ),
                               SizedBox(height: 15),
 
@@ -98,7 +102,7 @@ class AddNewGuestScreen extends StatelessWidget {
                                       context: context,
                                       onDateSelected: (selectedDate) {
                                         String formattedDate = DateFormat(
-                                          'yyyy/MM/dd',
+                                          'dd/MM/yyyy',
                                         ).format(selectedDate);
                                         _geustController
                                             .dobTextController
@@ -156,10 +160,13 @@ class AddNewGuestScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               RadioWidget(
-                                controller: controller,
+                                selectionType: controller.selectionType,
                                 level: 'Smoker type',
                                 radioTextLeft: 'Smoker',
                                 radioTextRight: 'No Smoker',
+                                onSelectionChanged: (value) {
+                                  controller.selectionType.value = value;
+                                },
                               ),
                               SizedBox(height: 15),
                               Align(

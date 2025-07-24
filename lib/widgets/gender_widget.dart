@@ -2,22 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/widgets/button/custom_radio_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
+// ignore: must_be_immutable
 class RadioWidget extends StatelessWidget {
   RadioWidget({
     super.key,
-    required this.controller,
+    required this.selectionType,
     required this.level,
     required this.radioTextLeft,
     required this.radioTextRight,
+    required this.onSelectionChanged,
   });
-  RadioStateMixin controller;
+  // RadioStateMixin controller;
   String level;
   String radioTextLeft;
+  RxString selectionType;
   String radioTextRight;
+  void Function(String) onSelectionChanged;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,19 +36,20 @@ class RadioWidget extends StatelessWidget {
           children: [
             CustomRadioButton(
               value: radioTextLeft.obs,
-              groupValue: controller.selectionType, // Use without .value
+              groupValue: selectionType, // Use without .value
               label: radioTextLeft,
               onChanged: (v) {
-                controller.selectionType.value = v;
+                selectionType.value = v;
               },
             ),
             SizedBox(width: AppDimensions.width(25)),
             CustomRadioButton(
               value: radioTextRight.obs,
-              groupValue: controller.selectionType, // Use without .value
+              groupValue: selectionType, // Use without .value
               label: radioTextRight,
               onChanged: (v) {
-                controller.selectionType.value = v;
+                // selectionType.value = v;
+                onSelectionChanged(v);
               },
             ),
           ],

@@ -8,6 +8,7 @@ import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
+import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
@@ -20,11 +21,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   final controller = Get.find<MeasurementController>();
-
   final gcontroller = Get.find<GeustController>();
-
   final authController = Get.find<AuthController>();
 
   @override
@@ -94,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     isLoading: gcontroller.isLoading.value,
                     width: AppDimensions.width(230),
                     onPressed: () async {
-                      controller.callMeasurement();
+                      HomeHalper().callMeasurement();
                     },
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
+import 'package:intl/intl.dart';
 
 class AppMethods {
   static var dataList = <Map<String, dynamic>>[].obs;
@@ -58,7 +59,7 @@ class AppMethods {
   }
 
   Future<double> calculateAge(String birthDate) async {
-    DateTime parsedDate = DateTime.parse(birthDate.replaceAll("/", "-"));
+    DateTime parsedDate = DateFormat('dd/MM/yyyy').parse(birthDate);
     debugPrint("Age 4 ${parsedDate.toString()}, ${parsedDate.year}");
     DateTime today = DateTime.now();
     int age = today.year - parsedDate.year;

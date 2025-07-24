@@ -9,7 +9,6 @@ import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/guest_halper.dart';
@@ -100,23 +99,7 @@ class MeasurementController extends GetxController
           resetProgress();
           stopProgress();
           stopMeasuring();
-          // if(value==true)
-          // // CommonDialog().showScanDialog(
-          // //   title: " 'Scan Failed'",
-          // //   message:
-          // //       "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
-          // //   context: Get.context!,
-          // //   onConfirm: () {
-          // //     stopMeasuring();
-          // //     // _startMeasurement();
-          // //   },
-          // //   onCancel: () {
-          // //     Get.back();
-          // //   },
-          // // );
-          // AppSnackbar.show(title: "Error", message: "Measurement canceled");
         });
-        // AppSnackbar.show(title: "Error", message: "Measurement canceled");
       }
     });
   }
@@ -256,7 +239,6 @@ class MeasurementController extends GetxController
           context: Get.context!,
           onConfirm: () {
             stopMeasuring();
-            _startMeasurement();
           },
           onCancel: () {
             Get.back();
@@ -385,53 +367,4 @@ class MeasurementController extends GetxController
     final result = await Permission.camera.request();
     return result.isGranted;
   }
-
-  void callMeasurement() {
-    _startMeasurement();
-  }
-
-  void _startMeasurement() async {
-    isScanningDone.value = false;
-    String genderType = await IndoSharedPreference.instance.getGenderType();
-    String dobRaw = await IndoSharedPreference.instance.getAge();
-    String height = await IndoSharedPreference.instance.getHeight();
-    String weight = await IndoSharedPreference.instance.getWeight();
-    this.weight.value = double.parse(weight);
-    this.height.value = double.parse(height);
-    this.genderType.value = genderType;
-    // Clean the DOB string safely
-    String cleanDob =
-        dobRaw
-            .replaceAll("/", "-")
-            .replaceAll(RegExp(r'[^\x00-\x7F]'), '') // remove non-ASCII chars
-            .trim();
-
-    // Parse the cleaned date
-    // DateTime parsedDate = DateTime.parse(cleanDob);
-    age.value = await AppMethods().calculateAge(cleanDob);
-
-    AppNavigation.to(
-      AppRoutes.mesurementScreen,
-      arguments: {"scanType": "user", "userName": "fff"},
-    );
-  }
-}
-
-void showAlert(BuildContext context, String? title, String message) {
-  Future.delayed(Duration.zero, () {
-    showDialog(
-      context: context,
-      builder:
-          (BuildContext context) => AlertDialog(
-            title: title != null ? Text(title) : null,
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-    );
-  });
 }
