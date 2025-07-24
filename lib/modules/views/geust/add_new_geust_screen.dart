@@ -86,8 +86,20 @@ class AddNewGuestScreen extends StatelessWidget {
                               CustomFormField(
                                 keyboardType: TextInputType.datetime,
                                 validator: (dob) {
+                                  DateTime now = DateTime.now();
+                                  DateTime initialDate = DateTime(
+                                    now.year - 18,
+                                    now.month,
+                                    now.day,
+                                  );
+                                  DateTime parseDate = DateFormat(
+                                    "dd/MM/yyyy",
+                                  ).parse(dob!);
                                   if (dob == null || dob.isEmpty) {
                                     return "Please select DOB";
+                                  } else if ((parseDate.year >
+                                      initialDate.year)) {
+                                    return "Age should be 18+";
                                   }
                                   return null;
                                 },
@@ -98,7 +110,7 @@ class AddNewGuestScreen extends StatelessWidget {
                                       context: context,
                                       onDateSelected: (selectedDate) {
                                         String formattedDate = DateFormat(
-                                          'yyyy/MM/dd',
+                                          'dd/MM/yyyy',
                                         ).format(selectedDate);
                                         _geustController
                                             .dobTextController
