@@ -1,4 +1,6 @@
 import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
+import 'package:biosensesignal_flutter_sdk/session/session_state.dart'
+    show SessionState;
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:focus_detector/focus_detector.dart';
@@ -24,6 +26,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
   final controller = Get.find<MeasurementController>();
   final String scanType = Get.arguments["scanType"] ?? "";
   final String userName = Get.arguments["userName"] ?? "";
+  final String guestId = Get.arguments["guestId"] ?? "";
   @override
   void dispose() {
     // TODO: implement dispose
@@ -35,6 +38,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
   @override
   Widget build(BuildContext context) {
     controller.scanType.value = scanType;
+    // controller.guestId.value = guestId;
     final Size screenSize = MediaQuery.of(context).size;
     final double ovalWidth = screenSize.width * 0.8;
     final double ovalHeight = screenSize.height * 0.5;
@@ -188,14 +192,40 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                       // SizedBox(
                                       //   height: AppDimensions.height(10),
                                       // ),
-                                      ImageValidityScan(),
-                                      MeasurmentProgress(
-                                        controller: controller,
-                                      ),
+                                      Obx(() {
+                                        final imageData =
+                                            controller.imageData.value;
+                                        final isStarted =
+                                            controller.isStarted.value;
+                                        final sessionState =
+                                            controller.sessionState.value;
+                                        if (imageData != null &&
+                                            imageData.imageValidity !=
+                                                ImageValidity.valid &&
+                                            isStarted) {
+                                          return ImageValidityScan();
+                                        } else if (imageData != null &&
+                                            imageData.imageValidity ==
+                                                ImageValidity.valid &&
+                                            isStarted) {
+                                          return MeasurmentProgress(
+                                            controller: controller,
+                                          );
+                                        } else if ((sessionState ==
+                                                    SessionState.ready ||
+                                                sessionState ==
+                                                    SessionState.processing) &&
+                                            !isStarted) {
+                                          return StartStopButton(
+                                            userName: userName,
+                                          );
+                                        } else {
+                                          return SizedBox();
+                                        }
+                                      }),
                                       SizedBox(
                                         height: AppDimensions.height(10),
                                       ),
-                                      StartStopButton(userName: userName),
                                     ],
                                   ),
                                 ),
@@ -220,37 +250,29 @@ class MeasurmentProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return Visibility(
-        visible:
-            controller.imageData.value != null &&
-            controller.imageData.value!.imageValidity == ImageValidity.valid &&
-            controller.isStarted.value == true,
-        child: Column(
-          children: [
-            PulseRate(),
+      return Column(
+        children: [
+          PulseRate(),
 
-            SizedBox(
-              width: AppDimensions.width(300),
-              height: AppDimensions.height(80),
-              child: LottieBuilder.asset(
-                AppAssets.heartRateAnim,
-                fit: BoxFit.fill,
-                repeat: true,
-              ),
+          SizedBox(
+            width: AppDimensions.width(300),
+            height: AppDimensions.height(80),
+            child: LottieBuilder.asset(
+              AppAssets.heartRateAnim,
+              fit: BoxFit.fill,
+              repeat: true,
             ),
+          ),
 
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppDimensions.width(20),
-              ),
-              child: FAProgressBar(
-                progressColor: Colors.green,
-                currentValue: controller.progress.value.toDouble(),
-                displayText: "%",
-              ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(20)),
+            child: FAProgressBar(
+              progressColor: Colors.green,
+              currentValue: controller.progress.value.toDouble(),
+              displayText: "%",
             ),
-          ],
-        ),
+          ),
+        ],
       );
     });
   }

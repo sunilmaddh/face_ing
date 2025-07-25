@@ -20,6 +20,7 @@ class GeustUserHistoryCard extends StatelessWidget {
     required this.onTop,
     required this.onDelete,
     required this.guestImage,
+    required this.onReScan,
   });
 
   final String name;
@@ -30,6 +31,7 @@ class GeustUserHistoryCard extends StatelessWidget {
   final String time;
   final VoidCallback onTop;
   final VoidCallback onDelete;
+  final VoidCallback onReScan;
 
   @override
   Widget build(BuildContext context) {
@@ -212,10 +214,10 @@ class GeustUserHistoryCard extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   height: AppDimensions.height(40),
-                                  width: AppDimensions.width(103),
+                                  width: AppDimensions.width(115),
                                   child: PrimaryButton(
-                                    text: "R-SCAN",
-                                    onPressed: () {},
+                                    text: "Rescan",
+                                    onPressed: onReScan,
                                   ),
                                 ),
                                 // CommonAssets.svgAsset(AppAssets.share),

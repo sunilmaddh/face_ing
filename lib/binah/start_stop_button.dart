@@ -17,44 +17,38 @@ class StartStopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return Visibility(
-        visible:
-            controller.sessionState.value == SessionState.ready ||
-            controller.sessionState.value == SessionState.processing &&
-                controller.isStarted.value == false,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(30)),
-          child: Column(
-            children: [
-              CommonText.text(
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                "$userName, Ready to Measure your vital Signs?",
-                color: AppColors.primary,
-                fontSize: AppDimensions.font(18),
-                fontWeight: FontWeight.w500,
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(30)),
+        child: Column(
+          children: [
+            CommonText.text(
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              "$userName, Ready to Measure your vital Signs?",
+              color: AppColors.primary,
+              fontSize: AppDimensions.font(18),
+              fontWeight: FontWeight.w500,
+            ),
+            SizedBox(height: AppDimensions.height(10)),
+            CommonText.text(
+              maxLines: 3,
+              textAlign: TextAlign.center,
+              "Sit still, ensure your face is evenly illuminated and there is no light source in the background.",
+              color: AppColors.searchColor,
+            ),
+            SizedBox(height: AppDimensions.height(40)),
+            SafeArea(
+              child: PrimaryButton(
+                isLoading: controller.isLoading.value,
+                text: "Measure now",
+                onPressed: () {
+                  controller.isLoading.value = true;
+                  controller.isScanStop.value = false;
+                  controller.startStopButtonClicked();
+                },
               ),
-              SizedBox(height: AppDimensions.height(10)),
-              CommonText.text(
-                maxLines: 3,
-                textAlign: TextAlign.center,
-                "Sit still, ensure your face is evenly illuminated and there is no light source in the background.",
-                color: AppColors.searchColor,
-              ),
-              SizedBox(height: AppDimensions.height(40)),
-              SafeArea(
-                child: PrimaryButton(
-                  isLoading: controller.isLoading.value,
-                  text: "Measure now",
-                  onPressed: () {
-                    controller.isLoading.value = true;
-                    controller.isScanStop.value = false;
-                    controller.startStopButtonClicked();
-                  },
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     });
@@ -89,40 +83,34 @@ class ImageValidityScan extends StatelessWidget {
 
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(45)),
-        child: Visibility(
-          visible:
-              imageData != null &&
-              imageData.imageValidity != ImageValidity.valid &&
-              controller.isStarted.value == true,
-          child: Column(
-            children: [
-              Text(
-                textAlign: TextAlign.center,
-                imageData?.imageValidity == ImageValidity.faceTooFar ||
-                        imageData?.imageValidity == ImageValidity.invalidRoi
-                    ? "Face too far"
-                    : imageData?.imageValidity == ImageValidity.tiltedHead
-                    ? "Tilted Head"
-                    : imageData?.imageValidity == ImageValidity.unevenLight
-                    ? "Uneven light"
-                    : imageData?.imageValidity ==
-                        ImageValidity.invalidDeviceOrientation
-                    ? "Invalid device orientation"
-                    : "",
-                style: const TextStyle(
-                  color: AppColors.primary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+        child: Column(
+          children: [
+            Text(
+              textAlign: TextAlign.center,
+              imageData?.imageValidity == ImageValidity.faceTooFar ||
+                      imageData?.imageValidity == ImageValidity.invalidRoi
+                  ? "Face too far"
+                  : imageData?.imageValidity == ImageValidity.tiltedHead
+                  ? "Tilted Head"
+                  : imageData?.imageValidity == ImageValidity.unevenLight
+                  ? "Uneven light"
+                  : imageData?.imageValidity ==
+                      ImageValidity.invalidDeviceOrientation
+                  ? "Invalid device orientation"
+                  : "",
+              style: const TextStyle(
+                color: AppColors.primary,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(height: AppDimensions.height(10)),
-              Text(
-                textAlign: TextAlign.center,
-                controller.imageValidityString.value,
-                style: const TextStyle(color: Colors.black, fontSize: 15),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: AppDimensions.height(10)),
+            Text(
+              textAlign: TextAlign.center,
+              controller.imageValidityString.value,
+              style: const TextStyle(color: Colors.black, fontSize: 15),
+            ),
+          ],
         ),
       );
     });

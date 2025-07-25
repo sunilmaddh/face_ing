@@ -3,6 +3,7 @@ import 'package:ntt_data/binah/mesurement_screen.dart';
 import 'package:ntt_data/modules/views/auth/otp_forgot_screen.dart';
 import 'package:ntt_data/modules/views/geust/add_new_geust_screen.dart';
 import 'package:ntt_data/modules/views/geust/geust_user_history_screen.dart';
+import 'package:ntt_data/modules/views/geust/guest_health_history_list.dart';
 import 'package:ntt_data/modules/views/geust/guest_history_details.dart';
 import 'package:ntt_data/modules/views/health_data/all_report_screen.dart';
 import 'package:ntt_data/modules/views/health_data/analyzing_health_data.dart';
@@ -56,5 +57,9 @@ class AppPages {
     GetPage(name: AppRoutes.userHistoryList, page: () => UserHistoryData()),
     GetPage(name: AppRoutes.userHealthDatails, page: () => UserHealthDetails()),
     GetPage(name: AppRoutes.allReportScreen, page: () => AllReportScreen()),
+    GetPage(
+      name: AppRoutes.guestHealthHistoryList,
+      page: () => GuestHealthHistoryList(),
+    ),
   ];
 }

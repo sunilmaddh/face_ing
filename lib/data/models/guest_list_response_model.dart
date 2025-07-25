@@ -44,6 +44,7 @@ class GuestList {
   String? guestId;
   String? dob;
   String? guestImage;
+  String? smokerType;
   GuestList({
     this.email,
     this.name,
@@ -56,6 +57,7 @@ class GuestList {
     this.guestId,
     this.dob,
     this.guestImage,
+    this.smokerType,
   });
 
   factory GuestList.fromJson(Map<String, dynamic> json) => GuestList(
@@ -70,6 +72,7 @@ class GuestList {
     userId: json["userId"] ?? "",
     guestId: json["guestId"] ?? "",
     dob: json["dob"] ?? "",
+    smokerType: json["smokerType"] ?? "Non Smoker",
   );
 
   static String _cleanImage(dynamic value) {

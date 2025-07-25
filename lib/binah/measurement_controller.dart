@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/guest_halper.dart';
@@ -62,6 +61,7 @@ class MeasurementController extends GetxController
   final RxBool isScanningDone = false.obs;
   RxBool isLoading = false.obs;
   RxString smokerType = ''.obs;
+  RxString guestId = "".obs;
   final TextEditingController smokerTypeController = TextEditingController();
   RxBool isMeasurementCanceled = false.obs;
   RxList<String> vitlaList = <String>[].obs;
@@ -202,7 +202,7 @@ class MeasurementController extends GetxController
     );
     bool isVerifyResultHaveNull =
         await ProgressHandlerMixin.checkingVitalResult(vitalsResults.value);
-    if (isScanStop.isFalse) {
+    if (isScanningDone.isTrue) {
       if (isVerifyResultHaveNull == false) {
         if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
           startStopButtonClicked();
@@ -218,9 +218,28 @@ class MeasurementController extends GetxController
                 },
               );
             });
+          } else if (scanType.value == "re-scan") {
+            _geustController
+                .storeBinahHealthForUser(
+                  vitalsResults.value,
+                  guestId: guestId.value,
+                  isUser: 'false',
+                )
+                .whenComplete(() {
+                  AppNavigation.off(
+                    AppRoutes.analyzingHealthData,
+                    action: () {
+                      isScanningDone(false);
+                    },
+                  );
+                });
           } else {
             _geustController
-                .storeBinahHealthForUser(vitalsResults.value)
+                .storeBinahHealthForUser(
+                  vitalsResults.value,
+                  guestId: '',
+                  isUser: 'true',
+                )
                 .whenComplete(() {
                   AppNavigation.off(
                     AppRoutes.analyzingHealthData,
@@ -245,6 +264,8 @@ class MeasurementController extends GetxController
           },
         );
       }
+    } else {
+      AppSnackbar.show(title: "Error", message: "Try again");
     }
   }
 
@@ -313,10 +334,10 @@ class MeasurementController extends GetxController
       age: age,
       weight: weight,
       height: height,
-      smokingStatus:
-          smokerType == "Smoker"
-              ? SmokingStatus.smoker
-              : SmokingStatus.nonSmoker,
+      smokingStatus: SmokingStatus.smoker,
+      // smokerType == "Smoker"
+      //     ? SmokingStatus.smoker
+      //     : SmokingStatus.nonSmoker,
     );
     try {
       _session = await FaceSessionBuilder()

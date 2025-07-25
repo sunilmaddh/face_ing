@@ -80,6 +80,25 @@ class CreateAccountScreen extends StatelessWidget {
                     if (dob == null || dob.isEmpty) {
                       return "Please select DOB";
                     }
+
+                    try {
+                      DateTime parseDate = DateFormat(
+                        "dd/MM/yyyy",
+                      ).parseStrict(dob);
+                      DateTime now = DateTime.now();
+                      DateTime minAllowedDate = DateTime(
+                        now.year - 18,
+                        now.month,
+                        now.day,
+                      );
+
+                      if (parseDate.isAfter(minAllowedDate)) {
+                        return "Age should be 18+";
+                      }
+                    } catch (e) {
+                      return "Invalid date format. Use dd/MM/yyyy";
+                    }
+
                     return null;
                   },
 
@@ -89,7 +108,7 @@ class CreateAccountScreen extends StatelessWidget {
                         context: context,
                         onDateSelected: (selectedDate) {
                           String formattedDate = DateFormat(
-                            'yyyy/MM/dd',
+                            'dd/MM/yyyy',
                           ).format(selectedDate);
                           _authController.dateController.text = formattedDate;
                         },

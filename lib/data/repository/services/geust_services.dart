@@ -23,4 +23,10 @@ class GeustServices extends BaseApiService {
   }) {
     return postRequest(ApiEndpoints.storeSdkDataForUser, data: data);
   }
+
+  Future<Map<String, dynamic>> getUserHealthHistoryService({
+    required var data,
+  }) async {
+    return await postRequest(ApiEndpoints.userHealthHistory, data: data);
+  }
 }
