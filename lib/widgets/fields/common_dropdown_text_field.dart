@@ -17,6 +17,8 @@ class CommonDropdownTextField extends StatelessWidget {
   // final List<String> items;
   final int columns;
   final String title;
+  final String defaultValue;
+  final String unit;
   final void Function(String?)? onChanged;
 
   const CommonDropdownTextField({
@@ -29,6 +31,9 @@ class CommonDropdownTextField extends StatelessWidget {
     this.hintText = "",
     this.columns = 5,
     this.title = "",
+    required this.defaultValue,
+    required this.unit,
+
     this.borderColor = AppColors.textFieldColor,
     this.borderRadius = 8.0,
     this.validator,
@@ -80,6 +85,8 @@ class CommonDropdownTextField extends StatelessWidget {
                   context: context,
                   title: title,
                   list: options,
+                  defaultValue: defaultValue,
+                  unit: unit,
                   selectedItem: (selectedItem) {
                     controller.text = selectedItem;
                   },

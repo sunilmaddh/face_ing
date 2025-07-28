@@ -73,11 +73,16 @@ class GeustController extends GetxController
     }
   }
 
-  Future<void> getGeustDetails(String guestID, bool isFullHistory) async {
+  Future<void> getGeustDetails(
+    String guestID,
+    String scanId,
+    bool isFullHistory,
+  ) async {
     var userID = await IndoSharedPreference.instance.getUserId();
     var data = {
       "userId": userID,
       "guestId": guestID,
+      "healthId": scanId,
       "isFullHistory": isFullHistory,
     };
 
@@ -201,7 +206,10 @@ class GeustController extends GetxController
       guestHealthList.clear();
       var result = UserHistoryListModel.fromJson(responseData["responseBody"]);
       guestHealthList.value = result.userHealthList!;
-      AppNavigation.to(AppRoutes.guestHealthHistoryList);
+      AppNavigation.to(
+        AppRoutes.guestHealthHistoryList,
+        arguments: {"guestId": guestId.value},
+      );
     } else {
       guestHealthList.clear();
     }

@@ -140,6 +140,8 @@ class AddNewGuestScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 15),
                               CommonDropdownTextField(
+                                unit: "Kg",
+                                defaultValue: "60",
                                 title: "Select your weight",
                                 columns: 5,
                                 hintText: "Enter your weight (kg)",
@@ -161,6 +163,8 @@ class AddNewGuestScreen extends StatelessWidget {
                               SizedBox(height: 15),
 
                               CommonDropdownTextField(
+                                unit: "cm",
+                                defaultValue: "160",
                                 title: "Select your height",
                                 columns: 5,
                                 hintText: "Enter your height (cm)",

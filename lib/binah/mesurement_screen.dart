@@ -158,22 +158,30 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                               alignment: Alignment.topRight,
                                               child: TextButton(
                                                 onPressed: () {
-                                                  controller.stopMeasuring();
-                                                  controller.isScanStop.value =
-                                                      true;
-                                                  CommonDialog().showScanDialog(
-                                                    title: " 'Scan Alert'",
-                                                    message:
-                                                        "The scan has been stopped. Do you want to start the scan again?",
-                                                    context: Get.context!,
-                                                    onConfirm: () {
-                                                      // controller
-                                                      //     .stopMeasuring();
-                                                    },
-                                                    onCancel: () {
-                                                      Get.back();
-                                                    },
-                                                  );
+                                                  if (controller
+                                                      .isFirstEver
+                                                      .isTrue) {
+                                                    controller
+                                                        .isFirstEver
+                                                        .value = false;
+                                                    controller.stopMeasuring();
+                                                    controller
+                                                        .isScanStop
+                                                        .value = true;
+                                                    CommonDialog().showScanDialog(
+                                                      title: " 'Scan Alert'",
+                                                      message:
+                                                          "The scan has been stopped. Do you want to start the scan again?",
+                                                      context: Get.context!,
+                                                      onConfirm: () {
+                                                        // controller
+                                                        //     .stopMeasuring();
+                                                      },
+                                                      onCancel: () {
+                                                        Get.back();
+                                                      },
+                                                    );
+                                                  }
                                                 },
                                                 child: CommonText.text(
                                                   "Stop",
@@ -220,7 +228,10 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                             userName: userName,
                                           );
                                         } else {
-                                          return SizedBox();
+                                          return Padding(
+                                            padding: EdgeInsets.all(80),
+                                            child: CircularProgressIndicator(),
+                                          );
                                         }
                                       }),
                                       SizedBox(

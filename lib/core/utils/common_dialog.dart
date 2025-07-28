@@ -338,21 +338,53 @@ class CommonDialog {
     required String title,
     required List<String> list,
     required Function(String) selectedItem,
+    required String unit,
+    required String defaultValue, // Add defaultValue parameter
   }) {
-    int selectedIndex = 0;
+    int selectedIndex = list.indexOf(defaultValue);
+    if (selectedIndex == -1) {
+      selectedIndex = 0; // fallback if '60' not found in list
+    }
+
+    FixedExtentScrollController scrollController = FixedExtentScrollController(
+      initialItem: selectedIndex,
+    );
+
     commonDialogCard(
       title: title,
       context: context,
       widget: CupertinoPicker(
+        scrollController: scrollController,
         looping: true,
-
         itemExtent: 32,
         squeeze: 1.0,
         diameterRatio: 2.0,
         onSelectedItemChanged: (int index) {
           selectedIndex = index;
         },
-        children: list.map((e) => Text(e)).toList(),
+        children:
+            list.map((e) {
+              return Builder(
+                builder: (context) {
+                  return RichText(
+                    text: TextSpan(
+                      text: e,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: unit.toUpperCase(),
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }).toList(),
       ),
       onConfirm: () {
         selectedItem(list[selectedIndex]);

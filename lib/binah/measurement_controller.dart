@@ -5,6 +5,7 @@ import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_pulse_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
@@ -56,6 +57,7 @@ class MeasurementController extends GetxController
   final RxDouble weight = 0.0.obs;
   final RxDouble height = 0.0.obs;
   final RxBool isScanStop = false.obs;
+  final RxBool isFirstEver = false.obs;
   @override
   final RxBool isStarted = false.obs;
   final RxBool isScanningDone = false.obs;
@@ -63,7 +65,7 @@ class MeasurementController extends GetxController
   RxString smokerType = ''.obs;
   RxString guestId = "".obs;
   final TextEditingController smokerTypeController = TextEditingController();
-  RxBool isMeasurementCanceled = false.obs;
+  // RxBool isMeasurementCanceled = false.obs;
   RxList<String> vitlaList = <String>[].obs;
   @override
   // ignore: overridden_fields
@@ -95,10 +97,23 @@ class MeasurementController extends GetxController
     ever<String?>(error, (value) {
       if (value != null && value.isNotEmpty) {
         Future.delayed(Duration.zero, () {
-          isMeasurementCanceled.value = true;
+          isLoading.value = false;
+          // isMeasurementCanceled.value = true;
           resetProgress();
           stopProgress();
-          stopMeasuring();
+          if (isFirstEver.isTrue) {
+            isFirstEver.value = false;
+            CommonDialog().showScanDialog(
+              title: "Scan Failed",
+              message:
+                  "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
+              context: Get.context!,
+              onConfirm: () {},
+              onCancel: () {
+                Get.back();
+              },
+            );
+          }
         });
       }
     });
@@ -128,13 +143,12 @@ class MeasurementController extends GetxController
     debugPrint("Start scanning $state");
     Future.delayed(Duration(seconds: 5), () {
       if (sessionState.value == SessionState.ready) {
-        isMeasurementCanceled.value = false;
+        // isMeasurementCanceled.value = false;
         isStarted.value = true;
         _startMeasuring().then((v) {
           isLoading.value = false;
           startProgress(seconds: 60);
         });
-
         debugPrint("Start scanning $state");
       } else if (state == SessionState.processing) {
         isLoading.value = false;
@@ -204,6 +218,7 @@ class MeasurementController extends GetxController
         await ProgressHandlerMixin.checkingVitalResult(vitalsResults.value);
     if (isScanningDone.isTrue) {
       if (isVerifyResultHaveNull == false) {
+        isFirstEver.value = false;
         if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
           startStopButtonClicked();
           if (scanType.value == "add-guest") {
@@ -251,21 +266,26 @@ class MeasurementController extends GetxController
           }
         }
       } else {
-        CommonDialog().showScanDialog(
-          title: " 'Scan Failed'",
-          message:
-              "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
-          context: Get.context!,
-          onConfirm: () {
-            stopMeasuring();
-          },
-          onCancel: () {
-            Get.back();
-          },
-        );
+        if (isFirstEver.isTrue) {
+          isFirstEver.value = false;
+          CommonDialog().showScanDialog(
+            title: " 'Scan Failed'",
+            message:
+                "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
+            context: Get.context!,
+            onConfirm: () {
+              isScanningDone.value = false;
+              // Get.back();
+              // stopMeasuring();
+            },
+            onCancel: () {
+              isFirstEver.value = false;
+              isScanningDone.value = false;
+              Get.back();
+            },
+          );
+        }
       }
-    } else {
-      AppSnackbar.show(title: "Error", message: "Try again");
     }
   }
 
@@ -283,6 +303,7 @@ class MeasurementController extends GetxController
   @override
   void onError(ErrorData errorData) {
     error.value = "Error: ${errorData.code}";
+
     // AppSnackbar.show(title: "Error", message: "Measurement has canceled");
   }
 

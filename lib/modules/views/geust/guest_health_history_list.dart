@@ -16,7 +16,7 @@ class GuestHealthHistoryList extends StatelessWidget {
   GuestHealthHistoryList({super.key});
 
   final _guestController = Get.find<GeustController>();
-  // final String guestId = Get.arguments["guestId"] ?? "";
+  final String guestId = Get.arguments["guestId"] ?? "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +56,7 @@ class GuestHealthHistoryList extends StatelessWidget {
                         child: InkWell(
                           onTap: () async {
                             _guestController.getGeustDetails(
+                              guestId,
                               result.scanId.toString(),
                               true,
                             );
