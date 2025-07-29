@@ -19,6 +19,12 @@ class ProfileController extends GetxController
     with RadioStateMixin, CommonMixin {
   final _authController = Get.find<AuthController>();
   RxBool isLoading = false.obs;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController weightController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  final RxString genderType = "".obs;
+  final RxString smokerType = "".obs;
   RxList<UserHealthList> userHealthList = <UserHealthList>[].obs;
   RxList<HealthDetailList> binahHIstoryDetails = <HealthDetailList>[].obs;
   Rx<AnlyzeHealthDataResponseModel> anlyzeHealthDataResponseModel =

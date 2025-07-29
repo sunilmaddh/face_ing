@@ -179,6 +179,13 @@ class FaceDrawer extends StatelessWidget {
             SizedBox(height: AppDimensions.height(40)),
 
             /// **Reusable List Tiles**
+            ///
+            _buildListTile(
+              icon: AppAssets.userIcon,
+              title: "Edit Profile",
+              subtitle: "Update User Details",
+              onTap: () => Get.toNamed(AppRoutes.updateUserGuestDetails),
+            ),
             _buildListTile(
               icon: AppAssets.userIcon,
               title: "Guest User",
