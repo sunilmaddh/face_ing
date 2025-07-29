@@ -303,6 +303,25 @@ class MeasurementController extends GetxController
   @override
   void onError(ErrorData errorData) {
     error.value = "Error: ${errorData.code}";
+    if (errorData.code == 14) {
+      CommonDialog().showScanDialog(
+        confirmText: "OK",
+        title: "Low Battery Alert",
+        message:
+            "Battery level is too low. Please ensure your device battery is above 20% to start the scan.",
+        context: Get.context!,
+        onConfirm: () {
+          isScanningDone.value = false;
+          Get.back();
+          // stopMeasuring();
+        },
+        onCancel: () {
+          isFirstEver.value = false;
+          isScanningDone.value = false;
+          Get.back();
+        },
+      );
+    }
 
     // AppSnackbar.show(title: "Error", message: "Measurement has canceled");
   }

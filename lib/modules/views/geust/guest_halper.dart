@@ -258,4 +258,6 @@ class GuestHalper {
     121,
     (index) => (index + 130).toString(),
   );
+
+  final RegExp dateRegex = RegExp(r'^[0-9/]+$');
 }

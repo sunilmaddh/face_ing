@@ -90,29 +90,30 @@ class AddNewGuestScreen extends StatelessWidget {
                               CustomFormField(
                                 keyboardType: TextInputType.datetime,
                                 validator: (dob) {
-                                  if (dob == null || dob.isEmpty) {
-                                    return "Please select DOB";
-                                  }
+                                  validateDOB(dob);
+                                  // if (dob == null || dob.isEmpty) {
+                                  //   return "Please select DOB";
+                                  // }
 
-                                  try {
-                                    DateTime parseDate = DateFormat(
-                                      "dd/MM/yyyy",
-                                    ).parseStrict(dob);
-                                    DateTime now = DateTime.now();
-                                    DateTime minAllowedDate = DateTime(
-                                      now.year - 18,
-                                      now.month,
-                                      now.day,
-                                    );
+                                  // try {
+                                  //   DateTime parseDate = DateFormat(
+                                  //     "dd/MM/yyyy",
+                                  //   ).parseStrict(dob);
+                                  //   DateTime now = DateTime.now();
+                                  //   DateTime minAllowedDate = DateTime(
+                                  //     now.year - 18,
+                                  //     now.month,
+                                  //     now.day,
+                                  //   );
 
-                                    if (parseDate.isAfter(minAllowedDate)) {
-                                      return "Age should be 18+";
-                                    }
-                                  } catch (e) {
-                                    return "Invalid date format. Use dd/MM/yyyy";
-                                  }
+                                  //   if (parseDate.isAfter(minAllowedDate)) {
+                                  //     return "Age should be 18+";
+                                  //   }
+                                  // } catch (e) {
+                                  //   return "Invalid date format. Use dd/MM/yyyy";
+                                  // }
 
-                                  return null;
+                                  // return null;
                                 },
 
                                 suffixIcon: InkWell(
@@ -148,9 +149,17 @@ class AddNewGuestScreen extends StatelessWidget {
                                 validator: (weight) {
                                   if (weight == null || weight.isEmpty) {
                                     return "Please enter weight";
-                                  } else if (int.parse(weight) < 40) {
-                                    return "Weight must be 40 or greater";
+                                  } else {
+                                    final parsedWeight = double.tryParse(
+                                      weight,
+                                    );
+                                    if (parsedWeight == null) {
+                                      return "Please enter a valid number";
+                                    } else if (parsedWeight < 40.0) {
+                                      return "Weight must be 40 or greater";
+                                    }
                                   }
+
                                   return null;
                                 },
                                 label: AppConstents.weight,
@@ -171,8 +180,15 @@ class AddNewGuestScreen extends StatelessWidget {
                                 validator: (height) {
                                   if (height == null || height.isEmpty) {
                                     return "Please enter height";
-                                  } else if (int.parse(height) < 130) {
-                                    return "Height must be 130 or greater";
+                                  } else {
+                                    final parsedHeight = double.tryParse(
+                                      height,
+                                    );
+                                    if (parsedHeight == null) {
+                                      return "Please enter a valid number";
+                                    } else if (parsedHeight < 130.0) {
+                                      return "Height must be 130 or greater";
+                                    }
                                   }
                                   return null;
                                 },
@@ -332,5 +348,27 @@ class AddNewGuestScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String? validateDOB(String? dob) {
+    if (dob == null || dob.trim().isEmpty) {
+      return "Please select DOB";
+    }
+
+    try {
+      // Parse with strict format
+      final parseDate = DateFormat("dd/MM/yyyy").parseStrict(dob.trim());
+
+      final now = DateTime.now();
+      final minAllowedDate = DateTime(now.year - 18, now.month, now.day);
+
+      if (parseDate.isAfter(minAllowedDate)) {
+        return "Age should be 18+";
+      }
+    } catch (e) {
+      return "Invalid date format. Use dd/MM/yyyy";
+    }
+
+    return null;
   }
 }

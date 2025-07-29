@@ -248,6 +248,7 @@ class CommonDialog {
     required VoidCallback onCancel,
     required String title,
     required String message,
+    final String confirmText = "SCAN",
   }) {
     showDialog(
       context: context,
@@ -295,7 +296,10 @@ class CommonDialog {
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    child: CommonText.text("SCAN", color: AppColors.btntext),
+                    child: CommonText.text(
+                      confirmText,
+                      color: AppColors.btntext,
+                    ),
                   ),
                 ),
               ],
