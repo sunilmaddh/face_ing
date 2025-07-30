@@ -21,6 +21,7 @@ class StartStopButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(30)),
         child: Column(
           children: [
+            SizedBox(height: AppDimensions.height(10)),
             CommonText.text(
               maxLines: 2,
               textAlign: TextAlign.center,

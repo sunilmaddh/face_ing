@@ -147,7 +147,7 @@ class GeustUserHistoryCard extends StatelessWidget {
               CommonCard(
                 widget: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  height: 200,
+                  height: AppDimensions.height(190),
                   child: Column(
                     children: [
                       Padding(
@@ -155,27 +155,31 @@ class GeustUserHistoryCard extends StatelessWidget {
                         child: CommonCard(
                           widget: SizedBox(
                             width: MediaQuery.of(context).size.width,
-                            height: 40,
-                            child: Center(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Measurement taken at',
-                                  style: TextStyle(
-                                    fontSize: AppDimensions.font(14),
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ), // Default style
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          " ${DateTimeHelper.formatUtcToLocal(time)}",
-                                      style: TextStyle(
-                                        fontSize: AppDimensions.font(14),
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w700,
+
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: RichText(
+                                  maxLines: 2,
+                                  text: TextSpan(
+                                    text: 'Measurement taken at',
+                                    style: TextStyle(
+                                      fontSize: AppDimensions.font(14),
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ), // Default style
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            " ${DateTimeHelper.formatUtcToLocal(time)}",
+                                        style: TextStyle(
+                                          fontSize: AppDimensions.font(14),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

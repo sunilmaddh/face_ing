@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
@@ -50,7 +51,7 @@ class ProfileHelper {
     required String weight,
     required String height,
   }) async {
-    var newDob = await GuestHalper().convertDateFormateToYY(dob);
+    var newDob = await AppMethods().convertDateFormatToYY(dob);
     final data = await _updateDetailsMap(
       userId: userId,
       guestId: guestId,
@@ -100,16 +101,19 @@ class ProfileHelper {
     required String smokerType,
     required String guestId,
     required String userFlag,
+    required String levelName,
   }) async {
+    var newData = await AppMethods().convertDateFormateToDD(dob);
     _profileController.nameController.text = name;
     _profileController.genderType.value = gender;
-    _profileController.dobController.text = dob;
+    _profileController.dobController.text = newData;
     _profileController.weightController.text = weight;
     _profileController.heightController.text = height;
     _profileController.smokerType.value = smokerType;
+
     Get.toNamed(
       AppRoutes.updateUserGuestDetails,
-      arguments: {"guestId": guestId, "userFlag": userFlag},
+      arguments: {"guestId": guestId, "userFlag": userFlag, "name": levelName},
     );
   }
 
@@ -121,7 +125,7 @@ class ProfileHelper {
     var height = await IndoSharedPreference.instance.getHeight();
     var smokerType = await IndoSharedPreference.instance.getSmokerType();
 
-    var newData = await GuestHalper().convertDateFormateToDD(dob);
+    var newData = await AppMethods().convertDateFormateToDD(dob);
 
     await retainedData(
       name: name,
@@ -132,6 +136,7 @@ class ProfileHelper {
       smokerType: smokerType,
       guestId: "",
       userFlag: "true",
+      levelName: "Name",
     );
   }
 

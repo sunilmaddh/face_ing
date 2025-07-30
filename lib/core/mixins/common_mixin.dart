@@ -45,6 +45,9 @@ mixin CommonMixin on GetxController {
       int statusCode = responseData["responseCode"];
       debugPrint("uploadImageResponseModel $statusCode");
       if (statusCode == 200) {
+        if (guestId.isNotEmpty) {
+          profileUrl.value = File("");
+        }
         var result = responseData["response"];
         debugPrint("uploadImageResponseModel ${result}");
         uploadImageResponseModel.value = result;

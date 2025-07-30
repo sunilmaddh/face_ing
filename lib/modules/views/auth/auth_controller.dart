@@ -5,6 +5,7 @@ import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/login_response_model.dart';
@@ -311,6 +312,7 @@ class AuthController extends GetxController
   Future<void> profileCreation() async {
     isLoading(true);
     try {
+      var dob = await AppMethods().convertDateFormatToYY(dateController.text);
       var data = {
         "userDao": {
           "emailId": loginResponseModel.value.emailId,
@@ -323,7 +325,7 @@ class AuthController extends GetxController
           "userGender": selectionType.value,
           "userWeight": weightController.text,
           "userHeight": heightController.text,
-          "userDOB": dateController.text,
+          "userDOB": dob,
           "userImage": userImage.value,
           "smokerType": smokerType.value,
         },

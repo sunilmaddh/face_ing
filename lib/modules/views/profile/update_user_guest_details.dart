@@ -15,6 +15,7 @@ import 'package:ntt_data/modules/views/profile/controller/profile_controller.dar
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
+import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_dropdown_text_field.dart';
@@ -27,6 +28,7 @@ class UpdateUserGuestDetails extends StatelessWidget {
   UpdateUserGuestDetails({super.key});
   final _profileController = Get.find<ProfileController>();
   final String guestId = Get.arguments["guestId"] ?? "";
+  final String name = Get.arguments["name"] ?? "";
   final String userFlag = Get.arguments["userFlag"] ?? "";
   final _formKey = GlobalKey<FormState>();
   @override
@@ -61,7 +63,7 @@ class UpdateUserGuestDetails extends StatelessWidget {
                                 validator: (name) {
                                   return AppMethods.validateName(name);
                                 },
-                                label: "Patient ID",
+                                label: name,
                                 hint: "Enter your name",
                                 controller: _profileController.nameController,
                               ),
@@ -164,8 +166,8 @@ class UpdateUserGuestDetails extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: SizedBox(
-                      width: AppDimensions.width(230),
-                      child: ScanButton(
+                      width: AppDimensions.width(130),
+                      child: PrimaryButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             if (_profileController.genderType.isEmpty) {
@@ -207,6 +209,7 @@ class UpdateUserGuestDetails extends StatelessWidget {
                             }
                           }
                         },
+                        text: "Update",
                       ),
                     ),
                   ),

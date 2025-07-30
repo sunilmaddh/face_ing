@@ -62,15 +62,52 @@ class AppMethods {
   }
 
   Future<double> calculateAge(String birthDate) async {
-    DateTime parsedDate = DateFormat('dd/MM/yyyy').parse(birthDate);
-    debugPrint("Age 4 ${parsedDate.toString()}, ${parsedDate.year}");
+    debugPrint("Age input: $birthDate");
+
+    // Supported date formats
+    final formats = [
+      DateFormat('dd/MM/yyyy'),
+      DateFormat('MM/dd/yyyy'),
+      DateFormat('yyyy/MM/dd'),
+      DateFormat('yyyy-MM-dd'),
+      DateFormat('dd-MM-yyyy'),
+      DateFormat('MM-dd-yyyy'),
+    ];
+
+    DateTime? parsedDate;
+
+    // Try parsing with all formats
+    for (var format in formats) {
+      try {
+        parsedDate = format.parseStrict(birthDate);
+
+        // ✅ Reject 2-digit years
+        if (parsedDate.year < 1000) {
+          parsedDate = null;
+          continue;
+        }
+
+        break;
+      } catch (_) {
+        continue;
+      }
+    }
+
+    if (parsedDate == null) {
+      throw FormatException("Invalid date format or 2-digit year: $birthDate");
+    }
+
+    debugPrint("Parsed Date: $parsedDate");
+
     DateTime today = DateTime.now();
     int age = today.year - parsedDate.year;
+
     if (today.month < parsedDate.month ||
         (today.month == parsedDate.month && today.day < parsedDate.day)) {
       age--;
     }
-    debugPrint("Age ${age.toString()}");
+
+    debugPrint("Calculated Age: $age");
     return age.toDouble();
   }
 
@@ -97,18 +134,50 @@ class AppMethods {
     try {
       // Parse with strict format
       final parseDate = DateFormat("dd/MM/yyyy").parseStrict(dob.trim());
-
       final now = DateTime.now();
       final minAllowedDate = DateTime(now.year - 18, now.month, now.day);
-
       if (parseDate.isAfter(minAllowedDate)) {
         return "Age should be 18+";
+      } else if (!validateDate(dob)) {
+        return "Invalid date format. Use dd/MM/yyyy";
       }
     } catch (e) {
       return "Invalid date format. Use dd/MM/yyyy";
     }
-
     return null;
+  }
+
+  Future<String> convertDateFormatToYY(String date) async {
+    final formats = [DateFormat("dd/MM/yyyy"), DateFormat("yyyy/MM/dd")];
+
+    DateTime? parsedDate;
+    for (var format in formats) {
+      try {
+        parsedDate = format.parseStrict(date);
+        break;
+      } catch (_) {
+        continue;
+      }
+    }
+
+    if (parsedDate == null) {
+      throw FormatException("Invalid date format: $date");
+    }
+
+    return DateFormat("yyyy/MM/dd").format(parsedDate);
+  }
+
+  Future<String> convertDateFormateToDD(String date) async {
+    DateTime parsedDate = DateFormat("yyyy/MM/dd").parse(date);
+    String newDate = DateFormat("dd/MM/yyyy").format(parsedDate);
+    return newDate;
+  }
+
+  static bool validateDate(String date) {
+    final regex = RegExp(
+      r'^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(19|20)\d{2}$',
+    );
+    return regex.hasMatch(date);
   }
 
   static String? validateHeight(String? height) {

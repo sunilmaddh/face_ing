@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -56,6 +58,8 @@ class GeustController extends GetxController
     try {
       if (statusCode == 200) {
         guestList.clear();
+        profileUrl.value = File("");
+        isProfile.value = false;
         filteredItems.clear();
         var data = GuestListResponseModel.fromJson(
           resposneData["responseBody"],

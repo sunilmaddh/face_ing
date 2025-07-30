@@ -137,6 +137,7 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                                     smokerType: result.smokerType.toString(),
                                     guestId: result.guestId.toString(),
                                     userFlag: "false",
+                                    levelName: "Patient ID",
                                   );
                                 }
                               },
