@@ -98,7 +98,7 @@ class GuestHalper {
 
     required VitalSignsResults vitalSignResult,
   }) async {
-    var newDob = await convertDateFormate(dob);
+    var newDob = await convertDateFormateToYY(dob);
     var data = {
       "guestDao": {
         "userId": userId,
@@ -264,9 +264,15 @@ class GuestHalper {
     (index) => (index + 130).toString(),
   );
 
-  Future<String> convertDateFormate(String date) async {
+  Future<String> convertDateFormateToYY(String date) async {
     DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(date);
     String newDate = DateFormat("yyyy/MM/dd").format(parsedDate);
+    return newDate;
+  }
+
+  Future<String> convertDateFormateToDD(String date) async {
+    DateTime parsedDate = DateFormat("yyyy/MM/dd").parse(date);
+    String newDate = DateFormat("dd/MM/yyyy").format(parsedDate);
     return newDate;
   }
 

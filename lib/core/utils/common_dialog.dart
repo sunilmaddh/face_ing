@@ -441,7 +441,7 @@ class CommonDialog {
       widget: CupertinoPicker(
         scrollController: scrollController,
         looping: true,
-        itemExtent: 32,
+        itemExtent: 50,
         squeeze: 1.0,
         diameterRatio: 2.0,
         onSelectedItemChanged: (int index) {
@@ -451,20 +451,27 @@ class CommonDialog {
             list.map((e) {
               return Builder(
                 builder: (context) {
-                  return RichText(
-                    text: TextSpan(
-                      text: e,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: unit.toUpperCase(),
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                  return Center(
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: e,
+                        style: TextStyle(
+                          fontSize: AppDimensions.font(20),
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ],
+                        children: [
+                          // TextSpan(
+                          //   text: "  $unit",
+                          //   style: TextStyle(
+                          //     fontSize: 12,
+                          //     color: Colors.black,
+                          //     fontWeight: FontWeight.w500,
+                          //   ),
+                          // ),
+                        ],
+                      ),
                     ),
                   );
                 },

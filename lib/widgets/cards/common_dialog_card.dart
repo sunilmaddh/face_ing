@@ -35,7 +35,7 @@ void commonDialogCard({
                 color: AppColors.primary,
                 fontSize: AppDimensions.font(18),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: AppDimensions.height(30)),
               SizedBox(
                 height: AppDimensions.height(height),
                 width: double.infinity,
