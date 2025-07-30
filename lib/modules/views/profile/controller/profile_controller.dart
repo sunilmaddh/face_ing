@@ -11,8 +11,10 @@ import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
 import 'package:ntt_data/data/models/update_details_response_model.dart';
 import 'package:ntt_data/data/models/user_history_list_model.dart';
+import 'package:ntt_data/data/models/vital_description_model.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
+import 'package:ntt_data/modules/views/profile/vital_descriptions.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
@@ -25,6 +27,8 @@ class ProfileController extends GetxController
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController dobController = TextEditingController();
+  Rx<VitalDescriptionsModel> vitalDescriptionModel =
+      VitalDescriptionsModel().obs;
   RxString userUpdateImage = ''.obs;
   final RxString genderType = "".obs;
   final RxString smokerType = "".obs;
@@ -156,6 +160,11 @@ class ProfileController extends GetxController
         .getVitalDescriptionService(data: data);
     int statusCode = responseData[AppConstents.statusCode];
     if (statusCode == 200) {
+      var result = VitalDescriptionsModel.fromJson(
+        responseData["responseBody"],
+      );
+
+      vitalDescriptionModel.value = result;
     } else {
       AppSnackbar.show(title: "Error", message: "Something went wrong");
     }
