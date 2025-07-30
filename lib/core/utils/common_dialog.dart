@@ -9,6 +9,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_dialog_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -248,6 +249,7 @@ class CommonDialog {
     required VoidCallback onCancel,
     required String title,
     required String message,
+    final String confirmText = "SCAN",
   }) {
     showDialog(
       context: context,
@@ -295,8 +297,91 @@ class CommonDialog {
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    child: CommonText.text("SCAN", color: AppColors.btntext),
+                    child: CommonText.text(
+                      confirmText,
+                      color: AppColors.btntext,
+                    ),
                   ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void editGuestDialog({
+    required BuildContext context,
+    required VoidCallback onCancel,
+    required List<Map<String, String>> guestOptionList,
+    required Function(String isOptionType) onConfirm,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: AppColors.btntext,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                /// Close Button
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    onCancel();
+                  },
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: SvgPicture.asset(AppAssets.cloaseDialog),
+                  ),
+                ),
+
+                /// Scrollable Options
+                ListView.separated(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  itemCount: guestOptionList.length,
+                  itemBuilder: (context, index) {
+                    final option = guestOptionList[index];
+                    final name = option["name"] ?? "";
+                    final type = option["isOptionType"] ?? "";
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                        onConfirm(type); // Return the type
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CommonText.text(
+                              name,
+                              fontSize: AppDimensions.font(16),
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.guestOptionColor,
+                              fontFamily: "Gilroy-Medium",
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.primary,
+                              size: 16,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(color: Colors.grey.shade300);
+                  },
                 ),
               ],
             ),

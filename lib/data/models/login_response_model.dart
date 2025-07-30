@@ -64,6 +64,7 @@ class CommonUserDetailsDao {
   String? userDob;
   String? userWeight;
   String? userHeight;
+  String? userSmokerType;
   String? userImage;
 
   CommonUserDetailsDao({
@@ -76,6 +77,7 @@ class CommonUserDetailsDao {
     this.userWeight,
     this.userHeight,
     this.userImage,
+    this.userSmokerType,
   });
 
   factory CommonUserDetailsDao.fromJson(Map<String?, dynamic> json) =>
@@ -91,5 +93,6 @@ class CommonUserDetailsDao {
         userWeight: UtilMethods.stringParser(json["userWeight"]),
         userHeight: UtilMethods.stringParser(json["userHeight"]),
         userImage: UtilMethods.stringParser(json["userImage"]),
+        userSmokerType: UtilMethods.stringParser(json["smokerType"]),
       );
 }

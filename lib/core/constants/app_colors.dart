@@ -32,6 +32,7 @@ class AppColors {
       powerBy = Color(0xffAEA8A8),
       camreraPreviewColor = Color(0xffE98180),
       guestIconColor = Color(0xffBED8FB),
+      guestOptionColor = Color(0xff3C3C3C),
       checkBoxBorderColor = Color(0xffD4D2D2);
   // ignore: deprecated_member_use
   static Color progressColorDeactive = Color(0xff0072BC).withOpacity(0.26);

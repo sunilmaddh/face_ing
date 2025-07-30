@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
@@ -21,6 +23,8 @@ class GeustUserHistoryCard extends StatelessWidget {
     required this.onDelete,
     required this.guestImage,
     required this.onReScan,
+    required this.guestOptionList,
+    required this.onOptionList,
   });
 
   final String name;
@@ -32,6 +36,8 @@ class GeustUserHistoryCard extends StatelessWidget {
   final VoidCallback onTop;
   final VoidCallback onDelete;
   final VoidCallback onReScan;
+  final Function(String) onOptionList;
+  final List<Map<String, String>> guestOptionList;
 
   @override
   Widget build(BuildContext context) {
@@ -53,22 +59,49 @@ class GeustUserHistoryCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      guestImage.isNotEmpty
-                          ? CircularImageWithShimmer(imageUrl: guestImage)
-                          : CustomCircularAvatar(
-                            color: AppColors.guestIconColor,
+                      Row(
+                        children: [
+                          guestImage.isNotEmpty
+                              ? CircularImageWithShimmer(imageUrl: guestImage)
+                              : CustomCircularAvatar(
+                                color: AppColors.guestIconColor,
 
-                            widget: CommonText.text(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              name.isNotEmpty
-                                  ? name.substring(0, 1).toUpperCase()
-                                  : "",
-                              color: AppColors.btntext,
+                                widget: CommonText.text(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  name.isNotEmpty
+                                      ? name.substring(0, 1).toUpperCase()
+                                      : "",
+                                  color: AppColors.btntext,
+                                ),
+
+                                radius: AppDimensions.padding(24.0),
+                              ),
+                          InkWell(
+                            onTap: () {
+                              CommonDialog().editGuestDialog(
+                                guestOptionList: guestOptionList,
+                                context: context,
+                                onConfirm: (value) {
+                                  onOptionList(value);
+                                },
+                                onCancel: () {},
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                top: AppDimensions.height(30),
+                              ),
+                              child: SvgPicture.asset(
+                                AppAssets.editButton,
+                                height: AppDimensions.height(20),
+                                width: AppDimensions.width(20),
+                              ),
                             ),
-
-                            radius: AppDimensions.padding(24.0),
                           ),
+                        ],
+                      ),
+
                       SizedBox(height: 10),
                       CommonText.text(
                         name,

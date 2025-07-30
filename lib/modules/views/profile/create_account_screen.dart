@@ -10,7 +10,7 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
-import 'package:ntt_data/modules/views/geust/guest_halper.dart';
+import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart' show AppNavigation;
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
@@ -243,12 +243,16 @@ class CreateAccountScreen extends StatelessWidget {
                                             await _authController
                                                 .uploadProfileFromGallery(
                                                   "true",
+                                                  "",
+                                                  "false",
                                                 );
                                           },
                                           onCameraTap: () async {
                                             await _authController
                                                 .uploadProfileFromCamera(
                                                   "true",
+                                                  "",
+                                                  "false",
                                                 );
                                           },
                                         );

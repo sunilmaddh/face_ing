@@ -11,7 +11,7 @@ import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
-import 'package:ntt_data/modules/views/geust/guest_halper.dart';
+import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -303,6 +303,25 @@ class MeasurementController extends GetxController
   @override
   void onError(ErrorData errorData) {
     error.value = "Error: ${errorData.code}";
+    if (errorData.code == 14) {
+      CommonDialog().showScanDialog(
+        confirmText: "OK",
+        title: "Low Battery Alert",
+        message:
+            "Battery level is too low. Please ensure your device battery is above 20% to start the scan.",
+        context: Get.context!,
+        onConfirm: () {
+          isScanningDone.value = false;
+          Get.back();
+          // stopMeasuring();
+        },
+        onCancel: () {
+          isFirstEver.value = false;
+          isScanningDone.value = false;
+          Get.back();
+        },
+      );
+    }
 
     // AppSnackbar.show(title: "Error", message: "Measurement has canceled");
   }

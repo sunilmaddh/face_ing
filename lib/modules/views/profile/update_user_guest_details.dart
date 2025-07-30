@@ -5,11 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
-import 'package:ntt_data/modules/views/geust/guest_halper.dart';
+import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
+import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
@@ -23,6 +26,8 @@ import 'package:intl/intl.dart';
 class UpdateUserGuestDetails extends StatelessWidget {
   UpdateUserGuestDetails({super.key});
   final _profileController = Get.find<ProfileController>();
+  final String guestId = Get.arguments["guestId"] ?? "";
+  final String userFlag = Get.arguments["userFlag"] ?? "";
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -54,12 +59,7 @@ class UpdateUserGuestDetails extends StatelessWidget {
                             children: [
                               CustomFormField(
                                 validator: (name) {
-                                  if (name == null || name.isEmpty) {
-                                    return "Please enter name";
-                                  } else if (!GuestHalper.isValidInput(name)) {
-                                    return "Please enter valid name";
-                                  }
-                                  return null;
+                                  return AppMethods.validateName(name);
                                 },
                                 label: "Patient ID",
                                 hint: "Enter your name",
@@ -81,29 +81,7 @@ class UpdateUserGuestDetails extends StatelessWidget {
                               CustomFormField(
                                 keyboardType: TextInputType.datetime,
                                 validator: (dob) {
-                                  if (dob == null || dob.isEmpty) {
-                                    return "Please select DOB";
-                                  }
-
-                                  try {
-                                    DateTime parseDate = DateFormat(
-                                      "dd/MM/yyyy",
-                                    ).parseStrict(dob);
-                                    DateTime now = DateTime.now();
-                                    DateTime minAllowedDate = DateTime(
-                                      now.year - 18,
-                                      now.month,
-                                      now.day,
-                                    );
-
-                                    if (parseDate.isAfter(minAllowedDate)) {
-                                      return "Age should be 18+";
-                                    }
-                                  } catch (e) {
-                                    return "Invalid date format. Use dd/MM/yyyy";
-                                  }
-
-                                  return null;
+                                  return AppMethods.validateDOB(dob);
                                 },
 
                                 suffixIcon: InkWell(
@@ -136,12 +114,7 @@ class UpdateUserGuestDetails extends StatelessWidget {
                                 columns: 5,
                                 hintText: "Enter your weight (kg)",
                                 validator: (weight) {
-                                  if (weight == null || weight.isEmpty) {
-                                    return "Please enter weight";
-                                  } else if (int.parse(weight) < 40) {
-                                    return "Weight must be 40 or greater";
-                                  }
-                                  return null;
+                                  return AppMethods.validateWeight(weight);
                                 },
                                 label: AppConstents.weight,
                                 options: GuestHalper.weightList,
@@ -158,12 +131,7 @@ class UpdateUserGuestDetails extends StatelessWidget {
                                 columns: 5,
                                 hintText: "Enter your height (cm)",
                                 validator: (height) {
-                                  if (height == null || height.isEmpty) {
-                                    return "Please enter height";
-                                  } else if (int.parse(height) < 130) {
-                                    return "Height must be 130 or greater";
-                                  }
-                                  return null;
+                                  return AppMethods.validateHeight(height);
                                 },
                                 label: AppConstents.height,
                                 options: GuestHalper.heightList,
@@ -213,7 +181,29 @@ class UpdateUserGuestDetails extends StatelessWidget {
                                 message: "Please select Smoker type",
                               );
                             } else {
-                              GuestHalper().callMeasurement();
+                              var name = _profileController.nameController.text;
+                              var gender = _profileController.genderType.value;
+                              var dob = _profileController.dobController.text;
+                              var smokerType =
+                                  _profileController.smokerType.value;
+                              var weight =
+                                  _profileController.weightController.text;
+                              var height =
+                                  _profileController.heightController.text;
+                              var userId =
+                                  await IndoSharedPreference.instance
+                                      .getUserId();
+                              ProfileHelper().callUpdateDetailsFunction(
+                                userId: userId,
+                                guestId: guestId,
+                                userFlag: userFlag,
+                                name: name,
+                                gender: gender,
+                                dob: dob,
+                                smokerType: smokerType,
+                                weight: weight,
+                                height: height,
+                              );
                             }
                           }
                         },

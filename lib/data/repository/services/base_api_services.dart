@@ -160,6 +160,7 @@ abstract class BaseApiService {
     String endpoint,
     Map<String, dynamic> data,
   ) async {
+    var accessToken = await IndoSharedPreference.instance.getAccessToken();
     try {
       Uri uri;
       if (isHttps) {
@@ -169,7 +170,10 @@ abstract class BaseApiService {
       }
       final response = await http.put(
         uri,
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $accessToken",
+        },
         body: jsonEncode(data),
       );
       if (response.statusCode == 401) {
@@ -239,17 +243,24 @@ abstract class BaseApiService {
     filepath,
     String userID,
     String imageType,
+    String guestId,
+    String isGuest,
   ) async {
     var accessToken = await IndoSharedPreference.instance.getAccessToken();
+    debugPrint(isGuest.toString());
+    debugPrint(guestId.toString());
+    debugPrint(imageType.toString());
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint('URL  $uri');
     debugPrint('File  $filepath');
     String endP = "$endpoint/$userID";
-    var request = http.MultipartRequest('PUT', Uri.http(baseUrl, endP));
+    var request = http.MultipartRequest('PUT', Uri.http(baseUrl, endpoint));
 
     request.files.add(await http.MultipartFile.fromPath('file', filepath));
     request.fields["isSignup"] = imageType;
-
+    request.fields["isGuest"] = isGuest;
+    request.fields["guestId"] = guestId;
+    debugPrint(request.toString());
     request.headers.addAll({
       'Content-Type': 'application/json',
       "Authorization": "Bearer $accessToken",

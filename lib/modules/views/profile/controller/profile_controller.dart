@@ -9,8 +9,10 @@ import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
+import 'package:ntt_data/data/models/update_details_response_model.dart';
 import 'package:ntt_data/data/models/user_history_list_model.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
+import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
@@ -23,6 +25,7 @@ class ProfileController extends GetxController
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController dobController = TextEditingController();
+  RxString userUpdateImage = ''.obs;
   final RxString genderType = "".obs;
   final RxString smokerType = "".obs;
   RxList<UserHealthList> userHealthList = <UserHealthList>[].obs;
@@ -67,7 +70,7 @@ class ProfileController extends GetxController
   Future<void> getUserHistory() async {
     isLoading(true);
     var userID = await IndoSharedPreference.instance.getUserId();
-    var data = {"userId": userID};
+    var data = {"userId": userID, "userFlag": "true"};
 
     Map<String, dynamic> responseData = await _profileService
         .getUserHealthHistoryService(data: data);
@@ -111,5 +114,47 @@ class ProfileController extends GetxController
       binahHIstoryDetails.clear();
       AppSnackbar.show(title: "Error", message: "Something went wrong");
     }
+  }
+
+  Future<void> updateDetailsUG({required var data, required userFlag}) async {
+    Map<String, dynamic> responseData = await ProfileServices()
+        .updateDetailsUGService(data: data);
+    int statusCode = responseData[AppConstents.statusCode];
+    if (statusCode == 200) {
+      var data = UpdateDetailsResponseModel.fromJson(
+        responseData["responseBody"],
+      );
+
+      if (userFlag == "true") {
+        ProfileHelper().storeImage(data.name!);
+        ProfileHelper.storeUserData(
+          name: data.name!,
+          weight: data.weight!,
+          height: data.height!,
+          gender: data.gender!,
+          dob: data.dob!,
+          smokerType: data.smokerType!,
+        );
+      } else {
+        ProfileHelper().callGuestHistoryList();
+      }
+      AppSnackbar.show(
+        title: "Success",
+        message: "Update details successfully",
+      );
+      clearProfileData();
+      Get.back();
+    } else {
+      AppSnackbar.show(title: "Error", message: "Something went wrong");
+    }
+  }
+
+  clearProfileData() {
+    nameController.clear();
+    weightController.clear();
+    heightController.clear();
+    genderType.value = "";
+    smokerType.value = "";
+    dobController.clear();
   }
 }

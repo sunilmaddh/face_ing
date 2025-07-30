@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Obx(
                 () => Center(
                   child: ScanButton(
-                    isLoading: gcontroller.isLoading.value,
+                    isLoading: gcontroller.isHomeLoading.value,
                     width: AppDimensions.width(230),
                     onPressed: () async {
                       HomeHalper().callMeasurement();

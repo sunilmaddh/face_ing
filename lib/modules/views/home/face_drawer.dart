@@ -9,6 +9,7 @@ import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
+import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
@@ -18,17 +19,6 @@ import 'package:ntt_data/widgets/fields/common_text.dart';
 class FaceDrawer extends StatelessWidget {
   FaceDrawer({super.key});
   final _profileController = Get.find<AuthController>();
-
-  void editProfilePicture() {
-    ImagePickerBottomsheet.showImagePickerBottomSheet(
-      onGalleryTap: () async {
-        await _profileController.uploadProfileFromGallery("false");
-      },
-      onCameraTap: () async {
-        await _profileController.uploadProfileFromCamera("false");
-      },
-    );
-  }
 
   Widget _buildListTile({
     required String icon,
@@ -146,7 +136,14 @@ class FaceDrawer extends StatelessWidget {
                             Align(
                               alignment: Alignment.topRight,
                               child: InkWell(
-                                onTap: editProfilePicture,
+                                onTap: () {
+                                  AppMethods().editProfilePicture(
+                                    _profileController,
+                                    "",
+                                    "false",
+                                    () {},
+                                  );
+                                },
                                 child: SvgPicture.asset(AppAssets.editIcon),
                               ),
                             ),
@@ -156,7 +153,9 @@ class FaceDrawer extends StatelessWidget {
                       SizedBox(height: AppDimensions.height(20)),
                       Obx(
                         () => CommonText.text(
-                          _profileController.userName.value,
+                          _profileController.userUpdateName.isNotEmpty
+                              ? _profileController.userUpdateName.value
+                              : _profileController.userName.value,
                           fontSize: AppDimensions.font(16),
                           fontWeight: FontWeight.w400,
                           fontFamily: AppConstents.gilroyBold,
@@ -184,7 +183,7 @@ class FaceDrawer extends StatelessWidget {
               icon: AppAssets.userIcon,
               title: "Edit Profile",
               subtitle: "Update User Details",
-              onTap: () => Get.toNamed(AppRoutes.updateUserGuestDetails),
+              onTap: () => ProfileHelper().retainedUserData(),
             ),
             _buildListTile(
               icon: AppAssets.userIcon,

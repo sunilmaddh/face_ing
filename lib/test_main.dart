@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/modules/views/geust/guest_halper.dart';
+import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';

@@ -10,11 +10,12 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/widgets/terms_checkbox_widget.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
-import 'package:ntt_data/modules/views/geust/guest_halper.dart';
+import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
@@ -62,12 +63,7 @@ class AddNewGuestScreen extends StatelessWidget {
                             children: [
                               CustomFormField(
                                 validator: (name) {
-                                  if (name == null || name.isEmpty) {
-                                    return "Please enter name";
-                                  } else if (!GuestHalper.isValidInput(name)) {
-                                    return "Please enter valid name";
-                                  }
-                                  return null;
+                                  return AppMethods.validateName(name);
                                 },
                                 label: "Patient ID",
                                 hint: "Enter your name",
@@ -90,29 +86,7 @@ class AddNewGuestScreen extends StatelessWidget {
                               CustomFormField(
                                 keyboardType: TextInputType.datetime,
                                 validator: (dob) {
-                                  if (dob == null || dob.isEmpty) {
-                                    return "Please select DOB";
-                                  }
-
-                                  try {
-                                    DateTime parseDate = DateFormat(
-                                      "dd/MM/yyyy",
-                                    ).parseStrict(dob);
-                                    DateTime now = DateTime.now();
-                                    DateTime minAllowedDate = DateTime(
-                                      now.year - 18,
-                                      now.month,
-                                      now.day,
-                                    );
-
-                                    if (parseDate.isAfter(minAllowedDate)) {
-                                      return "Age should be 18+";
-                                    }
-                                  } catch (e) {
-                                    return "Invalid date format. Use dd/MM/yyyy";
-                                  }
-
-                                  return null;
+                                  return AppMethods.validateDOB(dob);
                                 },
 
                                 suffixIcon: InkWell(
@@ -146,14 +120,7 @@ class AddNewGuestScreen extends StatelessWidget {
                                 columns: 5,
                                 hintText: "Enter your weight (kg)",
                                 validator: (weight) {
-                                  if (weight == null || weight.isEmpty) {
-                                    return "Please enter weight";
-                                  } else if (int.parse(weight) < 40) {
-                                    return "Weight must be 40 or greater";
-                                  } else if (int.parse(weight) > 200) {
-                                    return "Weight must be 200 or lesser";
-                                  }
-                                  return null;
+                                  return AppMethods.validateWeight(weight);
                                 },
                                 label: AppConstents.weight,
                                 options: GuestHalper.weightList,
@@ -171,14 +138,7 @@ class AddNewGuestScreen extends StatelessWidget {
                                 columns: 5,
                                 hintText: "Enter your height (cm)",
                                 validator: (height) {
-                                  if (height == null || height.isEmpty) {
-                                    return "Please enter height";
-                                  } else if (int.parse(height) < 130) {
-                                    return "Height must be 130 or greater";
-                                  } else if (int.parse(height) > 250) {
-                                    return "Height must be 250 or lesser";
-                                  }
-                                  return null;
+                                  return AppMethods.validateHeight(height);
                                 },
                                 label: AppConstents.height,
                                 options: GuestHalper.heightList,
@@ -231,11 +191,13 @@ class AddNewGuestScreen extends StatelessWidget {
                                 },
                                 onGalleryTap: () async {
                                   await _geustController
-                                      .uploadProfileFromGallery("true");
+                                      .uploadProfileFromGallery("true", "", "");
                                 },
                                 onCameraTap: () async {
                                   _geustController.uploadProfileFromCamera(
                                     "true",
+                                    "",
+                                    "",
                                   );
                                 },
                               ),

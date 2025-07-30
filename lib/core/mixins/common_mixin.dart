@@ -25,7 +25,11 @@ mixin CommonMixin on GetxController {
   ProfileUploadService profileUploadService = ProfileUploadService();
   AuthServices authServices = AuthServices();
 
-  Future<void> uploadProfileFromGallery(String imageType) async {
+  Future<void> uploadProfileFromGallery(
+    String imageType,
+    String guestId,
+    String isGuest,
+  ) async {
     var imageUrl = await profileUploadService.pickImageFromGallery();
     if (imageUrl != null) {
       isProfile.value = true;
@@ -35,6 +39,8 @@ mixin CommonMixin on GetxController {
         profileUrl.value,
         userID,
         imageType,
+        guestId,
+        isGuest,
       );
       int statusCode = responseData["responseCode"];
       debugPrint("uploadImageResponseModel $statusCode");
@@ -53,7 +59,11 @@ mixin CommonMixin on GetxController {
     }
   }
 
-  Future<void> uploadProfileFromCamera(String imageType) async {
+  Future<void> uploadProfileFromCamera(
+    String imageType,
+    String guestId,
+    String isGuest,
+  ) async {
     var imageUrl = await profileUploadService.pickImageFromCamera();
     if (imageUrl != null) {
       isProfile.value = true;
@@ -64,6 +74,8 @@ mixin CommonMixin on GetxController {
         profileUrl.value,
         userID,
         imageType,
+        guestId,
+        isGuest,
       );
       int statusCode = responseData["responseCode"];
       debugPrint("uploadImageResponseModel $statusCode");

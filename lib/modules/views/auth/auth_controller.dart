@@ -10,6 +10,7 @@ import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/login_response_model.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
 import 'package:ntt_data/data/models/user_create_response_model.dart';
+import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/data/repository/services/auth_services.dart';
@@ -23,6 +24,7 @@ class AuthController extends GetxController
   RxList<MedicalQuestionListModel> medicalQuestionListModel =
       <MedicalQuestionListModel>[].obs;
   RxString otp = "".obs;
+  RxString userUpdateName = ''.obs;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -119,7 +121,11 @@ class AuthController extends GetxController
             await IndoSharedPreference.instance.saveAge(
               loginResponseModel.value.commonUserDetailsDao!.userDob.toString(),
             );
-
+            await IndoSharedPreference.instance.saveSmokerType(
+              loginResponseModel.value.commonUserDetailsDao!.userSmokerType
+                  .toString(),
+            );
+            GuestHalper().clearLoading();
             AppNavigation.off(AppRoutes.homeScreen);
           }
           clearData();
@@ -380,11 +386,11 @@ class AuthController extends GetxController
   }
 
   Future<void> callUploadProfileFromGallery() async {
-    return uploadProfileFromGallery("true");
+    return uploadProfileFromGallery("true", "", "false");
   }
 
   Future<void> callUploadProfileFromCamera() async {
-    return uploadProfileFromCamera("true");
+    return uploadProfileFromCamera("true", "", "false");
   }
 
   clearData() {

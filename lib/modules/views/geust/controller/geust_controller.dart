@@ -1,25 +1,19 @@
-import 'dart:io';
-
-import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/guest_history_details_model.dart';
 import 'package:ntt_data/data/models/guest_list_response_model.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/models/user_history_list_model.dart';
 import 'package:ntt_data/data/repository/services/geust_services.dart';
-import 'package:ntt_data/modules/views/geust/guest_halper.dart';
+import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
@@ -41,6 +35,7 @@ class GeustController extends GetxController
   RxList<UserHealthList> guestHealthList = <UserHealthList>[].obs;
 
   RxBool isLoading = false.obs;
+  RxBool isHomeLoading = false.obs;
   RxList<GuestList> guestList = <GuestList>[].obs;
   RxString sdkType = "".obs;
   RxString genderType = "".obs;
@@ -58,18 +53,26 @@ class GeustController extends GetxController
         .getGeustHistoryService(data: data);
     isLoading(false);
     int statusCode = resposneData[AppConstents.statusCode];
-    if (statusCode == 200) {
-      guestList.clear();
-      filteredItems.clear();
-      var data = GuestListResponseModel.fromJson(resposneData["responseBody"]);
-      guestList.value = data.guestList!;
-    } else if (statusCode == 500) {
-      guestList.clear();
-      filteredItems.clear();
-    } else {
-      guestList.clear();
-      filteredItems.clear();
-      AppSnackbar.show(title: "Error", message: "Something went wrong");
+    try {
+      if (statusCode == 200) {
+        guestList.clear();
+        filteredItems.clear();
+        var data = GuestListResponseModel.fromJson(
+          resposneData["responseBody"],
+        );
+        guestList.value = data.guestList!;
+      } else if (statusCode == 500) {
+        guestList.clear();
+        filteredItems.clear();
+      } else {
+        guestList.clear();
+        filteredItems.clear();
+        AppSnackbar.show(title: "Error", message: "Something went wrong");
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      isLoading(false);
     }
   }
 
@@ -196,22 +199,29 @@ class GeustController extends GetxController
     isLoading(true);
     var userID = await IndoSharedPreference.instance.getUserId();
     var data = {"userId": userID, "guestId": guestId.value, "isUser": "false"};
-
     debugPrint(data.toString());
     Map<String, dynamic> responseData = await GeustServices()
         .getUserHealthHistoryService(data: data);
     isLoading(false);
     int statusCode = responseData[AppConstents.statusCode];
-    if (statusCode == 200) {
-      guestHealthList.clear();
-      var result = UserHistoryListModel.fromJson(responseData["responseBody"]);
-      guestHealthList.value = result.userHealthList!;
-      AppNavigation.to(
-        AppRoutes.guestHealthHistoryList,
-        arguments: {"guestId": guestId.value},
-      );
-    } else {
-      guestHealthList.clear();
+    try {
+      if (statusCode == 200) {
+        guestHealthList.clear();
+        var result = UserHistoryListModel.fromJson(
+          responseData["responseBody"],
+        );
+        guestHealthList.value = result.userHealthList!;
+        AppNavigation.to(
+          AppRoutes.guestHealthHistoryList,
+          arguments: {"guestId": guestId.value},
+        );
+      } else {
+        guestHealthList.clear();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      isLoading(false);
     }
   }
 

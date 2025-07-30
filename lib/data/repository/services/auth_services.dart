@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/src/response.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/data/repository/services/base_api_services.dart';
 
@@ -47,12 +48,16 @@ class AuthServices extends BaseApiService {
     File? imagePath,
     String userID,
     String imageType,
+    String guestId,
+    String isGuest,
   ) async {
     Response? response = await uploadImage(
       ApiEndpoints.profileUpload,
       imagePath!.path,
       userID,
       imageType,
+      guestId,
+      isGuest,
     );
     debugPrint(
       "ResponseCode: ${response!.statusCode}= ResponseBody${response.body}",
@@ -64,6 +69,8 @@ class AuthServices extends BaseApiService {
         'response',
         () => uploadImageResponseModelFromJson(resjson),
       );
+    } else {
+      // AppSnackbar.show(title: "Error", message: response.body.toString());
     }
     return responseData;
   }

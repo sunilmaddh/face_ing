@@ -36,5 +36,6 @@ class ApiEndpoints {
       userHealthDetails = "/perHealthHistory",
       storeSdkDataForUser = "/userSDKData",
       profileUpload = '/editProfile',
+      updatePersonalDetails = '/updatePersonalDetails',
       refreshToken = '/getTokenByRefreshToken';
 }

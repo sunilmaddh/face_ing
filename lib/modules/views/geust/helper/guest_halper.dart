@@ -98,12 +98,13 @@ class GuestHalper {
 
     required VitalSignsResults vitalSignResult,
   }) async {
+    var newDob = await convertDateFormate(dob);
     var data = {
       "guestDao": {
         "userId": userId,
         "name": name,
         "gender": gender,
-        "dob": dob,
+        "dob": newDob,
         "weight": weight,
         "height": height,
         "smokerType": controller.selectionType.value,
@@ -249,6 +250,10 @@ class GuestHalper {
     _guestController.selectionType.value = "";
   }
 
+  clearLoading() {
+    _guestController.isLoading.value = false;
+  }
+
   static List<String> weightList = List.generate(
     161,
     (index) => (index + 40).toString(),
@@ -258,4 +263,12 @@ class GuestHalper {
     121,
     (index) => (index + 130).toString(),
   );
+
+  Future<String> convertDateFormate(String date) async {
+    DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(date);
+    String newDate = DateFormat("yyyy/MM/dd").format(parsedDate);
+    return newDate;
+  }
+
+  final RegExp dateRegex = RegExp(r'^[0-9/]+$');
 }

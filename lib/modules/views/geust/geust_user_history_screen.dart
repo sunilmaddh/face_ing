@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
-import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
-import 'package:ntt_data/modules/views/geust/guest_halper.dart';
+import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/modules/views/geust/widget/geust_user_history_card.dart';
+import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/rounded_button.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
-import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 
 // ignore: must_be_immutable
 class GeustUserHistoryScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class GeustUserHistoryScreen extends StatefulWidget {
 
 class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
   final _controller = Get.find<GeustController>();
-  final _searchController = TextEditingController();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -99,14 +99,6 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                                     result.guestId.toString();
 
                                 _controller.getGuestHealthHistory();
-                                // AppNavigation.to(
-                                //   AppRoutes.guestHealthHistoryList,
-                                //   arguments: {"guestId": result.guestId},
-                                // );
-                                // _controller.getGeustDetails(
-                                //   result.guestId.toString(),
-                                //   true,
-                                // );
                               },
                               onDelete: () {
                                 _controller.removeGuest(
@@ -123,6 +115,30 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                                   result.guestId!,
                                   result.name!,
                                 );
+                              },
+                              guestOptionList: AppMethods().guestOptionList,
+                              onOptionList: (value) async {
+                                if (value == "Photo") {
+                                  await AppMethods().editProfilePicture(
+                                    _controller,
+                                    result.guestId,
+                                    "true",
+                                    () {
+                                      _controller.getGeustHistory();
+                                    },
+                                  );
+                                } else {
+                                  ProfileHelper().retainedData(
+                                    name: result.name.toString(),
+                                    weight: result.weight.toString(),
+                                    height: result.height.toString(),
+                                    gender: result.gender.toString(),
+                                    dob: result.dob.toString(),
+                                    smokerType: result.smokerType.toString(),
+                                    guestId: result.guestId.toString(),
+                                    userFlag: "false",
+                                  );
+                                }
                               },
                             ),
                           );
