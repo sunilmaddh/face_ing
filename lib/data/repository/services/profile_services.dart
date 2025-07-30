@@ -33,4 +33,10 @@ class ProfileServices extends BaseApiService {
   }) async {
     return await putRequest(ApiEndpoints.updatePersonalDetails, data);
   }
+
+  Future<Map<String, dynamic>> getVitalDescriptionService({
+    required var data,
+  }) async {
+    return await postRequest(ApiEndpoints.getVitalDescryption, data: data);
+  }
 }

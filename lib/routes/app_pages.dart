@@ -19,6 +19,7 @@ import 'package:ntt_data/modules/views/onboard/splash_screen.dart';
 import 'package:ntt_data/modules/views/profile/update_user_guest_details.dart';
 import 'package:ntt_data/modules/views/profile/user_health_details.dart';
 import 'package:ntt_data/modules/views/profile/user_history_data.dart';
+import 'package:ntt_data/modules/views/profile/vital_descriptions.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
 class AppPages {
@@ -66,5 +67,6 @@ class AppPages {
       name: AppRoutes.updateUserGuestDetails,
       page: () => UpdateUserGuestDetails(),
     ),
+    GetPage(name: AppRoutes.vitalDescriptions, page: () => VitalDescriptions()),
   ];
 }

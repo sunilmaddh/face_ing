@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/vital_status_halper.dart';
@@ -16,6 +17,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
   final String vitalDescription;
   final String vitalCondition;
   final String vitalMass;
+  final VoidCallback onInfoTop;
   final List<HealthDetailList> vitalSubList;
   bool isBlood;
   bool isLowGood;
@@ -44,6 +46,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
     this.isLowGood = false,
     this.isBreathing = false,
     this.isSdkType = false,
+    required this.onInfoTop,
     required this.vitalSubList,
   });
 
@@ -183,6 +186,21 @@ class IndoSakuraCommonCard extends StatelessWidget {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: onInfoTop,
+              child: Align(
+                alignment: Alignment.topRight,
+                child: SvgPicture.asset(
+                  AppAssets.vitalInfo,
+                  height: AppDimensions.height(30),
+                  width: AppDimensions.width(30),
+                ),
+              ),
+            ),
+          ),
+
           Obx(
             () => Visibility(
               visible: vitalSubList != null && vitalSubList.isNotEmpty,

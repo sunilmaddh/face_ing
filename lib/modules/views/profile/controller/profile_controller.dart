@@ -149,6 +149,18 @@ class ProfileController extends GetxController
     }
   }
 
+  Future<void> getVitalDescryption() async {
+    var data = {"vitalKey": "wellness_index"};
+    debugPrint(data.toString());
+    Map<String, dynamic> responseData = await ProfileServices()
+        .getVitalDescriptionService(data: data);
+    int statusCode = responseData[AppConstents.statusCode];
+    if (statusCode == 200) {
+    } else {
+      AppSnackbar.show(title: "Error", message: "Something went wrong");
+    }
+  }
+
   clearProfileData() {
     nameController.clear();
     weightController.clear();

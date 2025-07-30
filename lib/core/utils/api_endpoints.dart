@@ -37,5 +37,6 @@ class ApiEndpoints {
       storeSdkDataForUser = "/userSDKData",
       profileUpload = '/editProfile',
       updatePersonalDetails = '/updatePersonalDetails',
+      getVitalDescryption = "/getVitalDescryption",
       refreshToken = '/getTokenByRefreshToken';
 }

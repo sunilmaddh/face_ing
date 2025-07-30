@@ -49,6 +49,7 @@ class GuestHistoryDetails extends StatelessWidget {
                           vitalHeading: result.vitalHeading!,
                           vitalMass: result.vitalUnit!,
                           vitalSubList: result.vitalSubList!,
+                          onInfoTop: () {},
                         ),
                       );
                     },

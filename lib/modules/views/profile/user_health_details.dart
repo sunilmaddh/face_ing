@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 import 'package:ntt_data/widgets/indo_sakura_common_card.dart';
@@ -50,6 +51,9 @@ class UserHealthDetails extends StatelessWidget {
                           vitalHeading: result.vitalHeading!,
                           vitalMass: result.vitalUnit!,
                           vitalSubList: result.vitalSubList!,
+                          onInfoTop: () {
+                            AppNavigation.to(AppRoutes.vitalDescriptions);
+                          },
                         ),
                       );
                     },

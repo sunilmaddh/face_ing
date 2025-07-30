@@ -50,5 +50,7 @@ class AppAssets {
       scanError = "$baseUrlSvg/scan_error.svg",
       cloaseDialog = "$baseUrlSvg/close_dialog.svg",
       editButton = "$baseUrlSvg/edit_button.svg",
+      vitalInfo = "$baseUrlSvg/vital_info.svg",
+      wellnessScore = "$baseUrlSvg/wellness_score.svg",
       highImage = "$baseUrlSvg/high_im.svg";
 }
