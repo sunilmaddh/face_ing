@@ -50,7 +50,7 @@ class ProfileHelper {
     required String weight,
     required String height,
   }) async {
-    var newDob = await GuestHalper().convertDateFormate(dob);
+    var newDob = await GuestHalper().convertDateFormateToYY(dob);
     final data = await _updateDetailsMap(
       userId: userId,
       guestId: guestId,
@@ -121,12 +121,14 @@ class ProfileHelper {
     var height = await IndoSharedPreference.instance.getHeight();
     var smokerType = await IndoSharedPreference.instance.getSmokerType();
 
+    var newData = await GuestHalper().convertDateFormateToDD(dob);
+
     await retainedData(
       name: name,
       weight: weight,
       height: height,
       gender: gender,
-      dob: dob,
+      dob: newData,
       smokerType: smokerType,
       guestId: "",
       userFlag: "true",

@@ -110,9 +110,9 @@ class UpdateUserGuestDetails extends StatelessWidget {
                               CommonDropdownTextField(
                                 unit: "Kg",
                                 defaultValue: "60",
-                                title: "Select your weight",
+                                title: "Select Your Weight (Kg)",
                                 columns: 5,
-                                hintText: "Enter your weight (kg)",
+                                hintText: "Enter your weight (Kg)",
                                 validator: (weight) {
                                   return AppMethods.validateWeight(weight);
                                 },
@@ -125,11 +125,11 @@ class UpdateUserGuestDetails extends StatelessWidget {
                               SizedBox(height: 15),
 
                               CommonDropdownTextField(
-                                unit: "cm",
+                                unit: "Cm",
                                 defaultValue: "160",
-                                title: "Select your height",
+                                title: "Select your height (Cm)",
                                 columns: 5,
-                                hintText: "Enter your height (cm)",
+                                hintText: "Enter your height (Cm)",
                                 validator: (height) {
                                   return AppMethods.validateHeight(height);
                                 },
