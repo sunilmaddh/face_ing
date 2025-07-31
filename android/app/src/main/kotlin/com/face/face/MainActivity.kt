@@ -1,4 +1,4 @@
-package com.example.ntt_data
+package com.face.face
 
 import android.content.Context
 import io.flutter.embedding.android.FlutterActivity

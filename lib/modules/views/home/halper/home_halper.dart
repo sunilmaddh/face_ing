@@ -8,6 +8,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 
 class HomeHalper {
   final _measurementController = Get.find<MeasurementController>();
+
   void callMeasurement() {
     _startMeasurement();
   }
@@ -19,9 +20,11 @@ class HomeHalper {
     String height = await IndoSharedPreference.instance.getHeight();
     String weight = await IndoSharedPreference.instance.getWeight();
     String name = await IndoSharedPreference.instance.getUserName();
+    String smokerType = await IndoSharedPreference.instance.getSmokerType();
     _measurementController.weight.value = double.parse(weight);
     _measurementController.height.value = double.parse(height);
     _measurementController.genderType.value = genderType;
+    _measurementController.selectionType.value = smokerType;
     _measurementController.age.value = await AppMethods().calculateAge(dobRaw);
 
     if (_measurementController.age.value < 18) {

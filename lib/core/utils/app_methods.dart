@@ -168,7 +168,21 @@ class AppMethods {
   }
 
   Future<String> convertDateFormateToDD(String date) async {
-    DateTime parsedDate = DateFormat("yyyy/MM/dd").parse(date);
+    final formats = [DateFormat("dd/MM/yyyy"), DateFormat("yyyy/MM/dd")];
+    DateTime? parsedDate;
+    for (var format in formats) {
+      try {
+        parsedDate = format.parseStrict(date);
+        break;
+      } catch (_) {
+        continue;
+      }
+    }
+
+    if (parsedDate == null) {
+      throw FormatException("Invalid date format: $date");
+    }
+
     String newDate = DateFormat("dd/MM/yyyy").format(parsedDate);
     return newDate;
   }
@@ -245,5 +259,28 @@ class AppMethods {
             });
       },
     );
+  }
+
+  static Future<void> storeUserData({
+    required String name,
+    required String weight,
+    required String height,
+    required String gender,
+    required String dob,
+    required String email,
+    required String smokerType,
+    required String userImage,
+  }) async {
+    await Future.wait([
+      IndoSharedPreference.instance.saveUserName(name),
+      IndoSharedPreference.instance.saveGenderType(gender.toString()),
+      IndoSharedPreference.instance.saveHeight(height.toString()),
+      IndoSharedPreference.instance.saveWeight(weight.toString()),
+      IndoSharedPreference.instance.saveAge(dob.toString()),
+      IndoSharedPreference.instance.saveSmokerType(smokerType.toString()),
+      if (userImage.isNotEmpty)
+        IndoSharedPreference.instance.saveUserImage(userImage),
+      if (email.isNotEmpty) IndoSharedPreference.instance.saveUserEmail(email),
+    ]);
   }
 }

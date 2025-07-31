@@ -19,38 +19,40 @@ class StartStopButton extends StatelessWidget {
     return Obx(() {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(30)),
-        child: Column(
-          children: [
-            SizedBox(height: AppDimensions.height(10)),
-            CommonText.text(
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              "$userName, Ready to Measure your vital Signs?",
-              color: AppColors.primary,
-              fontSize: AppDimensions.font(18),
-              fontWeight: FontWeight.w500,
-            ),
-            SizedBox(height: AppDimensions.height(10)),
-            CommonText.text(
-              maxLines: 3,
-              textAlign: TextAlign.center,
-              "Sit still, ensure your face is evenly illuminated and there is no light source in the background.",
-              color: AppColors.searchColor,
-            ),
-            SizedBox(height: AppDimensions.height(40)),
-            SafeArea(
-              child: PrimaryButton(
-                isLoading: controller.isLoading.value,
-                text: "Measure now",
-                onPressed: () {
-                  controller.isLoading.value = true;
-                  controller.isScanStop.value = false;
-                  controller.isFirstEver.value = true;
-                  controller.startStopButtonClicked();
-                },
+        child: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(height: AppDimensions.height(10)),
+              CommonText.text(
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                "$userName, Ready to Measure your vital Signs?",
+                color: AppColors.primary,
+                fontSize: AppDimensions.font(18),
+                fontWeight: FontWeight.w500,
               ),
-            ),
-          ],
+              SizedBox(height: AppDimensions.height(8.0)),
+              CommonText.text(
+                maxLines: 3,
+                textAlign: TextAlign.center,
+                "Sit still, ensure your face is evenly illuminated and there is no light source in the background.",
+                color: AppColors.searchColor,
+              ),
+              SizedBox(height: AppDimensions.height(15)),
+              SafeArea(
+                child: PrimaryButton(
+                  isLoading: controller.isLoading.value,
+                  text: "Measure now",
+                  onPressed: () {
+                    controller.isLoading.value = true;
+                    controller.isScanStop.value = false;
+                    controller.isFirstEver.value = true;
+                    controller.startStopButtonClicked();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       );
     });

@@ -4,6 +4,7 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
@@ -126,14 +127,16 @@ class ProfileController extends GetxController
       );
 
       if (userFlag == "true") {
-        ProfileHelper().storeImage(data.name!);
-        ProfileHelper.storeUserData(
+        await ProfileHelper().storeImage(data.name!);
+        await AppMethods.storeUserData(
           name: data.name!,
           weight: data.weight!,
           height: data.height!,
           gender: data.gender!,
           dob: data.dob!,
           smokerType: data.smokerType!,
+          email: '',
+          userImage: '',
         );
       } else {
         ProfileHelper().callGuestHistoryList();

@@ -6,6 +6,7 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart'
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/data/repository/services/auth_services.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
@@ -55,6 +56,7 @@ mixin CommonMixin on GetxController {
         debugPrint(
           "uploadImageResponseModel ${uploadImageResponseModel.value}",
         );
+        AppSnackbar.show(title: "Success", message: "Profile uploaded");
       }
     } else {
       isProfile.value = false;
@@ -91,6 +93,8 @@ mixin CommonMixin on GetxController {
         debugPrint(
           "uploadImageResponseModel ${uploadImageResponseModel.value}",
         );
+
+        AppSnackbar.show(title: "Success", message: "Profile uploaded");
       }
     } else {
       isProfile.value = false;
@@ -101,23 +105,23 @@ mixin CommonMixin on GetxController {
   var timerSeconds = 30.obs;
   RxBool isResendEnabled = false.obs;
   Timer? _timer;
-  void startTimer() {
-    isResendEnabled.value = false;
-    timerSeconds.value = 30;
-    _timer?.cancel();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (timerSeconds.value > 0) {
-        timerSeconds.value--;
-      } else {
-        isResendEnabled.value = true;
-        _timer?.cancel();
-      }
-    });
-  }
+  // void startTimer() {
+  //   isResendEnabled.value = false;
+  //   timerSeconds.value = 30;
+  //   _timer?.cancel();
+  //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //     if (timerSeconds.value > 0) {
+  //       timerSeconds.value--;
+  //     } else {
+  //       isResendEnabled.value = true;
+  //       _timer?.cancel();
+  //     }
+  //   });
+  // }
 
   @override
   void onInit() {
-    startTimer();
+    // startTimer();
     super.onInit();
   }
 

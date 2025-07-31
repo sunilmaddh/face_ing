@@ -6,13 +6,14 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
+import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/circular_image_with_shimmer.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class GeustUserHistoryCard extends StatelessWidget {
-  const GeustUserHistoryCard({
+  GeustUserHistoryCard({
     super.key,
     required this.name,
     required this.height,
@@ -37,10 +38,15 @@ class GeustUserHistoryCard extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onReScan;
   final Function(String) onOptionList;
+  String? newTime;
+  String? date;
   final List<Map<String, String>> guestOptionList;
 
   @override
   Widget build(BuildContext context) {
+    final result = ProfileHelper().extractDateAndTime(time);
+    date = result['date'] ?? "";
+    newTime = result['time'] ?? "";
     return CommonCard(
       radius: AppDimensions.radius(16),
       widget: Padding(
@@ -49,7 +55,7 @@ class GeustUserHistoryCard extends StatelessWidget {
           vertical: AppDimensions.height(20),
         ),
         child: SizedBox(
-          height: 300,
+          height: AppDimensions.height(300),
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
@@ -103,10 +109,22 @@ class GeustUserHistoryCard extends StatelessWidget {
                       ),
 
                       SizedBox(height: 10),
-                      CommonText.text(
-                        name,
-                        fontSize: AppDimensions.font(16),
-                        fontWeight: FontWeight.w700,
+                      Row(
+                        children: [
+                          CommonText.text(
+                            name,
+                            fontSize: AppDimensions.font(16),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          SizedBox(width: 5),
+                          CommonText.text(
+                            gender.isNotEmpty
+                                ? "(${gender.substring(0, 1).toUpperCase()})"
+                                : "",
+                            fontSize: AppDimensions.font(16),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -135,7 +153,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                       ),
                       SizedBox(height: 15),
                       CommonText.text(
-                        gender,
+                        date.toString(),
                         fontSize: AppDimensions.font(16),
                         fontWeight: FontWeight.w700,
                       ),
@@ -170,8 +188,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                                     ), // Default style
                                     children: [
                                       TextSpan(
-                                        text:
-                                            " ${DateTimeHelper.formatUtcToLocal(time)}",
+                                        text: " $newTime",
                                         style: TextStyle(
                                           fontSize: AppDimensions.font(14),
                                           color: Colors.black,
