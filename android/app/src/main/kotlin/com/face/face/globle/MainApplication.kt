@@ -13,8 +13,8 @@ import kotlin.collections.get
 
 class MainApplication : Application() {
 
-    private val CHANNEL_ANURA = "com.example/anura_sdk"
-    private val CHANNEL_RESULT = "com.example.channel"
+    private val CHANNEL_ANURA = "com.face/anura_sdk"
+    private val CHANNEL_RESULT = "com.face.channel"
 
     lateinit var flutterEngine: FlutterEngine
 

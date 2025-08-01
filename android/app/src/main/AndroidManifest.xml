@@ -10,7 +10,7 @@
 
     <application
         android:label="Face.ing"
-        android:name=".MainApplication"
+        android:name=".globle.MainApplication"
         android:supportsRtl="true"
         android:allowBackup="true"
         tools:replace="android:label"
@@ -61,7 +61,6 @@
             android:name="io.flutter.embedding.android.FlutterActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-s
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
