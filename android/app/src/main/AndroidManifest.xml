@@ -9,7 +9,7 @@
 <uses-feature android:name="android.hardware.camera" android:required="true"/>
 
     <application
-        android:label="ntt_data"
+        android:label="Face.ing"
         android:name=".MainApplication"
         android:supportsRtl="true"
         android:allowBackup="true"
@@ -42,15 +42,15 @@
 
         <!-- ✅ Corrected AnuraExampleMeasurementActivity Declaration -->
         <activity
-            android:name=".measurement.AnuraExampleMeasurementActivity"
+            android:name=".measurement.FaceAnuraMeasurementActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:exported="true" />
         <activity
-            android:name=".measurement.ExampleStartActivity"
+            android:name=".measurement.FaceStartActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:exported="true" />
              <activity
-            android:name=".measurement.ExampleResultsActivity"
+            android:name=".measurement.FaceResultsActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:exported="true" />
              <activity
