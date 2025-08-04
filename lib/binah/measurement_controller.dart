@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:biosensesignal_flutter_sdk/session/demographics/sex.dart';
 import 'package:biosensesignal_flutter_sdk/session/smoking_status.dart';
 import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
@@ -128,9 +129,12 @@ class MeasurementController extends GetxController
     String smokerType,
   ) async {
     if (focus) {
-      if (!await _requestCameraPermission()) {
-        return;
+      if (Platform.isAndroid) {
+        if (!await _requestCameraPermission()) {
+          return;
+        }
       }
+
       createSession(genderType, age, weight, height, smokerType);
     } else {
       _terminateSession();
@@ -269,7 +273,7 @@ class MeasurementController extends GetxController
         if (isFirstEver.isTrue) {
           isFirstEver.value = false;
           CommonDialog().showScanDialog(
-            title: " 'Scan Failed'",
+            title: "Scan Failed",
             message:
                 "Possible causes include low light, misalignment, or camera error. Would you like to try again?",
             context: Get.context!,
@@ -303,6 +307,7 @@ class MeasurementController extends GetxController
   @override
   void onError(ErrorData errorData) {
     error.value = "Error: ${errorData.code}";
+    debugPrint("Error: ${errorData.code}");
     if (errorData.code == 14) {
       CommonDialog().showScanDialog(
         confirmText: "OK",
@@ -374,10 +379,10 @@ class MeasurementController extends GetxController
       age: age,
       weight: weight,
       height: height,
-      smokingStatus: SmokingStatus.smoker,
-      // smokerType == "Smoker"
-      //     ? SmokingStatus.smoker
-      //     : SmokingStatus.nonSmoker,
+      smokingStatus:
+          smokerType == "Smoker"
+              ? SmokingStatus.smoker
+              : SmokingStatus.nonSmoker,
     );
     try {
       _session = await FaceSessionBuilder()
@@ -425,7 +430,12 @@ class MeasurementController extends GetxController
   }
 
   Future<bool> _requestCameraPermission() async {
-    final result = await Permission.camera.request();
-    return result.isGranted;
+    var status = await Permission.camera.status;
+
+    if (status.isDenied) {
+      status = await Permission.camera.request();
+    }
+
+    return status.isGranted;
   }
 }

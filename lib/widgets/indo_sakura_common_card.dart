@@ -72,7 +72,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: AppDimensions.height(250),
+            // height: AppDimensions.height(250),
             child: Row(
               children: [
                 SizedBox(
@@ -97,14 +97,14 @@ class IndoSakuraCommonCard extends StatelessWidget {
                         CommonText.text(
                           maxLines: 3,
                           vitalName,
-                          fontSize: 14,
+                          fontSize: AppDimensions.font(14),
                           fontWeight: FontWeight.w400,
                           color: Color(0xff575656),
                         ),
                         SizedBox(height: AppDimensions.height(5)),
                         CommonText.text(
                           vitalCondition,
-                          fontSize: 10,
+                          fontSize: AppDimensions.font(10),
                           color: Color(0xff575656),
                         ),
                         SizedBox(height: AppDimensions.height(10)),
@@ -113,16 +113,16 @@ class IndoSakuraCommonCard extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: AppMethods.capitalizeFirst(vitalValue),
-                                style: const TextStyle(
-                                  fontSize: 26,
+                                style: TextStyle(
+                                  fontSize: AppDimensions.font(26),
                                   fontWeight: FontWeight.w400,
                                   color: Color(0xff4A4949),
                                 ),
                               ),
                               TextSpan(
                                 text: ' $vitalMass',
-                                style: const TextStyle(
-                                  fontSize: 14,
+                                style: TextStyle(
+                                  fontSize: AppDimensions.font(14),
                                   color: Color(0xff4A4949),
                                 ),
                               ),
@@ -148,7 +148,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                         CommonText.text(
                           maxLines: 3,
                           vitalHeading,
-                          fontSize: 16,
+                          fontSize: AppDimensions.font(16),
                           fontWeight: FontWeight.w400,
                           color: Color(0xff5E5D5D),
                         ),
@@ -156,7 +156,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                         CommonText.text(
                           maxLines: 9,
                           vitalDescription,
-                          fontSize: 12,
+                          fontSize: AppDimensions.font(12),
                           color: Color(0xff5E5D5D),
                         ),
                         SizedBox(height: AppDimensions.height(10)),
@@ -174,7 +174,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                               SizedBox(width: AppDimensions.width(10)),
                               CommonText.text(
                                 AppMethods.capitalizeFirst(status),
-                                fontSize: 14,
+                                fontSize: AppDimensions.font(14),
                                 color: color,
                               ),
                             ],
@@ -263,16 +263,16 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                 children: [
                                   Text(
                                     result.vitalName.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 10,
+                                    style: TextStyle(
+                                      fontSize: AppDimensions.font(10),
                                       fontWeight: FontWeight.w400,
                                       color: Color(0xff575656),
                                     ),
                                   ),
                                   Text(
                                     result.vitalHeading.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 10,
+                                    style: TextStyle(
+                                      fontSize: AppDimensions.font(10),
                                       fontWeight: FontWeight.w400,
                                       color: Color(0xff575656),
                                     ),
@@ -294,8 +294,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                       children: [
                                         TextSpan(
                                           text: result.vitalValue,
-                                          style: const TextStyle(
-                                            fontSize: 26,
+                                          style: TextStyle(
+                                            fontSize: AppDimensions.font(26),
                                             fontWeight: FontWeight.w400,
                                             color: Color(0xff4A4949),
                                           ),

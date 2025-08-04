@@ -46,6 +46,7 @@ dependencies:
   time_picker_spinner_pop_up: ^2.0.0
   flutter_holo_date_picker: ^2.0.0
   awesome_datetime_picker: ^0.1.1
+  flutter_launcher_icons: ^0.14.4
   # flutter_secure_storage: ^4.2.1
   
 
@@ -53,6 +54,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  change_app_package_name: ^1.5.0
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/png/app-icon.png" # Your icon path
+  adaptive_icon_background: "#FFFFFF"    # Optional for Android adaptive icons
+  adaptive_icon_foreground: "assets/images/png/app-icon.png"
 dependency_overrides:
   wakelock_windows: any
   win32: any

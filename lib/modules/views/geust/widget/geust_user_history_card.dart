@@ -4,15 +4,15 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
-import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
+import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/circular_image_with_shimmer.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class GeustUserHistoryCard extends StatelessWidget {
-  const GeustUserHistoryCard({
+  GeustUserHistoryCard({
     super.key,
     required this.name,
     required this.height,
@@ -37,10 +37,15 @@ class GeustUserHistoryCard extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onReScan;
   final Function(String) onOptionList;
+  String? newTime;
+  String? date;
   final List<Map<String, String>> guestOptionList;
 
   @override
   Widget build(BuildContext context) {
+    final result = ProfileHelper().extractDateAndTime(time);
+    date = result['date'] ?? "";
+    newTime = result['time'] ?? "";
     return CommonCard(
       radius: AppDimensions.radius(16),
       widget: Padding(
@@ -49,7 +54,7 @@ class GeustUserHistoryCard extends StatelessWidget {
           vertical: AppDimensions.height(20),
         ),
         child: SizedBox(
-          height: 300,
+          height: AppDimensions.height(322),
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
@@ -103,10 +108,22 @@ class GeustUserHistoryCard extends StatelessWidget {
                       ),
 
                       SizedBox(height: 10),
-                      CommonText.text(
-                        name,
-                        fontSize: AppDimensions.font(16),
-                        fontWeight: FontWeight.w700,
+                      Row(
+                        children: [
+                          CommonText.text(
+                            name,
+                            fontSize: AppDimensions.font(16),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          SizedBox(width: 5),
+                          CommonText.text(
+                            gender.isNotEmpty
+                                ? "(${gender.substring(0, 1).toUpperCase()})"
+                                : "",
+                            fontSize: AppDimensions.font(16),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -133,9 +150,9 @@ class GeustUserHistoryCard extends StatelessWidget {
                           radius: AppDimensions.padding(15.0),
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: AppDimensions.height(15)),
                       CommonText.text(
-                        gender,
+                        date.toString(),
                         fontSize: AppDimensions.font(16),
                         fontWeight: FontWeight.w700,
                       ),
@@ -147,7 +164,8 @@ class GeustUserHistoryCard extends StatelessWidget {
               CommonCard(
                 widget: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  height: 200,
+                  height: AppDimensions.height(205),
+
                   child: Column(
                     children: [
                       Padding(
@@ -155,27 +173,30 @@ class GeustUserHistoryCard extends StatelessWidget {
                         child: CommonCard(
                           widget: SizedBox(
                             width: MediaQuery.of(context).size.width,
-                            height: 40,
-                            child: Center(
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Measurement taken at',
-                                  style: TextStyle(
-                                    fontSize: AppDimensions.font(14),
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ), // Default style
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          " ${DateTimeHelper.formatUtcToLocal(time)}",
-                                      style: TextStyle(
-                                        fontSize: AppDimensions.font(14),
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w700,
+
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: RichText(
+                                  maxLines: 2,
+                                  text: TextSpan(
+                                    text: 'Measurement taken at',
+                                    style: TextStyle(
+                                      fontSize: AppDimensions.font(14),
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ), // Default style
+                                    children: [
+                                      TextSpan(
+                                        text: " $newTime",
+                                        style: TextStyle(
+                                          fontSize: AppDimensions.font(14),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

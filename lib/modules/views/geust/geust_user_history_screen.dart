@@ -4,6 +4,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/modules/views/geust/widget/geust_user_history_card.dart';
@@ -92,7 +93,9 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                               name: result.name.toString(),
                               height: result.height.toString(),
                               weight: result.weight.toString(),
-                              time: result.date.toString(),
+                              time: DateTimeHelper.formatUtcToLocal(
+                                result.date.toString(),
+                              ),
 
                               onTop: () {
                                 _controller.guestId.value =
@@ -137,6 +140,7 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                                     smokerType: result.smokerType.toString(),
                                     guestId: result.guestId.toString(),
                                     userFlag: "false",
+                                    levelName: "Patient ID",
                                   );
                                 }
                               },

@@ -8,6 +8,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
@@ -54,10 +55,7 @@ class CreateAccountScreen extends StatelessWidget {
                 SizedBox(height: AppDimensions.height(0)),
                 CustomFormField(
                   validator: (name) {
-                    if (name == null || name.isEmpty) {
-                      return "Please enter name";
-                    }
-                    return null;
+                    return AppMethods.validateName(name);
                   },
                   label: AppConstents.name,
                   hint: "Enter your name",
@@ -77,29 +75,7 @@ class CreateAccountScreen extends StatelessWidget {
                 CustomFormField(
                   keyboardType: TextInputType.datetime,
                   validator: (dob) {
-                    if (dob == null || dob.isEmpty) {
-                      return "Please select DOB";
-                    }
-
-                    try {
-                      DateTime parseDate = DateFormat(
-                        "dd/MM/yyyy",
-                      ).parseStrict(dob);
-                      DateTime now = DateTime.now();
-                      DateTime minAllowedDate = DateTime(
-                        now.year - 18,
-                        now.month,
-                        now.day,
-                      );
-
-                      if (parseDate.isAfter(minAllowedDate)) {
-                        return "Age should be 18+";
-                      }
-                    } catch (e) {
-                      return "Invalid date format. Use dd/MM/yyyy";
-                    }
-
-                    return null;
+                    return AppMethods.validateDOB(dob);
                   },
 
                   suffixIcon: InkWell(
@@ -131,12 +107,7 @@ class CreateAccountScreen extends StatelessWidget {
                   columns: 5,
                   hintText: "Enter your weight (kg)",
                   validator: (weight) {
-                    if (weight == null || weight.isEmpty) {
-                      return "Please enter weight";
-                    } else if (int.parse(weight) < 40) {
-                      return "Weight must be 40 or greater";
-                    }
-                    return null;
+                    return AppMethods.validateWeight(weight);
                   },
                   label: AppConstents.weight,
                   options: GuestHalper.weightList,
@@ -153,12 +124,7 @@ class CreateAccountScreen extends StatelessWidget {
                   columns: 5,
                   hintText: "Enter your height (cm)",
                   validator: (height) {
-                    if (height == null || height.isEmpty) {
-                      return "Please enter height";
-                    } else if (int.parse(height) < 130) {
-                      return "Height must be 130 or greater";
-                    }
-                    return null;
+                    return AppMethods.validateHeight(height);
                   },
                   label: AppConstents.height,
                   options: GuestHalper.heightList,

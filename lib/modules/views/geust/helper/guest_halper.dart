@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -31,13 +32,20 @@ class GuestHalper {
       _guestController.heightTextController.text,
     );
     controller.genderType.value = _guestController.selectionType.value;
-    AppNavigation.to(
-      AppRoutes.mesurementScreen,
-      arguments: {
-        "scanType": "add-guest",
-        "userName": _guestController.nameTextController.text,
-      },
-    );
+    if (controller.age.value < 18) {
+      AppSnackbar.show(
+        title: "Age Restriction",
+        message: "You must be 18 or older to continue",
+      );
+    } else {
+      AppNavigation.to(
+        AppRoutes.mesurementScreen,
+        arguments: {
+          "scanType": "add-guest",
+          "userName": _guestController.nameTextController.text,
+        },
+      );
+    }
   }
 
   callReScanMeasurement(
@@ -71,15 +79,23 @@ class GuestHalper {
   ) async {
     controller.isScanningDone.value = false;
     controller.age.value = await AppMethods().calculateAge(dob);
+    debugPrint(controller.age.value.toString());
     controller.weight.value = double.parse(weight);
     controller.height.value = double.parse(height);
     controller.genderType.value = genderType;
     controller.guestId.value = guestId;
     controller.smokerType.value = smokerType;
-    AppNavigation.to(
-      AppRoutes.mesurementScreen,
-      arguments: {"scanType": "re-scan", "userName": guestName},
-    );
+    if (controller.age.value < 18) {
+      AppSnackbar.show(
+        title: "Age Restriction",
+        message: "You must be 18 or older to continue",
+      );
+    } else {
+      AppNavigation.to(
+        AppRoutes.mesurementScreen,
+        arguments: {"scanType": "re-scan", "userName": guestName},
+      );
+    }
   }
 
   static bool isValidInput(String input) {
@@ -95,10 +111,9 @@ class GuestHalper {
     required String weight,
     required String height,
     required String guestImage,
-
     required VitalSignsResults vitalSignResult,
   }) async {
-    var newDob = await convertDateFormateToYY(dob);
+    var newDob = await AppMethods().convertDateFormatToYY(dob);
     var data = {
       "guestDao": {
         "userId": userId,
@@ -263,18 +278,6 @@ class GuestHalper {
     121,
     (index) => (index + 130).toString(),
   );
-
-  Future<String> convertDateFormateToYY(String date) async {
-    DateTime parsedDate = DateFormat("dd/MM/yyyy").parse(date);
-    String newDate = DateFormat("yyyy/MM/dd").format(parsedDate);
-    return newDate;
-  }
-
-  Future<String> convertDateFormateToDD(String date) async {
-    DateTime parsedDate = DateFormat("yyyy/MM/dd").parse(date);
-    String newDate = DateFormat("dd/MM/yyyy").format(parsedDate);
-    return newDate;
-  }
 
   final RegExp dateRegex = RegExp(r'^[0-9/]+$');
 }

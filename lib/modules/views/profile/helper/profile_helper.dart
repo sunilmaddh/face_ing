@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
@@ -50,7 +51,7 @@ class ProfileHelper {
     required String weight,
     required String height,
   }) async {
-    var newDob = await GuestHalper().convertDateFormateToYY(dob);
+    var newDob = await AppMethods().convertDateFormatToYY(dob);
     final data = await _updateDetailsMap(
       userId: userId,
       guestId: guestId,
@@ -73,24 +74,6 @@ class ProfileHelper {
     _profileController.updateDetailsUG(data: data, userFlag: userFlag);
   }
 
-  static Future<void> storeUserData({
-    required String name,
-    required String weight,
-    required String height,
-    required String gender,
-    required String dob,
-    required String smokerType,
-  }) async {
-    await Future.wait([
-      IndoSharedPreference.instance.saveUserName(name),
-      // IndoSharedPreference.instance.saveUserEmail(email),
-      IndoSharedPreference.instance.saveGenderType(gender.toString()),
-      IndoSharedPreference.instance.saveHeight(height.toString()),
-      IndoSharedPreference.instance.saveWeight(weight.toString()),
-      IndoSharedPreference.instance.saveAge(dob.toString()),
-    ]);
-  }
-
   Future<void> retainedData({
     required String name,
     required String weight,
@@ -100,16 +83,19 @@ class ProfileHelper {
     required String smokerType,
     required String guestId,
     required String userFlag,
+    required String levelName,
   }) async {
+    var newData = await AppMethods().convertDateFormateToDD(dob);
     _profileController.nameController.text = name;
     _profileController.genderType.value = gender;
-    _profileController.dobController.text = dob;
+    _profileController.dobController.text = newData;
     _profileController.weightController.text = weight;
     _profileController.heightController.text = height;
     _profileController.smokerType.value = smokerType;
+
     Get.toNamed(
       AppRoutes.updateUserGuestDetails,
-      arguments: {"guestId": guestId, "userFlag": userFlag},
+      arguments: {"guestId": guestId, "userFlag": userFlag, "name": levelName},
     );
   }
 
@@ -120,9 +106,7 @@ class ProfileHelper {
     var weight = await IndoSharedPreference.instance.getWeight();
     var height = await IndoSharedPreference.instance.getHeight();
     var smokerType = await IndoSharedPreference.instance.getSmokerType();
-
-    var newData = await GuestHalper().convertDateFormateToDD(dob);
-
+    var newData = await AppMethods().convertDateFormateToDD(dob);
     await retainedData(
       name: name,
       weight: weight,
@@ -132,21 +116,39 @@ class ProfileHelper {
       smokerType: smokerType,
       guestId: "",
       userFlag: "true",
+      levelName: "Name",
     );
   }
 
   Map<String, String> extractDateAndTime(String dateTimeStr) {
-    try {
-      DateTime dateTime = DateTime.parse(dateTimeStr);
-      // Format date and time separately
-      String date = DateFormat(
-        'yyyy-MM-dd',
-      ).format(dateTime); // e.g. 2025-07-28
-      String time = DateFormat('HH:mm:ss').format(dateTime); // e.g. 17:05:53
-      return {"date": date, "time": time};
-    } catch (e) {
-      return {"date": "Invalid", "time": "Invalid"};
+    // Supported formats list
+    final formats = [
+      "yyyy-MM-dd HH:mm:ss",
+      "yyyy/MM/dd HH:mm:ss",
+      "dd-MM-yyyy HH:mm:ss",
+      "dd/MM/yyyy HH:mm:ss",
+      "yyyy-MM-dd",
+      "yyyy/MM/dd",
+      "dd-MM-yyyy",
+      "dd/MM/yyyy",
+    ];
+
+    for (String format in formats) {
+      try {
+        DateTime dateTime = DateFormat(format).parseStrict(dateTimeStr);
+
+        // Format output
+        String date = DateFormat('dd/MM/yyyy').format(dateTime);
+        String time = DateFormat('HH:mm:ss').format(dateTime);
+
+        return {"date": date, "time": time};
+      } catch (e) {
+        // Ignore and try next format
+      }
     }
+
+    // Return fallback if no format matched
+    return {"date": "Invalid", "time": "Invalid"};
   }
 
   Future<void> callGuestHistoryList() async {

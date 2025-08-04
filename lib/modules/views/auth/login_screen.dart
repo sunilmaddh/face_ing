@@ -33,6 +33,20 @@ class _LoginScreenState extends State<LoginScreen> {
       await IndoSharedPreference.instance.saveWalkScreen(true);
     });
     return Scaffold(
+      floatingActionButton: PrimaryButton(
+        isLoading: _authController.isLoading.value,
+        text: AppConstents.login,
+        // isLoading: _authController.isLoading.value,
+        onPressed: () {
+          // AppNavigation.to(AppRoutes.homeScreen);
+          if (_formKey.currentState!.validate()) {
+            _authController.userLogin();
+            // AppNavigation.to(AppRoutes.homeScreen);
+          }
+
+          // AppNavigation.to(AppRoutes.homeScreen);
+        },
+      ),
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         isLeading: false,
@@ -107,59 +121,25 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
 
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                height: AppDimensions.height(100),
-                child: Column(
-                  children: [
-                    Obx(
-                      () => Align(
-                        alignment: Alignment.bottomRight,
-                        child: PrimaryButton(
-                          isLoading: _authController.isLoading.value,
-                          text: AppConstents.login,
-                          // isLoading: _authController.isLoading.value,
-                          onPressed: () {
-                            // AppNavigation.to(AppRoutes.homeScreen);
-                            if (_formKey.currentState!.validate()) {
-                              _authController.userLogin();
-                              // AppNavigation.to(AppRoutes.homeScreen);
-                            }
+            // Obx(
+            //   () => Align(
+            //     alignment: Alignment.bottomRight,
+            //     child: PrimaryButton(
+            //       isLoading: _authController.isLoading.value,
+            //       text: AppConstents.login,
+            //       // isLoading: _authController.isLoading.value,
+            //       onPressed: () {
+            //         // AppNavigation.to(AppRoutes.homeScreen);
+            //         if (_formKey.currentState!.validate()) {
+            //           _authController.userLogin();
+            //           // AppNavigation.to(AppRoutes.homeScreen);
+            //         }
 
-                            // AppNavigation.to(AppRoutes.homeScreen);
-                          },
-                        ),
-                      ),
-                      // SizedBox(height: AppDimensions.height(20)),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     CommonText.text(
-                      //       AppConstents.donThaveAccoount,
-                      //       fontSize: AppDimensions.font(16),
-                      //       fontWeight: FontWeight.w400,
-                      //       color: AppColors.blackColor,
-                      //     ),
-                      //     SizedBox(width: AppDimensions.width(5)),
-                      //     InkWell(
-                      //       onTap: () {
-                      //         AppNavigation.to(AppRoutes.createAccount);
-                      //       },
-                      //       child: CommonText.text(
-                      //         AppConstents.signUp,
-                      //         color: AppColors.primary,
-                      //         fontSize: AppDimensions.font(16),
-                      //         fontWeight: FontWeight.w500,
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            //         // AppNavigation.to(AppRoutes.homeScreen);
+            //       },
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

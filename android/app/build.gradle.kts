@@ -13,7 +13,7 @@ android {
     buildFeatures {
         compose= true
     }
-    namespace = "com.example.ntt_data"
+    namespace = "com.face.face"
     compileSdk = flutter?.compileSdkVersion ?: 33
     ndkVersion = "27.0.12077973"
 
@@ -44,7 +44,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.ntt_data"
+        applicationId = "com.face.face"
         minSdk = 27
         targetSdk = flutter?.targetSdkVersion ?: 33
         versionCode = flutter?.versionCode ?: 1

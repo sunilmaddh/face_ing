@@ -1,5 +1,5 @@
 <manifest xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ntt_data"
+    package="com.face.face"
     xmlns:android="http://schemas.android.com/apk/res/android">
  <uses-permission android:name="android.permission.CAMERA"/>
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -9,8 +9,8 @@
 <uses-feature android:name="android.hardware.camera" android:required="true"/>
 
     <application
-        android:label="ntt_data"
-        android:name=".MainApplication"
+        android:label="Face.ing"
+        android:name=".globle.MainApplication"
         android:supportsRtl="true"
         android:allowBackup="true"
         tools:replace="android:label"
@@ -42,15 +42,15 @@
 
         <!-- ✅ Corrected AnuraExampleMeasurementActivity Declaration -->
         <activity
-            android:name=".measurement.AnuraExampleMeasurementActivity"
+            android:name=".measurement.FaceAnuraMeasurementActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:exported="true" />
         <activity
-            android:name=".measurement.ExampleStartActivity"
+            android:name=".measurement.FaceStartActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:exported="true" />
              <activity
-            android:name=".measurement.ExampleResultsActivity"
+            android:name=".measurement.FaceResultsActivity"
             android:theme="@style/Theme.AppCompat.Light"
             android:exported="true" />
              <activity
@@ -61,7 +61,6 @@
             android:name="io.flutter.embedding.android.FlutterActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-s
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

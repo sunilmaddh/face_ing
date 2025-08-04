@@ -52,5 +52,6 @@ class AppAssets {
       editButton = "$baseUrlSvg/edit_button.svg",
       vitalInfo = "$baseUrlSvg/vital_info.svg",
       wellnessScore = "$baseUrlSvg/wellness_score.svg",
+      appIcon = "$baseUrlPng/app_icon.png",
       highImage = "$baseUrlSvg/high_im.svg";
 }

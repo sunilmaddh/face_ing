@@ -31,7 +31,6 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
   void dispose() {
     // TODO: implement dispose
     controller.cloase();
-
     super.dispose();
   }
 
@@ -156,40 +155,46 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                           child: SafeArea(
                                             child: Align(
                                               alignment: Alignment.topRight,
-                                              child: TextButton(
-                                                onPressed: () {
-                                                  if (controller
-                                                      .isFirstEver
-                                                      .isTrue) {
-                                                    controller
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 25,
+                                                    ),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    if (controller
                                                         .isFirstEver
-                                                        .value = false;
-                                                    controller.stopMeasuring();
-                                                    controller
-                                                        .isScanStop
-                                                        .value = true;
-                                                    CommonDialog().showScanDialog(
-                                                      title: " 'Scan Alert'",
-                                                      message:
-                                                          "The scan has been stopped. Do you want to start the scan again?",
-                                                      context: Get.context!,
-                                                      onConfirm: () {
-                                                        // controller
-                                                        //     .stopMeasuring();
-                                                      },
-                                                      onCancel: () {
-                                                        Get.back();
-                                                      },
-                                                    );
-                                                  }
-                                                },
-                                                child: CommonText.text(
-                                                  "Stop",
-                                                  color: AppColors.blackColor,
-                                                  fontSize: AppDimensions.font(
-                                                    18,
+                                                        .isTrue) {
+                                                      controller
+                                                          .isFirstEver
+                                                          .value = false;
+                                                      controller
+                                                          .stopMeasuring();
+                                                      controller
+                                                          .isScanStop
+                                                          .value = true;
+                                                      CommonDialog().showScanDialog(
+                                                        title: "Scan Alert",
+                                                        message:
+                                                            "The scan has been stopped. Do you want to start the scan again?",
+                                                        context: Get.context!,
+                                                        onConfirm: () {
+                                                          // controller
+                                                          //     .stopMeasuring();
+                                                        },
+                                                        onCancel: () {
+                                                          Get.back();
+                                                        },
+                                                      );
+                                                    }
+                                                  },
+                                                  child: CommonText.text(
+                                                    "Stop",
+                                                    color: AppColors.blackColor,
+                                                    fontSize:
+                                                        AppDimensions.font(18),
+                                                    fontWeight: FontWeight.w600,
                                                   ),
-                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             ),
@@ -197,9 +202,6 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                         ),
                                       ),
 
-                                      // SizedBox(
-                                      //   height: AppDimensions.height(10),
-                                      // ),
                                       Obx(() {
                                         final imageData =
                                             controller.imageData.value;
@@ -216,8 +218,13 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                             imageData.imageValidity ==
                                                 ImageValidity.valid &&
                                             isStarted) {
-                                          return MeasurmentProgress(
-                                            controller: controller,
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: 300,
+                                            ),
+                                            child: MeasurmentProgress(
+                                              controller: controller,
+                                            ),
                                           );
                                         } else if ((sessionState ==
                                                     SessionState.ready ||
@@ -264,23 +271,25 @@ class MeasurmentProgress extends StatelessWidget {
       return Column(
         children: [
           PulseRate(),
-
           SizedBox(
             width: AppDimensions.width(300),
-            height: AppDimensions.height(80),
+            height: AppDimensions.height(60),
             child: LottieBuilder.asset(
               AppAssets.heartRateAnim,
               fit: BoxFit.fill,
               repeat: true,
             ),
           ),
-
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(20)),
-            child: FAProgressBar(
-              progressColor: Colors.green,
-              currentValue: controller.progress.value.toDouble(),
-              displayText: "%",
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppDimensions.width(20),
+              ),
+              child: FAProgressBar(
+                progressColor: Colors.green,
+                currentValue: controller.progress.value.toDouble(),
+                displayText: "%",
+              ),
             ),
           ),
         ],

@@ -7,6 +7,7 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
+import 'package:ntt_data/core/utils/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
@@ -137,11 +138,23 @@ class FaceDrawer extends StatelessWidget {
                               alignment: Alignment.topRight,
                               child: InkWell(
                                 onTap: () {
-                                  AppMethods().editProfilePicture(
-                                    _profileController,
-                                    "",
-                                    "false",
-                                    () {},
+                                  CommonDialog().editGuestDialog(
+                                    guestOptionList:
+                                        AppMethods().guestOptionList,
+                                    context: context,
+                                    onConfirm: (value) {
+                                      if (value == "Photo") {
+                                        AppMethods().editProfilePicture(
+                                          _profileController,
+                                          "",
+                                          "false",
+                                          () {},
+                                        );
+                                      } else {
+                                        ProfileHelper().retainedUserData();
+                                      }
+                                    },
+                                    onCancel: () {},
                                   );
                                 },
                                 child: SvgPicture.asset(AppAssets.editIcon),
@@ -179,12 +192,12 @@ class FaceDrawer extends StatelessWidget {
 
             /// **Reusable List Tiles**
             ///
-            _buildListTile(
-              icon: AppAssets.userIcon,
-              title: "Edit Profile",
-              subtitle: "Update User Details",
-              onTap: () => ProfileHelper().retainedUserData(),
-            ),
+            // _buildListTile(
+            //   icon: AppAssets.userIcon,
+            //   title: "Edit Profile",
+            //   subtitle: "Update User Details",
+            //   onTap: () => ProfileHelper().retainedUserData(),
+            // ),
             _buildListTile(
               icon: AppAssets.userIcon,
               title: "Guest User",
@@ -219,15 +232,15 @@ class FaceDrawer extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // CommonText.text(
+                //   "Version: ",
+                //   color: AppColors.powerBy,
+                //   fontSize: AppDimensions.font(20),
+                //   fontWeight: FontWeight.w700,
+                //   fontFamily: "Open Sans",
+                // ),
                 CommonText.text(
-                  "Version: ",
-                  color: AppColors.powerBy,
-                  fontSize: AppDimensions.font(20),
-                  fontWeight: FontWeight.w700,
-                  fontFamily: "Open Sans",
-                ),
-                CommonText.text(
-                  "1.0.12",
+                  "v:1.0.12",
                   color: AppColors.powerBy,
                   fontSize: AppDimensions.font(14),
                   fontWeight: FontWeight.w700,
@@ -237,19 +250,22 @@ class FaceDrawer extends StatelessWidget {
             ),
 
             /// **Powered By Section**
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CommonText.text(
-                  "Powered BY",
-                  color: AppColors.powerBy,
-                  fontSize: AppDimensions.font(20),
-                  fontWeight: FontWeight.w700,
-                  fontFamily: "Open Sans",
-                ),
-                CommonAssets.svgAsset(AppAssets.faceLogo),
-              ],
+            SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CommonText.text(
+                    "Powered BY",
+                    color: AppColors.powerBy,
+                    fontSize: AppDimensions.font(20),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "Open Sans",
+                  ),
+                  CommonAssets.svgAsset(AppAssets.faceLogo),
+                ],
+              ),
             ),
+            SizedBox(height: AppDimensions.height(10)),
           ],
         ),
       ),
