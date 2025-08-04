@@ -4,7 +4,6 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_dialog.dart';
-import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
@@ -55,7 +54,7 @@ class GeustUserHistoryCard extends StatelessWidget {
           vertical: AppDimensions.height(20),
         ),
         child: SizedBox(
-          height: AppDimensions.height(300),
+          height: AppDimensions.height(322),
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
@@ -151,7 +150,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                           radius: AppDimensions.padding(15.0),
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: AppDimensions.height(15)),
                       CommonText.text(
                         date.toString(),
                         fontSize: AppDimensions.font(16),
@@ -165,7 +164,8 @@ class GeustUserHistoryCard extends StatelessWidget {
               CommonCard(
                 widget: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  height: AppDimensions.height(190),
+                  height: AppDimensions.height(205),
+
                   child: Column(
                     children: [
                       Padding(

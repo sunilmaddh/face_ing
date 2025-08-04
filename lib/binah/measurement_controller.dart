@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:biosensesignal_flutter_sdk/session/demographics/sex.dart';
 import 'package:biosensesignal_flutter_sdk/session/smoking_status.dart';
 import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
@@ -128,9 +129,12 @@ class MeasurementController extends GetxController
     String smokerType,
   ) async {
     if (focus) {
-      // if (!await _requestCameraPermission()) {
-      //   return;
-      // }
+      if (Platform.isAndroid) {
+        if (!await _requestCameraPermission()) {
+          return;
+        }
+      }
+
       createSession(genderType, age, weight, height, smokerType);
     } else {
       _terminateSession();
@@ -426,7 +430,12 @@ class MeasurementController extends GetxController
   }
 
   Future<bool> _requestCameraPermission() async {
-    final result = await Permission.camera.request();
-    return result.isGranted;
+    var status = await Permission.camera.status;
+
+    if (status.isDenied) {
+      status = await Permission.camera.request();
+    }
+
+    return status.isGranted;
   }
 }
