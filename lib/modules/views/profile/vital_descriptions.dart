@@ -19,7 +19,12 @@ class VitalDescriptions extends StatelessWidget {
   Widget build(BuildContext context) {
     _profileComtroller.getVitalDescryption();
     return Scaffold(
-      appBar: CustomAppBar(title: "Vital Signs Description", onTop: () {}),
+      appBar: CustomAppBar(
+        title: "Vital Signs Description",
+        onTop: () {
+          Get.back();
+        },
+      ),
       body: Container(
         // margin: EdgeInsets.all(15),
         decoration: BoxDecoration(
