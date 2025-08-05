@@ -3,6 +3,7 @@ import 'package:biosensesignal_flutter_sdk/session/session_state.dart'
     show SessionState;
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:focus_detector/focus_detector.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -106,6 +107,14 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                         child: Stack(
                           children: [
                             CameraPreview(controller: controller),
+
+                            // Positioned.fill(
+                            //   bottom: 120,
+                            //   child: SvgPicture.asset(
+                            //     AppAssets.faceDetact,
+                            //     color: AppColors.camreraPreviewColor,
+                            //   ),
+                            // ),
                             Positioned.fill(
                               child: Obx(() {
                                 return CustomPaint(
@@ -114,8 +123,8 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                       screenSize.width / 2,
                                       screenSize.height / 3.2,
                                     ),
-                                    radiusX: ovalWidth / 2,
-                                    radiusY: ovalHeight / 2,
+                                    radiusX: ovalWidth / 1.75,
+                                    radiusY: ovalHeight / 1.8,
                                     overlayColor:
                                         controller.imageData.value != null &&
                                                 controller

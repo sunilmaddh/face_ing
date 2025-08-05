@@ -273,6 +273,7 @@ class AppMethods {
     required String email,
     required String smokerType,
     required String userImage,
+    required bool isFullHistory,
   }) async {
     await Future.wait([
       IndoSharedPreference.instance.saveUserName(name),
@@ -281,6 +282,7 @@ class AppMethods {
       IndoSharedPreference.instance.saveWeight(weight.toString()),
       IndoSharedPreference.instance.saveAge(dob.toString()),
       IndoSharedPreference.instance.saveSmokerType(smokerType.toString()),
+      IndoSharedPreference.instance.saveHistoryType(isFullHistory),
       if (userImage.isNotEmpty)
         IndoSharedPreference.instance.saveUserImage(userImage),
       if (email.isNotEmpty) IndoSharedPreference.instance.saveUserEmail(email),

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
@@ -230,6 +231,8 @@ class MeasurementController extends GetxController
               );
             });
           } else if (scanType.value == "re-scan") {
+            var isFullStory =
+                await IndoSharedPreference.instance.getHistoryType();
             _geustController
                 .storeBinahHealthForUser(
                   vitalsResults.value,
@@ -237,14 +240,26 @@ class MeasurementController extends GetxController
                   isUser: 'false',
                 )
                 .whenComplete(() {
-                  AppNavigation.off(
-                    AppRoutes.analyzingHealthData,
-                    action: () {
-                      isScanningDone(false);
-                    },
-                  );
+                  if (isFullStory == true) {
+                    AppNavigation.off(
+                      AppRoutes.analyzingHealthData,
+                      action: () {
+                        isScanningDone(false);
+                      },
+                    );
+                  } else {
+                    AppNavigation.off(
+                      AppRoutes.allReportScreen,
+                      action: () {
+                        isScanningDone(false);
+                      },
+                    );
+                  }
                 });
           } else {
+            var isFullStory =
+                await IndoSharedPreference.instance.getHistoryType();
+
             _geustController
                 .storeBinahHealthForUser(
                   vitalsResults.value,
@@ -252,12 +267,21 @@ class MeasurementController extends GetxController
                   isUser: 'true',
                 )
                 .whenComplete(() {
-                  AppNavigation.off(
-                    AppRoutes.analyzingHealthData,
-                    action: () {
-                      isScanningDone(false);
-                    },
-                  );
+                  if (isFullStory == true) {
+                    AppNavigation.off(
+                      AppRoutes.analyzingHealthData,
+                      action: () {
+                        isScanningDone(false);
+                      },
+                    );
+                  } else {
+                    AppNavigation.off(
+                      AppRoutes.allReportScreen,
+                      action: () {
+                        isScanningDone(false);
+                      },
+                    );
+                  }
                 });
           }
         }
@@ -285,25 +309,25 @@ class MeasurementController extends GetxController
   void onError(ErrorData errorData) {
     error.value = "Error: ${errorData.code}";
     debugPrint("Error: ${errorData.code}");
-    if (errorData.code == 14) {
-      CommonDialog().showScanDialog(
-        confirmText: "OK",
-        title: "Low Battery Alert",
-        message:
-            "Battery level is too low. Please ensure your device battery is above 20% to start the scan.",
-        context: Get.context!,
-        onConfirm: () {
-          isScanningDone.value = false;
-          Get.back();
-          // stopMeasuring();
-        },
-        onCancel: () {
-          isFirstEver.value = false;
-          isScanningDone.value = false;
-          Get.back();
-        },
-      );
-    }
+    // if (errorData.code == 14) {
+    //   CommonDialog().showScanDialog(
+    //     confirmText: "OK",
+    //     title: "Low Battery Alert",
+    //     message:
+    //         "Battery level is too low. Please ensure your device battery is above 20% to start the scan.",
+    //     context: Get.context!,
+    //     onConfirm: () {
+    //       isScanningDone.value = false;
+    //       Get.back();
+    //       // stopMeasuring();
+    //     },
+    //     onCancel: () {
+    //       isFirstEver.value = false;
+    //       isScanningDone.value = false;
+    //       Get.back();
+    //     },
+    //   );
+    // }
 
     // AppSnackbar.show(title: "Error", message: "Measurement has canceled");
   }

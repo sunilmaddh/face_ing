@@ -152,4 +152,14 @@ class IndoSharedPreference {
     _checkInit();
     return _preferences!.getString("smoker_type") ?? "";
   }
+
+  Future<void> saveHistoryType(bool genderType) async {
+    _checkInit();
+    await _preferences!.setBool("history_type", genderType);
+  }
+
+  Future<bool> getHistoryType() async {
+    _checkInit();
+    return _preferences!.getBool("history_type") ?? false;
+  }
 }

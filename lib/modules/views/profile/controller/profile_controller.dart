@@ -127,6 +127,7 @@ class ProfileController extends GetxController
       );
 
       if (userFlag == "true") {
+        var isFullStory = await IndoSharedPreference.instance.getHistoryType();
         await ProfileHelper().storeImage(data.name!);
         await AppMethods.storeUserData(
           name: data.name!,
@@ -137,6 +138,7 @@ class ProfileController extends GetxController
           smokerType: data.smokerType!,
           email: '',
           userImage: '',
+          isFullHistory: isFullStory,
         );
       } else {
         ProfileHelper().callGuestHistoryList();
