@@ -1,3 +1,4 @@
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
@@ -13,6 +14,8 @@ class AppMethods {
   static var answerList = <Map<String, dynamic>>[].obs;
   static RxList<Map<String, dynamic>> healthMenuData =
       <Map<String, dynamic>>[].obs;
+
+  final Battery _battery = Battery();
 
   static void storeQuestionAnswer(
     String id,
@@ -282,5 +285,10 @@ class AppMethods {
         IndoSharedPreference.instance.saveUserImage(userImage),
       if (email.isNotEmpty) IndoSharedPreference.instance.saveUserEmail(email),
     ]);
+  }
+
+  Future<int> getBatteryLevel() async {
+    final level = await _battery.batteryLevel;
+    return level;
   }
 }

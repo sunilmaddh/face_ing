@@ -247,9 +247,10 @@ class CommonDialog {
     required BuildContext context,
     required VoidCallback onConfirm,
     required VoidCallback onCancel,
+
     required String title,
     required String message,
-    final String confirmText = "SCAN",
+    required String confirmText,
   }) {
     showDialog(
       context: context,

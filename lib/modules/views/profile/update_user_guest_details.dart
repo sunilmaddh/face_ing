@@ -9,7 +9,7 @@ import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
-import 'package:ntt_data/core/utils/common_dialog.dart';
+import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';

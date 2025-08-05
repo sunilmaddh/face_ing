@@ -9,7 +9,7 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
-import 'package:ntt_data/core/utils/common_dialog.dart';
+import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';

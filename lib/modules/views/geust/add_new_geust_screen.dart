@@ -12,7 +12,7 @@ import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
-import 'package:ntt_data/core/utils/common_dialog.dart';
+import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/widgets/terms_checkbox_widget.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';

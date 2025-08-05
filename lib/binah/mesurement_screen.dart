@@ -12,7 +12,8 @@ import 'package:ntt_data/binah/start_stop_button.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/common_dialog.dart';
+import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
+import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
@@ -173,18 +174,8 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                                       controller
                                                           .isScanStop
                                                           .value = true;
-                                                      CommonDialog().showScanDialog(
-                                                        title: "Scan Alert",
-                                                        message:
-                                                            "The scan has been stopped. Do you want to start the scan again?",
-                                                        context: Get.context!,
-                                                        onConfirm: () {
-                                                          // controller
-                                                          //     .stopMeasuring();
-                                                        },
-                                                        onCancel: () {
-                                                          Get.back();
-                                                        },
+                                                      DialogHelper.showStopAlertDialog(
+                                                        Get.context!,
                                                       );
                                                     }
                                                   },

@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/common_dialog.dart';
+import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/home/widgets/custom_circular_avatar.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
