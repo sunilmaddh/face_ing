@@ -111,6 +111,22 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
 
     return [
       buildCard(
+        vitalName: HealthDataEnum.wellnessScore.name,
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.wellnessIndex),
+        vitalCondition: '',
+        vitalStatus: statusHelper.getWellnessStatus(
+          VitalSignTypes.wellnessIndex,
+          5,
+          7,
+        ),
+        vitalHeading: HealthDataEnum.wellnessScore.name,
+        vitalDescription: HealthDataEnum.wellnessScore.description,
+        vitalMass: '',
+        imageAsset: CommonHealthAsset().getWellnessAsset(
+          statusHelper.getWellnessStatus(VitalSignTypes.wellnessIndex, 5, 7),
+        ),
+      ),
+      buildCard(
         imageAsset: CommonHealthAsset().getBreathingRateAsset(
           statusHelper.getBreathingRate(VitalSignTypes.respirationRate, 12, 20),
         ),
