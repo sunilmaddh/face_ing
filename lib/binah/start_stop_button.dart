@@ -20,38 +20,49 @@ class StartStopButton extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: AppDimensions.width(30)),
         child: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(height: AppDimensions.height(10)),
-              CommonText.text(
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                "$userName, Ready to Measure your vital Signs?",
-                color: AppColors.primary,
-                fontSize: AppDimensions.font(18),
-                fontWeight: FontWeight.w500,
-              ),
-              SizedBox(height: AppDimensions.height(8.0)),
-              CommonText.text(
-                maxLines: 3,
-                textAlign: TextAlign.center,
-                "Sit still, ensure your face is evenly illuminated and there is no light source in the background.",
-                color: AppColors.searchColor,
-              ),
-              SizedBox(height: AppDimensions.height(15)),
-              SafeArea(
-                child: PrimaryButton(
-                  isLoading: controller.isLoading.value,
-                  text: "Measure now",
-                  onPressed: () {
-                    controller.isLoading.value = true;
-                    controller.isScanStop.value = false;
-                    controller.isFirstEver.value = true;
-                    controller.startStopButtonClicked();
-                  },
+          child: SizedBox(
+            height: AppDimensions.height(210),
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(height: AppDimensions.height(10)),
+                    CommonText.text(
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      "$userName, Ready to Measure your vital Signs?",
+                      color: AppColors.primary,
+                      fontSize: AppDimensions.font(18),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    SizedBox(height: AppDimensions.height(8.0)),
+                    CommonText.text(
+                      maxLines: 3,
+                      textAlign: TextAlign.center,
+                      "Sit still, ensure your face is evenly illuminated and there is no light source in the background.",
+                      color: AppColors.searchColor,
+                    ),
+                    SizedBox(height: AppDimensions.height(15)),
+                  ],
                 ),
-              ),
-            ],
+
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SafeArea(
+                    child: PrimaryButton(
+                      isLoading: controller.isLoading.value,
+                      text: "Measure now",
+                      onPressed: () {
+                        controller.isLoading.value = true;
+                        controller.isScanStop.value = false;
+                        controller.isFirstEver.value = true;
+                        controller.startStopButtonClicked();
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -70,7 +81,7 @@ class PulseRate extends StatelessWidget {
         controller.pulseRate.value.isNotEmpty
             ? "${controller.pulseRate.value} bpm"
             : "",
-        style: const TextStyle(color: Colors.black, fontSize: 26),
+        style: TextStyle(color: Colors.black, fontSize: AppDimensions.font(26)),
       ),
     );
   }
@@ -102,9 +113,9 @@ class ImageValidityScan extends StatelessWidget {
                       ImageValidity.invalidDeviceOrientation
                   ? "Invalid device orientation"
                   : "",
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.primary,
-                fontSize: 18,
+                fontSize: AppDimensions.font(18),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -112,7 +123,10 @@ class ImageValidityScan extends StatelessWidget {
             Text(
               textAlign: TextAlign.center,
               controller.imageValidityString.value,
-              style: const TextStyle(color: Colors.black, fontSize: 15),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: AppDimensions.font(15),
+              ),
             ),
           ],
         ),
