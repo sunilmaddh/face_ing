@@ -93,7 +93,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                         SizedBox(height: AppDimensions.height(30)),
                         CommonText.text(
                           "Generating Health Report",
-                          fontSize: 16,
+                          fontSize: AppDimensions.font(16),
                           fontWeight: FontWeight.w400,
                         ),
                       ],
@@ -142,7 +142,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                     topRight: Radius.circular(40),
                                   ),
                                 ),
-                                child: SingleChildScrollView(
+                                child: Expanded(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -157,7 +157,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                               alignment: Alignment.topRight,
                                               child: Padding(
                                                 padding:
-                                                    const EdgeInsets.symmetric(
+                                                    AppDimensions.symmetric(
                                                       horizontal: 25,
                                                     ),
                                                 child: InkWell(
@@ -219,8 +219,8 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                                 ImageValidity.valid &&
                                             isStarted) {
                                           return Padding(
-                                            padding: EdgeInsets.only(
-                                              bottom: 300,
+                                            padding: AppDimensions.only(
+                                              bottom: 0,
                                             ),
                                             child: MeasurmentProgress(
                                               controller: controller,
@@ -236,14 +236,12 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                           );
                                         } else {
                                           return Padding(
-                                            padding: EdgeInsets.all(80),
+                                            padding: AppDimensions.all(80),
                                             child: CircularProgressIndicator(),
                                           );
                                         }
                                       }),
-                                      SizedBox(
-                                        height: AppDimensions.height(10),
-                                      ),
+                                      // SizedBox(height: AppDimensions.height(10)),
                                     ],
                                   ),
                                 ),
@@ -268,31 +266,42 @@ class MeasurmentProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return Column(
-        children: [
-          PulseRate(),
-          SizedBox(
-            width: AppDimensions.width(300),
-            height: AppDimensions.height(60),
-            child: LottieBuilder.asset(
-              AppAssets.heartRateAnim,
-              fit: BoxFit.fill,
-              repeat: true,
+      return SizedBox(
+        height: AppDimensions.height(190),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Align(alignment: Alignment.center, child: PulseRate()),
+                SizedBox(
+                  width: AppDimensions.width(300),
+                  height: AppDimensions.height(140),
+                  child: LottieBuilder.asset(
+                    AppAssets.heartRateAnim,
+                    fit: BoxFit.fill,
+                    repeat: true,
+                  ),
+                ),
+              ],
             ),
-          ),
-          SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppDimensions.width(20),
-              ),
-              child: FAProgressBar(
-                progressColor: Colors.green,
-                currentValue: controller.progress.value.toDouble(),
-                displayText: "%",
+
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppDimensions.width(20),
+                  vertical: 10,
+                ),
+                child: FAProgressBar(
+                  progressColor: Colors.green,
+                  currentValue: controller.progress.value.toDouble(),
+                  displayText: "%",
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     });
   }
