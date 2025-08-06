@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/data/repository/services/auth_services.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
@@ -25,7 +26,13 @@ mixin CommonMixin on GetxController {
   ProfileServices profileServices = ProfileServices();
   ProfileUploadService profileUploadService = ProfileUploadService();
   AuthServices authServices = AuthServices();
-
+  RxList<HealthDetailList> basicVitalSigns = <HealthDetailList>[].obs;
+  RxList<HealthDetailList> bloodlessBloodTests = <HealthDetailList>[].obs;
+  RxList<HealthDetailList> risks = <HealthDetailList>[].obs;
+  RxList<HealthDetailList> stress = <HealthDetailList>[].obs;
+  RxList<HealthDetailList> heartRateVariability = <HealthDetailList>[].obs;
+  RxList<HealthDetailList> advancedHeartRateVariability =
+      <HealthDetailList>[].obs;
   Future<void> uploadProfileFromGallery(
     String imageType,
     String guestId,
@@ -129,5 +136,14 @@ mixin CommonMixin on GetxController {
   void onClose() {
     _timer?.cancel();
     super.onClose();
+  }
+
+  clearHealthCategarie() {
+    basicVitalSigns.clear();
+    bloodlessBloodTests.clear();
+    risks.clear();
+    stress.clear();
+    heartRateVariability.clear();
+    advancedHeartRateVariability.clear();
   }
 }

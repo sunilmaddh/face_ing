@@ -442,7 +442,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         imageAsset: CommonHealthAsset().getLowHemoglobinRiskAsset(
           getVitalValue(VitalSignTypes.lowHemoglobinRisk),
         ),
-        vitalName: "Low Hemoglobin Risk ",
+        vitalName: "Low Hemoglobin Risk",
         vitalValue: getVitalValue(VitalSignTypes.lowHemoglobinRisk),
         vitalHeading: WellnessMetricDescriptions.lowHemoglobinRisk,
         vitalDescription: WellnessMetricDescriptionsLong.lowHemoglobinRisk,

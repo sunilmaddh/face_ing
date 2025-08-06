@@ -293,4 +293,14 @@ class AppMethods {
     final level = await _battery.batteryLevel;
     return level;
   }
+
+  List<Widget> tabWidgets = [
+    Tab(text: "All"),
+    Tab(text: "Basic Vital Signs"),
+    Tab(text: "Bloodless Blood Tests"),
+    Tab(text: "Risks"),
+    Tab(text: "Stress"),
+    Tab(text: "Heart Rate Variability"),
+    Tab(text: "Advanced Heart Rate Variability"),
+  ];
 }
