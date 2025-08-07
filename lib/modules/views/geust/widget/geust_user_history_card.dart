@@ -70,7 +70,6 @@ class GeustUserHistoryCard extends StatelessWidget {
                               ? CircularImageWithShimmer(imageUrl: guestImage)
                               : CustomCircularAvatar(
                                 color: AppColors.guestIconColor,
-
                                 widget: CommonText.text(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,
@@ -108,23 +107,70 @@ class GeustUserHistoryCard extends StatelessWidget {
                       ),
 
                       SizedBox(height: 10),
+
                       Row(
                         children: [
-                          CommonText.text(
-                            name,
-                            fontSize: AppDimensions.font(16),
-                            fontWeight: FontWeight.w700,
+                          SizedBox(
+                            width: AppDimensions.width(110),
+                            child: RichText(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              text: TextSpan(
+                                text: name,
+                                style: TextStyle(
+                                  fontSize: AppDimensions.font(14),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ), // Default style
+                              ),
+                            ),
                           ),
-                          SizedBox(width: 5),
-                          CommonText.text(
-                            gender.isNotEmpty
-                                ? "(${gender.substring(0, 1).toUpperCase()})"
-                                : "",
-                            fontSize: AppDimensions.font(16),
-                            fontWeight: FontWeight.w700,
+                          RichText(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            text: TextSpan(
+                              text:
+                                  gender.isNotEmpty
+                                      ? "(${gender.substring(0, 1).toUpperCase()})"
+                                      : "",
+                              style: TextStyle(
+                                fontSize: AppDimensions.font(14),
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+
+                                // Default style
+                              ),
+                            ),
                           ),
                         ],
                       ),
+
+                      // SizedBox(
+                      //   width: AppDimensions.width(100),
+                      //   child: Row(
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: [
+                      //       SizedBox(
+                      //         width: AppDimensions.width(120),
+                      //         child: CommonText.text(
+                      //           maxLines: 3,
+
+                      //           name,
+                      //           fontSize: AppDimensions.font(16),
+                      //           fontWeight: FontWeight.w700,
+                      //         ),
+                      //       ),
+                      //       SizedBox(width: 5),
+                      //       CommonText.text(
+                      //         gender.isNotEmpty
+                      //             ? "(${gender.substring(0, 1).toUpperCase()})"
+                      //             : "",
+                      //         fontSize: AppDimensions.font(16),
+                      //         fontWeight: FontWeight.w700,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                   Column(

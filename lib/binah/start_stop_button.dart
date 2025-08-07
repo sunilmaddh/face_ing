@@ -32,7 +32,7 @@ class StartStopButton extends StatelessWidget {
                     CommonText.text(
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      "$userName, Ready to Measure your vital Signs?",
+                      "${userName.trimRight()}, Ready to Measure Your Vital Signs?",
                       color: AppColors.primary,
                       fontSize: AppDimensions.font(18),
                       fontWeight: FontWeight.w500,
