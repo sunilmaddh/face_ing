@@ -70,7 +70,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     final result = _measurementController.vitalsResults.value.getResult(type);
     final value = result?.value;
     if (value == null) return "";
-    if (value is num) return value.toStringAsFixed(1);
+    if (value is num) return value.toStringAsFixed(2);
     return value.toString();
   }
 

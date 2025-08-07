@@ -163,8 +163,8 @@ class ProfileController extends GetxController
     }
   }
 
-  Future<void> getVitalDescryption() async {
-    var data = {"vitalKey": "wellness_index"};
+  Future<void> getVitalDescryption({required var vitalKey}) async {
+    var data = {"vitalKey": vitalKey};
     debugPrint(data.toString());
     Map<String, dynamic> responseData = await ProfileServices()
         .getVitalDescriptionService(data: data);

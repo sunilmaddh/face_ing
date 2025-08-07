@@ -28,6 +28,7 @@ class CommonDialog {
 
     Get.dialog(
       Dialog(
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
           width: Get.width,
