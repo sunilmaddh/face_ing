@@ -1,4 +1,3 @@
-import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -10,8 +9,16 @@ class Getvitalstatus {
   String getVitalValue(type) {
     final result = _measurementController.vitalsResults.value.getResult(type);
     final value = result?.value;
+    print(value);
     if (value == null) return "";
-    if (value is num) return value.toStringAsFixed(1);
+    if (value is num) {
+      final parts = value.toString().split('.');
+      if (parts.length == 2) {
+        return value.toString();
+      }
+    }
+    if (value is double && value % 1 != 0) return value.toStringAsFixed(2);
+    if (value is int) return value.toStringAsFixed(1);
     return value.toString();
   }
 
