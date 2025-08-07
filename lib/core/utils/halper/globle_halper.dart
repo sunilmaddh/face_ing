@@ -100,11 +100,11 @@ class GlobleHalper {
       }
 
       // ✅ Recursively process sub-vitals if they exist
-      if (result.vitalSubList != null) {
-        for (var sub in result.vitalSubList!) {
-          processVital(sub);
-        }
-      }
+      // if (result.vitalSubList != null) {
+      //   for (var sub in result.vitalSubList!) {
+      //     processVital(sub);
+      //   }
+      // }
     }
 
     // 4️⃣ Process all top-level health details

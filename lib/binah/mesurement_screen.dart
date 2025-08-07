@@ -107,21 +107,13 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                         child: Stack(
                           children: [
                             CameraPreview(controller: controller),
-
-                            // Positioned.fill(
-                            //   bottom: 120,
-                            //   child: SvgPicture.asset(
-                            //     AppAssets.faceDetact,
-                            //     color: AppColors.camreraPreviewColor,
-                            //   ),
-                            // ),
                             Positioned.fill(
                               child: Obx(() {
                                 return CustomPaint(
                                   painter: OverlayWithOvalHolePainter(
                                     center: Offset(
                                       screenSize.width / 2,
-                                      screenSize.height / 3.2,
+                                      screenSize.height / 3.4,
                                     ),
                                     radiusX: ovalWidth / 1.75,
                                     radiusY: ovalHeight / 1.8,
@@ -144,7 +136,7 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                               alignment: Alignment.bottomCenter,
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
-                                height: AppDimensions.height(220),
+                                height: AppDimensions.height(241),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.only(
@@ -152,98 +144,90 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                     topRight: Radius.circular(40),
                                   ),
                                 ),
-                                child: Expanded(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Obx(
-                                        () => Visibility(
-                                          visible:
-                                              controller.isStarted.value ==
-                                              true,
-                                          child: SafeArea(
-                                            child: Align(
-                                              alignment: Alignment.topRight,
-                                              child: Padding(
-                                                padding:
-                                                    AppDimensions.symmetric(
-                                                      horizontal: 25,
-                                                    ),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    if (controller
-                                                        .isFirstEver
-                                                        .isTrue) {
-                                                      controller
-                                                          .isFirstEver
-                                                          .value = false;
-                                                      controller
-                                                          .stopMeasuring();
-                                                      controller
-                                                          .isScanStop
-                                                          .value = true;
-                                                      DialogHelper.showStopAlertDialog(
-                                                        Get.context!,
-                                                      );
-                                                    }
-                                                  },
-                                                  child: CommonText.text(
-                                                    "Stop",
-                                                    color: AppColors.blackColor,
-                                                    fontSize:
-                                                        AppDimensions.font(18),
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Obx(
+                                      () => Visibility(
+                                        visible:
+                                            controller.isStarted.value == true,
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: Padding(
+                                            padding: AppDimensions.symmetric(
+                                              horizontal: 25,
+                                            ),
+                                            child: InkWell(
+                                              onTap: () {
+                                                if (controller
+                                                    .isFirstEver
+                                                    .isTrue) {
+                                                  controller.isFirstEver.value =
+                                                      false;
+                                                  controller.stopMeasuring();
+                                                  controller.isScanStop.value =
+                                                      true;
+                                                  DialogHelper.showStopAlertDialog(
+                                                    Get.context!,
+                                                  );
+                                                }
+                                              },
+                                              child: CommonText.text(
+                                                "Stop",
+                                                color: AppColors.blackColor,
+                                                fontSize: AppDimensions.font(
+                                                  18,
                                                 ),
+                                                fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
+                                    ),
 
-                                      Obx(() {
-                                        final imageData =
-                                            controller.imageData.value;
-                                        final isStarted =
-                                            controller.isStarted.value;
-                                        final sessionState =
-                                            controller.sessionState.value;
-                                        if (imageData != null &&
-                                            imageData.imageValidity !=
-                                                ImageValidity.valid &&
-                                            isStarted) {
-                                          return ImageValidityScan();
-                                        } else if (imageData != null &&
-                                            imageData.imageValidity ==
-                                                ImageValidity.valid &&
-                                            isStarted) {
-                                          return Padding(
-                                            padding: AppDimensions.only(
-                                              bottom: 0,
-                                            ),
-                                            child: MeasurmentProgress(
-                                              controller: controller,
-                                            ),
-                                          );
-                                        } else if ((sessionState ==
-                                                    SessionState.ready ||
-                                                sessionState ==
-                                                    SessionState.processing) &&
-                                            !isStarted) {
-                                          return StartStopButton(
-                                            userName: userName,
-                                          );
-                                        } else {
-                                          return Padding(
-                                            padding: AppDimensions.all(80),
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        }
-                                      }),
-                                      // SizedBox(height: AppDimensions.height(10)),
-                                    ],
-                                  ),
+                                    Obx(() {
+                                      final imageData =
+                                          controller.imageData.value;
+                                      final isStarted =
+                                          controller.isStarted.value;
+                                      final sessionState =
+                                          controller.sessionState.value;
+                                      if (imageData != null &&
+                                          imageData.imageValidity !=
+                                              ImageValidity.valid &&
+                                          isStarted) {
+                                        return ImageValidityScan();
+                                      } else if (imageData != null &&
+                                          imageData.imageValidity ==
+                                              ImageValidity.valid &&
+                                          isStarted) {
+                                        return Padding(
+                                          padding: AppDimensions.only(
+                                            bottom: 0,
+                                          ),
+                                          child: MeasurmentProgress(
+                                            controller: controller,
+                                          ),
+                                        );
+                                      } else if ((sessionState ==
+                                                  SessionState.ready ||
+                                              sessionState ==
+                                                  SessionState.processing) &&
+                                          !isStarted) {
+                                        return StartStopButton(
+                                          userName: userName,
+                                        );
+                                      } else {
+                                        return Padding(
+                                          padding: AppDimensions.all(80),
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    }),
+                                    // SizedBox(height: AppDimensions.height(10)),
+                                  ],
                                 ),
                               ),
                             ),
@@ -267,7 +251,7 @@ class MeasurmentProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return SizedBox(
-        height: AppDimensions.height(190),
+        height: AppDimensions.height(178),
         child: Stack(
           children: [
             Column(

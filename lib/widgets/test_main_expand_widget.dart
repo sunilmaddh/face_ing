@@ -92,8 +92,8 @@ class StressInfoCard extends StatelessWidget {
                             height: 20,
                           )
                           : SizedBox(),
-                      const SizedBox(width: 10),
-                      Icon(Icons.info_rounded),
+                      // const SizedBox(width: 10),
+                      // Icon(Icons.info_rounded),
                     ],
                   ),
                 ],

@@ -103,7 +103,7 @@ class CreateAccountScreen extends StatelessWidget {
                 CommonDropdownTextField(
                   unit: "Kg",
                   defaultValue: "60",
-                  title: "Select your weight",
+                  title: "Select your weight (kg)",
                   columns: 5,
                   hintText: "Enter your weight (kg)",
                   validator: (weight) {
@@ -119,10 +119,10 @@ class CreateAccountScreen extends StatelessWidget {
 
                 CommonDropdownTextField(
                   unit: "cm",
-                  defaultValue: "130",
-                  title: "Select your height",
+                  defaultValue: "160",
+                  title: "Select your height (Cm)",
                   columns: 5,
-                  hintText: "Enter your height (cm)",
+                  hintText: "Enter your height (Cm)",
                   validator: (height) {
                     return AppMethods.validateHeight(height);
                   },

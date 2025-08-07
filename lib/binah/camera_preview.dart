@@ -4,6 +4,7 @@ import 'package:biosensesignal_flutter_sdk/ui/camera_preview_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/binah/face_detection_view.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/binah/widget_size.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
@@ -23,15 +24,25 @@ class _CameraPreviewState extends State<CameraPreview> {
   @override
   Widget build(BuildContext context) {
     return WidgetSize(
-      onChange: (newSize) => setState(() => size = newSize),
+      onChange: (newSize) {
+        // Update size only if it actually changed to avoid rebuild loops
+        if (size != newSize) {
+          setState(() => size = newSize);
+        }
+      },
       child: SizedBox(
         width: double.infinity,
         child: AspectRatio(
-          aspectRatio: 0.75, // your camera preview ratio
+          aspectRatio: 0.75, // ideally match your real camera aspect ratio
           child: Stack(
+            fit: StackFit.expand,
             children: [
+              //Camera preview should be the background
               const CameraPreviewView(),
-              FaceDetectionOverlay(size: size),
+
+              // Overlay should be the foreground
+              if (size != null)
+                FaceDetectionView(size: size), // ✅ Use corrected overlay
             ],
           ),
         ),
