@@ -260,25 +260,34 @@ class IndoSakuraCommonCard extends StatelessWidget {
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    result.vitalName.toString(),
-                                    style: TextStyle(
-                                      fontSize: AppDimensions.font(10),
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xff575656),
+                                  Flexible(
+                                    child: Text(
+                                      maxLines: 2,
+                                      result.vitalName.toString(),
+                                      style: TextStyle(
+                                        fontSize: AppDimensions.font(10),
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff575656),
+                                      ),
                                     ),
                                   ),
-                                  Text(
-                                    result.vitalHeading.toString(),
-                                    style: TextStyle(
-                                      fontSize: AppDimensions.font(10),
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xff575656),
+                                  Flexible(
+                                    child: Text(
+                                      maxLines: 2,
+                                      result.vitalHeading.toString(),
+                                      style: TextStyle(
+                                        fontSize: AppDimensions.font(10),
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff575656),
+                                      ),
                                     ),
                                   ),
                                   SvgPicture.asset(
-                                    imageResSub,
+                                    result.vitalStatus!.isNotEmpty
+                                        ? imageResSub
+                                        : "",
                                     width: AppDimensions.width(20),
                                     height: AppDimensions.height(20),
                                   ),

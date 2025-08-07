@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 
@@ -143,7 +144,9 @@ class _CommonCardState extends State<IndoCommonCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${widget.vitalHeading} ${widget.vitalStatus}",
+                          widget.vitalStatus.isNotEmpty
+                              ? "${widget.vitalHeading} is ${AppMethods.capitalizeFirst(widget.vitalStatus)}"
+                              : "",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,

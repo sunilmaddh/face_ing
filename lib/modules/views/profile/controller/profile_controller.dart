@@ -6,6 +6,7 @@ import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/core/utils/halper/globle_halper.dart';
 import 'package:ntt_data/data/models/anlyze_health_data_response_model.dart';
 import 'package:ntt_data/data/models/error_response.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
@@ -106,17 +107,21 @@ class ProfileController extends GetxController
 
     Map<String, dynamic> responseData = await _profileService
         .getUserHealthDetailsService(data: data);
-
     int statusCode = responseData[AppConstents.statusCode];
     if (statusCode == 200) {
       binahHIstoryDetails.clear();
+      clearHealthCategarie();
+      final profileController = Get.find<ProfileController>();
       var result = HealthDetailsResponseModel.fromJson(
         responseData["responseBody"],
       );
+
       binahHIstoryDetails.value = result.healthDetail!;
+      await GlobleHalper().storeTabData(result, profileController);
       AppNavigation.to(AppRoutes.userHealthDatails);
     } else {
       binahHIstoryDetails.clear();
+      clearHealthCategarie();
       AppSnackbar.show(title: "Error", message: "Something went wrong");
     }
   }
@@ -131,6 +136,7 @@ class ProfileController extends GetxController
       );
 
       if (userFlag == "true") {
+        var isFullStory = await IndoSharedPreference.instance.getHistoryType();
         await ProfileHelper().storeImage(data.name!);
         await AppMethods.storeUserData(
           name: data.name!,
@@ -141,6 +147,7 @@ class ProfileController extends GetxController
           smokerType: data.smokerType!,
           email: '',
           userImage: '',
+          isFullHistory: isFullStory,
         );
       } else {
         ProfileHelper().callGuestHistoryList();

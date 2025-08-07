@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
@@ -47,9 +48,13 @@ class UserHistoryData extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 10),
                       child: InkWell(
                         onTap: () async {
+                          var isFullStory =
+                              await IndoSharedPreference.instance
+                                  .getHistoryType();
+
                           _profileController.getUserHealthDetails(
                             healthId: result.scanId,
-                            isFullHistory: true,
+                            isFullHistory: isFullStory,
                           );
                         },
                         child: Padding(

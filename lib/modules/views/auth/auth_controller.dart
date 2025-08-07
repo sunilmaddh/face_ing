@@ -42,6 +42,7 @@ class AuthController extends GetxController
   RxString selectionGenderType = "".obs;
   RxBool isLoading = false.obs;
   RxString date = "".obs;
+  static const bool isFullHistory = true;
   var selectedDate = DateTime.now().obs;
 
   Future<void> userLogin() async {
@@ -103,6 +104,7 @@ class AuthController extends GetxController
               email: result.userEmail!,
               smokerType: result.userSmokerType!,
               userImage: result.userImage!,
+              isFullHistory: isFullHistory,
             );
 
             GuestHalper().clearLoading();
@@ -341,6 +343,7 @@ class AuthController extends GetxController
           email: result.userEmail!,
           smokerType: result.smokerType!,
           userImage: result.userImage!,
+          isFullHistory: isFullHistory,
         );
 
         AppNavigation.to(AppRoutes.congratulationsScreen);

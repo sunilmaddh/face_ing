@@ -10,6 +10,7 @@ import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/core/utils/halper/globle_halper.dart';
 import 'package:ntt_data/data/models/guest_history_details_model.dart';
 import 'package:ntt_data/data/models/guest_list_response_model.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
@@ -98,16 +99,18 @@ class GeustController extends GetxController
         .getGeustDetailsService(data: data);
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
+      clearHealthCategarie();
       var data = HealthDetailsResponseModel.fromJson(
         resposneData["responseBody"],
       );
-
+      final guestController = Get.find<GeustController>();
       healthDetailsList.value = data.healthDetail!;
+      await GlobleHalper().storeTabData(data, guestController);
       AppNavigation.to(AppRoutes.guestHistoryDetails);
-
       debugPrint(data.toString());
     } else if (statusCode == 500) {
     } else {
+      clearHealthCategarie();
       AppSnackbar.show(title: "Error", message: "Something went wrong");
     }
   }

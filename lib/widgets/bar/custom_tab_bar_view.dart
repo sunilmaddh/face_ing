@@ -25,8 +25,8 @@ class CustomTabBarView extends StatelessWidget {
               padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
               // alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                color: AppColors.tabBackgroundColor,
-                borderRadius: BorderRadius.circular(10.0),
+                color: AppColors.btntext,
+                borderRadius: BorderRadius.circular(30.0),
               ),
               child: TabBar(
                 tabAlignment: TabAlignment.start, // add this line
@@ -67,7 +67,7 @@ class CustomTabBarView extends StatelessWidget {
                     }).toList(),
               ),
             ),
-
+            SizedBox(height: AppDimensions.height(20)),
             Expanded(child: TabBarView(children: tabBarWidgets)),
           ],
         ),

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/utils/enum/health_data_enum.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/common_health_asset.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/getvitalStatus.dart';
@@ -73,6 +74,22 @@ class _AllReportScreenState extends State<AllReportScreen>
     final diastolic = bpParts.length > 1 ? int.tryParse(bpParts[1]) : null;
 
     return [
+      buildCard(
+        vitalName: HealthDataEnum.wellnessScore.name,
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.wellnessIndex),
+        vitalCondition: '',
+        vitalStatus: statusHelper.getWellnessStatus(
+          VitalSignTypes.wellnessIndex,
+          5,
+          7,
+        ),
+        vitalHeading: HealthDataEnum.wellnessScore.name,
+        vitalDescription: HealthDataEnum.wellnessScore.description,
+        vitalMass: '',
+        imageAsset: CommonHealthAsset().getWellnessAsset(
+          statusHelper.getWellnessStatus(VitalSignTypes.wellnessIndex, 5, 7),
+        ),
+      ),
       buildCard(
         imageAsset: CommonHealthAsset().getBreathingRateAsset(
           statusHelper.getBreathingRate(VitalSignTypes.respirationRate, 12, 20),

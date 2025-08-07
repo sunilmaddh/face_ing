@@ -5,6 +5,8 @@ import 'package:biosensesignal_flutter_sdk/session/session_state.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
@@ -30,7 +32,7 @@ class StartStopButton extends StatelessWidget {
                     CommonText.text(
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      "$userName, Ready to Measure your vital Signs?",
+                      "${userName.trimRight()}, Ready to Measure Your Vital Signs?",
                       color: AppColors.primary,
                       fontSize: AppDimensions.font(18),
                       fontWeight: FontWeight.w500,
@@ -52,11 +54,16 @@ class StartStopButton extends StatelessWidget {
                     child: PrimaryButton(
                       isLoading: controller.isLoading.value,
                       text: "Measure now",
-                      onPressed: () {
-                        controller.isLoading.value = true;
-                        controller.isScanStop.value = false;
-                        controller.isFirstEver.value = true;
-                        controller.startStopButtonClicked();
+                      onPressed: () async {
+                        var batteryLevel = await AppMethods().getBatteryLevel();
+                        if (batteryLevel < 20) {
+                          DialogHelper().showBatteryLevelAlertDialog(context);
+                        } else {
+                          controller.isLoading.value = true;
+                          controller.isScanStop.value = false;
+                          controller.isFirstEver.value = true;
+                          controller.startStopButtonClicked();
+                        }
                       },
                     ),
                   ),

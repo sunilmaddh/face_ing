@@ -111,6 +111,22 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
 
     return [
       buildCard(
+        vitalName: HealthDataEnum.wellnessScore.name,
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.wellnessIndex),
+        vitalCondition: '',
+        vitalStatus: statusHelper.getWellnessStatus(
+          VitalSignTypes.wellnessIndex,
+          5,
+          7,
+        ),
+        vitalHeading: HealthDataEnum.wellnessScore.name,
+        vitalDescription: HealthDataEnum.wellnessScore.description,
+        vitalMass: '',
+        imageAsset: CommonHealthAsset().getWellnessAsset(
+          statusHelper.getWellnessStatus(VitalSignTypes.wellnessIndex, 5, 7),
+        ),
+      ),
+      buildCard(
         imageAsset: CommonHealthAsset().getBreathingRateAsset(
           statusHelper.getBreathingRate(VitalSignTypes.respirationRate, 12, 20),
         ),
@@ -141,6 +157,18 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
         vitalHeading: WellnessMetricDescriptions.pulseRate,
         vitalDescription: WellnessMetricDescriptionsLong.pulseRate,
+      ),
+      buildCard(
+        imageAsset: CommonHealthAsset().getPrqAsset(
+          statusHelper.getPrq(VitalSignTypes.prq, 4, 5),
+        ),
+        vitalName: "PRQ",
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.prq),
+        vitalCondition: '',
+        vitalMass: "",
+        vitalStatus: statusHelper.getPrq(VitalSignTypes.prq, 4, 5),
+        vitalHeading: WellnessMetricDescriptions.prq,
+        vitalDescription: WellnessMetricDescriptionsLong.prq,
       ),
       buildCard(
         vitalName: "Blood Pressure",
@@ -371,9 +399,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalName: "Heart Age ",
         vitalValue: getVitalValue(VitalSignTypes.heartAge),
         vitalMass: "years",
-        vitalStatus:
-            WellnessMetricDescriptions.heartAge, // no comparison logic provided
-        vitalHeading: WellnessMetricDescriptions.heartAge,
+        vitalStatus: "",
+        // WellnessMetricDescriptions.heartAge, // no comparison logic provided
+        vitalHeading: "",
         vitalDescription: WellnessMetricDescriptionsLong.heartAge,
       ),
       buildCard(
@@ -426,7 +454,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         imageAsset: CommonHealthAsset().getLowHemoglobinRiskAsset(
           getVitalValue(VitalSignTypes.lowHemoglobinRisk),
         ),
-        vitalName: "Low Hemoglobin Risk ",
+        vitalName: "Low Hemoglobin Risk",
         vitalValue: getVitalValue(VitalSignTypes.lowHemoglobinRisk),
         vitalHeading: WellnessMetricDescriptions.lowHemoglobinRisk,
         vitalDescription: WellnessMetricDescriptionsLong.lowHemoglobinRisk,
@@ -483,8 +511,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               vitalName: 'Stress Index ',
               isExpanded: true,
               titleText: "Stress Index",
-              statusText:
-                  "Your Stress Index is ${_measurementController.vitalsResults.value.getResult(VitalSignTypes.stressIndex)!.value.toString()}", //need to get it with avg
+              statusText: "",
+              // "Your Stress Index is ${_measurementController.vitalsResults.value.getResult(VitalSignTypes.stressIndex)!.value.toString()}", //need to get it with avg
               valueText:
                   _measurementController.vitalsResults.value
                       .getResult(VitalSignTypes.stressIndex)!
@@ -497,7 +525,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               vitalName: 'Normalized Stress Index',
               isExpanded: true,
               titleText: "Normalized Stress Index",
-              statusText: stressLevel, // 👈 Only Low/Mild/High
+              statusText:
+                  "Normalized Stress Index is $stressLevel", // 👈 Only Low/Mild/High
               valueText: normalizedStressValueStr,
               unitText: "%",
               imageAsset: CommonHealthAsset().getmediumizedStressIndexAsset(
@@ -581,7 +610,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
         vitalName: "PNS Index",
         vitalValue: getVitalValue(VitalSignTypes.pnsIndex),
-        vitalCondition: 'Avg 1 - 1',
+        vitalCondition: '',
         vitalStatus: statusHelper.getPnsIndex(VitalSignTypes.pnsIndex, -1, 1),
 
         vitalHeading: WellnessMetricDescriptions.pnsIndex,
@@ -604,7 +633,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
         vitalName: "SNS Index",
         vitalValue: getVitalValue(VitalSignTypes.snsIndex),
-        vitalCondition: 'Avg 1 - 1',
+        vitalCondition: '',
         vitalStatus: _getVitalStatus(VitalSignTypes.snsIndex, -1, 1),
         vitalHeading: WellnessMetricDescriptions.snsIndex,
         vitalDescription: WellnessMetricDescriptionsLong.snsIndex,
@@ -617,8 +646,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: getVitalValue(VitalSignTypes.sd1),
         vitalCondition: '',
         vitalMass: "ms",
-        vitalStatus: _getVitalStatus(VitalSignTypes.sd1, 4, 7),
-        vitalHeading: WellnessMetricDescriptions.sd1,
+        vitalStatus: "",
+        //  _getVitalStatus(VitalSignTypes.sd1, 4, 7),
+        vitalHeading: "",
         vitalDescription: WellnessMetricDescriptionsLong.sd1,
         isVitalActive: false,
       ),
@@ -630,8 +660,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: getVitalValue(VitalSignTypes.sd2),
         vitalCondition: '',
         vitalMass: "ms",
-        vitalStatus: _getVitalStatus(VitalSignTypes.sd1, 4, 7),
-        vitalHeading: WellnessMetricDescriptions.sd2,
+        vitalStatus: "",
+        //  _getVitalStatus(VitalSignTypes.sd1, 4, 7),
+        vitalHeading: "",
         vitalDescription: WellnessMetricDescriptionsLong.sd2,
         isVitalActive: false,
       ),

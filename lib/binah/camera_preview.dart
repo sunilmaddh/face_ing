@@ -4,6 +4,7 @@ import 'package:biosensesignal_flutter_sdk/ui/camera_preview_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/binah/face_detection_view.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/binah/widget_size.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
@@ -23,15 +24,25 @@ class _CameraPreviewState extends State<CameraPreview> {
   @override
   Widget build(BuildContext context) {
     return WidgetSize(
-      onChange: (newSize) => setState(() => size = newSize),
+      onChange: (newSize) {
+        // Update size only if it actually changed to avoid rebuild loops
+        if (size != newSize) {
+          setState(() => size = newSize);
+        }
+      },
       child: SizedBox(
         width: double.infinity,
         child: AspectRatio(
-          aspectRatio: 0.75, // your camera preview ratio
+          aspectRatio: 0.75, // ideally match your real camera aspect ratio
           child: Stack(
+            fit: StackFit.expand,
             children: [
+              //Camera preview should be the background
               const CameraPreviewView(),
-              FaceDetectionOverlay(size: size),
+
+              // Overlay should be the foreground
+              if (size != null)
+                FaceDetectionView(size: size), // ✅ Use corrected overlay
             ],
           ),
         ),
@@ -53,87 +64,98 @@ class FaceDetectionOverlay extends StatelessWidget {
       final roi = imageInfo?.roi;
       if (roi == null || size == null) return const SizedBox();
 
-      // Debug log for analysis
-      print(
-        "SDK ROI: left=${roi.left}, top=${roi.top}, width=${roi.width}, height=${roi.height}",
-      );
-      print("Image Size: ${imageInfo!.imageWidth} x ${imageInfo.imageHeight}");
-      print("Widget Size: ${size!.width} x ${size!.height}");
+      // --- Step 1: Convert ROI to pixel-based Rect ---
+      final bool isNormalized =
+          roi.left <= 1 && roi.top <= 1 && roi.width <= 1 && roi.height <= 1;
+      Rect roiRect =
+          isNormalized
+              ? Rect.fromLTWH(
+                roi.left * imageInfo!.imageWidth,
+                roi.top * imageInfo.imageHeight,
+                roi.width * imageInfo.imageWidth,
+                roi.height * imageInfo.imageHeight,
+              )
+              : Rect.fromLTWH(
+                roi.left.toDouble(),
+                roi.top.toDouble(),
+                roi.width.toDouble(),
+                roi.height.toDouble(),
+              );
 
-      // --- STEP 1: Determine if ROI is normalized or pixel-based ---
-      Rect roiRect;
-      if (roi.left <= 1 && roi.top <= 1 && roi.width <= 1 && roi.height <= 1) {
-        // Normalized ROI: multiply by image size
-        roiRect = Rect.fromLTWH(
-          roi.left * imageInfo.imageWidth,
-          roi.top * imageInfo.imageHeight,
-          roi.width * imageInfo.imageWidth,
-          roi.height * imageInfo.imageHeight,
-        );
-      } else {
-        // Already in pixels
-        roiRect = Rect.fromLTWH(
-          roi.left.toDouble(),
-          roi.top.toDouble(),
-          roi.width.toDouble(),
-          roi.height.toDouble(),
-        );
-      }
-
-      // --- STEP 2: Map to widget coordinates with center crop ---
+      // --- Step 2: Map SDK ROI to Flutter widget coordinates ---
       final mappedRoi = _mapToWidgetRect(
         sdkRect: roiRect,
         imageSize: Size(
-          imageInfo.imageWidth.toDouble(),
+          imageInfo!.imageWidth.toDouble(),
           imageInfo.imageHeight.toDouble(),
         ),
         widgetSize: size!,
-        isFrontCamera: true, // always front camera for measurement
+        isFrontCamera: true, // Front camera measurement
+        rotate90: true, // Most Android cameras in portrait mode need this
       );
 
-      // --- STEP 3: Draw ROI SVG ---
-      return Positioned.fromRect(
-        rect: mappedRoi,
-        child: SvgPicture.asset(
-          AppAssets.faceDetact,
-          color:
-              imageInfo.imageValidity != ImageValidity.valid
-                  ? AppColors.camreraPreviewColor
-                  : AppColors.btntext,
-        ),
+      // --- Step 3: Draw ROI as SVG ---
+      return Stack(
+        children: [
+          Positioned.fromRect(
+            rect: mappedRoi,
+            child: SvgPicture.asset(
+              AppAssets.faceDetact,
+              color:
+                  imageInfo.imageValidity != ImageValidity.valid
+                      ? AppColors.camreraPreviewColor
+                      : AppColors.btntext,
+            ),
+          ),
+        ],
       );
     });
   }
 
-  /// Maps SDK rectangle (ROI) to Flutter UI coordinates with aspect ratio + center crop fix
+  /// Corrected ROI mapping with rotation, mirroring, and BoxFit.cover handling
   Rect _mapToWidgetRect({
     required Rect sdkRect,
     required Size imageSize,
     required Size widgetSize,
     required bool isFrontCamera,
+    bool rotate90 = true,
   }) {
-    // Step 1: Determine scale factor to cover widget (BoxFit.cover behavior)
-    final scaleX = widgetSize.width / imageSize.width;
-    final scaleY = widgetSize.height / imageSize.height;
+    // Step 1: Handle 90° rotation if needed
+    Rect rotatedRect = sdkRect;
+    Size rotatedImageSize = imageSize;
+
+    if (rotate90) {
+      rotatedRect = Rect.fromLTWH(
+        sdkRect.top,
+        imageSize.width - sdkRect.right,
+        sdkRect.height,
+        sdkRect.width,
+      );
+      rotatedImageSize = Size(imageSize.height, imageSize.width);
+    }
+
+    // Step 2: Compute scale factor for BoxFit.cover
+    final scaleX = widgetSize.width / rotatedImageSize.width;
+    final scaleY = widgetSize.height / rotatedImageSize.height;
     final scale = scaleX > scaleY ? scaleX : scaleY;
 
-    // Step 2: Compute scaled native frame
-    final scaledWidth = imageSize.width * scale;
-    final scaledHeight = imageSize.height * scale;
+    // Step 3: Compute scaled frame dimensions
+    final scaledWidth = rotatedImageSize.width * scale;
+    final scaledHeight = rotatedImageSize.height * scale;
 
-    // Step 3: Compute letterbox/padding offset (center crop)
-    final dx = (widgetSize.width - scaledWidth) / 2;
-    final dy = (widgetSize.height - scaledHeight) / 2;
+    // Step 4: Compute offset for center-crop
+    final offsetX = (widgetSize.width - scaledWidth) / 2;
+    final offsetY = (widgetSize.height - scaledHeight) / 2;
 
-    // Step 4: Map ROI coordinates
-    Rect mapped = Rect.fromLTWH(
-      sdkRect.left * scale + dx,
-      sdkRect.top * scale + dy,
-      sdkRect.width * scale,
-      sdkRect.height * scale,
+    // Step 5: Map ROI to widget coordinates
+    var mapped = Rect.fromLTWH(
+      rotatedRect.left * scale + offsetX,
+      rotatedRect.top * scale + offsetY,
+      rotatedRect.width * scale,
+      rotatedRect.height * scale,
     );
 
-    // Step 5: Mirror for front camera
+    // Step 6: Mirror horizontally for front camera
     if (isFrontCamera) {
       mapped = Rect.fromLTWH(
         widgetSize.width - mapped.right,

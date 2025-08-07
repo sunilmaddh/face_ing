@@ -1,3 +1,4 @@
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
@@ -13,6 +14,8 @@ class AppMethods {
   static var answerList = <Map<String, dynamic>>[].obs;
   static RxList<Map<String, dynamic>> healthMenuData =
       <Map<String, dynamic>>[].obs;
+
+  final Battery _battery = Battery();
 
   static void storeQuestionAnswer(
     String id,
@@ -270,6 +273,7 @@ class AppMethods {
     required String email,
     required String smokerType,
     required String userImage,
+    required bool isFullHistory,
   }) async {
     await Future.wait([
       IndoSharedPreference.instance.saveUserName(name),
@@ -278,9 +282,25 @@ class AppMethods {
       IndoSharedPreference.instance.saveWeight(weight.toString()),
       IndoSharedPreference.instance.saveAge(dob.toString()),
       IndoSharedPreference.instance.saveSmokerType(smokerType.toString()),
+      IndoSharedPreference.instance.saveHistoryType(isFullHistory),
       if (userImage.isNotEmpty)
         IndoSharedPreference.instance.saveUserImage(userImage),
       if (email.isNotEmpty) IndoSharedPreference.instance.saveUserEmail(email),
     ]);
   }
+
+  Future<int> getBatteryLevel() async {
+    final level = await _battery.batteryLevel;
+    return level;
+  }
+
+  List<Widget> tabWidgets = [
+    Tab(text: "All"),
+    Tab(text: "Basic Vital Signs"),
+    Tab(text: "Bloodless Blood Tests"),
+    Tab(text: "Risks"),
+    Tab(text: "Stress"),
+    Tab(text: "Heart Rate Variability"),
+    Tab(text: "Advanced Heart Rate Variability"),
+  ];
 }
