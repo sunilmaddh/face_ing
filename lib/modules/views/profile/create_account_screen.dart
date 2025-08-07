@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
@@ -141,6 +142,33 @@ class CreateAccountScreen extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 15),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "User Image",
+                          style: TextStyle(
+                            fontSize: AppDimensions.font(16),
+                            fontWeight: FontWeight.w500,
+                            fontFamily: AppTextStyles.fontFamily,
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "(optional)",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff4A4949),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+
                 SizedBox(
                   height: AppDimensions.height(190),
                   width: MediaQuery.of(context).size.width,

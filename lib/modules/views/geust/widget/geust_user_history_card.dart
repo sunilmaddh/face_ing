@@ -111,10 +111,10 @@ class GeustUserHistoryCard extends StatelessWidget {
                       Row(
                         children: [
                           SizedBox(
-                            width: AppDimensions.width(110),
+                            width: AppDimensions.width(200),
                             child: RichText(
                               overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
+                              maxLines: 1,
                               text: TextSpan(
                                 text: name,
                                 style: TextStyle(
@@ -125,23 +125,23 @@ class GeustUserHistoryCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          RichText(
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            text: TextSpan(
-                              text:
-                                  gender.isNotEmpty
-                                      ? "(${gender.substring(0, 1).toUpperCase()})"
-                                      : "",
-                              style: TextStyle(
-                                fontSize: AppDimensions.font(14),
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
+                          // RichText(
+                          //   overflow: TextOverflow.ellipsis,
+                          //   maxLines: 1,
+                          //   text: TextSpan(
+                          //     text:
+                          //         gender.isNotEmpty
+                          //             ? "(${gender.substring(0, 1).toUpperCase()})"
+                          //             : "",
+                          //     style: TextStyle(
+                          //       fontSize: AppDimensions.font(14),
+                          //       color: Colors.black,
+                          //       fontWeight: FontWeight.w500,
 
-                                // Default style
-                              ),
-                            ),
-                          ),
+                          //       // Default style
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
 
@@ -198,7 +198,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                       ),
                       SizedBox(height: AppDimensions.height(15)),
                       CommonText.text(
-                        date.toString(),
+                        gender,
                         fontSize: AppDimensions.font(16),
                         fontWeight: FontWeight.w700,
                       ),
@@ -226,7 +226,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                                 child: RichText(
                                   maxLines: 2,
                                   text: TextSpan(
-                                    text: 'Measurement taken at',
+                                    text: "Profile Created on:",
                                     style: TextStyle(
                                       fontSize: AppDimensions.font(14),
                                       color: Colors.black,
@@ -234,7 +234,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                                     ), // Default style
                                     children: [
                                       TextSpan(
-                                        text: " $newTime",
+                                        text: " $date",
                                         style: TextStyle(
                                           fontSize: AppDimensions.font(14),
                                           color: Colors.black,
