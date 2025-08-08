@@ -16,7 +16,6 @@ import 'package:ntt_data/data/models/user_history_list_model.dart';
 import 'package:ntt_data/data/models/vital_description_model.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
-import 'package:ntt_data/modules/views/profile/vital_descriptions.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
