@@ -68,7 +68,7 @@ class _AllReportScreenState extends State<AllReportScreen>
 
   final statusHelper = Getvitalstatus();
   List<Widget> allVitalSigns() {
-    final bpValue = getVitalValue(VitalSignTypes.bloodPressure);
+    final bpValue = statusHelper.getVitalValue(VitalSignTypes.bloodPressure);
     final bpParts = bpValue?.split('/') ?? [];
     final systolic = bpParts.isNotEmpty ? int.tryParse(bpParts[0]) : null;
     final diastolic = bpParts.length > 1 ? int.tryParse(bpParts[1]) : null;

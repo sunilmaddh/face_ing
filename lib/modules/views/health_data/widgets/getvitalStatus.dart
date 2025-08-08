@@ -11,14 +11,8 @@ class Getvitalstatus {
     final value = result?.value;
     print(value);
     if (value == null) return "";
-    if (value is num) {
-      final parts = value.toString().split('.');
-      if (parts.length == 2) {
-        return value.toString();
-      }
-    }
-    if (value is double && value % 1 != 0) return value.toStringAsFixed(2);
-    if (value is int) return value.toStringAsFixed(1);
+    if (value is double) return value.toStringAsFixed(2);
+    if (value is int) return value.toStringAsFixed(2);
     return value.toString();
   }
 

@@ -211,10 +211,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                         });
                       },
                       child:
-                          (widget.vitalName.toLowerCase() == "stress" ||
-                                      widget.vitalName.toLowerCase() ==
-                                          "blood pressure") &&
-                                  isExpanded
+                          isExpanded
                               ? const Icon(Icons.minimize_outlined)
                               : const Icon(Icons.add_outlined),
                     ),

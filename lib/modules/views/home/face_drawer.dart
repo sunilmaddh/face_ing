@@ -93,30 +93,11 @@ class FaceDrawer extends StatelessWidget {
                           children: [
                             Obx(
                               () =>
-                                  _profileController
-                                                  .uploadImageResponseModel
-                                                  .value
-                                                  .imagePath !=
-                                              null ||
-                                          _profileController
-                                              .userImage
-                                              .isNotEmpty
+                                  _profileController.userImage.isNotEmpty
                                       ? CircularImageWithShimmer(
                                         size: 95,
                                         imageUrl:
-                                            _profileController
-                                                        .uploadImageResponseModel
-                                                        .value
-                                                        .imagePath !=
-                                                    null
-                                                ? _profileController
-                                                    .uploadImageResponseModel
-                                                    .value
-                                                    .imagePath
-                                                    .toString()
-                                                : _profileController
-                                                    .userImage
-                                                    .value,
+                                            _profileController.userImage.value,
                                       )
                                       : CustomCircularAvatar(
                                         color: AppColors.guestIconColor,

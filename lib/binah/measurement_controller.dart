@@ -289,6 +289,7 @@ class MeasurementController extends GetxController
       } else {
         if (isFirstEver.isTrue) {
           isFirstEver.value = false;
+          isScanningDone.value = false;
           DialogHelper.showScanFailedDialog(Get.context!);
         }
       }
