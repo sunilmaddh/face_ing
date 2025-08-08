@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
+import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 
 class DialogHelper {
   void showBatteryLevelAlertDialog(BuildContext context) {
@@ -47,6 +49,24 @@ class DialogHelper {
         Get.back();
       },
       confirmText: 'Try Again',
+    );
+  }
+
+  static void showLogoutDialog(BuildContext context) {
+    CommonDialog().showLogoutDialog(
+      title: "Want to Logout?",
+      message: "Are you sure want to logout?",
+      context: context,
+      onConfirm: () async {
+        await ProfileHelper().logoutHelper();
+
+        // controller
+        //     .stopMeasuring();
+      },
+      onCancel: () {
+        Get.back();
+      },
+      confirmText: 'Yes',
     );
   }
 }

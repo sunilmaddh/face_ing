@@ -180,6 +180,18 @@ class ProfileController extends GetxController
     }
   }
 
+  Future<void> logoutUser() async {
+    Map<String, dynamic> responseData =
+        await ProfileServices().logoutUserService();
+    int statusCode = responseData[AppConstents.statusCode];
+    if (statusCode == 200) {
+      AppMethods().logout();
+      AppSnackbar.show(title: "Success", message: "Successfully logged out.");
+    } else {
+      AppSnackbar.show(title: "Error", message: "Something went wrong");
+    }
+  }
+
   clearProfileData() {
     nameController.clear();
     weightController.clear();

@@ -39,5 +39,6 @@ class ApiEndpoints {
       profileUpload = '/editProfile',
       updatePersonalDetails = '/updatePersonalDetails',
       getVitalDescryption = "/getVitalDescryption",
+      logoutUser = "/logoutUser",
       refreshToken = '/getTokenByRefreshToken';
 }

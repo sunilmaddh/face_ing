@@ -9,7 +9,6 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_dialog_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -248,7 +247,6 @@ class CommonDialog {
     required BuildContext context,
     required VoidCallback onConfirm,
     required VoidCallback onCancel,
-
     required String title,
     required String message,
     required String confirmText,
@@ -258,6 +256,7 @@ class CommonDialog {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
+          backgroundColor: AppColors.btntext,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -278,6 +277,75 @@ class CommonDialog {
                 ),
                 SvgPicture.asset(AppAssets.scanError),
                 const SizedBox(height: 16),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Text(message, textAlign: TextAlign.center),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: AppDimensions.height(40),
+
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onConfirm();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    child: CommonText.text(
+                      confirmText,
+                      color: AppColors.btntext,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showLogoutDialog({
+    required BuildContext context,
+    required VoidCallback onConfirm,
+    required VoidCallback onCancel,
+    required String title,
+    required String message,
+    required String confirmText,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: AppColors.btntext,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    onCancel();
+                  },
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: SvgPicture.asset(AppAssets.cloaseDialog),
+                  ),
+                ),
+                // SvgPicture.asset(AppAssets.scanError),
+                // const SizedBox(height: 16),
                 Text(
                   title,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

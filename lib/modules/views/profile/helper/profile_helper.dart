@@ -159,4 +159,8 @@ class ProfileHelper {
     _authController.userUpdateName.value = userName;
     await IndoSharedPreference.instance.saveUserName(userName);
   }
+
+  Future<void> logoutHelper() async {
+    _profileController.logoutUser();
+  }
 }

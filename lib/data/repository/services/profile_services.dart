@@ -39,4 +39,8 @@ class ProfileServices extends BaseApiService {
   }) async {
     return await postRequest(ApiEndpoints.getVitalDescryption, data: data);
   }
+
+  Future<Map<String, dynamic>> logoutUserService() async {
+    return await postRequest(ApiEndpoints.logoutUser, data: {});
+  }
 }
