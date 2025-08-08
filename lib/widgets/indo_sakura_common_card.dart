@@ -244,34 +244,44 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Flexible(
-                                    child: Text(
-                                      maxLines: 2,
-                                      result.vitalName.toString(),
-                                      style: TextStyle(
-                                        fontSize: AppDimensions.font(10),
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(0xff575656),
+                                  Padding(
+                                    padding: AppDimensions.only(right: 20.0),
+                                    child: Flexible(
+                                      child: Text(
+                                        maxLines: 2,
+                                        result.vitalName.toString(),
+                                        style: TextStyle(
+                                          fontSize: AppDimensions.font(10),
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xff575656),
+                                        ),
                                       ),
                                     ),
                                   ),
                                   Flexible(
-                                    child: Text(
-                                      maxLines: 2,
-                                      result.vitalHeading.toString(),
-                                      style: TextStyle(
-                                        fontSize: AppDimensions.font(10),
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(0xff575656),
-                                      ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          maxLines: 2,
+                                          result.vitalHeading.toString(),
+                                          style: TextStyle(
+                                            fontSize: AppDimensions.font(10),
+                                            fontWeight: FontWeight.w400,
+                                            color: Color(0xff575656),
+                                          ),
+                                        ),
+                                        SvgPicture.asset(
+                                          result.vitalStatus!.isNotEmpty
+                                              ? imageResSub
+                                              : "",
+                                          width: AppDimensions.width(20),
+                                          height: AppDimensions.height(20),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  SvgPicture.asset(
-                                    result.vitalStatus!.isNotEmpty
-                                        ? imageResSub
-                                        : "",
-                                    width: AppDimensions.width(20),
-                                    height: AppDimensions.height(20),
                                   ),
                                 ],
                               ),
