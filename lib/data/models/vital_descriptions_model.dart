@@ -23,12 +23,12 @@ class VitalDescriptionsModel {
       VitalDescriptionsModel(
         msg: UtilMethods.stringParser(json["msg"]),
         success: UtilMethods.stringParser(json["success"]),
-        vitalDesc: UtilMethods.stringParser(json["Vital_Desc"]),
+        vitalDesc: UtilMethods.stringParser(json["vitalDesc"]),
       );
 
   Map<String, dynamic> toJson() => {
     "msg": msg,
     "success": success,
-    "Vital_Desc": vitalDesc,
+    "vitalDesc": vitalDesc,
   };
 }

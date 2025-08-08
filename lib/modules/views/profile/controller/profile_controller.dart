@@ -13,7 +13,7 @@ import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
 import 'package:ntt_data/data/models/update_details_response_model.dart';
 import 'package:ntt_data/data/models/user_history_list_model.dart';
-import 'package:ntt_data/data/models/vital_description_model.dart';
+import 'package:ntt_data/data/models/vital_descriptions_model.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -24,6 +24,7 @@ class ProfileController extends GetxController
     with RadioStateMixin, CommonMixin {
   final _authController = Get.find<AuthController>();
   RxBool isLoading = false.obs;
+  RxBool isVitalDescriptionLoading = false.obs;
   TextEditingController nameController = TextEditingController();
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
@@ -163,11 +164,13 @@ class ProfileController extends GetxController
   }
 
   Future<void> getVitalDescryption({required var vitalKey}) async {
+    isVitalDescriptionLoading(true);
     var data = {"vitalKey": vitalKey};
     debugPrint(data.toString());
     Map<String, dynamic> responseData = await ProfileServices()
         .getVitalDescriptionService(data: data);
     int statusCode = responseData[AppConstents.statusCode];
+    isVitalDescriptionLoading(false);
     if (statusCode == 200) {
       var result = VitalDescriptionsModel.fromJson(
         responseData["responseBody"],
