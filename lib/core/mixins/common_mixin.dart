@@ -59,7 +59,13 @@ mixin CommonMixin on GetxController {
         var result = responseData["response"];
         debugPrint("uploadImageResponseModel ${result}");
         uploadImageResponseModel.value = result;
-        userImage.value = uploadImageResponseModel.value.imagePath!;
+
+        if (isGuest != "true") {
+          userImage.value = uploadImageResponseModel.value.imagePath!;
+          await IndoSharedPreference.instance.saveUserImage(
+            uploadImageResponseModel.value.imagePath!,
+          );
+        }
         debugPrint(
           "uploadImageResponseModel ${uploadImageResponseModel.value}",
         );
@@ -94,9 +100,14 @@ mixin CommonMixin on GetxController {
       if (statusCode == 200) {
         var result = responseData["response"];
         debugPrint("uploadImageResponseModel $result");
-
         uploadImageResponseModel.value = result;
-        userImage.value = uploadImageResponseModel.value.imagePath!;
+        if (isGuest != "true") {
+          userImage.value = uploadImageResponseModel.value.imagePath!;
+          await IndoSharedPreference.instance.saveUserImage(
+            uploadImageResponseModel.value.imagePath!,
+          );
+        }
+
         debugPrint(
           "uploadImageResponseModel ${uploadImageResponseModel.value}",
         );
