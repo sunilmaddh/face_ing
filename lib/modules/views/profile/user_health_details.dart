@@ -122,7 +122,12 @@ class UserHealthDetails extends StatelessWidget {
               vitalHeading: result.vitalHeading!,
               vitalMass: result.vitalUnit!,
               vitalSubList: result.vitalSubList!,
-              onInfoTop: () {},
+              onInfoTop: () {
+                AppNavigation.to(
+                  AppRoutes.vitalDescriptions,
+                  arguments: {"vitalKey": result.vitalKey},
+                );
+              },
             ),
           );
         },
