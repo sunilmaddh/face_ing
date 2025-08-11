@@ -16,6 +16,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 import 'package:ntt_data/widgets/circular_image_with_shimmer.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
+import 'package:shimmer/shimmer.dart';
 
 class FaceDrawer extends StatelessWidget {
   FaceDrawer({super.key});
@@ -89,59 +90,79 @@ class FaceDrawer extends StatelessWidget {
                       ),
                       SizedBox(
                         width: AppDimensions.width(90),
-                        child: Stack(
-                          children: [
-                            Obx(
-                              () =>
-                                  _profileController.userImage.isNotEmpty
-                                      ? CircularImageWithShimmer(
-                                        size: 95,
-                                        imageUrl:
-                                            _profileController.userImage.value,
-                                      )
-                                      : CustomCircularAvatar(
-                                        color: AppColors.guestIconColor,
+                        child: Obx(
+                          () =>
+                              _profileController.imageLoading.isTrue
+                                  ? ClipOval(
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        width: 95,
+                                        height: 95,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                  : Stack(
+                                    children: [
+                                      _profileController.userImage.isNotEmpty
+                                          ? CircularImageWithShimmer(
+                                            size: 95,
+                                            imageUrl:
+                                                _profileController
+                                                    .userImage
+                                                    .value,
+                                          )
+                                          : CustomCircularAvatar(
+                                            color: AppColors.guestIconColor,
 
-                                        widget: CommonText.text(
-                                          _profileController.userName.isNotEmpty
-                                              ? _profileController.userName
-                                                  .substring(0, 1)
-                                                  .toUpperCase()
-                                              : "",
-                                          color: AppColors.btntext,
-                                          fontSize: AppDimensions.font(30),
-                                          fontWeight: FontWeight.w700,
+                                            widget: CommonText.text(
+                                              _profileController
+                                                      .userName
+                                                      .isNotEmpty
+                                                  ? _profileController.userName
+                                                      .substring(0, 1)
+                                                      .toUpperCase()
+                                                  : "",
+                                              color: AppColors.btntext,
+                                              fontSize: AppDimensions.font(30),
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: InkWell(
+                                          onTap: () {
+                                            CommonDialog().editGuestDialog(
+                                              guestOptionList:
+                                                  AppMethods().guestOptionList,
+                                              context: context,
+                                              onConfirm: (value) {
+                                                if (value == "Photo") {
+                                                  AppMethods()
+                                                      .editProfilePicture(
+                                                        _profileController,
+                                                        "",
+                                                        "false",
+                                                        () {},
+                                                      );
+                                                } else {
+                                                  ProfileHelper()
+                                                      .retainedUserData();
+                                                }
+                                              },
+                                              onCancel: () {},
+                                            );
+                                          },
+                                          child: SvgPicture.asset(
+                                            AppAssets.editIcon,
+                                          ),
                                         ),
                                       ),
-                            ),
-
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: InkWell(
-                                onTap: () {
-                                  CommonDialog().editGuestDialog(
-                                    guestOptionList:
-                                        AppMethods().guestOptionList,
-                                    context: context,
-                                    onConfirm: (value) {
-                                      if (value == "Photo") {
-                                        AppMethods().editProfilePicture(
-                                          _profileController,
-                                          "",
-                                          "false",
-                                          () {},
-                                        );
-                                      } else {
-                                        ProfileHelper().retainedUserData();
-                                      }
-                                    },
-                                    onCancel: () {},
-                                  );
-                                },
-                                child: SvgPicture.asset(AppAssets.editIcon),
-                              ),
-                            ),
-                          ],
+                                    ],
+                                  ),
                         ),
                       ),
                       SizedBox(height: AppDimensions.height(20)),

@@ -12,6 +12,7 @@ import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/data/repository/services/auth_services.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
 import 'package:ntt_data/data/repository/services/profile_upload_services.dart';
+import 'package:image/image.dart' as img;
 
 mixin CommonMixin on GetxController {
   Rx<File> profileUrl = File("").obs;
@@ -33,6 +34,8 @@ mixin CommonMixin on GetxController {
   RxList<HealthDetailList> heartRateVariability = <HealthDetailList>[].obs;
   RxList<HealthDetailList> advancedHeartRateVariability =
       <HealthDetailList>[].obs;
+
+  RxBool imageLoading = false.obs;
   Future<void> uploadProfileFromGallery(
     String imageType,
     String guestId,
@@ -41,7 +44,10 @@ mixin CommonMixin on GetxController {
     var imageUrl = await profileUploadService.pickImageFromGallery();
     if (imageUrl != null) {
       isProfile.value = true;
-      profileUrl.value = File(imageUrl.path);
+      imageLoading.value = true;
+      final file = File(imageUrl.path);
+      profileUrl.value = await fixExifRotation(file);
+
       var userID = await IndoSharedPreference.instance.getUserId();
       Map<String, dynamic> responseData = await authServices.uploadDocument(
         profileUrl.value,
@@ -53,6 +59,7 @@ mixin CommonMixin on GetxController {
       int statusCode = responseData["responseCode"];
       debugPrint("uploadImageResponseModel $statusCode");
       if (statusCode == 200) {
+        imageLoading.value = false;
         if (guestId.isNotEmpty) {
           profileUrl.value = File("");
         }
@@ -73,8 +80,21 @@ mixin CommonMixin on GetxController {
       }
     } else {
       isProfile.value = false;
+      imageLoading.value = false;
       Get.snackbar("Upload Failed", "Please try again");
     }
+  }
+
+  Future<File> fixExifRotation(File file) async {
+    final bytes = await file.readAsBytes();
+    final image = img.decodeImage(bytes);
+    if (image == null) return file;
+
+    // This rotates the actual pixels based on EXIF data
+    final fixed = img.bakeOrientation(image);
+
+    // Overwrite original file (or create new file if you want)
+    return await file.writeAsBytes(img.encodeJpg(fixed));
   }
 
   Future<void> uploadProfileFromCamera(
@@ -85,7 +105,9 @@ mixin CommonMixin on GetxController {
     var imageUrl = await profileUploadService.pickImageFromCamera();
     if (imageUrl != null) {
       isProfile.value = true;
-      profileUrl.value = File(imageUrl.path);
+      imageLoading.value = true;
+      final file = File(imageUrl.path);
+      profileUrl.value = await fixExifRotation(file);
       var userID = await IndoSharedPreference.instance.getUserId();
       debugPrint("uploadImageResponseModel $imageUrl");
       Map<String, dynamic> responseData = await authServices.uploadDocument(
@@ -98,6 +120,7 @@ mixin CommonMixin on GetxController {
       int statusCode = responseData["responseCode"];
       debugPrint("uploadImageResponseModel $statusCode");
       if (statusCode == 200) {
+        imageLoading.value = false;
         var result = responseData["response"];
         debugPrint("uploadImageResponseModel $result");
         uploadImageResponseModel.value = result;
@@ -116,6 +139,7 @@ mixin CommonMixin on GetxController {
       }
     } else {
       isProfile.value = false;
+      imageLoading.value = false;
       Get.snackbar("Upload Failed", "Please try again");
     }
   }
