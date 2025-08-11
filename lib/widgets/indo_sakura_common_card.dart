@@ -5,6 +5,8 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/vital_status_halper.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -258,58 +260,74 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                     ),
                                   ),
                                   Flexible(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          maxLines: 2,
-                                          result.vitalHeading.toString(),
-                                          style: TextStyle(
-                                            fontSize: AppDimensions.font(10),
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xff575656),
-                                          ),
-                                        ),
-                                        SvgPicture.asset(
-                                          result.vitalStatus!.isNotEmpty
-                                              ? imageResSub
-                                              : "",
-                                          width: AppDimensions.width(20),
-                                          height: AppDimensions.height(20),
-                                        ),
-                                      ],
+                                    child: Text(
+                                      maxLines: 2,
+                                      result.vitalHeading.toString(),
+                                      style: TextStyle(
+                                        fontSize: AppDimensions.font(10),
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff575656),
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                               SizedBox(height: AppDimensions.height(10)),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              Column(
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: result.vitalValue,
-                                          style: TextStyle(
-                                            fontSize: AppDimensions.font(26),
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xff4A4949),
-                                          ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: result.vitalValue,
+                                              style: TextStyle(
+                                                fontSize: AppDimensions.font(
+                                                  26,
+                                                ),
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xff4A4949),
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: result.vitalUnit,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        TextSpan(
-                                          text: result.vitalUnit,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      SvgPicture.asset(
+                                        result.vitalStatus!.isNotEmpty
+                                            ? imageResSub
+                                            : "",
+                                        width: AppDimensions.width(20),
+                                        height: AppDimensions.height(20),
+                                      ),
+                                    ],
                                   ),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     AppNavigation.to(
+                                  //       AppRoutes.vitalDescriptions,
+                                  //       arguments: {
+                                  //         "vitalKey": result.vitalKey,
+                                  //       },
+                                  //     );
+                                  //   },
+                                  //   child: Align(
+                                  //     alignment: Alignment.bottomRight,
+                                  //     child: Icon(
+                                  //       Icons.info,
+                                  //       color: AppColors.infoIconColor,
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],
