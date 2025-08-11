@@ -9,16 +9,17 @@ class BinahVitalHelper {
   bool isStress = false;
   bool isWellnessScore = false;
   bool isLowGood = false;
-
+  String vitalValue = "";
   final bool isSdkType;
   final String vitalName;
-  final String vitalStatus;
+  String vitalStatus;
 
   BinahVitalHelper({
     required this.isSdkType,
     required this.vitalName,
     required this.vitalStatus,
     required this.isLowGood,
+    required this.vitalValue,
   }) {
     _initializeFlags();
   }
@@ -177,6 +178,9 @@ class BinahVitalHelper {
   }
 
   String getStatus() {
+    if (!isNumeric(vitalValue, vitalName)) {
+      vitalStatus = "";
+    }
     switch (vitalStatus) {
       case 'Diabetes':
         return 'Diabetes risk';
@@ -195,6 +199,16 @@ class BinahVitalHelper {
 
       default:
         return '';
+    }
+  }
+
+  bool isNumeric(String value, String name) {
+    if (name == "Blood Pressure") {
+      final bpParts = value.split('/') ?? [];
+      // final systolic = bpParts.isNotEmpty ? int.tryParse(bpParts[0]) : null;
+      return int.tryParse(bpParts[0]) != null;
+    } else {
+      return double.tryParse(value) != null;
     }
   }
 }

@@ -298,7 +298,7 @@ class GuestHalper {
   );
   static List<String> smokerTypeList = ["Smoker", "Non Smoker"];
   static List<String> heightList = List.generate(
-    121,
+    101,
     (index) => (index + 130).toString(),
   );
 

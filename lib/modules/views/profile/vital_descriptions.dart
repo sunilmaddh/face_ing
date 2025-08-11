@@ -30,49 +30,47 @@ class VitalDescriptions extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Container(
+          // alignment: Alignment.center,
           width: ScreenUtils.screenWidth,
+          height: ScreenUtils.screenHeight,
           margin: EdgeInsets.all(15),
           decoration: BoxDecoration(
             color: AppColors.btntext,
             borderRadius: BorderRadius.circular(20),
           ),
           child: SingleChildScrollView(
-            child: Column(
-              // padding: const EdgeInsets.all(16),
-              children: [
-                Obx(
-                  () =>
-                      _profileComtroller.isVitalDescriptionLoading.isFalse
-                          ? Flexible(
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          )
-                          : _profileComtroller
-                              .vitalDescriptionModel
-                              .value
-                              .vitalDesc!
-                              .isNotEmpty
-                          ? Html(
-                            data:
-                                _profileComtroller
-                                    .vitalDescriptionModel
-                                    .value
-                                    .vitalDesc,
-                          )
-                          : Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Image.asset(
-                                AppAssets.noDataImage,
-                                alignment: Alignment.center,
-                              ),
-                            ),
+            child: Obx(
+              () =>
+                  _profileComtroller.isVitalDescriptionLoading.isTrue
+                      ? SizedBox(
+                        height: ScreenUtils.screenHeight,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primary,
                           ),
-                ),
-              ],
+                        ),
+                      )
+                      : _profileComtroller
+                          .vitalDescriptionModel
+                          .value
+                          .vitalDesc!
+                          .isNotEmpty
+                      ? Html(
+                        data:
+                            _profileComtroller
+                                .vitalDescriptionModel
+                                .value
+                                .vitalDesc,
+                      )
+                      : Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Image.asset(
+                            AppAssets.noDataImage,
+                            alignment: Alignment.center,
+                          ),
+                        ),
+                      ),
             ),
           ),
         ),
