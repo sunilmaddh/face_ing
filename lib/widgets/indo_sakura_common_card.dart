@@ -54,6 +54,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
       vitalName: vitalName,
       vitalStatus: vitalStatus,
       isLowGood: isLowGood,
+      vitalValue: vitalValue,
     );
 
     imageRes = vitalHalper.getImageResource(vitalStatus);
@@ -227,8 +228,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
                           isLowGood: AppMethods.stringToBool(
                             result.isTypeVital.toString(),
                           ),
+                          vitalValue: result.vitalValue.toString(),
                         );
-
                         imageResSub = vitalSubHalper.getImageResource(
                           result.vitalStatus.toString(),
                         );
@@ -246,15 +247,13 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: AppDimensions.only(right: 20.0),
-                                    child: Flexible(
-                                      child: Text(
-                                        maxLines: 2,
-                                        result.vitalName.toString(),
-                                        style: TextStyle(
-                                          fontSize: AppDimensions.font(10),
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xff575656),
-                                        ),
+                                    child: Text(
+                                      maxLines: 2,
+                                      result.vitalName.toString(),
+                                      style: TextStyle(
+                                        fontSize: AppDimensions.font(10),
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff575656),
                                       ),
                                     ),
                                   ),

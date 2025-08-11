@@ -419,6 +419,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ), // no range given
         vitalMass: '',
         vitalCondition: '',
+        isVitalActive: false,
       ),
       buildCard(
         imageAsset: CommonHealthAsset().getHbA1cAsset(
@@ -434,6 +435,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
         vitalHeading: WellnessMetricDescriptions.highHbA1cRisk,
         vitalDescription: WellnessMetricDescriptionsLong.highHbA1cRisk,
+        isVitalActive: false,
       ),
       buildCard(
         imageAsset: CommonHealthAsset().gethighFastingGlucoseRiskAsset(
@@ -446,6 +448,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalHeading: WellnessMetricDescriptions.highFastingGlucoseRisk,
         vitalDescription: WellnessMetricDescriptionsLong.highFastingGlucoseRisk,
         vitalStatus: getVitalValue(VitalSignTypes.highFastingGlucoseRisk),
+        isVitalActive: false,
       ),
       buildCard(
         imageAsset: CommonHealthAsset().gethighCholesterolRiskAsset(
@@ -459,6 +462,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalDescription:
             WellnessMetricDescriptionsLong.highTotalCholesterolRisk,
         vitalStatus: getVitalValue(VitalSignTypes.highTotalCholesterolRisk),
+        isVitalActive: false,
       ),
       buildCard(
         imageAsset: CommonHealthAsset().getLowHemoglobinRiskAsset(
@@ -473,6 +477,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalStatus: statusHelper.getVitalValue(
           VitalSignTypes.lowHemoglobinRisk,
         ),
+        isVitalActive: false,
       ),
     ];
   }
@@ -516,6 +521,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalHeading: WellnessMetricDescriptions.stressLevel,
         vitalDescription: WellnessMetricDescriptionsLong.stressLevel,
         isExpand: true,
+        isVitalActive: false,
         imageAsset: CommonHealthAsset().getStressLevelAsset(
           statusHelper.getVitalValue(VitalSignTypes.stressLevel),
         ),
@@ -617,6 +623,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalStatus: statusHelper.getVitalValue(VitalSignTypes.pnsZone),
         vitalHeading: WellnessMetricDescriptions.recoveryAbility,
         vitalDescription: WellnessMetricDescriptionsLong.recoveryAbility,
+        isVitalActive: false,
       ),
       buildCard(
         imageAsset: CommonHealthAsset().getPnsIndexAsset(
@@ -640,6 +647,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalStatus: getVitalValue(VitalSignTypes.snsZone),
         vitalHeading: WellnessMetricDescriptions.snsZone,
         vitalDescription: WellnessMetricDescriptionsLong.snsZone,
+        isVitalActive: false,
       ),
       buildCard(
         imageAsset: CommonHealthAsset().getSnsIndexAsset(
