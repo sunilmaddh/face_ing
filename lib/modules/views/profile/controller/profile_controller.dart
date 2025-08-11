@@ -39,6 +39,7 @@ class ProfileController extends GetxController
   Rx<AnlyzeHealthDataResponseModel> anlyzeHealthDataResponseModel =
       AnlyzeHealthDataResponseModel().obs;
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
+  RxString vitalDesc = "".obs;
   RxList<MedicalQuestionListModel> medicalQuestionListModel =
       <MedicalQuestionListModel>[].obs;
   final _profileService = Get.put(ProfileServices());
@@ -177,6 +178,7 @@ class ProfileController extends GetxController
       );
 
       vitalDescriptionModel.value = result;
+      vitalDesc.value = vitalDescriptionModel.value.vitalDesc.toString();
     } else {
       AppSnackbar.show(title: "Error", message: "Something went wrong");
     }
