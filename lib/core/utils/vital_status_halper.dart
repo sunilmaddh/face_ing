@@ -34,6 +34,8 @@ class BinahVitalHelper {
         isHighLow = true;
       } else if (vitalName == "Stress Level") {
         isStress = true;
+      } else if (vitalName == "Normalized Stress Index") {
+        isStress = true;
       } else if (vitalName == "Wellness Score") {
         isWellnessScore = true;
       } else if ((vitalName == "PNS Index" && vitalStatus == "Low") ||
@@ -91,7 +93,7 @@ class BinahVitalHelper {
             : isBlood
             ? AppAssets.veryHighImage
             : isLowGood
-            ? AppAssets.mediumAsset
+            ? AppAssets.mediumImage
             : AppAssets.veryHighImage;
 
       case 'medium':

@@ -5,8 +5,6 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/vital_status_halper.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -101,12 +99,16 @@ class IndoSakuraCommonCard extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff575656),
                         ),
-                        SizedBox(height: AppDimensions.height(5)),
-                        CommonText.text(
-                          vitalCondition,
-                          fontSize: AppDimensions.font(10),
-                          color: Color(0xff575656),
-                        ),
+                        vitalCondition.isNotEmpty
+                            ? SizedBox(height: AppDimensions.height(5))
+                            : SizedBox.shrink(),
+                        vitalCondition.isNotEmpty
+                            ? CommonText.text(
+                              vitalCondition,
+                              fontSize: AppDimensions.font(10),
+                              color: Color(0xff575656),
+                            )
+                            : SizedBox.shrink(),
                         SizedBox(height: AppDimensions.height(10)),
                         RichText(
                           text: TextSpan(
