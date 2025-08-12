@@ -99,7 +99,7 @@ class MeasurementController extends GetxController
     // Show alert on error
     ever<String?>(error, (value) {
       if (value != null && value.isNotEmpty) {
-        AppSnackbar.show(title: "error", message: value);
+        // AppSnackbar.show(title: "error", message: value);
         debugPrint("Sdk error $value");
         Future.delayed(Duration.zero, () {
           isLoading.value = false;
@@ -169,7 +169,7 @@ class MeasurementController extends GetxController
         break;
 
       case ImageValidity.invalidDeviceOrientation:
-        handleInvalid("Retrun to the portrait mode.");
+        handleInvalid("Return to the portrait mode.");
         break;
 
       case ImageValidity.invalidRoi:
@@ -315,27 +315,6 @@ class MeasurementController extends GetxController
   void onError(ErrorData errorData) {
     error.value = "Error: ${errorData.code}";
     debugPrint("Error: ${errorData.code}");
-    // if (errorData.code == 14) {
-    //   CommonDialog().showScanDialog(
-    //     confirmText: "OK",
-    //     title: "Low Battery Alert",
-    //     message:
-    //         "Battery level is too low. Please ensure your device battery is above 20% to start the scan.",
-    //     context: Get.context!,
-    //     onConfirm: () {
-    //       isScanningDone.value = false;
-    //       Get.back();
-    //       // stopMeasuring();
-    //     },
-    //     onCancel: () {
-    //       isFirstEver.value = false;
-    //       isScanningDone.value = false;
-    //       Get.back();
-    //     },
-    //   );
-    // }
-
-    // AppSnackbar.show(title: "Error", message: "Measurement has canceled");
   }
 
   @override
