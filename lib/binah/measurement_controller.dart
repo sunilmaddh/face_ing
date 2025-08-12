@@ -167,7 +167,7 @@ class MeasurementController extends GetxController
         break;
 
       case ImageValidity.invalidDeviceOrientation:
-        handleInvalid("Retrun to the portrait mode.");
+        handleInvalid("Return to portrait mode.");
         break;
 
       case ImageValidity.invalidRoi:

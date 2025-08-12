@@ -44,8 +44,8 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
     final double ovalWidth = screenSize.width * 0.8;
     final double ovalHeight = screenSize.height * 0.5;
     return FocusDetector(
-      onFocusLost: () {
-        controller.screenInFocus(
+      onFocusLost: () async {
+        await controller.screenInFocus(
           false,
           controller.genderType.value,
           controller.age.value,
@@ -54,8 +54,8 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
           controller.selectionType.value,
         );
       },
-      onFocusGained: () {
-        controller.screenInFocus(
+      onFocusGained: () async {
+        await controller.screenInFocus(
           true,
           controller.genderType.value,
           controller.age.value,

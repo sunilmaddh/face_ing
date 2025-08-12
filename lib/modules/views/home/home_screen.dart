@@ -37,88 +37,91 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: FaceDrawer(),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimensions.width(10.0),
-            vertical: AppDimensions.width(30.0),
-          ),
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Obx(
-                      () => Center(
-                        child: ScanButton(
-                          isLoading: gcontroller.isHomeLoading.value,
-                          width: AppDimensions.width(230),
-                          onPressed: () async {
-                            HomeHalper().callMeasurement();
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: AppDimensions.height(15)),
-                    CommonText.text(
-                      "Note: ${AppConstents.notDiscription}",
-                      fontSize: AppDimensions.font(12),
-                      fontWeight: FontWeight.w500,
-                      maxLines: 2,
-                      color: Colors.grey,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                // physics: NeverScrollableScrollPhysics(),
-                children: [
-                  Row(
+      body: PopScope(
+        canPop: false,
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppDimensions.width(10.0),
+              vertical: AppDimensions.width(30.0),
+            ),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: InkWell(
-                            onTap: () {
-                              _scaffoldKey.currentState!.openDrawer();
+                      Obx(
+                        () => Center(
+                          child: ScanButton(
+                            isLoading: gcontroller.isHomeLoading.value,
+                            width: AppDimensions.width(230),
+                            onPressed: () async {
+                              HomeHalper().callMeasurement();
                             },
-                            child: CommonAssets.svgAsset(
-                              AppAssets.homeMenu,
-                              width: AppDimensions.width(60),
-                              height: AppDimensions.height(60),
-                            ),
-                          ), // Keeps at the start
+                          ),
                         ),
                       ),
-                      Expanded(
-                        flex: 2, // More space for centering
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: CommonAssets.svgAsset(
-                            AppAssets.logo,
-                          ), // Keeps in the center
-                        ),
+                      SizedBox(height: AppDimensions.height(15)),
+                      CommonText.text(
+                        "Note: ${AppConstents.notDiscription}",
+                        fontSize: AppDimensions.font(12),
+                        fontWeight: FontWeight.w500,
+                        maxLines: 2,
+                        color: Colors.grey,
+                        textAlign: TextAlign.center,
                       ),
-                      Expanded(child: SizedBox()), // Balancing the layout
                     ],
                   ),
-                  SizedBox(height: AppDimensions.height(30)),
-                  CommonAssets.svgAsset(AppAssets.scanIllustration),
-                  SizedBox(height: AppDimensions.height(40)),
-                  CommonText.text(
-                    AppConstents.scanDiscri,
-                    fontSize: AppDimensions.font(18),
-                    fontWeight: FontWeight.w500,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: AppDimensions.height(40)),
-                ],
-              ),
-            ],
+                ),
+                Column(
+                  // physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: InkWell(
+                              onTap: () {
+                                _scaffoldKey.currentState!.openDrawer();
+                              },
+                              child: CommonAssets.svgAsset(
+                                AppAssets.homeMenu,
+                                width: AppDimensions.width(60),
+                                height: AppDimensions.height(60),
+                              ),
+                            ), // Keeps at the start
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2, // More space for centering
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: CommonAssets.svgAsset(
+                              AppAssets.logo,
+                            ), // Keeps in the center
+                          ),
+                        ),
+                        Expanded(child: SizedBox()), // Balancing the layout
+                      ],
+                    ),
+                    SizedBox(height: AppDimensions.height(30)),
+                    CommonAssets.svgAsset(AppAssets.scanIllustration),
+                    SizedBox(height: AppDimensions.height(40)),
+                    CommonText.text(
+                      AppConstents.scanDiscri,
+                      fontSize: AppDimensions.font(18),
+                      fontWeight: FontWeight.w500,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: AppDimensions.height(40)),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
