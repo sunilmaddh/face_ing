@@ -99,6 +99,8 @@ class MeasurementController extends GetxController
     // Show alert on error
     ever<String?>(error, (value) {
       if (value != null && value.isNotEmpty) {
+        AppSnackbar.show(title: "error", message: value);
+        debugPrint("Sdk error $value");
         Future.delayed(Duration.zero, () {
           isLoading.value = false;
           // isMeasurementCanceled.value = true;
@@ -288,6 +290,8 @@ class MeasurementController extends GetxController
         }
       } else {
         if (isFirstEver.isTrue) {
+          AppSnackbar.show(title: "onFinal", message: value);
+          debugPrint("Sdk error onFinal $value");
           isFirstEver.value = false;
           isScanningDone.value = false;
           DialogHelper.showScanFailedDialog(Get.context!);
