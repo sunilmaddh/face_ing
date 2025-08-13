@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 
@@ -52,8 +51,9 @@ class DialogHelper {
     );
   }
 
-  static void showLogoutDialog(BuildContext context) {
+  static void showLogoutDialog(BuildContext context, bool isLoading) {
     CommonDialog().showLogoutDialog(
+      isLogoutLoading: isLoading,
       title: "Want to Logout?",
       message: "Are you sure want to logout?",
       context: context,

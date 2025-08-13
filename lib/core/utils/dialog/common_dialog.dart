@@ -319,6 +319,7 @@ class CommonDialog {
     required String title,
     required String message,
     required String confirmText,
+    required bool isLogoutLoading,
   }) {
     showDialog(
       context: context,
@@ -358,7 +359,7 @@ class CommonDialog {
 
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                       onConfirm();
                     },
                     style: ElevatedButton.styleFrom(
@@ -367,10 +368,15 @@ class CommonDialog {
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    child: CommonText.text(
-                      confirmText,
-                      color: AppColors.btntext,
-                    ),
+                    child:
+                        isLogoutLoading == true
+                            ? const CircularProgressIndicator(
+                              color: AppColors.primary,
+                            )
+                            : CommonText.text(
+                              confirmText,
+                              color: AppColors.btntext,
+                            ),
                   ),
                 ),
               ],
@@ -476,7 +482,7 @@ class CommonDialog {
         mode: CupertinoDatePickerMode.date,
         dateOrder: DatePickerDateOrder.dmy,
         initialDateTime: initialDate,
-        minimumDate: DateTime(1930),
+        minimumDate: DateTime(1925),
         maximumDate: initialDate,
         onDateTimeChanged: (DateTime newDate) {
           selectedDate = newDate;

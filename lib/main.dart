@@ -28,6 +28,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: AppConstents.deviceSize,
+      minTextAdapt: true,
+      ensureScreenSize: true,
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Face.ing',

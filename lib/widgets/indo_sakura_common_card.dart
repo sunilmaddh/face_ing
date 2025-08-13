@@ -105,12 +105,16 @@ class IndoSakuraCommonCard extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                           color: Color(0xff575656),
                         ),
-                        SizedBox(height: AppDimensions.height(5)),
-                        CommonText.text(
-                          vitalCondition,
-                          fontSize: AppDimensions.font(10),
-                          color: Color(0xff575656),
-                        ),
+                        vitalCondition.isNotEmpty
+                            ? SizedBox(height: AppDimensions.height(5))
+                            : SizedBox.shrink(),
+                        vitalCondition.isNotEmpty
+                            ? CommonText.text(
+                              vitalCondition,
+                              fontSize: AppDimensions.font(10),
+                              color: Color(0xff575656),
+                            )
+                            : SizedBox.shrink(),
                         SizedBox(height: AppDimensions.height(10)),
                         RichText(
                           text: TextSpan(
@@ -343,6 +347,23 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     AppNavigation.to(
+                                  //       AppRoutes.vitalDescriptions,
+                                  //       arguments: {
+                                  //         "vitalKey": result.vitalKey,
+                                  //       },
+                                  //     );
+                                  //   },
+                                  //   child: Align(
+                                  //     alignment: Alignment.bottomRight,
+                                  //     child: Icon(
+                                  //       Icons.info,
+                                  //       color: AppColors.infoIconColor,
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],

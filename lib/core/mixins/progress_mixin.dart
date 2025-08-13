@@ -56,7 +56,6 @@ mixin ProgressHandlerMixin on GetxController {
   ) async {
     return [
       vitalsResults.getResult(VitalSignTypes.wellnessIndex),
-      vitalsResults.getResult(VitalSignTypes.wellnessIndex),
       vitalsResults.getResult(VitalSignTypes.respirationRate),
       vitalsResults.getResult(VitalSignTypes.pulseRate),
       vitalsResults.getResult(VitalSignTypes.prq),

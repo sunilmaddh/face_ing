@@ -527,26 +527,25 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
         expandedWidget: Column(
           children: [
-            StressInfoCard(
-              vitalName: 'Stress Index ',
-              isExpanded: true,
-              titleText: "Stress Index",
-              statusText: "",
-              // "Your Stress Index is ${_measurementController.vitalsResults.value.getResult(VitalSignTypes.stressIndex)!.value.toString()}", //need to get it with avg
-              valueText: statusHelper.getVitalValue(VitalSignTypes.stressIndex),
+            // StressInfoCard(
+            //   vitalName: 'Stress Index ',
+            //   isExpanded: true,
+            //   titleText: "Stress Index",
+            //   statusText: "",
+            //   // "Your Stress Index is ${_measurementController.vitalsResults.value.getResult(VitalSignTypes.stressIndex)!.value.toString()}", //need to get it with avg
+            //   valueText: statusHelper.getVitalValue(VitalSignTypes.stressIndex),
 
-              // _measurementController.vitalsResults.value
-              //     .getResult()!
-              //     .value
-              //     .toString(),
-              unitText: " ",
-            ),
+            //   // _measurementController.vitalsResults.value
+            //   //     .getResult()!
+            //   //     .value
+            //   //     .toString(),
+            //   unitText: " ",
+            // ),
             StressInfoCard(
               vitalName: 'Normalized Stress Index',
               isExpanded: true,
               titleText: "Normalized Stress Index",
-              statusText:
-                  "Normalized Stress Index is $stressLevel", // 👈 Only Low/Mild/High
+              statusText: "Normalized Stress Index is $stressLevel",
               valueText: normalizedStressValueStr,
               unitText: "%",
               imageAsset: CommonHealthAsset().getmediumizedStressIndexAsset(

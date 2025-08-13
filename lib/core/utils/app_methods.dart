@@ -137,12 +137,15 @@ class AppMethods {
     try {
       // Parse with strict format
       final parseDate = DateFormat("dd/MM/yyyy").parseStrict(dob.trim());
+      parseDate.year;
       final now = DateTime.now();
       final minAllowedDate = DateTime(now.year - 18, now.month, now.day);
       if (parseDate.isAfter(minAllowedDate)) {
         return "Age should be 18+";
       } else if (!validateDate(dob)) {
         return "Invalid date format. Use dd/MM/yyyy";
+      } else if (parseDate.year < 1925) {
+        return "Year must be 1925 or greater";
       }
     } catch (e) {
       return "Invalid date format. Use dd/MM/yyyy";
@@ -206,6 +209,8 @@ class AppMethods {
         return "Please enter a valid number";
       } else if (parsedHeight < 130.0) {
         return "Height must be 130 or greater";
+      } else if (parsedHeight > 230.0) {
+        return "Height must be 230 or less";
       }
     }
     return null;
@@ -220,6 +225,8 @@ class AppMethods {
         return "Please enter a valid number";
       } else if (parsedWeight < 40.0) {
         return "Weight must be 40 or greater";
+      } else if (parsedWeight > 200.0) {
+        return "Weight must be 200 or less";
       }
     }
 

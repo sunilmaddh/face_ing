@@ -171,7 +171,7 @@ class GuestHalper {
       //     .getResult(VitalSignTypes.stressLevel)
       //     ?.value
       //     .toString(),
-      "rri": vitalSignResult.getResult(VitalSignTypes.rri)?.value.toString(),
+      "rri": statusHelper.getVitalValue(VitalSignTypes.rri),
       "bloodPressure": statusHelper.getVitalValue(VitalSignTypes.bloodPressure),
       // vitalSignResult
       //     .getResult(VitalSignTypes.bloodPressure)

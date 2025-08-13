@@ -192,6 +192,8 @@ class CommonHealthAsset {
         return AppAssets.lowAsset;
       case 'high':
         return AppAssets.orengeAsset;
+      case 'extreme':
+        return AppAssets.lowAsset;
       default:
         return AppAssets.goodAsset;
     }

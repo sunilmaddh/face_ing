@@ -99,6 +99,8 @@ class MeasurementController extends GetxController
     // Show alert on error
     ever<String?>(error, (value) {
       if (value != null && value.isNotEmpty) {
+        // AppSnackbar.show(title: "error", message: value);
+        debugPrint("Sdk error $value");
         Future.delayed(Duration.zero, () {
           isLoading.value = false;
           // isMeasurementCanceled.value = true;
@@ -129,9 +131,9 @@ class MeasurementController extends GetxController
         }
       }
 
-      createSession(genderType, age, weight, height, smokerType);
+      await createSession(genderType, age, weight, height, smokerType);
     } else {
-      _terminateSession();
+      await _terminateSession();
     }
   }
 
@@ -288,6 +290,7 @@ class MeasurementController extends GetxController
         }
       } else {
         if (isFirstEver.isTrue) {
+          debugPrint("Sdk error onFinal $value");
           isFirstEver.value = false;
           isScanningDone.value = false;
           DialogHelper.showScanFailedDialog(Get.context!);
@@ -299,10 +302,6 @@ class MeasurementController extends GetxController
   @override
   void onWarning(WarningData warningData) {
     if (warning.value != null) return;
-    // if (warningData.code ==
-    //     AlertCodes.measurementCodeMisdetectionDurationExceedsLimitWarning) {
-    //   pulseRate.value = "";
-    // }
     warning.value = "Warning: ${warningData.code}";
     Future.delayed(const Duration(seconds: 1), () => warning.value = null);
   }
@@ -311,27 +310,6 @@ class MeasurementController extends GetxController
   void onError(ErrorData errorData) {
     error.value = "Error: ${errorData.code}";
     debugPrint("Error: ${errorData.code}");
-    // if (errorData.code == 14) {
-    //   CommonDialog().showScanDialog(
-    //     confirmText: "OK",
-    //     title: "Low Battery Alert",
-    //     message:
-    //         "Battery level is too low. Please ensure your device battery is above 20% to start the scan.",
-    //     context: Get.context!,
-    //     onConfirm: () {
-    //       isScanningDone.value = false;
-    //       Get.back();
-    //       // stopMeasuring();
-    //     },
-    //     onCancel: () {
-    //       isFirstEver.value = false;
-    //       isScanningDone.value = false;
-    //       Get.back();
-    //     },
-    //   );
-    // }
-
-    // AppSnackbar.show(title: "Error", message: "Measurement has canceled");
   }
 
   @override
@@ -350,13 +328,15 @@ class MeasurementController extends GetxController
     }
   }
 
-  cloase() {
+  cloase() async {
     resetProgress();
     stopProgress();
     closeProgress();
-    stopMeasuring();
-    _terminateSession();
-    _reset();
+    if (state == SessionState.processing) {
+      stopMeasuring();
+    }
+    await _terminateSession();
+    await _reset();
   }
 
   @override
@@ -375,7 +355,7 @@ class MeasurementController extends GetxController
     if (_session != null) {
       await _terminateSession();
     }
-    _reset();
+    await _reset();
     debugPrint("user2 Information $genderType$weight$height,$age,$smokerType");
     var userInformation = UserInformation(
       sex: genderType == "Male" ? Sex.male : Sex.female,
@@ -401,7 +381,7 @@ class MeasurementController extends GetxController
 
   Future<void> _startMeasuring() async {
     try {
-      _reset();
+      await _reset();
       await _session?.start(measurementDuration);
       debugPrint("measurementDuration ${measurementDuration.toString()}");
       // startProgress(seconds: 30);
@@ -412,7 +392,7 @@ class MeasurementController extends GetxController
 
   Future<void> stopMeasuring() async {
     try {
-      _reset();
+      await _reset();
       await _session?.stop();
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";
@@ -424,7 +404,7 @@ class MeasurementController extends GetxController
     _session = null;
   }
 
-  void _reset() {
+  Future<void> _reset() async {
     error.value = null;
     warning.value = null;
     pulseRate.value = "";

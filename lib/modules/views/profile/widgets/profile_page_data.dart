@@ -34,7 +34,7 @@ class ProfilePageData extends StatelessWidget {
           color: AppColors.primary,
           fontSize: AppDimensions.font(16),
           fontWeight: FontWeight.w700,
-          maxLines: 3,
+          maxLines: 5,
         ),
         SizedBox(height: AppDimensions.height(30)),
         ListView.builder(

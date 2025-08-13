@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
@@ -34,6 +35,7 @@ class ProfileController extends GetxController
   RxString userUpdateImage = ''.obs;
   final RxString genderType = "".obs;
   final RxString smokerType = "".obs;
+  RxBool isLoadingLogout = false.obs;
   RxList<UserHealthList> userHealthList = <UserHealthList>[].obs;
   RxList<HealthDetailList> binahHIstoryDetails = <HealthDetailList>[].obs;
   Rx<AnlyzeHealthDataResponseModel> anlyzeHealthDataResponseModel =
@@ -185,9 +187,11 @@ class ProfileController extends GetxController
   }
 
   Future<void> logoutUser() async {
+    isLoadingLogout(true);
     Map<String, dynamic> responseData =
         await ProfileServices().logoutUserService();
     int statusCode = responseData[AppConstents.statusCode];
+    isLoadingLogout(false);
     if (statusCode == 200) {
       AppMethods().logout();
       AppSnackbar.show(title: "Success", message: "Successfully logged out.");
