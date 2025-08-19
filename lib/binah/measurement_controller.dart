@@ -6,12 +6,9 @@ import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_pulse_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
-import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
@@ -97,23 +94,23 @@ class MeasurementController extends GetxController
     });
 
     // Show alert on error
-    ever<String?>(error, (value) {
-      if (value != null && value.isNotEmpty) {
-        // AppSnackbar.show(title: "error", message: value);
-        debugPrint("Sdk error $value");
-        Future.delayed(Duration.zero, () {
-          isLoading.value = false;
-          // isMeasurementCanceled.value = true;
-          resetProgress();
-          stopProgress();
-          if (isFirstEver.isTrue) {
-            isFirstEver.value = false;
-            isScanningDone.value = false;
-            DialogHelper.showScanFailedDialog(Get.context!);
-          }
-        });
-      }
-    });
+    // ever<String?>(error, (value) {
+    //   if (value != null && value.isNotEmpty) {
+    //     // AppSnackbar.show(title: "error", message: value);
+    //     debugPrint("Sdk error $value");
+    //     Future.delayed(Duration.zero, () {
+    //       isLoading.value = false;
+    //       // isMeasurementCanceled.value = true;
+    //       resetProgress();
+    //       stopProgress();
+    //       if (isFirstEver.isTrue) {
+    //         isFirstEver.value = false;
+    //         isScanningDone.value = false;
+    //         DialogHelper.showScanFailedDialog(Get.context!);
+    //       }
+    //     });
+    //   }
+    // });
   }
 
   screenInFocus(
@@ -296,6 +293,11 @@ class MeasurementController extends GetxController
           DialogHelper.showScanFailedDialog(Get.context!);
         }
       }
+    } else {
+      Future.delayed(const Duration(seconds: 5), () {
+        isFirstEver.value = false;
+        isScanningDone.value = false;
+      });
     }
   }
 

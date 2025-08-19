@@ -39,10 +39,11 @@ class _CameraPreviewState extends State<CameraPreview> {
             children: [
               //Camera preview should be the background
               const CameraPreviewView(),
+              FaceDetectionView(size: size),
 
               // Overlay should be the foreground
-              if (size != null)
-                FaceDetectionView(size: size), // ✅ Use corrected overlay
+              // if (size != null)
+              //   FaceDetectionView(size: size), // ✅ Use corrected overlay
             ],
           ),
         ),

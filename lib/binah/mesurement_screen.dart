@@ -249,7 +249,7 @@ class MeasurmentProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return SizedBox(
-        height: AppDimensions.height(178),
+        height: AppDimensions.height(180),
         child: Stack(
           children: [
             Column(
