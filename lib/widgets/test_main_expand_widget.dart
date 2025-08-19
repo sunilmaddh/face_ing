@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 
 class StressInfoCard extends StatelessWidget {
@@ -12,6 +14,8 @@ class StressInfoCard extends StatelessWidget {
   final String unitText;
   final String imageAsset;
 
+  final VoidCallback onTop;
+
   const StressInfoCard({
     Key? key,
     required this.vitalName,
@@ -21,6 +25,7 @@ class StressInfoCard extends StatelessWidget {
     required this.valueText,
     required this.unitText,
     this.imageAsset = "",
+    required this.onTop,
   }) : super(key: key);
 
   @override
@@ -83,7 +88,7 @@ class StressInfoCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Row(
+                  Column(
                     children: [
                       this.imageAsset.isNotEmpty
                           ? SvgPicture.asset(
@@ -92,8 +97,14 @@ class StressInfoCard extends StatelessWidget {
                             height: 20,
                           )
                           : SizedBox(),
-                      // const SizedBox(width: 10),
-                      // Icon(Icons.info_rounded),
+                      SizedBox(height: AppDimensions.height(5)),
+                      InkWell(
+                        onTap: onTop,
+                        child: Icon(
+                          Icons.info_rounded,
+                          color: AppColors.infoIconColor,
+                        ),
+                      ),
                     ],
                   ),
                 ],

@@ -248,7 +248,7 @@ class FaceDrawer extends StatelessWidget {
                 //   fontFamily: "Open Sans",
                 // ),
                 CommonText.text(
-                  "v:1.0.12",
+                  "v:1.0.16",
                   color: AppColors.powerBy,
                   fontSize: AppDimensions.font(14),
                   fontWeight: FontWeight.w700,

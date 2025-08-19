@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
@@ -17,6 +18,8 @@ class IndoCommonCard extends StatefulWidget {
   final bool isExpand;
   final bool isVitalActive;
   final Widget expandedWidget;
+  final VoidCallback onTop;
+  final VoidCallback onInfoTop;
 
   const IndoCommonCard({
     super.key,
@@ -30,7 +33,9 @@ class IndoCommonCard extends StatefulWidget {
     this.vitalMass = "",
     this.isExpand = false,
     this.isVitalActive = true,
-    this.expandedWidget = const SizedBox(), // fixed default widget
+    this.expandedWidget = const SizedBox(),
+    required this.onTop,
+    required this.onInfoTop, // fixed default widget
   });
   @override
   State<IndoCommonCard> createState() => _CommonCardState();
@@ -187,11 +192,21 @@ class _CommonCardState extends State<IndoCommonCard> {
                                       ],
                                     )
                                     : SizedBox(),
-                                // Icon(Icons.info_rounded),
+
                                 // SvgPicture.asset(imageAsset, width: 20, height: 20),
                               ],
                             )
                             : SizedBox(),
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: InkWell(
+                            onTap: widget.onTop,
+                            child: Icon(
+                              Icons.info_rounded,
+                              color: AppColors.infoIconColor,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

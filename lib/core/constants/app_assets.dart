@@ -53,5 +53,6 @@ class AppAssets {
       vitalInfo = "$baseUrlSvg/vital_info.svg",
       wellnessScore = "$baseUrlSvg/wellness_score.svg",
       appIcon = "$baseUrlPng/app_icon.png",
+      dwonArrowTab = "$baseUrlSvg/down_arrow_tab.svg",
       highImage = "$baseUrlSvg/high_im.svg";
 }

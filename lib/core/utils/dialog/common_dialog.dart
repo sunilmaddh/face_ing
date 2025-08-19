@@ -2,6 +2,7 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -556,6 +557,74 @@ class CommonDialog {
       ),
       onConfirm: () {
         selectedItem(list[selectedIndex]);
+      },
+    );
+  }
+
+  static void showCupertinoDateRangePicker({
+    required BuildContext context,
+    required Function(DateTime start, DateTime end) onRangeSelected,
+  }) {
+    DateTime now = DateTime.now();
+    DateTime initialDate = DateTime(now.year - 18, now.month, now.day);
+
+    DateTime startDate = initialDate;
+    DateTime endDate = initialDate;
+    commonDialogCard(
+      height: 500,
+      title: "Select Date Range",
+      context: context,
+      widget: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "Start Date",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: AppColors.blackColor,
+              fontSize: AppDimensions.font(18),
+            ),
+          ),
+          Expanded(
+            child: CupertinoDatePicker(
+              itemExtent: 40,
+              mode: CupertinoDatePickerMode.date,
+              dateOrder: DatePickerDateOrder.dmy,
+              initialDateTime: initialDate,
+              minimumDate: DateTime(1925),
+              maximumDate: initialDate,
+              onDateTimeChanged: (DateTime newDate) {
+                startDate = newDate;
+              },
+            ),
+          ),
+          const Divider(color: AppColors.historyCardColor),
+          Text(
+            "End Date",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: AppColors.blackColor,
+              fontSize: AppDimensions.font(18),
+            ),
+          ),
+          20.verticalSpace,
+          Expanded(
+            child: CupertinoDatePicker(
+              itemExtent: 40,
+              mode: CupertinoDatePickerMode.date,
+              dateOrder: DatePickerDateOrder.dmy,
+              initialDateTime: initialDate,
+              minimumDate: DateTime(1925),
+              maximumDate: initialDate,
+              onDateTimeChanged: (DateTime newDate) {
+                endDate = newDate;
+              },
+            ),
+          ),
+        ],
+      ),
+      onConfirm: () {
+        onRangeSelected(startDate, endDate);
       },
     );
   }

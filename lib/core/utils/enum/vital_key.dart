@@ -1,0 +1,30 @@
+class VitalKeys {
+  static const wellnessIndex = 'wellness_index';
+  static const respirationRate = 'respiration_rate';
+  static const pulseRate = 'pulse_rate';
+  static const prq = 'prq';
+  static const bloodPressure = 'blood_pressure';
+  static const oxygenSaturation = 'oxygen_saturation';
+  static const hemoglobin = 'hemoglobin';
+  static const hemoglobinA1c = 'hemoglobin_a1c';
+  static const ascvdRisk = 'ascvd_risk';
+  static const heartAge = 'heart_age';
+  static const highBloodPressureRisk = 'high_blood_pressure_risk';
+  static const highHemoglobinA1cRisk = 'high_hemoglobin_a1C_risk';
+  static const highFastingGlucoseRisk = 'high_fasting_glucose_risk';
+  static const highTotalCholesterolRisk = 'highTotal_cholesterol_risk';
+  static const lowHemoglobinRisk = 'low_hemoglobin_risk';
+  static const stressLevel = 'stress_level';
+  static const stressIndex = 'stress_index';
+  static const normalizedStressIndex = 'normalized_stress_index';
+  static const sdnn = 'sdnn';
+  static const meanRri = 'mean_rri';
+  static const rmssd = 'rmssd';
+  static const pnsZone = 'pns_zone';
+  static const pnsIndex = 'pns_index';
+  static const snsZone = 'sns_zone';
+  static const snsIndex = 'sns_index';
+  static const sd1 = 'sd1';
+  static const sd2 = 'sd2';
+  static const lfhf = 'lfhf';
+}

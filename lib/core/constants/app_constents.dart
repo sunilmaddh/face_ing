@@ -29,6 +29,7 @@ class AppConstents {
   dob = 'Date of Birth',
   weight = "Weight (kg)",
   height = "Height (cm)",
+  selectVital = "Select Vital",
   message =
       "This application is not a medical device. Measurement results cannot be used for the diagnosis, treatment or prevention of disease. If you are unsure about your health, please use medical equipment to measure the exact value.",
   congractText = " Congratulation! Your Account created successfully. ",

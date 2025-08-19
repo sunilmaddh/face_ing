@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
-class CustomTabBarView extends StatelessWidget {
-  CustomTabBarView({
+class GraphTabBarWidget extends StatelessWidget {
+  GraphTabBarWidget({
     super.key,
     required this.tabWidgets,
     required this.tabBarWidgets,
@@ -24,7 +24,7 @@ class CustomTabBarView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+              // padding: EdgeInsets.only(top: 5, bottom: 0, left: 10, right: 10),
               // alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
                 color: AppColors.btntext,
@@ -32,26 +32,41 @@ class CustomTabBarView extends StatelessWidget {
               ),
               child: TabBar(
                 tabAlignment: TabAlignment.start, // add this line
-
                 padding: EdgeInsets.zero,
                 isScrollable: true,
                 labelStyle: TextStyle(
-                  fontSize: AppDimensions.font(16),
+                  fontSize:
+                      isNotRadius
+                          ? AppDimensions.font(12)
+                          : AppDimensions.font(16),
                   fontWeight: FontWeight.w400,
                   fontFamily: "Gilroy-Medium",
                 ),
                 labelPadding: EdgeInsets.zero, // Removes internal gap
                 dividerColor: Colors.transparent,
-                labelColor: AppColors.btntext,
+                labelColor:
+                    isNotRadius ? AppColors.primary : AppColors.blackColor,
                 unselectedLabelColor: Colors.grey,
                 indicatorSize: TabBarIndicatorSize.tab,
+                indicatorPadding: EdgeInsets.zero,
                 indicator:
                     isNotRadius == false
                         ? BoxDecoration(
-                          color: AppColors.primary,
+                          color: AppColors.historyCardColor,
                           borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            width: 1,
+                            color: AppColors.searchColor,
+                          ),
                         )
-                        : BoxDecoration(),
+                        : BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 3,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
                 tabs:
                     tabWidgets.map((tab) {
                       return Tab(
@@ -60,8 +75,9 @@ class CustomTabBarView extends StatelessWidget {
                             horizontal: 5,
                           ), // Your custom spacing
                           padding: EdgeInsets.symmetric(
-                            horizontal: AppDimensions.width(16),
-                            vertical: AppDimensions.height(8),
+                            horizontal:
+                                isNotRadius ? 0 : AppDimensions.width(10),
+                            // vertical: AppDimensions.height(8),
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
@@ -72,7 +88,16 @@ class CustomTabBarView extends StatelessWidget {
                     }).toList(),
               ),
             ),
-            SizedBox(height: AppDimensions.height(20)),
+            SizedBox(height: AppDimensions.height(10)),
+            isNotRadius == false
+                ? Divider(
+                  height: 2,
+                  thickness: 4,
+                  color: AppColors.historyCardColor,
+                )
+                : SizedBox.shrink(),
+
+            // SizedBox(height: AppDimensions.height(20)),
             Expanded(child: TabBarView(children: tabBarWidgets)),
           ],
         ),

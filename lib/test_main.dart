@@ -1,18 +1,19 @@
-import 'package:awesome_datetime_picker/awesome_datetime_picker.dart';
+import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
-import 'package:ntt_data/widgets/button/primary_button.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:ntt_data/widgets/bar/graph_tab_bar_widget.dart';
+import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
-import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
-import 'package:flutter/cupertino.dart';
 
 void main() => runApp(const MyApp());
 
@@ -29,812 +30,158 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(backgroundColor: AppColors.btntext),
         ),
-        home: DemoApi(),
-        initialRoute: "demo_api",
+        home: VitalGraphHistory(),
+
         // getPages: AppPages.getPages,
       ),
     );
   }
 }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
+class VitaHistoryScreen extends StatelessWidget {
+  const VitaHistoryScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 600,
+      padding: AppDimensions.symmetric(horizontal: 20),
+      color: AppColors.btntext,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [VitalGraphFirstCard()],
+      ),
+    );
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: DemoApi(),
-//     );
-//   }
-// }
+class VitalGraphHistory extends StatelessWidget {
+  const VitalGraphHistory({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(
+        onTop: () {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            AppNavigation.back();
+          });
+        },
+        title: "Vital History",
+      ),
+      backgroundColor: AppColors.historyCardColor,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Container(
+          color: AppColors.btntext,
+          child: Column(
+            children: [
+              FirstLineVitalHistory(),
+              20.verticalSpace,
+              VitalGraphFirstCard(),
+              30.verticalSpace,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-class DemoApi extends StatelessWidget {
-  DemoApi({super.key});
-
-  final editController = TextEditingController();
+// ignore: must_be_immutable
+class VitalGraphFirstCard extends StatelessWidget {
+  VitalGraphFirstCard({super.key});
+  List<Widget> tabWidget = [];
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-
-    final double ovalWidth = screenSize.width * 0.8;
-    final double ovalHeight = screenSize.height * 0.5;
-
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            PrimaryButton(
-              text: "Ok",
-              onPressed: () {
-                showCupertinoPickerDialog(context);
-                // showFullWidthCupertinoDatePicker(
-                //   context: context,
-                //   initialDate: DateTime.now(),
-                //   minDate: DateTime(1930),
-                //   maxDate: DateTime.now(),
-                //   onDateSelected: (picked) {
-                //     print("Date Picked: $picked");
-                //   },
-                // );
-                // showCupertinoDatePickerDialog(
-                //   context: context,
-                //   initialDate: DateTime.now(),
-                //   minDate: DateTime(2000),
-                //   maxDate: DateTime(2030),
-                //   onDateSelected: (selectedDate) {
-                //     print("Selected date: $selectedDate");
-                //   },
-                // );
-                // showFullWidthListDialog(
-                //   context,
-                //   GuestHalper.heightList,
-                //   5,
-                //   "Select your Height",
-                // );
-              },
-            ),
-
-            // SizedBox(height: 30),
-            // PrimaryButton(
-            //   text: "Date Picker",
-            //   onPressed: () async {
-            //     // showAwesomeDatePickerDialog(
-            //     //   context: context,
-            //     //   minDate: AwesomeDate(year: 2025, month: 2, day: 15),
-            //     //   maxDate: AwesomeDate(year: 2026, month: 10, day: 10),
-            //     //   onChanged: (AwesomeDate date) {
-            //     //     print("Selected: ${date.day}/${date.month}/${date.year}");
-            //     //   },
-            //     // );
-            //     await DatePicker.showSimpleDatePicker(
-            //       itemTextStyle: TextStyle(
-            //         fontSize: AppDimensions.font(18),
-            //         fontWeight: FontWeight.w700,
-            //         fontFamily: "Manrope",
-            //       ),
-            //       context,
-            //       // initialDate: DateTime(2020),
-            //       firstDate: DateTime(1930),
-            //       lastDate: DateTime.now(),
-            //       pickerMode: DateTimePickerMode.date,
-            //       dateFormat: "dd-MMMM-yyyy",
-            //       locale: DateTimePickerLocale.en_us,
-            //     );
-            //   },
-            // ),
-          ],
+    tabWidget = <Widget>[
+      _buildWidget(
+        AppMethods().tabWellnessWidgets,
+        AppMethods().tabBarWellnessWidget,
+      ),
+      _buildWidget(
+        AppMethods().tabVitalSignWidgets,
+        AppMethods().tabBarVitalSignWidget,
+      ),
+      _buildWidget(
+        AppMethods().tabBBTWidgets,
+        AppMethods().tabBarBloodlessWidget,
+      ),
+      _buildWidget(AppMethods().tabRiskWidgets, AppMethods().tabBarRiskWidget),
+      _buildWidget(
+        AppMethods().tabStressWidgets,
+        AppMethods().tabBarStressWidget,
+      ),
+      _buildWidget(AppMethods().tabHRBWidgets, AppMethods().tabBaAHRVWidget),
+      _buildWidget(AppMethods().tabAHRVWidgets, AppMethods().tabBaAHRVWidget),
+    ];
+    return SizedBox(
+      height: 500,
+      child: Expanded(
+        child: GraphTabBarWidget(
+          isNotRadius: false,
+          tabWidgets: AppMethods().tabGraphWidgets,
+          tabBarWidgets: tabWidget,
         ),
       ),
-      //  IndoCommonCard(
-      //   vitalName: "Heart rate",
-      //   vitalCondition: "Avg 6-10",
-      //   vitalDescription:
-      //       "cdfdijodihofduhfgioffoisdhudsfhdsufsdshdshfdsihofdshdfs",
-      //   vitalHeading: "Your Heart rate is low",
-      // ),
     );
   }
 
-  void showCupertinoPickerDialog(BuildContext context) {
-    List<String> items = List.generate(20, (index) => 'Item ${index + 1}');
-    int selectedIndex = 0;
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: const Text("Select Item"),
-          content: SizedBox(
-            height: 150,
-            child: CupertinoPicker(
-              itemExtent: 32,
-              onSelectedItemChanged: (int index) {
-                selectedIndex = index;
-              },
-              children: items.map((e) => Text(e)).toList(),
-            ),
-          ),
-          actions: [
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              child: const Text("Cancel"),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            CupertinoDialogAction(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                debugPrint('Selected: ${items[selectedIndex]}');
-              },
-            ),
-          ],
-        );
-      },
+  _buildWidget(List<Widget> tabWidget, List<Widget> tabBarWidget) {
+    return Expanded(
+      child: Container(
+        color: AppColors.historyCardColor,
+        child: GraphTabBarWidget(
+          tabWidgets: tabWidget,
+          tabBarWidgets: tabBarWidget,
+          isNotRadius: true,
+        ),
+      ),
     );
   }
+}
 
-  void showFullWidthCupertinoDatePicker({
-    required BuildContext context,
-    required DateTime initialDate,
-    required DateTime minDate,
-    required DateTime maxDate,
-    required Function(DateTime) onDateSelected,
-  }) {
-    DateTime selectedDate = initialDate;
+DateTime firstDate = DateTime(2025);
+DateTime lastDate = DateTime.now();
+final List<String> items = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
 
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.white,
-          insetPadding: const EdgeInsets.all(
-            16,
-          ), // Controls margin from screen edges
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+class FirstLineVitalHistory extends StatelessWidget {
+  const FirstLineVitalHistory({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: AppDimensions.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CommonText.text(
+            fontFamily: AppTextStyles.fontFamilyGilroy,
+            fontSize: AppDimensions.font(12),
+            fontWeight: FontWeight.w400,
+            AppConstents.selectVital,
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "Select Date",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: AppDimensions.height(250),
-                  width: double.infinity,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: initialDate,
-                    minimumDate: minDate,
-                    maximumDate: maxDate,
-                    onDateTimeChanged: (DateTime newDate) {
-                      selectedDate = newDate;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: AppDimensions.height(45),
-                          // width:
-                          //     isShowCancelButton
-                          //         ? AppDimensions.width(120)
-                          //         : AppDimensions.width(240),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context); // Close dialog
-                              // onConfirm(); // Execute delete action
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                            ),
-                            child: CommonText.text(
-                              "OK",
-                              color: AppColors.btntext,
-                            ),
-                          ),
+          Row(
+            children: [
+              CustomDropdown(),
+
+              IconButton(
+                onPressed: () async {
+                  showDialog<CustomDateRangePicker>(
+                    context: context,
+                    builder:
+                        (context) => CustomDateRangePicker(
+                          primaryColor: AppColors.primary,
+                          backgroundColor: AppColors.btntext,
+                          onApplyClick: (v, v2) {},
+                          minimumDate: firstDate,
+                          onCancelClick: () {},
+                          maximumDate: lastDate,
+                          initialStartDate: DateTime.now(),
                         ),
-                      ),
-                      SizedBox(width: AppDimensions.width(20)),
-                      // isShowCancelButton
-                      //     ? SizedBox(width: AppDimensions.width(10))
-                      //     : SizedBox.shrink(),
-                      Expanded(
-                        child: SizedBox(
-                          height: AppDimensions.height(45),
-
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context); // Close dialog
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.btntext,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-
-                                side: BorderSide(
-                                  color: AppColors.deleteDesColor,
-                                ),
-                              ),
-                            ),
-                            child: CommonText.text(
-                              "Cancel",
-                              color: AppColors.backArrowColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: [
-                //     PrimaryButton(
-                //       onPressed: () => Navigator.of(context).pop(),
-                //       text: 'OK',
-                //     ),
-                //     CupertinoButton(
-                //       child: const Text("Done"),
-                //       onPressed: () {
-                //         Navigator.of(context).pop();
-                //         onDateSelected(selectedDate);
-                //       },
-                //     ),
-                //   ],
-                // ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void showCenteredCupertinoDatePicker({
-    required BuildContext context,
-    required DateTime initialDate,
-    required DateTime minDate,
-    required DateTime maxDate,
-    required Function(DateTime) onDateSelected,
-  }) {
-    DateTime selectedDate = initialDate;
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: const Text("Select Date"),
-          content: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 200,
-            child: CupertinoDatePicker(
-              mode: CupertinoDatePickerMode.date,
-              initialDateTime: initialDate,
-              minimumDate: minDate,
-              maximumDate: maxDate,
-              onDateTimeChanged: (DateTime newDate) {
-                selectedDate = newDate;
-              },
-            ),
-          ),
-          actions: [
-            CupertinoDialogAction(
-              child: const Text("Cancel"),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            CupertinoDialogAction(
-              child: const Text("Done"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                onDateSelected(selectedDate);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void showCupertinoDateDialog({
-    required BuildContext context,
-    required DateTime initialDate,
-    required DateTime minDate,
-    required DateTime maxDate,
-    required Function(DateTime) onDateSelected,
-  }) {
-    DateTime selectedDate = initialDate;
-
-    showCupertinoDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: const Text("Select Date"),
-          content: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 180,
-            child: CupertinoDatePicker(
-              mode: CupertinoDatePickerMode.date,
-              initialDateTime: initialDate,
-              minimumDate: minDate,
-              maximumDate: maxDate,
-              onDateTimeChanged: (DateTime newDate) {
-                selectedDate = newDate;
-              },
-            ),
-          ),
-          actions: [
-            CupertinoDialogAction(
-              child: const Text("Cancel"),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            CupertinoDialogAction(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                onDateSelected(selectedDate);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void showCupertinoDatePickerDialog({
-    required BuildContext context,
-    required DateTime initialDate,
-    required DateTime minDate,
-    required DateTime maxDate,
-    required Function(DateTime) onDateSelected,
-  }) {
-    showCupertinoModalPopup(
-      context: context,
-      builder:
-          (_) => Container(
-            height: 300,
-            color: Colors.white,
-            child: Column(
-              children: [
-                // Done button
-                Container(
-                  height: 50,
-                  color: Colors.grey[200],
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      CupertinoButton(
-                        child: const Text("Done"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          onDateSelected(tempPickedDate);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-
-                // CupertinoDatePicker
-                Expanded(
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: initialDate,
-                    minimumDate: minDate,
-                    maximumDate: maxDate,
-                    onDateTimeChanged: (DateTime newDate) {
-                      tempPickedDate = newDate;
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-    );
-  }
-
-  DateTime tempPickedDate = DateTime.now(); // Temporary variable
-
-  void showListDialog(BuildContext context, String title) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 200,
-          child: AlertDialog(
-            title: Text(title, textAlign: TextAlign.center),
-            content: AwesomeDatePicker(
-              dateFormat: AwesomeDateFormat.dMMy,
-              minDate: AwesomeDate(year: 2025, month: 2, day: 15),
-              maxDate: AwesomeDate(year: 2026, month: 10, day: 10),
-              onChanged: (AwesomeDate date) {
-                print(
-                  "----Date changed : ${date.day}/${date.month}/${date.year}\n",
-                );
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void showCupertinoSpinnerDialog(BuildContext context) {
-    List<String> items = List.generate(50, (index) => 'Item ${index + 1}');
-    int selectedIndex = 0;
-
-    showCupertinoModalPopup(
-      context: context,
-      builder:
-          (_) => Container(
-            height: 300,
-            color: CupertinoColors.systemBackground.resolveFrom(context),
-            child: Column(
-              children: [
-                // Toolbar with Done button
-                Container(
-                  color: CupertinoColors.secondarySystemBackground.resolveFrom(
-                    context,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CupertinoButton(
-                        child: const Text('Cancel'),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      CupertinoButton(
-                        child: const Text('Done'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          debugPrint('Selected: ${items[selectedIndex]}');
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Cupertino Spinner (Picker)
-                Expanded(
-                  child: CupertinoPicker(
-                    itemExtent: 40,
-                    scrollController: FixedExtentScrollController(
-                      initialItem: 0,
-                    ),
-                    onSelectedItemChanged: (int index) {
-                      selectedIndex = index;
-                    },
-                    children:
-                        items
-                            .map(
-                              (item) => Center(
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(fontSize: 18),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-    );
-  }
-
-  void showCupertinoListDialog(BuildContext context) {
-    showCupertinoDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: const Text('Select an Item'),
-          content: SizedBox(
-            height: 250, // Set height for the scrollable list
-            child: CupertinoScrollbar(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context); // Close dialog
-                      print('Selected item $index');
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 16,
-                      ),
-                      child: Text(
-                        'Item ${index + 1}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
                   );
                 },
+                icon: Icon(Icons.date_range),
               ),
-            ),
-          ),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void showAwesomeDatePickerDialog({
-    required BuildContext context,
-    required AwesomeDate minDate,
-    required AwesomeDate maxDate,
-    required Function(AwesomeDate) onChanged,
-  }) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Flexible(
-              child: AwesomeDatePicker(
-                dateFormat: AwesomeDateFormat.dMMy,
-                minDate: minDate,
-                maxDate: maxDate,
-                onChanged: onChanged,
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void showFullWidthListDialog(
-    BuildContext context,
-    List<String> items,
-    int columns,
-    String title,
-  ) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        int rows = (items.length / columns).ceil();
-        return Dialog(
-          insetPadding: const EdgeInsets.all(16), // Control outer margin
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width, // 90% of screen width
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: AppDimensions.font(18),
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "Manrope",
-                      ),
-                    ),
-                    SizedBox(height: AppDimensions.height(15)),
-                    Column(
-                      children: List.generate(rows, (rowIndex) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: List.generate(columns, (colIndex) {
-                            int itemIndex = rowIndex * columns + colIndex;
-                            if (itemIndex < items.length) {
-                              return Expanded(
-                                child: InkWell(
-                                  onTap: () {
-                                    items[itemIndex];
-                                    debugPrint(
-                                      "Select Height ${items[itemIndex]}",
-                                    );
-                                    Get.back();
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.all(6),
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: AppColors.borderColor,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        items[itemIndex],
-                                        style: TextStyle(
-                                          fontSize: AppDimensions.font(14),
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: "Gilroy-Medium",
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return const Expanded(child: SizedBox());
-                            }
-                          }),
-                        );
-                      }),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class CommonDropdownTextFieldDemo extends StatelessWidget {
-  final String label;
-  final List<String> options;
-  final TextEditingController controller;
-  final FormFieldValidator<String>? validator;
-  final double borderRadius;
-  final Color borderColor;
-  final void Function(String?)? onChanged;
-
-  const CommonDropdownTextFieldDemo({
-    super.key,
-    required this.label,
-    required this.options,
-    required this.controller,
-    this.onChanged,
-    this.borderColor = AppColors.textFieldColor,
-    this.borderRadius = 8.0,
-    this.validator,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      validator: validator,
-      onChanged: (value) {},
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: BorderSide(color: borderColor, width: 1),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: BorderSide(color: AppColors.primary, width: 1),
-        ),
-
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: BorderSide(color: borderColor, width: 1),
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          vertical: AppDimensions.height(12),
-          horizontal: AppDimensions.width(15.0),
-        ),
-        suffixIcon: PopupMenuButton<String>(
-          icon: Icon(Icons.arrow_drop_down),
-          onSelected: (String value) {
-            controller.text = value;
-            debugPrint(controller.text);
-          },
-          itemBuilder: (BuildContext context) {
-            return options.map((String option) {
-              return PopupMenuItem<String>(value: option, child: Text(option));
-            }).toList();
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class DateTimePickerDemo extends StatelessWidget {
-  const DateTimePickerDemo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TimePickerSpinnerPopUp(
-      mode: CupertinoDatePickerMode.monthYear,
-      initTime: DateTime.now(),
-      minTime: DateTime.now().subtract(const Duration(days: 10)),
-      maxTime: DateTime.now().add(const Duration(days: 10)),
-      barrierColor: Colors.black12, //Barrier Color when pop up show
-      minuteInterval: 1,
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      cancelText: 'Cancel',
-      confirmText: 'OK',
-      enable: true,
-      radius: 10,
-      pressType: PressType.singlePress,
-      timeFormat: 'dd/MM/yyyy',
-      // Customize your time widget
-      // timeWidgetBuilder: (dateTime) {},
-      locale: const Locale('vi'),
-      onChange: (dateTime) {
-        // Implement your logic with select dateTime
-      },
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: Colors.white,
-      appBar: AppBar(title: Text(widget.title)),
-      body: Stack(
-        children: [
-          Positioned(
-            left: 30,
-            top: 60,
-            child: TimePickerSpinnerPopUp(
-              mode: CupertinoDatePickerMode.monthYear,
-              initTime: DateTime.now(),
-              minTime: DateTime.now().subtract(const Duration(days: 10)),
-              maxTime: DateTime.now().add(const Duration(days: 10)),
-              barrierColor: Colors.black12, //Barrier Color when pop up show
-              minuteInterval: 1,
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-              cancelText: 'Cancel',
-              confirmText: 'OK',
-              enable: true,
-              radius: 10,
-              pressType: PressType.singlePress,
-              timeFormat: 'dd/MM/yyyy',
-              // Customize your time widget
-              // timeWidgetBuilder: (dateTime) {},
-              locale: const Locale('vi'),
-              onChange: (dateTime) {
-                // Implement your logic with select dateTime
-              },
-            ),
+            ],
           ),
         ],
       ),
@@ -842,35 +189,481 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class CupertinoListExample extends StatelessWidget {
-  const CupertinoListExample({super.key});
+class BarChartSample3 extends StatefulWidget {
+  const BarChartSample3({super.key});
+  final Color leftBarColor = AppColors.primary;
+  final Color rightBarColor = AppColors.borderColor;
+  // final Color avgColor =
+  //     AppColors.contentColorOrange.avg(AppColors.contentColorRed);
+  @override
+  State<StatefulWidget> createState() => BarChartSample3State();
+}
+
+class BarChartSample3State extends State<BarChartSample3> {
+  final double width = 7;
+
+  late List<BarChartGroupData> rawBarGroups;
+  late List<BarChartGroupData> showingBarGroups;
+
+  int touchedGroupIndex = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    final barGroup1 = makeGroupData(0, 8, 12);
+    final barGroup2 = makeGroupData(1, 16, 12);
+    // final barGroup3 = makeGroupData(2, 18, 5);
+    // final barGroup4 = makeGroupData(3, 20, 16);
+    // final barGroup5 = makeGroupData(4, 17, 6);
+    // final barGroup6 = makeGroupData(5, 19, 1.5);
+    // final barGroup7 = makeGroupData(6, 1, 1.5);
+
+    final items = [
+      barGroup1,
+      barGroup2,
+      // barGroup3,
+      // barGroup4,
+      // barGroup5,
+      // barGroup6,
+      // barGroup7,
+    ];
+
+    rawBarGroups = items;
+
+    showingBarGroups = rawBarGroups;
+  }
+
+  List<Widget> tabWidget = [];
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SizedBox(height: 38),
+            Expanded(
+              child: BarChart(
+                BarChartData(
+                  maxY: 20,
+                  barTouchData: BarTouchData(
+                    touchTooltipData: BarTouchTooltipData(
+                      getTooltipColor: ((group) {
+                        return Colors.grey;
+                      }),
+                      getTooltipItem: (a, b, c, d) => null,
+                    ),
+                    touchCallback: (FlTouchEvent event, response) {
+                      if (response == null || response.spot == null) {
+                        setState(() {
+                          touchedGroupIndex = -1;
+                          showingBarGroups = List.of(rawBarGroups);
+                        });
+                        return;
+                      }
+
+                      touchedGroupIndex = response.spot!.touchedBarGroupIndex;
+
+                      setState(() {
+                        if (!event.isInterestedForInteractions) {
+                          touchedGroupIndex = -1;
+                          showingBarGroups = List.of(rawBarGroups);
+                          return;
+                        }
+                        showingBarGroups = List.of(rawBarGroups);
+                        if (touchedGroupIndex != -1) {
+                          var sum = 0.0;
+                          for (final rod
+                              in showingBarGroups[touchedGroupIndex].barRods) {
+                            sum += rod.toY;
+                          }
+                          final avg =
+                              sum /
+                              showingBarGroups[touchedGroupIndex]
+                                  .barRods
+                                  .length;
+
+                          showingBarGroups[touchedGroupIndex] =
+                              showingBarGroups[touchedGroupIndex].copyWith(
+                                // barRods: showingBarGroups[touchedGroupIndex]
+                                //     .barRods
+                                //     .map((rod) {
+                                //   return rod.copyWith(
+                                //       toY: avg, color: widget.avgColor);
+                                // }).toList(),
+                              );
+                        }
+                      });
+                    },
+                  ),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: bottomTitles,
+                        reservedSize: 42,
+                      ),
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 28,
+                        interval: 1,
+                        getTitlesWidget: leftTitles,
+                      ),
+                    ),
+                  ),
+                  borderData: FlBorderData(show: false),
+                  barGroups: showingBarGroups,
+                  gridData: const FlGridData(show: false),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget leftTitles(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Color(0xff7589a2),
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    );
+    String text;
+    if (value == 0) {
+      text = '1K';
+    } else if (value == 10) {
+      text = '5K';
+    } else if (value == 19) {
+      text = '10K';
+    } else {
+      return Container();
+    }
+    return SideTitleWidget(
+      meta: meta,
+      space: 0,
+      child: Text(text, style: style),
+    );
+  }
+
+  Widget bottomTitles(double value, TitleMeta meta) {
+    // final titles = <String>['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final titles = <String>["10.00AM", "10.05AM", "10.30AM", "10.45AM"];
+    final Widget text = Text(
+      titles[value.toInt()],
+      style: const TextStyle(
+        color: Color(0xff7589a2),
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      ),
+    );
+
+    return SideTitleWidget(
+      meta: meta,
+      space: 16, //margin top
+      child: text,
+    );
+  }
+
+  BarChartGroupData makeGroupData(int x, double y1, double y2) {
+    return BarChartGroupData(
+      barsSpace: 4,
+      x: x,
+      barRods: [
+        BarChartRodData(toY: y1, color: widget.leftBarColor, width: width),
+        BarChartRodData(toY: y2, color: widget.rightBarColor, width: width),
+      ],
+    );
+  }
+
+  Widget makeTransactionsIcon() {
+    const width = 4.5;
+    const space = 3.5;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          width: width,
+          height: 10,
+          color: Colors.white.withValues(alpha: 0.4),
+        ),
+        const SizedBox(width: space),
+        Container(
+          width: width,
+          height: 28,
+          color: Colors.white.withValues(alpha: 0.8),
+        ),
+        const SizedBox(width: space),
+        Container(
+          width: width,
+          height: 42,
+          color: Colors.white.withValues(alpha: 1),
+        ),
+        const SizedBox(width: space),
+        Container(
+          width: width,
+          height: 28,
+          color: Colors.white.withValues(alpha: 0.8),
+        ),
+        const SizedBox(width: space),
+        Container(
+          width: width,
+          height: 10,
+          color: Colors.white.withValues(alpha: 0.4),
+        ),
+      ],
+    );
+  }
+}
+
+class _BarChart extends StatelessWidget {
+  const _BarChart();
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Cupertino List'),
+    return BarChart(
+      BarChartData(
+        barTouchData: barTouchData,
+        titlesData: titlesData,
+        borderData: borderData,
+        barGroups: barGroups,
+        gridData: const FlGridData(show: false),
+        alignment: BarChartAlignment.spaceAround,
+        maxY: 20,
       ),
-      child: SafeArea(
-        child: ListView.separated(
-          itemCount: 30,
-          separatorBuilder: (context, index) => const Divider(height: 1),
-          itemBuilder: (context, index) {
-            return CupertinoListTile(
-              title: Text(
-                'Item ${index + 1}',
-                style: TextStyle(color: Colors.black),
-              ),
-              subtitle: Text('Details for item ${index + 1}'),
-              leading: const Icon(CupertinoIcons.circle),
-              trailing: const Icon(CupertinoIcons.forward),
-              onTap: () {
-                print('Tapped Item ${index + 1}');
-              },
-            );
+    );
+  }
+
+  BarTouchData get barTouchData => BarTouchData(
+    enabled: false,
+    touchTooltipData: BarTouchTooltipData(
+      getTooltipColor: (group) => Colors.transparent,
+      tooltipPadding: EdgeInsets.zero,
+      tooltipMargin: 8,
+      getTooltipItem: (
+        BarChartGroupData group,
+        int groupIndex,
+        BarChartRodData rod,
+        int rodIndex,
+      ) {
+        return BarTooltipItem(
+          rod.toY.round().toString(),
+          const TextStyle(
+            color: AppColors.blackColor,
+            fontWeight: FontWeight.bold,
+          ),
+        );
+      },
+    ),
+  );
+
+  Widget getTitles(double value, TitleMeta meta) {
+    final style = TextStyle(
+      color: AppColors.primary,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    );
+    String text;
+    switch (value.toInt()) {
+      case 0:
+        text = 'Mn';
+        break;
+      case 1:
+        text = 'Te';
+        break;
+      case 2:
+        text = 'Wd';
+        break;
+      case 3:
+        text = 'Tu';
+        break;
+      case 4:
+        text = 'Fr';
+        break;
+      case 5:
+        text = 'St';
+        break;
+      case 6:
+        text = 'Sn';
+        break;
+      default:
+        text = '';
+        break;
+    }
+    return SideTitleWidget(
+      meta: meta,
+      space: 4,
+      child: Text(text, style: style),
+    );
+  }
+
+  FlTitlesData get titlesData => FlTitlesData(
+    show: true,
+    bottomTitles: AxisTitles(
+      sideTitles: SideTitles(
+        showTitles: true,
+        reservedSize: 30,
+        getTitlesWidget: getTitles,
+      ),
+    ),
+    leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+  );
+
+  FlBorderData get borderData => FlBorderData(show: false);
+
+  LinearGradient get _barsGradient => LinearGradient(
+    colors: [AppColors.primary, AppColors.blackColor],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
+
+  List<BarChartGroupData> get barGroups => [
+    BarChartGroupData(
+      x: 0,
+      barRods: [BarChartRodData(toY: 8, gradient: _barsGradient)],
+      showingTooltipIndicators: [0],
+    ),
+    BarChartGroupData(
+      x: 1,
+      barRods: [BarChartRodData(toY: 10, gradient: _barsGradient)],
+      showingTooltipIndicators: [0],
+    ),
+    BarChartGroupData(
+      x: 2,
+      barRods: [BarChartRodData(toY: 14, gradient: _barsGradient)],
+      showingTooltipIndicators: [0],
+    ),
+    BarChartGroupData(
+      x: 3,
+      barRods: [BarChartRodData(toY: 15, gradient: _barsGradient)],
+      showingTooltipIndicators: [0],
+    ),
+    BarChartGroupData(
+      x: 4,
+      barRods: [BarChartRodData(toY: 13, gradient: _barsGradient)],
+      showingTooltipIndicators: [0],
+    ),
+    BarChartGroupData(
+      x: 5,
+      barRods: [BarChartRodData(toY: 10, gradient: _barsGradient)],
+      showingTooltipIndicators: [0],
+    ),
+    BarChartGroupData(
+      x: 6,
+      barRods: [BarChartRodData(toY: 16, gradient: _barsGradient)],
+      showingTooltipIndicators: [0],
+    ),
+  ];
+}
+
+class VitalGraphWidget extends StatefulWidget {
+  const VitalGraphWidget({super.key});
+  @override
+  State<StatefulWidget> createState() => VitalGraphWidgetState();
+}
+
+class VitalGraphWidgetState extends State<VitalGraphWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return CommonCard(
+      color: AppColors.btntext,
+      widget: const AspectRatio(aspectRatio: 1.6, child: _BarChart()),
+    );
+  }
+}
+
+class CustomDropdown extends StatefulWidget {
+  const CustomDropdown({super.key});
+
+  @override
+  State<CustomDropdown> createState() => _CustomDropdownState();
+}
+
+class _CustomDropdownState extends State<CustomDropdown> {
+  String selectedValue = "Weekly";
+
+  final List<String> items = ["Weekly", "Monthly", "Yearly"];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: AppDimensions.symmetric(horizontal: 10),
+      height: AppDimensions.height(45),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: selectedValue,
+          icon: Icon(Icons.keyboard_arrow_down_sharp, color: AppColors.btntext),
+          dropdownColor: AppColors.primary,
+          style: TextStyle(
+            fontFamily: AppTextStyles.fontFamilyGilroy,
+            fontSize: AppDimensions.font(12),
+            fontWeight: FontWeight.w400,
+            color: AppColors.btntext,
+          ),
+          onChanged: (String? newValue) {
+            setState(() {
+              selectedValue = newValue!;
+            });
           },
+          items:
+              items.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: CommonText.text(
+                    value,
+                    fontFamily: AppTextStyles.fontFamilyGilroy,
+                    fontSize: AppDimensions.font(12),
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.btntext,
+                  ),
+                );
+              }).toList(),
         ),
       ),
     );
   }
 }
+
+
+// class VitalGraphHistory extends StatelessWidget {
+//   const VitalGraphHistory({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: AppColors.historyCardColor,
+//       body: Column(children: [CommonCard(widget: VitalGraphWidget())]),
+//     );
+//   }
+// }
+
+
+
+
+// class GraphWidget extends StatelessWidget {
+//   const GraphWidget({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return 
+//   }
+// }
+

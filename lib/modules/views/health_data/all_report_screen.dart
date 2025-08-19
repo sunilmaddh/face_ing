@@ -63,6 +63,8 @@ class _AllReportScreenState extends State<AllReportScreen>
       vitalDescription: vitalDescription,
       isExpand: isExpand,
       expandedWidget: expandedWidget,
+      onTop: () {},
+      onInfoTop: () {},
     );
   }
 

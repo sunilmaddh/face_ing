@@ -40,6 +40,7 @@ class UserHealthDetails extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: CustomTabBarView(
+          isNotRadius: false,
           tabWidgets: AppMethods().tabWidgets,
           tabBarWidgets: tabWidget,
         ),
