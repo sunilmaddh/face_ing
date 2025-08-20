@@ -11,7 +11,7 @@ class ScanButton extends StatelessWidget {
   final double borderRadius;
   final double padding;
   final double width;
-  final isLoading;
+  final bool isLoading;
 
   const ScanButton({
     super.key,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
@@ -9,9 +8,9 @@ import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
-import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 import 'package:ntt_data/widgets/indo_sakura_common_card.dart';
 
+// ignore: must_be_immutable
 class GuestHistoryDetails extends StatelessWidget {
   GuestHistoryDetails({super.key});
   final _controller = Get.find<GeustController>();
@@ -45,7 +44,7 @@ class GuestHistoryDetails extends StatelessWidget {
         ),
         child: CustomTabBarView(
           isNotRadius: false,
-          tabWidgets: AppMethods().tabWidgets,
+          tabWidgets: AppMethods.tabWidgets,
           tabBarWidgets: tabWidget,
         ),
       ),

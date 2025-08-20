@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
+// ignore: must_be_immutable
 class UserHistoryCard extends StatelessWidget {
   UserHistoryCard({super.key, required this.scanId, required this.dateTime});
   final String scanId;

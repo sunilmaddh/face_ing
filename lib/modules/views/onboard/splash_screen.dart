@@ -11,8 +11,8 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize the controller and trigger its logic
     Future.microtask(() {
+      // ignore: use_build_context_synchronously
       NetworkUtil.checkInternet(context);
       _onboardController.checkUserStatus();
     });

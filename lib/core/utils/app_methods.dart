@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/demo/bar_chart_sample_4.dart';
+import 'package:ntt_data/demo/vital_graph_widget.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -302,85 +304,25 @@ class AppMethods {
     return level;
   }
 
-  List<Widget> tabWidgets = [
-    Tab(text: "All"),
-    Tab(text: "Basic Vital Signs"),
-    Tab(text: "Bloodless Blood Tests"),
-    Tab(text: "Risks"),
-    Tab(text: "Stress"),
-    Tab(text: "Heart Rate Variability"),
-    Tab(text: "Advanced Heart Rate Variability"),
-  ];
-  List<Widget> tabGraphWidgets = [
-    Tab(text: "Wellness"),
-    Tab(text: "Basic Vital Signs"),
-    Tab(text: "Bloodless Blood Tests"),
-    Tab(text: "Risks"),
-    Tab(text: "Stress"),
-    Tab(text: "Heart Rate Variability"),
-    Tab(text: "Advanced Heart Rate Variability"),
-  ];
-  List<Widget> tabWellnessWidgets = [Tab(text: "Wellness")];
-  List<Widget> tabVitalSignWidgets = [
-    Tab(text: "Breathing Rate"),
-    Tab(text: "Pulse Rate(Heart Rate)"),
-    Tab(text: "PRQ"),
-    Tab(text: "Blood Pressure"),
-    Tab(text: "Oxyzen Saturation"),
-  ];
-  List<Widget> tabBBTWidgets = [
-    Tab(text: "Hemoglobin"),
-    Tab(text: "Hemoglobin A1C"),
-  ];
-  List<Widget> tabRiskWidgets = [
-    Tab(text: "ASCVD Risk"),
-    Tab(text: "High Blood Pressure Risk"),
-    Tab(text: "High HbA1c Risk"),
-    Tab(text: "High Fasting Glucose Risk"),
-    Tab(text: "High Total Cholesterol Risk"),
-    Tab(text: "Low Hemoglobin Risk"),
-  ];
-  List<Widget> tabStressWidgets = [Tab(text: "Stress Level")];
-  List<Widget> tabHRBWidgets = [Tab(text: "HRV SDNN")];
-  List<Widget> tabAHRVWidgets = [
-    Tab(text: "PNS Zone"),
-    Tab(text: "PNS INdex"),
-    Tab(text: "SNS Zone"),
-    Tab(text: "SNS Index"),
-    Tab(text: "SD1"),
-    Tab(text: "SD2"),
-    Tab(text: "LF/HF"),
-  ];
+  // List<Widget> tabWidgets = [
+  //   Tab(text: "All"),
+  //   Tab(text: "Basic Vital Signs"),
+  //   Tab(text: "Bloodless Blood Tests"),
+  //   Tab(text: "Risks"),
+  //   Tab(text: "Stress"),
+  //   Tab(text: "Heart Rate Variability"),
+  //   Tab(text: "Advanced Heart Rate Variability"),
+  // ];
 
-  List<Widget> tabBarWellnessWidget = <Widget>[VitalGraphWidget()];
-  List<Widget> tabBarVitalSignWidget = <Widget>[
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
+  static const List<String> tabTitles = [
+    "All",
+    "Basic Vital Signs",
+    "Bloodless Blood Tests",
+    "Risks",
+    "Stress",
+    "Heart Rate Variability",
+    "Advanced Heart Rate Variability",
   ];
-  List<Widget> tabBarBloodlessWidget = <Widget>[
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-  ];
-  List<Widget> tabBarRiskWidget = <Widget>[
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-  ];
-  List<Widget> tabBarStressWidget = <Widget>[VitalGraphWidget()];
-  List<Widget> tabBaHRVWidget = <Widget>[VitalGraphWidget()];
-  List<Widget> tabBaAHRVWidget = <Widget>[
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-    VitalGraphWidget(),
-  ];
+  static final List<Widget> tabWidgets =
+      tabTitles.map((title) => Tab(text: title)).toList();
 }

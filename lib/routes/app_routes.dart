@@ -23,5 +23,6 @@ class AppRoutes {
       guestHealthHistoryList = "/guest_health_history_list",
       updateUserGuestDetails = '/update_user_guest_details',
       vitalDescriptions = "/vital_descriptions",
+      vitalGraphHistory = "/Vital_graph_history",
       analyzingHealthData = '/analyzing_health_data';
 }

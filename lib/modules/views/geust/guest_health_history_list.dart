@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
-import 'package:ntt_data/core/constants/app_colors.dart' show AppColors;
-import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/profile/widgets/user_history_card.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 
@@ -25,6 +24,14 @@ class GuestHealthHistoryList extends StatelessWidget {
           AppNavigation.back();
         },
         title: "Guest Health History",
+        actions: [
+          IconButton(
+            onPressed: () {
+              AppNavigation.to(AppRoutes.vitalGraphHistory);
+            },
+            icon: Icon(Icons.home),
+          ),
+        ],
       ),
       body: Obx(
         () =>

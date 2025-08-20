@@ -138,4 +138,68 @@ class GlobleHalper {
     );
     print('   ⚠️ Unclassified: ${controller.basicVitalSigns.first.vitalName}');
   }
+
+  // Main Tabs
+  List<String> tabTitles = [
+    "All",
+    "Basic Vital Signs",
+    "Bloodless Blood Tests",
+    "Risks",
+    "Stress",
+    "Heart Rate Variability",
+    "Advanced Heart Rate Variability",
+  ];
+
+  // Graph Tabs
+  List<String> tabGraphTitles = [
+    "Wellness",
+    "Basic Vital Signs",
+    "Bloodless Blood Tests",
+    "Risks",
+    "Stress",
+    "Heart Rate Variability",
+    "Advanced Heart Rate Variability",
+  ];
+
+  // Wellness Tabs
+  List<String> tabWellnessTitles = ["Wellness"];
+
+  // Vital Signs Tabs
+  List<String> tabVitalSignTitles = [
+    "Breathing Rate",
+    "Pulse Rate (Heart Rate)",
+    "PRQ",
+    "Blood Pressure",
+    "Oxygen Saturation",
+  ];
+
+  // Bloodless Blood Tests Tabs
+  List<String> tabBBTTitles = ["Hemoglobin", "Hemoglobin A1C"];
+
+  // Risk Tabs
+  List<String> tabRiskTitles = [
+    "ASCVD Risk",
+    "High Blood Pressure Risk",
+    "High HbA1c Risk",
+    "High Fasting Glucose Risk",
+    "High Total Cholesterol Risk",
+    "Low Hemoglobin Risk",
+  ];
+
+  // Stress Tabs
+  List<String> tabStressTitles = ["Stress Level"];
+
+  // HRV Basic Tabs
+  List<String> tabHRBTitles = ["HRV SDNN"];
+
+  // Advanced HRV Tabs
+  List<String> tabAHRVTitles = [
+    "PNS Zone",
+    "PNS Index",
+    "SNS Zone",
+    "SNS Index",
+    "SD1",
+    "SD2",
+    "LF/HF",
+  ];
 }

@@ -7,10 +7,10 @@ class CircularImageWithShimmer extends StatelessWidget {
   final double size;
 
   const CircularImageWithShimmer({
-    Key? key,
+    super.key,
     required this.imageUrl,
     this.size = 59.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
