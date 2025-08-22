@@ -40,7 +40,7 @@ class CommonHealthAsset {
 
   String getPrqAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'medium':
+      case 'normal':
         return AppAssets.goodAsset;
       case 'high':
         return AppAssets.mediumAsset;
