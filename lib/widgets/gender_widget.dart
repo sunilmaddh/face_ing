@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/widgets/button/custom_radio_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
