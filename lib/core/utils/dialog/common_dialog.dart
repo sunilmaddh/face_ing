@@ -9,6 +9,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_dialog_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -485,7 +486,19 @@ class CommonDialog {
         minimumDate: DateTime(1925),
         maximumDate: initialDate,
         onDateTimeChanged: (DateTime newDate) {
+          final formatter = DateFormat('yyyy-MM-dd');
+          var firstDate = formatter.format(initialDate);
+          var secandDate = formatter.format(selectedDate);
           selectedDate = newDate;
+          debugPrint("$firstDate $secandDate");
+          if (firstDate == secandDate) {
+            AppSnackbar.show(
+              isError: true,
+              title: "Error",
+              message:
+                  "You cannot select a future date because the age limit is restricted to 18 or above.",
+            );
+          }
         },
       ),
       onConfirm: () {

@@ -45,18 +45,18 @@ class _CommonCardState extends State<IndoCommonCard> {
     // String imageAsset;
 
     switch (widget.imageAsset) {
-      case AppAssets.mediumAsset:
+      case AppAssets.mediumImage:
         statusColor = const Color(0xFFFFD700); // Yellow color
         break;
-      case AppAssets.lighthigh:
+      case AppAssets.highImage:
         statusColor = const Color(0xFF9ED042); // Yellow color
         break;
-      case AppAssets.goodAsset:
+      case AppAssets.veryHighImage:
         statusColor = const Color(0xFF1BC76D); // Green color
         break;
-      case AppAssets.lowAsset:
+      case AppAssets.veryLowImage:
       default:
-        statusColor = const Color(0xFFE53935); // Red color
+        statusColor = const Color(0xFFFA704E); // Red color
     }
 
     return CommonCard(

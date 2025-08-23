@@ -47,7 +47,7 @@ class AppSnackbar {
         colorText: Colors.white,
         borderRadius: 10,
         margin: const EdgeInsets.all(10),
-        duration: const Duration(seconds: 3),
+        duration: const Duration(seconds: 5),
         icon: Icon(
           isError ? Icons.error : Icons.check_circle,
           color: Colors.white,

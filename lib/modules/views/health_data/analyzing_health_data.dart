@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/enum/health_data_enum.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
@@ -723,7 +721,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     if (value == null) return '';
     if (value < min) return 'low';
     if (value > max) return 'high';
-    return 'Normal';
+    return 'normal';
   }
 
   String _getVitalStatusBloodPressure(vitalType, num min, num max) {
@@ -740,7 +738,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     final value = double.tryParse(rawValue);
     if (value == null) return '';
     if (value <= 29) return 'low';
-    if (value <= 40) return "Normal";
+    if (value <= 40) return "normal";
     if (value <= 67) return "Mild";
     if (value <= 97) return "High";
     if (value > 97) return "Very High";

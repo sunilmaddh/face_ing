@@ -38,7 +38,7 @@ class AppConstents {
   female = "Female",
   scanDiscri = "Measurement will start please hold face in the frame",
   notDiscription =
-      "Kindly make sure your battery is above 30% and Power Saving Mode is disabled before starting.",
+      "Kindly make sure your battery is above 20% and Power Saving Mode is disabled before starting.",
   createAccount = 'Create Account',
   networkErroMessage =
       "We’re having trouble connecting to the server. Please check your internet connection and try again.",

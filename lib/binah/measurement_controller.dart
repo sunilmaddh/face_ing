@@ -94,23 +94,23 @@ class MeasurementController extends GetxController
     });
 
     // Show alert on error
-    // ever<String?>(error, (value) {
-    //   if (value != null && value.isNotEmpty) {
-    //     // AppSnackbar.show(title: "error", message: value);
-    //     debugPrint("Sdk error $value");
-    //     Future.delayed(Duration.zero, () {
-    //       isLoading.value = false;
-    //       // isMeasurementCanceled.value = true;
-    //       resetProgress();
-    //       stopProgress();
-    //       if (isFirstEver.isTrue) {
-    //         isFirstEver.value = false;
-    //         isScanningDone.value = false;
-    //         DialogHelper.showScanFailedDialog(Get.context!);
-    //       }
-    //     });
-    //   }
-    // });
+    ever<String?>(error, (value) {
+      if (value != null && value.isNotEmpty) {
+        // AppSnackbar.show(title: "error", message: value);
+        debugPrint("Sdk error $value");
+        Future.delayed(Duration.zero, () {
+          isLoading.value = false;
+          // isMeasurementCanceled.value = true;
+          resetProgress();
+          stopProgress();
+          if (isFirstEver.isTrue) {
+            isFirstEver.value = false;
+            isScanningDone.value = false;
+            DialogHelper.showScanFailedDialog(Get.context!);
+          }
+        });
+      }
+    });
   }
 
   screenInFocus(
