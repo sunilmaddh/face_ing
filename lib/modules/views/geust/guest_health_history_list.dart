@@ -24,14 +24,14 @@ class GuestHealthHistoryList extends StatelessWidget {
           AppNavigation.back();
         },
         title: "Guest Health History",
-        actions: [
-          IconButton(
-            onPressed: () {
-              AppNavigation.to(AppRoutes.vitalGraphHistory);
-            },
-            icon: Icon(Icons.home),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       AppNavigation.to(AppRoutes.vitalGraphHistory);
+        //     },
+        //     icon: Icon(Icons.home),
+        //   ),
+        // ],
       ),
       body: Obx(
         () =>

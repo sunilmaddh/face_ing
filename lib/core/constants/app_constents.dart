@@ -25,6 +25,8 @@ class AppConstents {
   continueBtn = "Continue",
   uploadPhotoHeading = "Upload photo for creating you account",
   name = "Name",
+  confidenceLevelDiscription =
+      "The confidence level of a vital sign indicates the probability of accuracy of the measurement result for that vital sign. The higher the level, the greater the probability and accuracy of the result. The confidence level takes into consideration all the inputs required to calculate a result, including signal quality, any warnings during the measurement duration, and the specific data required for the vital sign, such as the amount of information needed to measure a result.",
   gender = 'Gender',
   dob = 'Date of Birth',
   weight = "Weight (kg)",
@@ -39,7 +41,7 @@ class AppConstents {
   female = "Female",
   scanDiscri = "Measurement will start please hold face in the frame",
   notDiscription =
-      "Kindly make sure your battery is above 30% and Power Saving Mode is disabled before starting.",
+      "Kindly make sure your battery is above 20% and Power Saving Mode is disabled before starting.",
   createAccount = 'Create Account',
   networkErroMessage =
       "We’re having trouble connecting to the server. Please check your internet connection and try again.",

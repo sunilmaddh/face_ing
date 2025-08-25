@@ -4,6 +4,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
+import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
 
 class StressInfoCard extends StatelessWidget {
   final String vitalName;
@@ -13,6 +14,7 @@ class StressInfoCard extends StatelessWidget {
   final String valueText;
   final String unitText;
   final String imageAsset;
+  final String vitalConfidenceLevel;
 
   final VoidCallback onTop;
 
@@ -24,6 +26,7 @@ class StressInfoCard extends StatelessWidget {
     required this.statusText,
     required this.valueText,
     required this.unitText,
+    this.vitalConfidenceLevel = "",
     this.imageAsset = "",
     required this.onTop,
   }) : super(key: key);
@@ -89,6 +92,7 @@ class StressInfoCard extends StatelessWidget {
                     ),
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       this.imageAsset.isNotEmpty
                           ? SvgPicture.asset(
@@ -98,6 +102,49 @@ class StressInfoCard extends StatelessWidget {
                           )
                           : SizedBox(),
                       SizedBox(height: AppDimensions.height(5)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: AppDimensions.only(right: 30),
+                            child:
+                                vitalConfidenceLevel.isNotEmpty
+                                    ? Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 10.5,
+                                          backgroundColor: getStatusColor(
+                                            vitalConfidenceLevel,
+                                          ),
+                                        ),
+
+                                        TextButton(
+                                          onPressed: () {
+                                            CustomBottomSheetConfidence.show(
+                                              status:
+                                                  vitalConfidenceLevel
+                                                      .toFirstCaps(),
+                                            );
+                                          },
+                                          child: Text(
+                                            "${vitalConfidenceLevel.toFirstCaps()} Confidence",
+                                            style: TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.searchColor,
+                                            ),
+                                          ),
+
+                                          // vitalConfidenceLevel.toFirstCaps(),
+                                        ),
+                                      ],
+                                    )
+                                    : SizedBox.shrink(),
+                          ),
+                        ],
+                      ),
                       InkWell(
                         onTap: onTop,
                         child: Icon(
@@ -120,5 +167,18 @@ class StressInfoCard extends StatelessWidget {
         // ),
       ],
     );
+  }
+
+  Color getStatusColor(String level) {
+    switch (level.toLowerCase()) {
+      case "high":
+        return const Color(0xFF1BC76D);
+      case "medium":
+        return const Color(0xFFEEC000);
+      case "low":
+        return const Color(0xFFFA704E);
+      default:
+        return Colors.grey;
+    }
   }
 }

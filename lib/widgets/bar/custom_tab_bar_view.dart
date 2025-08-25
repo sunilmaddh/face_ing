@@ -49,7 +49,7 @@ class CustomTabBarView extends StatelessWidget {
                     isNotRadius == false
                         ? BoxDecoration(
                           color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(30.0),
                         )
                         : BoxDecoration(),
                 tabs:

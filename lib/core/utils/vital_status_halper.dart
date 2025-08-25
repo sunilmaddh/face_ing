@@ -207,7 +207,6 @@ class BinahVitalHelper {
   bool isNumeric(String value, String name) {
     if (name == "Blood Pressure") {
       final bpParts = value.split('/') ?? [];
-      // final systolic = bpParts.isNotEmpty ? int.tryParse(bpParts[0]) : null;
       return int.tryParse(bpParts[0]) != null;
     } else {
       return double.tryParse(value) != null;

@@ -2,9 +2,8 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/binah/vital_sign_helper.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/enum/health_data_enum.dart';
 import 'package:ntt_data/core/utils/enum/vital_key.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
@@ -80,6 +79,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
   Widget buildCard({
     required String vitalName,
     String? vitalValue,
+    String? vitalConfidence,
     String? vitalKey,
     String? vitalCondition,
     String? vitalMass,
@@ -92,6 +92,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     Widget expandedWidget = const SizedBox(),
   }) {
     return IndoCommonCard(
+      confidenceLevel: vitalConfidence ?? "",
       imageAsset: imageAsset ?? '',
       isVitalActive: isVitalActive,
       vitalName: vitalName,
@@ -138,6 +139,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
       ),
       buildCard(
+        vitalConfidence: VitalSignHelper().vitalSignBreathingConfidence(),
         vitalKey: VitalKeys.respirationRate,
         imageAsset: CommonHealthAsset().getBreathingRateAsset(
           statusHelper.getBreathingRate(VitalSignTypes.respirationRate, 12, 20),
@@ -155,6 +157,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalMass: 'rpm',
       ),
       buildCard(
+        vitalConfidence: VitalSignHelper().vitalSignPulseRateConfidence(),
         vitalKey: VitalKeys.pulseRate,
         imageAsset: CommonHealthAsset().getPulseRateAsset(
           statusHelper.getPulseRate(VitalSignTypes.pulseRate, 60, 100),
@@ -172,6 +175,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalDescription: WellnessMetricDescriptionsLong.pulseRate,
       ),
       buildCard(
+        vitalConfidence: VitalSignHelper().vitalSignPrqConfidence(),
         vitalKey: VitalKeys.prq,
         imageAsset: CommonHealthAsset().getPrqAsset(
           statusHelper.getPrq(VitalSignTypes.prq, 4, 5),
@@ -601,6 +605,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
   List<Widget> heartRateVariability() {
     return [
       buildCard(
+        vitalConfidence: VitalSignHelper().vitalSignSDNNConfidence(),
         vitalKey: VitalKeys.sdnn,
         imageAsset: CommonHealthAsset().getHrvSdnnAsset(
           _getVitalStatus(VitalSignTypes.sdnn, 50, 100),
@@ -616,6 +621,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         expandedWidget: Column(
           children: [
             StressInfoCard(
+              vitalConfidenceLevel:
+                  VitalSignHelper().vitalSignMeanRriConfidence(),
               vitalName: 'Mean R-R Interval',
               isExpanded: true,
               titleText: WellnessMetricDescriptions.meanRRi,
@@ -782,7 +789,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     if (value == null) return '';
     if (value < min) return 'low';
     if (value > max) return 'high';
-    return 'Normal';
+    return 'normal';
   }
 
   String _getVitalStatusBloodPressure(vitalType, num min, num max) {
@@ -799,7 +806,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     final value = double.tryParse(rawValue);
     if (value == null) return '';
     if (value <= 29) return 'low';
-    if (value <= 40) return "Normal";
+    if (value <= 40) return "normal";
     if (value <= 67) return "Mild";
     if (value <= 97) return "High";
     if (value > 97) return "Very High";
@@ -862,7 +869,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       ),
     ];
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.btntext,
       appBar: CustomAppBar(
         onTop: () {
           AppNavigation.back();
@@ -877,10 +884,17 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         //   ),
         // ],
       ),
-      body: CustomTabBarView(
-        isNotRadius: false,
-        tabWidgets: tabWidgets,
-        tabBarWidgets: barWidgets,
+      body: Container(
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: AppColors.historyCardColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: CustomTabBarView(
+          isNotRadius: false,
+          tabWidgets: tabWidgets,
+          tabBarWidgets: barWidgets,
+        ),
       ),
     );
   }
