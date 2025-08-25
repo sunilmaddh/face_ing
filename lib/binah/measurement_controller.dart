@@ -140,7 +140,6 @@ class MeasurementController extends GetxController
     debugPrint("Start scanning $state");
     Future.delayed(Duration(seconds: 5), () {
       if (sessionState.value == SessionState.ready) {
-        // isMeasurementCanceled.value = false;
         isStarted.value = true;
         _startMeasuring().then((v) {
           isLoading.value = false;

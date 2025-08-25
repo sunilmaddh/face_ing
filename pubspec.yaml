@@ -65,9 +65,9 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/png/app-icon.png" # Your icon path
+  image_path: "assets/images/png/app-logo.png" # Your icon path
   adaptive_icon_background: "#FFFFFF"    # Optional for Android adaptive icons
-  adaptive_icon_foreground: "assets/images/png/app-icon.png"
+  adaptive_icon_foreground: "assets/images/png/app-logo.png"
 dependency_overrides:
   wakelock_windows: any
   win32: any

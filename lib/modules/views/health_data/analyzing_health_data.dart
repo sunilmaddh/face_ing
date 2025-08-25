@@ -885,7 +885,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         // ],
       ),
       body: Container(
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: AppColors.historyCardColor,
           borderRadius: BorderRadius.circular(20),

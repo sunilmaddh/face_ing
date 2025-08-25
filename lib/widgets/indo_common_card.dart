@@ -70,7 +70,7 @@ class _CommonCardState extends State<IndoCommonCard> {
 
     return CommonCard(
       widget: Container(
-        margin: EdgeInsets.all(10),
+        // margin: EdgeInsets.all(6.0),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,7 +181,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                                     ? Row(
                                       children: [
                                         CircleAvatar(
-                                          radius: 10.5,
+                                          radius: 8.5,
                                           backgroundColor: getStatusColor(
                                             widget.confidenceLevel,
                                           ),
