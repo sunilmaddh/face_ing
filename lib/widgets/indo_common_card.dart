@@ -76,187 +76,192 @@ class _CommonCardState extends State<IndoCommonCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                // Left section
-                Container(
-                  width: AppDimensions.width(150),
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      widget.imageAsset.isNotEmpty
-                          ? SvgPicture.asset(
-                            widget.imageAsset,
-                            width: AppDimensions.width(37),
-                            height: AppDimensions.height(37),
-                          )
-                          : SizedBox(),
-                      SizedBox(height: AppDimensions.height(10)),
-                      Text(
-                        widget.vitalName,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff575656),
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      Text(
-                        widget.vitalCondition,
-                        style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff575656),
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: widget.vitalValue.toFirstCaps(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff4A4949),
-                              ),
-                            ),
-                            TextSpan(
-                              text:
-                                  ' ${widget.vitalMass}', // Add space before vitalMass
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Divider
-                Container(
-                  width: 1,
-                  height: AppDimensions.height(150), // Adjust height as needed
-                  color: const Color(0xffD9D9D9),
-                ),
-
-                // Right section
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    width: AppDimensions.width(120),
+                    padding: const EdgeInsets.all(15),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.vitalStatus.isNotEmpty
-                              ? "${widget.vitalHeading} is ${AppMethods.capitalizeFirst(widget.vitalStatus)}"
-                              : "",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff5E5D5D),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          widget.vitalDescription,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff5E5D5D),
-                            height: 1.25,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
                         widget.imageAsset.isNotEmpty
-                            ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                widget.confidenceLevel.isNotEmpty
-                                    ? Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 8.5,
-                                          backgroundColor: getStatusColor(
-                                            widget.confidenceLevel,
-                                          ),
-                                        ),
-
-                                        TextButton(
-                                          onPressed: () {
-                                            CustomBottomSheetConfidence.show(
-                                              status:
-                                                  widget.confidenceLevel
-                                                      .toFirstCaps(),
-                                            );
-                                          },
-                                          child: Text(
-                                            "${widget.confidenceLevel.toFirstCaps()} Confidence",
-                                            style: TextStyle(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColors.searchColor,
-                                            ),
-                                          ),
-
-                                          // vitalConfidenceLevel.toFirstCaps(),
-                                        ),
-                                      ],
-                                    )
-                                    : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        widget.isVitalActive
-                                            ? Row(
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: 10.5,
-                                                  backgroundColor: statusColor,
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Text(
-                                                  widget.vitalStatus
-                                                      .toFirstCaps(),
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: statusColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                            : SizedBox(),
-
-                                        // SvgPicture.asset(imageAsset, width: 20, height: 20),
-                                      ],
-                                    ),
-                              ],
+                            ? SvgPicture.asset(
+                              widget.imageAsset,
+                              width: AppDimensions.width(37),
+                              height: AppDimensions.height(37),
                             )
                             : SizedBox(),
-
-                        Container(
-                          alignment: Alignment.topRight,
-                          child: InkWell(
-                            onTap: widget.onTop,
-                            child: Icon(
-                              Icons.info_rounded,
-                              color: AppColors.infoIconColor,
-                            ),
+                        SizedBox(height: AppDimensions.height(10)),
+                        Text(
+                          widget.vitalName,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff575656),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        Text(
+                          widget.vitalCondition,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff575656),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: widget.vitalValue.toFirstCaps(),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xff4A4949),
+                                ),
+                              ),
+                              TextSpan(
+                                text:
+                                    ' ${widget.vitalMass}', // Add space before vitalMass
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
+
+                  // Divider
+                  Container(
+                    width: 1,
+                    height: AppDimensions.height(
+                      150,
+                    ), // Adjust height as needed
+                    color: const Color(0xffD9D9D9),
+                  ),
+
+                  // Right section
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.vitalStatus.isNotEmpty
+                                ? "${widget.vitalHeading} is ${AppMethods.capitalizeFirst(widget.vitalStatus)}"
+                                : "",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff5E5D5D),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            widget.vitalDescription,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff5E5D5D),
+                              height: 1.25,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          widget.imageAsset.isNotEmpty
+                              ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  widget.confidenceLevel.isNotEmpty
+                                      ? Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 8.5,
+                                            backgroundColor: getStatusColor(
+                                              widget.confidenceLevel,
+                                            ),
+                                          ),
+
+                                          TextButton(
+                                            onPressed: () {
+                                              CustomBottomSheetConfidence.show(
+                                                status:
+                                                    widget.confidenceLevel
+                                                        .toFirstCaps(),
+                                              );
+                                            },
+                                            child: Text(
+                                              "${widget.confidenceLevel.toFirstCaps()} Confidence",
+                                              style: TextStyle(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.searchColor,
+                                              ),
+                                            ),
+
+                                            // vitalConfidenceLevel.toFirstCaps(),
+                                          ),
+                                        ],
+                                      )
+                                      : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          widget.isVitalActive
+                                              ? Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 10.5,
+                                                    backgroundColor:
+                                                        statusColor,
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Text(
+                                                    widget.vitalStatus
+                                                        .toFirstCaps(),
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: statusColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                              : SizedBox(),
+
+                                          // SvgPicture.asset(imageAsset, width: 20, height: 20),
+                                        ],
+                                      ),
+                                ],
+                              )
+                              : SizedBox(),
+                          Container(
+                            alignment: Alignment.topRight,
+                            child: InkWell(
+                              onTap: widget.onTop,
+                              child: Icon(
+                                Icons.info_rounded,
+                                color: AppColors.infoIconColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             // Expand/Collapse button ONLY if isExpand prop is true
             widget.isExpand

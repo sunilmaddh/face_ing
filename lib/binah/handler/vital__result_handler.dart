@@ -33,23 +33,18 @@ class VitalResultsHandler {
   Future<void> handleFinalResults(VitalSignsResults finalResults) async {
     try {
       _safeLogResults(finalResults);
-
       vitalsResults.value = finalResults;
-
       final isInvalid = await ProgressHandlerMixin.checkingVitalResult(
         vitalsResults.value,
       );
-
       if (!isScanningDone.isTrue) {
         _timeoutFallback();
         return;
       }
-
       if (isInvalid) {
         _handleInvalidResults();
         return;
       }
-
       _handleValidResults(finalResults);
     } catch (e, s) {
       _handleException(e, s);
@@ -60,7 +55,7 @@ class VitalResultsHandler {
 
   void _safeLogResults(VitalSignsResults finalResults) {
     try {
-      debugPrint("✅ Final Results received: ${finalResults.getResults()}");
+      debugPrint("Final Results received: ${finalResults.getResults()}");
       debugPrint(
         "HRV → SD1: ${finalResults.getResult(VitalSignTypes.sd1)}, "
         "SD2: ${finalResults.getResult(VitalSignTypes.sd2)}, "
@@ -70,7 +65,7 @@ class VitalResultsHandler {
         "Stress index: ${finalResults.getResult(VitalSignTypes.stressIndex)}",
       );
     } catch (e, s) {
-      debugPrint("⚠️ Error logging results: $e\n$s");
+      debugPrint("Error logging results: $e\n$s");
     }
   }
 
@@ -83,7 +78,7 @@ class VitalResultsHandler {
 
   void _handleInvalidResults() {
     if (isFirstEver.isTrue) {
-      debugPrint("⚠️ SDK Error: Invalid results in onFinal");
+      debugPrint("SDK Error: Invalid results in onFinal");
       isFirstEver.value = false;
       isScanningDone.value = false;
       DialogHelper.showScanFailedDialog(Get.context!);
@@ -92,14 +87,10 @@ class VitalResultsHandler {
 
   void _handleValidResults(VitalSignsResults finalResults) async {
     isFirstEver.value = false;
-
     if (finalResults.getResult(VitalSignTypes.pulseRate) == null) {
-      debugPrint("⚠️ Pulse Rate missing, stopping flow");
+      debugPrint("Pulse Rate missing, stopping flow");
       return;
     }
-
-    // startStopButtonClicked();
-
     if (scanType.value == "add-guest") {
       _guestController.addGuest(finalResults).whenComplete(() {
         _navigation.goToAnalyzing(
@@ -127,11 +118,9 @@ class VitalResultsHandler {
   }
 
   void _handleException(dynamic e, StackTrace s) {
-    debugPrint("❌ Exception in handleFinalResults: $e\n$s");
+    debugPrint("Exception in handleFinalResults: $e\n$s");
     isFirstEver.value = false;
     isScanningDone.value = false;
     DialogHelper.showScanFailedDialog(Get.context!);
-
-    // TODO: send error to Crashlytics / Sentry if available
   }
 }

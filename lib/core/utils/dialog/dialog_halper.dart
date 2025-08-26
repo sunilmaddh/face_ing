@@ -11,9 +11,21 @@ class DialogHelper {
       message:
           "Please charge your battery level to at least 20% in order to start a new measurement",
       context: context,
-      onConfirm: () {
-        // TODO: Implement start scan logic here
+      onConfirm: () {},
+      onCancel: () {
+        Get.back();
       },
+    );
+  }
+
+  void showBatterySaveAlertDialog(BuildContext context) {
+    CommonDialog().showScanDialog(
+      confirmText: "OK",
+      title: "Power Saving Mode?",
+      message:
+          "Power Saving Mode is enabled. To ensure accurate results, please disable Power Saving Mode and restart the scan.",
+      context: context,
+      onConfirm: () {},
       onCancel: () {
         Get.back();
       },
@@ -40,10 +52,7 @@ class DialogHelper {
       message:
           "The scan has been stopped. Do you want to start the scan again?",
       context: context,
-      onConfirm: () {
-        // controller
-        //     .stopMeasuring();
-      },
+      onConfirm: () {},
       onCancel: () {
         Get.back();
       },
@@ -59,9 +68,6 @@ class DialogHelper {
       context: context,
       onConfirm: () async {
         await ProfileHelper().logoutHelper();
-
-        // controller
-        //     .stopMeasuring();
       },
       onCancel: () {
         Get.back();

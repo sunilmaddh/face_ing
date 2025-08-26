@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppConstents {
   static const String
+  licenceKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7",
   commonFont = "Manrope",
   login = "Login",
   resetPassword = "Reset Password",

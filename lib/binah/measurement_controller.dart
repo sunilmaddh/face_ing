@@ -6,14 +6,13 @@ import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_pulse_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/binah/handler/vital__result_handler.dart';
+import 'package:ntt_data/binah/handler/vital_navigation_service.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
-import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
@@ -33,7 +32,6 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign.dart';
 import 'package:biosensesignal_flutter_sdk/alerts/warning_data.dart';
 import 'package:biosensesignal_flutter_sdk/alerts/error_data.dart';
-// import 'package:biosensesignal_flutter_sdk/alerts/alert_codes.dart';
 import 'package:biosensesignal_flutter_sdk/health_monitor_exception.dart';
 
 class MeasurementController extends GetxController
@@ -44,7 +42,7 @@ class MeasurementController extends GetxController
         RadioStateMixin
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
   final _geustController = Get.find<GeustController>();
-  final licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
+  final licenseKey = AppConstents.licenceKey;
   final measurementDuration = 60;
   Session? _session;
   final Rx<SessionState?> sessionState = Rx<SessionState?>(null);
@@ -58,6 +56,7 @@ class MeasurementController extends GetxController
   final RxDouble height = 0.0.obs;
   final RxBool isScanStop = false.obs;
   final RxBool isFirstEver = false.obs;
+  late final VitalResultsHandler _resultsHandler;
   @override
   final RxBool isStarted = false.obs;
   final RxBool isScanningDone = false.obs;
@@ -65,7 +64,7 @@ class MeasurementController extends GetxController
   RxString smokerType = ''.obs;
   RxString guestId = "".obs;
   final TextEditingController smokerTypeController = TextEditingController();
-  // RxBool isMeasurementCanceled = false.obs;
+
   RxList<String> vitlaList = <String>[].obs;
   @override
   // ignore: overridden_fields
@@ -77,6 +76,15 @@ class MeasurementController extends GetxController
   @override
   void onInit() {
     super.onInit();
+    _resultsHandler = VitalResultsHandler(
+      vitalsResults: vitalsResults,
+      isFirstEver: isFirstEver,
+      isScanningDone: isScanningDone,
+      scanType: scanType,
+      guestController: _geustController,
+      guestId: guestId,
+      navigation: VitalNavigationService(),
+    );
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 60),
@@ -96,11 +104,9 @@ class MeasurementController extends GetxController
     // Show alert on error
     ever<String?>(error, (value) {
       if (value != null && value.isNotEmpty) {
-        // AppSnackbar.show(title: "error", message: value);
         debugPrint("Sdk error $value");
         Future.delayed(Duration.zero, () {
           isLoading.value = false;
-          // isMeasurementCanceled.value = true;
           resetProgress();
           stopProgress();
           if (isFirstEver.isTrue) {
@@ -113,7 +119,7 @@ class MeasurementController extends GetxController
     });
   }
 
-  screenInFocus(
+  Future<void> screenInFocus(
     bool focus,
     String genderType,
     double age,
@@ -127,7 +133,6 @@ class MeasurementController extends GetxController
           return;
         }
       }
-
       await createSession(genderType, age, weight, height, smokerType);
     } else {
       await _terminateSession();
@@ -200,104 +205,7 @@ class MeasurementController extends GetxController
 
   @override
   void onFinalResults(VitalSignsResults finalResults) async {
-    debugPrint(finalResults.getResults().toString());
-    vitalsResults.value = finalResults;
-    debugPrint("vitalsResults  ${vitalsResults.toString()}");
-    debugPrint(
-      "vitalsResults  ${vitalsResults.value.getResult(VitalSignTypes.sd1)},${vitalsResults.value.getResult(VitalSignTypes.sd2)},${vitalsResults.value.getResult(VitalSignTypes.prq)}",
-    );
-    debugPrint("Stress index $vitlaList");
-    debugPrint(
-      "Stress index${vitalsResults.value.getResult(VitalSignTypes.stressIndex)}",
-    );
-    bool isVerifyResultHaveNull =
-        await ProgressHandlerMixin.checkingVitalResult(vitalsResults.value);
-    if (isScanningDone.isTrue) {
-      if (isVerifyResultHaveNull == false) {
-        isFirstEver.value = false;
-        if (vitalsResults.value.getResult(VitalSignTypes.pulseRate) != null) {
-          startStopButtonClicked();
-          if (scanType.value == "add-guest") {
-            _geustController.addGuest(vitalsResults.value).whenComplete(() {
-              AppNavigation.off(
-                AppRoutes.analyzingHealthData,
-                action: () {
-                  isScanningDone(false);
-                  GuestHalper().clearData();
-                  _geustController.getGeustHistory();
-                  Get.back();
-                },
-              );
-            });
-          } else if (scanType.value == "re-scan") {
-            var isFullStory =
-                await IndoSharedPreference.instance.getHistoryType();
-            _geustController
-                .storeBinahHealthForUser(
-                  vitalsResults.value,
-                  guestId: guestId.value,
-                  isUser: 'false',
-                )
-                .whenComplete(() {
-                  if (isFullStory == true) {
-                    AppNavigation.off(
-                      AppRoutes.analyzingHealthData,
-                      action: () {
-                        isScanningDone(false);
-                      },
-                    );
-                  } else {
-                    AppNavigation.off(
-                      AppRoutes.allReportScreen,
-                      action: () {
-                        isScanningDone(false);
-                      },
-                    );
-                  }
-                });
-          } else {
-            var isFullStory =
-                await IndoSharedPreference.instance.getHistoryType();
-
-            _geustController
-                .storeBinahHealthForUser(
-                  vitalsResults.value,
-                  guestId: '',
-                  isUser: 'true',
-                )
-                .whenComplete(() {
-                  if (isFullStory == true) {
-                    AppNavigation.off(
-                      AppRoutes.analyzingHealthData,
-                      action: () {
-                        isScanningDone(false);
-                      },
-                    );
-                  } else {
-                    AppNavigation.off(
-                      AppRoutes.allReportScreen,
-                      action: () {
-                        isScanningDone(false);
-                      },
-                    );
-                  }
-                });
-          }
-        }
-      } else {
-        if (isFirstEver.isTrue) {
-          debugPrint("Sdk error onFinal $value");
-          isFirstEver.value = false;
-          isScanningDone.value = false;
-          DialogHelper.showScanFailedDialog(Get.context!);
-        }
-      }
-    } else {
-      Future.delayed(const Duration(seconds: 5), () {
-        isFirstEver.value = false;
-        isScanningDone.value = false;
-      });
-    }
+    await _resultsHandler.handleFinalResults(finalResults);
   }
 
   @override
@@ -385,7 +293,6 @@ class MeasurementController extends GetxController
       await _reset();
       await _session?.start(measurementDuration);
       debugPrint("measurementDuration ${measurementDuration.toString()}");
-      // startProgress(seconds: 30);
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";
     }

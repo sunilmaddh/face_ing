@@ -64,7 +64,6 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
   }
 
   final _measurementController = Get.find<MeasurementController>();
-  final _authController = Get.find<AuthController>();
   final _geustController = Get.find<GeustController>();
 
   String getVitalValue(type) {
@@ -116,9 +115,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
 
   List<Widget> allVitalSigns() {
     final bpValue = statusHelper.getVitalValue(VitalSignTypes.bloodPressure);
-    final bpParts = bpValue?.split('/') ?? [];
+    final bpParts = bpValue.split('/');
     final systolic = bpParts.isNotEmpty ? int.tryParse(bpParts[0]) : null;
-    final diastolic = bpParts.length > 1 ? int.tryParse(bpParts[1]) : null;
 
     return [
       buildCard(
@@ -231,9 +229,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
 
   List<Widget> basicVitalSigns() {
     final bpValue = statusHelper.getVitalValue(VitalSignTypes.bloodPressure);
-    final bpParts = bpValue?.split('/') ?? [];
+    final bpParts = bpValue.split('/');
     final systolic = bpParts.isNotEmpty ? int.tryParse(bpParts[0]) : null;
-    final diastolic = bpParts.length > 1 ? int.tryParse(bpParts[1]) : null;
 
     return [
       buildCard(
@@ -254,6 +251,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
       ),
       buildCard(
+        vitalConfidence: VitalSignHelper().vitalSignBreathingConfidence(),
         vitalKey: VitalKeys.respirationRate,
         imageAsset: CommonHealthAsset().getBreathingRateAsset(
           statusHelper.getBreathingRate(VitalSignTypes.respirationRate, 12, 20),
@@ -271,6 +269,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalMass: 'rpm',
       ),
       buildCard(
+        vitalConfidence: VitalSignHelper().vitalSignPulseRateConfidence(),
         vitalKey: VitalKeys.pulseRate,
         imageAsset: CommonHealthAsset().getPulseRateAsset(
           statusHelper.getPulseRate(VitalSignTypes.pulseRate, 60, 100),
@@ -288,6 +287,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalDescription: WellnessMetricDescriptionsLong.pulseRate,
       ),
       buildCard(
+        vitalConfidence: VitalSignHelper().vitalSignPrqConfidence(),
         vitalKey: VitalKeys.prq,
         imageAsset: CommonHealthAsset().getPrqAsset(
           statusHelper.getPrq(VitalSignTypes.prq, 4, 5),

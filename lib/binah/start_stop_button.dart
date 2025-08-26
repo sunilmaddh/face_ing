@@ -1,7 +1,6 @@
 import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:biosensesignal_flutter_sdk/session/session_state.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
@@ -56,8 +55,11 @@ class StartStopButton extends StatelessWidget {
                       text: "Measure now",
                       onPressed: () async {
                         var batteryLevel = await AppMethods().getBatteryLevel();
+                        var batterySaveMode =
+                            await AppMethods().getBatterySaveMode();
                         if (batteryLevel < 20) {
                           DialogHelper().showBatteryLevelAlertDialog(context);
+                        } else if (batterySaveMode) {
                         } else {
                           controller.isLoading.value = true;
                           controller.isScanStop.value = false;

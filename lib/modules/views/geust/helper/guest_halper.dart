@@ -152,124 +152,52 @@ class GuestHalper {
   }) async {
     var binahData = {
       "pulseRate": statusHelper.getVitalValue(VitalSignTypes.pulseRate),
-      // vitalSignResult.getResult(VitalSignTypes.pulseRate)?.value.toString(),
       "respirationRate": statusHelper.getVitalValue(
         VitalSignTypes.respirationRate,
       ),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.respirationRate)
-      //     ?.value
-      //     .toString(),
       "oxygenSaturation": statusHelper.getVitalValue(
         VitalSignTypes.oxygenSaturation,
       ),
-      // vitalSignResult.getResult(VitalSignTypes.oxygenSaturation)?.value,
       "sdnn": statusHelper.getVitalValue(VitalSignTypes.sdnn),
-      //  vitalSignResult.getResult(VitalSignTypes.sdnn)?.value.toString(),
       "stressLevel": statusHelper.getVitalValue(VitalSignTypes.stressLevel),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.stressLevel)
-      //     ?.value
-      //     .toString(),
       "rri": statusHelper.getVitalValue(VitalSignTypes.rri),
       "bloodPressure": statusHelper.getVitalValue(VitalSignTypes.bloodPressure),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.bloodPressure)
-      //     ?.value
-      //     .toString(),
       "stressIndex": statusHelper.getVitalValue(VitalSignTypes.stressIndex),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.stressIndex)
-      //     ?.value
-      //     .toString(),
       "meanRri": statusHelper.getVitalValue(VitalSignTypes.meanRri),
-      // vitalSignResult.getResult(VitalSignTypes.meanRri)?.value.toString(),
       "rmssd": statusHelper.getVitalValue(VitalSignTypes.rmssd),
-      // vitalSignResult.getResult(VitalSignTypes.rmssd)?.value.toString(),
       "sd1": statusHelper.getVitalValue(VitalSignTypes.sd1),
-      // vitalSignResult.getResult(VitalSignTypes.sd1)?.value.toString(),
       "sd2": statusHelper.getVitalValue(VitalSignTypes.sd2),
-      // vitalSignResult.getResult(VitalSignTypes.sd2)?.value.toString(),
       "prq": statusHelper.getVitalValue(VitalSignTypes.prq),
-      // vitalSignResult.getResult(VitalSignTypes.prq)?.value.toString(),
       "pnsIndex": statusHelper.getVitalValue(VitalSignTypes.pnsIndex),
-      // vitalSignResult.getResult(VitalSignTypes.pnsIndex)?.value.toString(),
       "pnsZone": statusHelper.getVitalValue(VitalSignTypes.pnsZone),
-      // vitalSignResult.getResult(VitalSignTypes.pnsZone)?.value.toString(),
       "snsIndex": statusHelper.getVitalValue(VitalSignTypes.snsIndex),
-      // vitalSignResult.getResult(VitalSignTypes.snsIndex)?.value.toString(),
       "snsZone": statusHelper.getVitalValue(VitalSignTypes.snsZone),
-      // vitalSignResult.getResult(VitalSignTypes.snsZone)?.value.toString(),
       "wellnessIndex": statusHelper.getVitalValue(VitalSignTypes.wellnessIndex),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.wellnessIndex)
-      //     ?.value
-      //     .toString(),
       "wellnessLevel": statusHelper.getVitalValue(VitalSignTypes.wellnessLevel),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.wellnessLevel)
-      //     ?.value
-      //     .toString(),
       "lfhf": statusHelper.getVitalValue(VitalSignTypes.lfhf),
-      // vitalSignResult.getResult(VitalSignTypes.lfhf)?.value.toString(),
       "hemoglobin": statusHelper.getVitalValue(VitalSignTypes.hemoglobin),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.hemoglobin)
-      //     ?.value
-      //     .toString(),
       "hemoglobinA1C": statusHelper.getVitalValue(VitalSignTypes.hemoglobinA1C),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.hemoglobinA1C)
-      //     ?.value
-      //     .toString(),
       "highHemoglobinA1CRisk": statusHelper.getVitalValue(
         VitalSignTypes.highHemoglobinA1CRisk,
       ),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.highHemoglobinA1CRisk)
-      //     ?.value
-      //     .toString(),
       "highBloodPressureRisk": statusHelper.getVitalValue(
         VitalSignTypes.highBloodPressureRisk,
       ),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.highBloodPressureRisk)
-      //     ?.value
-      //     .toString(),
       "ascvdRisk": statusHelper.getVitalValue(VitalSignTypes.ascvdRisk),
-      // vitalSignResult.getResult(VitalSignTypes.ascvdRisk)?.value.toString(),
       "normalizedStressIndex": statusHelper.getVitalValue(
         VitalSignTypes.normalizedStressIndex,
       ),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.normalizedStressIndex)
-      //     ?.value
-      //     .toString(),
       "heartAge": statusHelper.getVitalValue(VitalSignTypes.heartAge),
-      // vitalSignResult.getResult(VitalSignTypes.heartAge)?.value.toString(),
       "highTotalCholesterolRisk": statusHelper.getVitalValue(
         VitalSignTypes.highTotalCholesterolRisk,
       ),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.highTotalCholesterolRisk)
-      //     ?.value
-      //     .toString(),
       "highFastingGlucoseRisk": statusHelper.getVitalValue(
         VitalSignTypes.highFastingGlucoseRisk,
       ),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.highFastingGlucoseRisk)
-      //     ?.value
-      //     .toString(),
       "lowHemoglobinRisk": statusHelper.getVitalValue(
         VitalSignTypes.lowHemoglobinRisk,
       ),
-      // vitalSignResult
-      //     .getResult(VitalSignTypes.lowHemoglobinRisk)
-      //     ?.value
-      //     .toString(),
     };
-
     return binahData;
   }
 
@@ -293,7 +221,7 @@ class GuestHalper {
   }
 
   static List<String> weightList = List.generate(
-    161,
+    116,
     (index) => (index + 40).toString(),
   );
   static List<String> smokerTypeList = ["Smoker", "Non Smoker"];
