@@ -24,7 +24,7 @@ class VitalGraphWidget extends StatefulWidget {
 }
 
 class VitalGraphWidgetState extends State<VitalGraphWidget> {
-  final double width = 7;
+  final double width = 20;
 
   late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
@@ -61,10 +61,10 @@ class VitalGraphWidgetState extends State<VitalGraphWidget> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: AppDimensions.width(700.0),
+                width: AppDimensions.width(320.0),
                 child: BarChart(
                   BarChartData(
-                    alignment: BarChartAlignment.start,
+                    alignment: BarChartAlignment.spaceAround,
                     maxY: 20,
                     barTouchData: BarTouchData(
                       enabled: true,

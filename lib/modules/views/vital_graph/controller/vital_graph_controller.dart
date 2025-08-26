@@ -9,7 +9,9 @@ class VitalGraphController extends GetxController {
   Rx<VitalGraphResponseModel> vitalGraphResponse =
       VitalGraphResponseModel().obs;
   var services = VitalGraphServices();
-  Future<void> callVitalGraphDataApi({required var data}) async {
+  Future<void> callVitalGraphDataApi({
+    required Map<String, dynamic> data,
+  }) async {
     var data = {};
     Map<String, dynamic> responseData = await services
         .callVitalGraphApiServices(data: data);
