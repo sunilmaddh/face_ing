@@ -12,7 +12,6 @@ class VitalGraphController extends GetxController {
   Future<void> callVitalGraphDataApi({
     required Map<String, dynamic> data,
   }) async {
-    var data = {};
     Map<String, dynamic> responseData = await services
         .callVitalGraphApiServices(data: data);
     int statusCode = responseData["statusCode"];

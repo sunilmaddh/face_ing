@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ntt_data/demo/vital_graph_widget.dart';
+import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
 import 'package:ntt_data/widgets/bar/graph_tab_bar_widget.dart';
 
@@ -7,36 +10,142 @@ class VitalGraphFirstCard extends StatelessWidget {
   VitalGraphFirstCard({super.key});
   List<Widget> tabWidget = [];
   var vitalHelper = VitalGraphHelper();
+  final _vitalController = Get.find<VitalGraphController>();
   @override
   Widget build(BuildContext context) {
     tabWidget = <Widget>[
       _buildWidget(
-        VitalGraphHelper.tabWellnessWidgets,
-        VitalGraphHelper.tabBarWellnessWidget,
+        _vitalController
+            .vitalGraphResponse
+            .value
+            .advancedHeartRateVariability!
+            .vitalType!
+            .map((title) => Tab(text: title))
+            .toList(),
+        List.generate(
+          _vitalController
+              .vitalGraphResponse
+              .value
+              .advancedHeartRateVariability!
+              .vitalTypeDetails!
+              .length,
+          (_) =>
+              VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+        ),
       ),
       _buildWidget(
-        VitalGraphHelper.tabVitalSignWidgets,
-        VitalGraphHelper.tabBarVitalSignWidget,
+        _vitalController
+            .vitalGraphResponse
+            .value
+            .advancedHeartRateVariability!
+            .vitalType!
+            .map((title) => Tab(text: title))
+            .toList(),
+        List.generate(
+          _vitalController
+              .vitalGraphResponse
+              .value
+              .advancedHeartRateVariability!
+              .vitalTypeDetails!
+              .length,
+          (_) =>
+              VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+        ),
       ),
       _buildWidget(
-        VitalGraphHelper.tabBBTWidgets,
-        VitalGraphHelper.tabBarBloodlessWidget,
+        _vitalController
+            .vitalGraphResponse
+            .value
+            .advancedHeartRateVariability!
+            .vitalType!
+            .map((title) => Tab(text: title))
+            .toList(),
+        List.generate(
+          _vitalController
+              .vitalGraphResponse
+              .value
+              .advancedHeartRateVariability!
+              .vitalTypeDetails!
+              .length,
+          (_) =>
+              VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+        ),
       ),
       _buildWidget(
-        VitalGraphHelper.tabRiskWidgets,
-        VitalGraphHelper.tabBarRiskWidget,
+        _vitalController
+            .vitalGraphResponse
+            .value
+            .advancedHeartRateVariability!
+            .vitalType!
+            .map((title) => Tab(text: title))
+            .toList(),
+        List.generate(
+          _vitalController
+              .vitalGraphResponse
+              .value
+              .advancedHeartRateVariability!
+              .vitalTypeDetails!
+              .length,
+          (_) =>
+              VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+        ),
       ),
       _buildWidget(
-        VitalGraphHelper.tabStressWidgets,
-        VitalGraphHelper.tabBarStressWidget,
+        _vitalController
+            .vitalGraphResponse
+            .value
+            .advancedHeartRateVariability!
+            .vitalType!
+            .map((title) => Tab(text: title))
+            .toList(),
+        List.generate(
+          _vitalController
+              .vitalGraphResponse
+              .value
+              .advancedHeartRateVariability!
+              .vitalTypeDetails!
+              .length,
+          (_) =>
+              VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+        ),
       ),
       _buildWidget(
-        VitalGraphHelper.tabHRBWidgets,
-        VitalGraphHelper.tabBarHRVWidgets,
+        _vitalController
+            .vitalGraphResponse
+            .value
+            .advancedHeartRateVariability!
+            .vitalType!
+            .map((title) => Tab(text: title))
+            .toList(),
+        List.generate(
+          _vitalController
+              .vitalGraphResponse
+              .value
+              .advancedHeartRateVariability!
+              .vitalTypeDetails!
+              .length,
+          (_) =>
+              VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+        ),
       ),
       _buildWidget(
-        VitalGraphHelper.tabAHRVWidgets,
-        VitalGraphHelper.tabBaHRVWidget,
+        _vitalController
+            .vitalGraphResponse
+            .value
+            .advancedHeartRateVariability!
+            .vitalType!
+            .map((title) => Tab(text: title))
+            .toList(),
+        List.generate(
+          _vitalController
+              .vitalGraphResponse
+              .value
+              .advancedHeartRateVariability!
+              .vitalTypeDetails!
+              .length,
+          (_) =>
+              VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+        ),
       ),
     ];
     return SizedBox(

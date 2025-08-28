@@ -85,31 +85,31 @@ class VitalGraphHelper {
 
   static List<Widget> tabBarWellnessWidget = List.generate(
     1,
-    (_) => VitalGraphWidget(),
+    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
   );
   static List<Widget> tabBarVitalSignWidget = List.generate(
     5,
-    (_) => VitalGraphWidget(),
+    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
   );
   static List<Widget> tabBarBloodlessWidget = List.generate(
     2,
-    (_) => VitalGraphWidget(),
+    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
   );
   static List<Widget> tabBarRiskWidget = List.generate(
     6,
-    (_) => VitalGraphWidget(),
+    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
   );
   static List<Widget> tabBarStressWidget = List.generate(
     1,
-    (_) => VitalGraphWidget(),
+    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
   );
   static List<Widget> tabBaHRVWidget = List.generate(
     1,
-    (_) => VitalGraphWidget(),
+    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
   );
   static List<Widget> tabBarHRVWidgets = List.generate(
     7,
-    (_) => VitalGraphWidget(),
+    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
   );
   List<String> filterTypeList = ["1D", "7D", "Monthly"];
   final _controller = Get.find<VitalGraphController>();

@@ -64,6 +64,20 @@ class CustomFormField extends StatelessWidget {
             keyboardType: keyboardType,
             obscureText: isObscureText.value,
             validator: validator,
+            contextMenuBuilder: (context, editableTextState) {
+              final List<ContextMenuButtonItem> buttonItems =
+                  editableTextState.contextMenuButtonItems;
+
+              final filteredItems =
+                  buttonItems.where((item) {
+                    return item.label != 'Scan Text';
+                  }).toList();
+
+              return AdaptiveTextSelectionToolbar.buttonItems(
+                anchors: editableTextState.contextMenuAnchors,
+                buttonItems: filteredItems,
+              );
+            },
             decoration: InputDecoration(
               labelStyle: TextStyle(color: AppColors.textFieldValueColor),
               hintText: hint,
@@ -86,12 +100,8 @@ class CustomFormField extends StatelessWidget {
                   ),
                 ),
               ),
-
               prefixIcon: prefixIcon,
               suffixIcon: suffixIcon,
-              // suffixIcon != null
-              //     ? GestureDetector(onTap: onSuffixTap, child: suffixIcon)
-              //     : null,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide(color: borderColor, width: 1),
@@ -100,7 +110,6 @@ class CustomFormField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide(color: AppColors.primary, width: 1),
               ),
-
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide(color: borderColor, width: 1),

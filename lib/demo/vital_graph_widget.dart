@@ -5,14 +5,17 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 
 class VitalGraphWidget extends StatefulWidget {
-  const VitalGraphWidget({
+  VitalGraphWidget({
     super.key,
-    // required this.showingBarGroups,
-    // required this.leftTitles,
-    // required this.bottomTitles,
+    required this.leftTitle,
+    required this.bottomTitles,
+    required this.vitalValue,
   });
   final Color leftBarColor = AppColors.primary;
   final Color rightBarColor = AppColors.borderColor;
+  final List<String> leftTitle;
+  final List<String> bottomTitles;
+  final List<String> vitalValue;
   // final BarChartGroupData showingBarGroups;
   // final Widget leftTitles;
   // final Widget bottomTitles;
