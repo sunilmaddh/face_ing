@@ -267,6 +267,7 @@ class VitalSubListWidget extends StatelessWidget {
   RxBool isExpanded = false.obs;
   String imageResSub = "";
   final bool isSdkType;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -394,6 +395,41 @@ class VitalSubListWidget extends StatelessWidget {
                                     ),
                                   ],
                                 ),
+                                result.vitalConfidence!.isNotEmpty
+                                    ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 8.5,
+                                          backgroundColor: getStatusColor(
+                                            result.vitalConfidence.toString(),
+                                          ),
+                                        ),
+
+                                        TextButton(
+                                          onPressed: () {
+                                            CustomBottomSheetConfidence.show(
+                                              status:
+                                                  result.vitalConfidence!
+                                                      .toFirstCaps(),
+                                            );
+                                          },
+                                          child: Text(
+                                            "${result.vitalConfidence!.toFirstCaps()} Confidence",
+                                            style: TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.searchColor,
+                                            ),
+                                          ),
+
+                                          // vitalConfidenceLevel.toFirstCaps(),
+                                        ),
+                                      ],
+                                    )
+                                    : SizedBox.shrink(),
                                 InkWell(
                                   onTap: () {
                                     AppNavigation.to(
@@ -428,6 +464,19 @@ class VitalSubListWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Color getStatusColor(String level) {
+    switch (level.toLowerCase()) {
+      case "high":
+        return const Color(0xFF1BC76D);
+      case "medium":
+        return const Color(0xFFEEC000);
+      case "low":
+        return const Color(0xFFFA704E);
+      default:
+        return Colors.grey;
+    }
   }
 }
 

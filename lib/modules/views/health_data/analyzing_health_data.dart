@@ -6,6 +6,7 @@ import 'package:ntt_data/binah/vital_sign_helper.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/enum/health_data_enum.dart';
 import 'package:ntt_data/core/utils/enum/vital_key.dart';
+import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/health_data/all_report_screen.dart';
@@ -581,7 +582,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               vitalName: 'Normalized Stress Index',
               isExpanded: true,
               titleText: "Normalized Stress Index",
-              statusText: "Normalized Stress Index is $stressLevel",
+              statusText:
+                  "Your Normalized Stress Index is ${stressLevel.toFirstCaps()}",
               valueText: normalizedStressValueStr,
               unitText: "%",
               imageAsset: CommonHealthAsset().getmediumizedStressIndexAsset(
@@ -612,7 +614,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
         vitalName: "HRV SDNN",
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.sdnn),
-        vitalCondition: 'Avg 50 ',
+        vitalCondition: '',
         vitalMass: "ms",
         vitalStatus: _getVitalStatus(VitalSignTypes.sdnn, 50, 100),
         vitalHeading: WellnessMetricDescriptions.hrvSdnn,
@@ -626,11 +628,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               vitalName: 'Mean R-R Interval',
               isExpanded: true,
               titleText: WellnessMetricDescriptions.meanRRi,
-              statusText: _getVitalStatus(
-                VitalSignTypes.meanRri,
-                600,
-                1000,
-              ), //need to get it with avg
+              statusText:
+                  "Your Mean RRI is ${_getVitalStatus(VitalSignTypes.meanRri, 600, 1000).toFirstCaps()}", //need to get it with avg
               valueText: statusHelper.getVitalValue(VitalSignTypes.meanRri),
               imageAsset: CommonHealthAsset().getMeanRRiAsset(
                 _getVitalStatus(VitalSignTypes.meanRri, 600, 1000),
@@ -648,7 +647,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               vitalName: 'RMSSD',
               isExpanded: true,
               titleText: WellnessMetricDescriptions.rmssd,
-              statusText: _getVitalStatus(VitalSignTypes.rmssd, 25, 43),
+              statusText:
+                  "Your RMSSD is ${_getVitalStatus(VitalSignTypes.rmssd, 25, 43).toFirstCaps()}",
               //need to get it with avg
               valueText: statusHelper.getVitalValue(VitalSignTypes.rmssd),
               imageAsset: CommonHealthAsset().getRmssdAsset(

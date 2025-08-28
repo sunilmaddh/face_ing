@@ -29,7 +29,6 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
   final String guestId = Get.arguments["guestId"] ?? "";
   @override
   void dispose() {
-    // TODO: implement dispose
     controller.cloase();
     super.dispose();
   }
@@ -163,9 +162,16 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                                     .isTrue) {
                                                   controller.isFirstEver.value =
                                                       false;
-                                                  controller.stopMeasuring();
-                                                  controller.isScanStop.value =
-                                                      true;
+                                                  controller
+                                                      .stopMeasuring()
+                                                      .then((v) {
+                                                        controller
+                                                            .isScanStop
+                                                            .value = true;
+                                                        controller
+                                                            .stopeasurement();
+                                                      });
+
                                                   DialogHelper.showStopAlertDialog(
                                                     Get.context!,
                                                   );
@@ -249,7 +255,7 @@ class MeasurmentProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return SizedBox(
-        height: AppDimensions.height(180),
+        height: AppDimensions.height(210),
         child: Stack(
           children: [
             Column(

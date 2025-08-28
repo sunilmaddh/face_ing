@@ -49,7 +49,7 @@ class MeasurementController extends GetxController
   final RxnString error = RxnString();
   final RxnString warning = RxnString();
   final RxString pulseRate = "".obs;
-  final RxnString finalResultsString = RxnString();
+
   final RxString genderType = "".obs;
   final RxDouble age = 0.0.obs;
   final RxDouble weight = 0.0.obs;
@@ -105,10 +105,11 @@ class MeasurementController extends GetxController
     ever<String?>(error, (value) {
       if (value != null && value.isNotEmpty) {
         debugPrint("Sdk error $value");
-        Future.delayed(Duration.zero, () {
+        Future.delayed(Duration.zero, () async {
           isLoading.value = false;
           resetProgress();
           stopProgress();
+          await _reset();
           if (isFirstEver.isTrue) {
             isFirstEver.value = false;
             isScanningDone.value = false;
@@ -248,12 +249,18 @@ class MeasurementController extends GetxController
     await _reset();
   }
 
+  stopeasurement() async {
+    resetProgress();
+    stopProgress();
+    closeProgress();
+    await _reset();
+  }
+
   @override
   void onEnabledVitalSigns(SessionEnabledVitalSigns enabledVitalSigns) {}
 
   @override
   void onLicenseInfo(LicenseInfo licenseInfo) {}
-
   Future<void> createSession(
     String genderType,
     double age,
@@ -290,8 +297,9 @@ class MeasurementController extends GetxController
 
   Future<void> _startMeasuring() async {
     try {
-      await _reset();
-      await _session?.start(measurementDuration);
+      if (_session != null && sessionState.value == SessionState.ready) {
+        await _session?.start(measurementDuration);
+      }
       debugPrint("measurementDuration ${measurementDuration.toString()}");
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";
@@ -300,7 +308,6 @@ class MeasurementController extends GetxController
 
   Future<void> stopMeasuring() async {
     try {
-      await _reset();
       await _session?.stop();
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";
@@ -316,7 +323,7 @@ class MeasurementController extends GetxController
     error.value = null;
     warning.value = null;
     pulseRate.value = "";
-    finalResultsString.value = null;
+    isLoading.value = false;
     isStarted.value = false;
   }
 

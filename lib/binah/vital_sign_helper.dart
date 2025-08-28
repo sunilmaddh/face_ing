@@ -4,6 +4,7 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_mean_rr
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_prq.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_pulse_rate.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_respiration_rate.dart';
+import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_rri.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_sdnn.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -86,6 +87,21 @@ class VitalSignHelper {
         "Prq Confidence Level: ${prq.confidence?.level.toString() ?? "N/A"}",
       );
       return prq.confidence?.level.toString() ?? "";
+    }
+    return "";
+  }
+
+  String vitalSignRriConfidence() {
+    VitalSign? vitalSign = _measurementController.vitalsResults.value.getResult(
+      VitalSignTypes.rri,
+    );
+    if (vitalSign != null && vitalSign is VitalSignRri) {
+      VitalSignRri rri = vitalSign;
+
+      debugPrint(
+        "Prq Confidence Level: ${rri.confidence?.level.toString() ?? "N/A"}",
+      );
+      return rri.confidence?.level.toString() ?? "";
     }
     return "";
   }

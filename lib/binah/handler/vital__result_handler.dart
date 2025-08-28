@@ -86,6 +86,7 @@ class VitalResultsHandler {
   }
 
   void _handleValidResults(VitalSignsResults finalResults) async {
+    final isFullStory = await IndoSharedPreference.instance.getHistoryType();
     isFirstEver.value = false;
     if (finalResults.getResult(VitalSignTypes.pulseRate) == null) {
       debugPrint("Pulse Rate missing, stopping flow");
@@ -93,17 +94,17 @@ class VitalResultsHandler {
     }
     if (scanType.value == "add-guest") {
       _guestController.addGuest(finalResults).whenComplete(() {
-        _navigation.goToAnalyzing(
+        _navigation.goToReport(
           action: () {
             isScanningDone(false);
             GuestHalper().clearData();
             _guestController.getGeustHistory();
             Get.back();
           },
+          isFullStory: isFullStory,
         );
       });
     } else {
-      final isFullStory = await IndoSharedPreference.instance.getHistoryType();
       _guestController
           .storeBinahHealthForUser(
             finalResults,
@@ -111,8 +112,12 @@ class VitalResultsHandler {
             isUser: scanType.value == "re-scan" ? 'false' : 'true',
           )
           .whenComplete(() {
-            isScanningDone(false);
-            _navigation.goToReport(isFullStory: isFullStory);
+            _navigation.goToReport(
+              isFullStory: isFullStory,
+              action: () {
+                isScanningDone(false);
+              },
+            );
           });
     }
   }

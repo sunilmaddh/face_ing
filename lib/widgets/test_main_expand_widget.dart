@@ -38,10 +38,12 @@ class StressInfoCard extends StatelessWidget {
         const Divider(height: 1, color: Color(0xffD9D9D9)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: Column(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     titleText,
@@ -51,24 +53,7 @@ class StressInfoCard extends StatelessWidget {
                       color: Color(0xff575656),
                     ),
                   ),
-                  Spacer(),
-                  Expanded(
-                    child: Text(
-                      statusText.toFirstCaps(),
-                      textAlign: TextAlign.end,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff575656),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                  SizedBox(height: AppDimensions.height(5)),
                   RichText(
                     text: TextSpan(
                       children: [
@@ -91,68 +76,64 @@ class StressInfoCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      this.imageAsset.isNotEmpty
-                          ? SvgPicture.asset(
-                            this.imageAsset,
-                            width: 20,
-                            height: 20,
-                          )
-                          : SizedBox(),
-                      SizedBox(height: AppDimensions.height(5)),
-                      Row(
+                ],
+              ),
+              Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    statusText.toFirstCaps(),
+                    textAlign: TextAlign.end,
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff575656),
+                    ),
+                  ),
+                  SizedBox(height: AppDimensions.height(5)),
+                  this.imageAsset.isNotEmpty
+                      ? SvgPicture.asset(this.imageAsset, width: 20, height: 20)
+                      : SizedBox(),
+                  vitalConfidenceLevel.isNotEmpty
+                      ? Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Padding(
-                            padding: AppDimensions.only(right: 30),
-                            child:
-                                vitalConfidenceLevel.isNotEmpty
-                                    ? Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 10.5,
-                                          backgroundColor: getStatusColor(
-                                            vitalConfidenceLevel,
-                                          ),
-                                        ),
+                          CircleAvatar(
+                            radius: 10.5,
+                            backgroundColor: getStatusColor(
+                              vitalConfidenceLevel,
+                            ),
+                          ),
 
-                                        TextButton(
-                                          onPressed: () {
-                                            CustomBottomSheetConfidence.show(
-                                              status:
-                                                  vitalConfidenceLevel
-                                                      .toFirstCaps(),
-                                            );
-                                          },
-                                          child: Text(
-                                            "${vitalConfidenceLevel.toFirstCaps()} Confidence",
-                                            style: TextStyle(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColors.searchColor,
-                                            ),
-                                          ),
+                          TextButton(
+                            onPressed: () {
+                              CustomBottomSheetConfidence.show(
+                                status: vitalConfidenceLevel.toFirstCaps(),
+                              );
+                            },
+                            child: Text(
+                              "${vitalConfidenceLevel.toFirstCaps()} Confidence",
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.searchColor,
+                              ),
+                            ),
 
-                                          // vitalConfidenceLevel.toFirstCaps(),
-                                        ),
-                                      ],
-                                    )
-                                    : SizedBox.shrink(),
+                            // vitalConfidenceLevel.toFirstCaps(),
                           ),
                         ],
-                      ),
-                      InkWell(
-                        onTap: onTop,
-                        child: Icon(
-                          Icons.info_rounded,
-                          color: AppColors.infoIconColor,
-                        ),
-                      ),
-                    ],
+                      )
+                      : SizedBox.shrink(),
+                  SizedBox(height: AppDimensions.height(5)),
+                  InkWell(
+                    onTap: onTop,
+                    child: Icon(
+                      Icons.info_rounded,
+                      color: AppColors.infoIconColor,
+                    ),
                   ),
                 ],
               ),

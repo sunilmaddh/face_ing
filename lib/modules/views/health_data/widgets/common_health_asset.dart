@@ -309,7 +309,7 @@ class CommonHealthAsset {
         return AppAssets.veryHighImage;
       case 'medium':
         return AppAssets.mediumImage;
-      case 'Normal':
+      case 'normal':
         return AppAssets.mediumImage;
       default:
         return AppAssets.veryLowImage;

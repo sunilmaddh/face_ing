@@ -485,20 +485,23 @@ class CommonDialog {
         dateOrder: DatePickerDateOrder.dmy,
         initialDateTime: initialDate,
         minimumDate: DateTime(1925),
-        maximumDate: initialDate,
+        maximumDate: DateTime(2050),
+        // DateTime(
+        //   DateTime.now().year - 18,
+        //   DateTime.now().month,
+        //   DateTime.now().day,
+        // ),
         onDateTimeChanged: (DateTime newDate) {
-          final formatter = DateFormat('yyyy-MM-dd');
-          var firstDate = formatter.format(initialDate);
-          var secandDate = formatter.format(selectedDate);
           selectedDate = newDate;
-          debugPrint("$firstDate $secandDate");
-          if (firstDate == secandDate) {
+
+          if (newDate.isAfter(initialDate)) {
             AppSnackbar.show(
               isError: true,
               title: "Error",
-              message:
-                  "You cannot select a future date because the age limit is restricted to 18 or above.",
+              message: "You must be at least 18 years old.",
             );
+          } else {
+            selectedDate = newDate;
           }
         },
       ),

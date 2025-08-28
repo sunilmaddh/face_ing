@@ -2,6 +2,7 @@ import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
@@ -60,6 +61,7 @@ class StartStopButton extends StatelessWidget {
                         if (batteryLevel < 20) {
                           DialogHelper().showBatteryLevelAlertDialog(context);
                         } else if (batterySaveMode) {
+                          DialogHelper().showBatterySaveAlertDialog(context);
                         } else {
                           controller.isLoading.value = true;
                           controller.isScanStop.value = false;
@@ -86,11 +88,24 @@ class PulseRate extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<MeasurementController>();
     return Obx(
-      () => Text(
-        controller.pulseRate.value.isNotEmpty
-            ? "${controller.pulseRate.value} bpm"
-            : "",
-        style: TextStyle(color: Colors.black, fontSize: AppDimensions.font(26)),
+      () => Container(
+        margin: EdgeInsets.zero,
+        alignment: Alignment.center,
+        height: AppDimensions.height(70),
+        width: AppDimensions.width(70),
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage(AppAssets.redHeart)),
+        ),
+        child: Text(
+          controller.pulseRate.value.isNotEmpty
+              ? "${controller.pulseRate.value} "
+              : "- -",
+          style: TextStyle(
+            color: AppColors.btntext,
+            fontSize: AppDimensions.font(22),
+          ),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }

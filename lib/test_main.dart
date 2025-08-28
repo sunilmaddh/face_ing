@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:ntt_data/modules/views/vital_graph/vital_graph_history.dart';
 
 void main() {
   runApp(const MyApp());

@@ -12,9 +12,14 @@ class VitalNavigationService {
     );
   }
 
-  void goToReport({required bool isFullStory}) {
+  void goToReport({required bool isFullStory, required VoidCallback? action}) {
     final route =
         isFullStory ? AppRoutes.analyzingHealthData : AppRoutes.allReportScreen;
-    AppNavigation.off(route, action: () {});
+    AppNavigation.off(
+      route,
+      action: () {
+        action?.call();
+      },
+    );
   }
 }
