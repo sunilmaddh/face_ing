@@ -13,32 +13,27 @@ class VitalGraphFirstCard extends StatelessWidget {
   final _vitalController = Get.find<VitalGraphController>();
   @override
   Widget build(BuildContext context) {
+    var wellness = _vitalController.wellnessGraphResponse.value;
+    var vitalSign = _vitalController.vitalSignesponse.value;
+    var bloodless = _vitalController.bloodlessResponse.value;
+    var risks = _vitalController.risksResponse.value;
+    var stress = _vitalController.stressResponse;
+    var hrv = _vitalController.hrvResponse.value;
+    var ahrv = _vitalController.ahrvResponse.value;
     tabWidget = <Widget>[
       _buildWidget(
-        _vitalController
-            .vitalGraphResponse
-            .value
-            .advancedHeartRateVariability!
-            .vitalType!
-            .map((title) => Tab(text: title))
-            .toList(),
+        wellness.vitalType!.map((title) => Tab(text: title)).toList(),
         List.generate(
-          _vitalController
-              .vitalGraphResponse
-              .value
-              .advancedHeartRateVariability!
-              .vitalTypeDetails!
-              .length,
-          (_) =>
-              VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+          wellness.vitalTypeDetails!.length,
+          (v) => VitalGraphWidget(
+            leftTitle: wellness.vitalTypeDetails![v].yValues,
+            bottomTitles: wellness.vitalTypeDetails![v].xValues,
+            vitalValue: [],
+          ),
         ),
       ),
       _buildWidget(
-        _vitalController
-            .vitalGraphResponse
-            .value
-            .advancedHeartRateVariability!
-            .vitalType!
+        _vitalController.vitalSignesponse.value.vitalType!
             .map((title) => Tab(text: title))
             .toList(),
         List.generate(
