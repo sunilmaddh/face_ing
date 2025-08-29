@@ -82,12 +82,12 @@ class StressInfoCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: AppDimensions.width(20.0)),
+                  SizedBox(
+                    width: AppDimensions.width(150),
                     child: Text(
+                      textAlign: TextAlign.start,
                       maxLines: 2,
                       statusText.toFirstCaps(),
-                      textAlign: TextAlign.end,
                       style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w400,

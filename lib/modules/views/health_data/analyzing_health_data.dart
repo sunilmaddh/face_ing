@@ -7,7 +7,6 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/enum/health_data_enum.dart';
 import 'package:ntt_data/core/utils/enum/vital_key.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
-import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/health_data/all_report_screen.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/common_health_asset.dart';
@@ -130,7 +129,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           5,
           7,
         ),
-        vitalHeading: HealthDataEnum.wellnessScore.name,
+        vitalHeading: "Your ${HealthDataEnum.wellnessScore.name}",
         vitalDescription: HealthDataEnum.wellnessScore.description,
         vitalMass: '',
         imageAsset: CommonHealthAsset().getWellnessAsset(
@@ -151,7 +150,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           12,
           20,
         ),
-        vitalHeading: WellnessMetricDescriptions.BreathingRate,
+        vitalHeading: "Your ${WellnessMetricDescriptions.BreathingRate}",
         vitalDescription: WellnessMetricDescriptionsLong.breathRate,
         vitalMass: 'rpm',
       ),
@@ -170,7 +169,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           60,
           100,
         ),
-        vitalHeading: WellnessMetricDescriptions.pulseRate,
+        vitalHeading: "Your ${WellnessMetricDescriptions.pulseRate}",
         vitalDescription: WellnessMetricDescriptionsLong.pulseRate,
       ),
       buildCard(
@@ -191,10 +190,11 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalKey: VitalKeys.bloodPressure,
         vitalName: "Blood Pressure",
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.bloodPressure),
-        vitalCondition: '',
+        vitalCondition: 'Avg 100-129',
         vitalMass: "mmHg",
         vitalStatus: statusHelper.getBpSystolic(systolic, 100, 129),
-        vitalHeading: WellnessMetricDescriptions.bloodPressureDiastolic,
+        vitalHeading:
+            "Your ${WellnessMetricDescriptions.bloodPressureDiastolic}",
         vitalDescription: WellnessMetricDescriptionsLong.bpSystolic,
 
         imageAsset: CommonHealthAsset().getSystolicBPAsset(
@@ -220,7 +220,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           94,
           95,
         ),
-        vitalHeading: WellnessMetricDescriptions.oxygenSaturation,
+        vitalHeading: "Your ${WellnessMetricDescriptions.oxygenSaturation}",
         vitalDescription: WellnessMetricDescriptionsLong.oxygenSaturation,
       ),
     ];
@@ -244,7 +244,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           5,
           7,
         ),
-        vitalHeading: HealthDataEnum.wellnessScore.name,
+        vitalHeading: "Your ${HealthDataEnum.wellnessScore.name}",
         vitalDescription: HealthDataEnum.wellnessScore.description,
         vitalMass: '',
         imageAsset: CommonHealthAsset().getWellnessAsset(
@@ -265,7 +265,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           12,
           20,
         ),
-        vitalHeading: WellnessMetricDescriptions.BreathingRate,
+        vitalHeading: "Your ${WellnessMetricDescriptions.BreathingRate}",
         vitalDescription: WellnessMetricDescriptionsLong.breathRate,
         vitalMass: 'rpm',
       ),
@@ -284,7 +284,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           60,
           100,
         ),
-        vitalHeading: WellnessMetricDescriptions.pulseRate,
+        vitalHeading: "Your ${WellnessMetricDescriptions.pulseRate}",
         vitalDescription: WellnessMetricDescriptionsLong.pulseRate,
       ),
       buildCard(
@@ -298,17 +298,18 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalCondition: '',
         vitalMass: "",
         vitalStatus: statusHelper.getPrq(VitalSignTypes.prq, 4, 5),
-        vitalHeading: WellnessMetricDescriptions.prq,
+        vitalHeading: "Your ${WellnessMetricDescriptions.prq}",
         vitalDescription: WellnessMetricDescriptionsLong.prq,
       ),
       buildCard(
         vitalKey: VitalKeys.bloodPressure,
         vitalName: "Blood Pressure",
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.bloodPressure),
-        vitalCondition: '',
+        vitalCondition: 'Avg 100-129',
         vitalMass: "mmHg",
         vitalStatus: statusHelper.getBpSystolic(systolic, 100, 129),
-        vitalHeading: WellnessMetricDescriptions.bloodPressureDiastolic,
+        vitalHeading:
+            "Your ${WellnessMetricDescriptions.bloodPressureDiastolic}",
         vitalDescription: WellnessMetricDescriptionsLong.bpSystolic,
 
         imageAsset: CommonHealthAsset().getSystolicBPAsset(
@@ -334,7 +335,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           94,
           95,
         ),
-        vitalHeading: WellnessMetricDescriptions.oxygenSaturation,
+        vitalHeading: "Your ${WellnessMetricDescriptions.oxygenSaturation}",
         vitalDescription: WellnessMetricDescriptionsLong.oxygenSaturation,
       ),
     ];
@@ -359,9 +360,11 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
 
     String a1cStatus = 'low'; // default for safety
     String a1cConditionText = '';
-
     if (a1cValue != null) {
       if (a1cValue <= 5.6) {
+        a1cStatus = 'low';
+        a1cConditionText = 'Normal';
+      } else if (a1cValue < 5.7) {
         a1cStatus = 'low';
         a1cConditionText = 'Normal';
       } else if (a1cValue <= 6.4) {
@@ -392,8 +395,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           hemoglobinMin,
           hemoglobinMax,
         ),
-
-        vitalHeading: WellnessMetricDescriptions.hemoglobin,
+        vitalHeading: "Your ${WellnessMetricDescriptions.hemoglobin}",
         vitalDescription: WellnessMetricDescriptionsLong.hemoglobin,
       ),
       buildCard(
@@ -401,10 +403,10 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         imageAsset: CommonHealthAsset().getHbA1cAsset(a1cStatus),
         vitalName: "Hemoglobin A1C",
         vitalValue: a1cValueStr,
-        vitalCondition: '', // 👈 status text like Prediabetes risk
+        vitalCondition: '',
         vitalMass: "%",
         vitalStatus: a1cConditionText,
-        vitalHeading: WellnessMetricDescriptions.hemoglobinA1C,
+        vitalHeading: "Your ${WellnessMetricDescriptions.hemoglobinA1C}",
         vitalDescription: WellnessMetricDescriptionsLong.hemoglobinA1C,
       ),
     ];
@@ -422,7 +424,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalCondition: '',
         vitalMass: "%",
         vitalStatus: statusHelper.getASCVDRisk(VitalSignTypes.ascvdRisk, 1, 30),
-        vitalHeading: WellnessMetricDescriptions.ascvdRisk,
+        vitalHeading: "Your ${WellnessMetricDescriptions.ascvdRisk}",
         vitalDescription: WellnessMetricDescriptionsLong.ascvdRisk,
       ),
       buildCard(
@@ -446,7 +448,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: statusHelper.getVitalValue(
           VitalSignTypes.highBloodPressureRisk,
         ),
-        vitalHeading: WellnessMetricDescriptions.highBloodPressureRisk,
+        vitalHeading:
+            "Your ${WellnessMetricDescriptions.highBloodPressureRisk}",
         vitalDescription: WellnessMetricDescriptionsLong.highBloodPressureRisk,
         vitalStatus: getVitalValue(
           VitalSignTypes.highBloodPressureRisk,
@@ -470,7 +473,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalStatus: statusHelper.getVitalValue(
           VitalSignTypes.highHemoglobinA1CRisk,
         ),
-        vitalHeading: WellnessMetricDescriptions.highHbA1cRisk,
+        vitalHeading: "Your ${WellnessMetricDescriptions.highHbA1cRisk}",
         vitalDescription: WellnessMetricDescriptionsLong.highHbA1cRisk,
         isVitalActive: false,
       ),
@@ -485,7 +488,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: statusHelper.getVitalValue(
           VitalSignTypes.highFastingGlucoseRisk,
         ),
-        vitalHeading: WellnessMetricDescriptions.highFastingGlucoseRisk,
+        vitalHeading:
+            "Your ${WellnessMetricDescriptions.highFastingGlucoseRisk}",
         vitalDescription: WellnessMetricDescriptionsLong.highFastingGlucoseRisk,
         vitalStatus: getVitalValue(VitalSignTypes.highFastingGlucoseRisk),
         isVitalActive: false,
@@ -501,7 +505,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: statusHelper.getVitalValue(
           VitalSignTypes.highTotalCholesterolRisk,
         ),
-        vitalHeading: WellnessMetricDescriptions.highTotalCholesterolRisk,
+        vitalHeading:
+            "Your ${WellnessMetricDescriptions.highTotalCholesterolRisk}",
         vitalDescription:
             WellnessMetricDescriptionsLong.highTotalCholesterolRisk,
         vitalStatus: getVitalValue(VitalSignTypes.highTotalCholesterolRisk),
@@ -516,7 +521,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: statusHelper.getVitalValue(
           VitalSignTypes.lowHemoglobinRisk,
         ),
-        vitalHeading: WellnessMetricDescriptions.lowHemoglobinRisk,
+        vitalHeading: "Your ${WellnessMetricDescriptions.lowHemoglobinRisk}",
         vitalDescription: WellnessMetricDescriptionsLong.lowHemoglobinRisk,
         vitalStatus: statusHelper.getVitalValue(
           VitalSignTypes.lowHemoglobinRisk,
@@ -558,7 +563,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalCondition: '',
         vitalMass: "",
         vitalStatus: statusHelper.getVitalValue(VitalSignTypes.stressLevel),
-        vitalHeading: WellnessMetricDescriptions.stressLevel,
+        vitalHeading: "Your ${WellnessMetricDescriptions.stressLevel}",
         vitalDescription: WellnessMetricDescriptionsLong.stressLevel,
         isExpand: true,
         isVitalActive: false,
@@ -618,7 +623,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalCondition: '',
         vitalMass: "ms",
         vitalStatus: _getVitalStatus(VitalSignTypes.sdnn, 50, 100),
-        vitalHeading: WellnessMetricDescriptions.hrvSdnn,
+        vitalHeading: "Your ${WellnessMetricDescriptions.hrvSdnn}",
         vitalDescription: WellnessMetricDescriptionsLong.hrvSDNN,
         isExpand: true,
         expandedWidget: Column(
@@ -680,7 +685,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.pnsZone),
         vitalCondition: '',
         vitalStatus: statusHelper.getVitalValue(VitalSignTypes.pnsZone),
-        vitalHeading: WellnessMetricDescriptions.recoveryAbility,
+        vitalHeading: "Your ${WellnessMetricDescriptions.recoveryAbility}",
         vitalDescription: WellnessMetricDescriptionsLong.recoveryAbility,
         isVitalActive: false,
       ),
@@ -694,7 +699,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalCondition: '',
         vitalStatus: statusHelper.getPnsIndex(VitalSignTypes.pnsIndex, -1, 1),
 
-        vitalHeading: WellnessMetricDescriptions.pnsIndex,
+        vitalHeading: "Your ${WellnessMetricDescriptions.pnsIndex}",
         vitalDescription: WellnessMetricDescriptionsLong.pnsIndex,
       ),
       buildCard(
@@ -706,7 +711,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.snsZone),
         vitalCondition: '',
         vitalStatus: getVitalValue(VitalSignTypes.snsZone),
-        vitalHeading: WellnessMetricDescriptions.snsZone,
+        vitalHeading: "Your ${WellnessMetricDescriptions.snsZone}",
         vitalDescription: WellnessMetricDescriptionsLong.snsZone,
         isVitalActive: false,
       ),
@@ -719,7 +724,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.snsIndex),
         vitalCondition: '',
         vitalStatus: _getVitalStatus(VitalSignTypes.snsIndex, -1, 1),
-        vitalHeading: WellnessMetricDescriptions.snsIndex,
+        vitalHeading: "Your ${WellnessMetricDescriptions.snsIndex}",
         vitalDescription: WellnessMetricDescriptionsLong.snsIndex,
       ),
       buildCard(
@@ -762,7 +767,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.lfhf),
         vitalCondition: '',
         vitalStatus: _getVitalStatus(VitalSignTypes.lfhf, 0.5, 2),
-        vitalHeading: WellnessMetricDescriptions.lfhf,
+        vitalHeading: "Your ${WellnessMetricDescriptions.lfhf}",
         vitalDescription: WellnessMetricDescriptionsLong.lfHf,
         isVitalActive: true,
       ),

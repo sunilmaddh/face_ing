@@ -10,7 +10,7 @@ class ApiEndpoints {
   static const String baseUrl =
       // "146.190.11.132";
       //dev server
-      // "146.190.11.132:8085";
+      //"146.190.11.132:8085";
       //  '192.168.0.214:8085';
       //Stagging server
       "64.227.165.247:8085";

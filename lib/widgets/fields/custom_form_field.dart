@@ -64,6 +64,34 @@ class CustomFormField extends StatelessWidget {
             keyboardType: keyboardType,
             obscureText: isObscureText.value,
             validator: validator,
+            contextMenuBuilder: (context, editableTextState) {
+              return AdaptiveTextSelectionToolbar(
+                anchors: editableTextState.contextMenuAnchors,
+                children: [
+                  // TextButton(
+                  //   onPressed:
+                  //       () => editableTextState.copySelection(
+                  //         SelectionChangedCause.toolbar,
+                  //       ),
+                  //   child: const Text('Copy'),
+                  // ),
+                  TextButton(
+                    onPressed:
+                        () => editableTextState.pasteText(
+                          SelectionChangedCause.toolbar,
+                        ),
+                    child: const Text('Paste'),
+                  ),
+                  // TextButton(
+                  //   onPressed:
+                  //       () => editableTextState.cutSelection(
+                  //         SelectionChangedCause.toolbar,
+                  //       ),
+                  //   child: const Text('Cut'),
+                  // ),
+                ],
+              );
+            },
             decoration: InputDecoration(
               labelStyle: TextStyle(color: AppColors.textFieldValueColor),
               hintText: hint,
@@ -86,12 +114,8 @@ class CustomFormField extends StatelessWidget {
                   ),
                 ),
               ),
-
               prefixIcon: prefixIcon,
               suffixIcon: suffixIcon,
-              // suffixIcon != null
-              //     ? GestureDetector(onTap: onSuffixTap, child: suffixIcon)
-              //     : null,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide(color: borderColor, width: 1),
@@ -100,7 +124,6 @@ class CustomFormField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide(color: AppColors.primary, width: 1),
               ),
-
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
                 borderSide: BorderSide(color: borderColor, width: 1),
