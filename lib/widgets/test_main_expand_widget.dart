@@ -82,13 +82,17 @@ class StressInfoCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    statusText.toFirstCaps(),
-                    textAlign: TextAlign.end,
-                    style: const TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff575656),
+                  Padding(
+                    padding: EdgeInsets.only(right: AppDimensions.width(20.0)),
+                    child: Text(
+                      maxLines: 2,
+                      statusText.toFirstCaps(),
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff575656),
+                      ),
                     ),
                   ),
                   SizedBox(height: AppDimensions.height(5)),
@@ -100,7 +104,7 @@ class StressInfoCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           CircleAvatar(
-                            radius: 10.5,
+                            radius: 8.5,
                             backgroundColor: getStatusColor(
                               vitalConfidenceLevel,
                             ),

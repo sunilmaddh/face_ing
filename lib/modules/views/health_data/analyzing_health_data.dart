@@ -438,7 +438,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       buildCard(
         vitalKey: VitalKeys.highBloodPressureRisk,
         imageAsset: CommonHealthAsset().gethighBPRiskAsset(
-          getVitalValue(VitalSignTypes.highBloodPressureRisk),
+          statusHelper.getVitalStringStatus(
+            VitalSignTypes.highBloodPressureRisk,
+          ),
         ),
         vitalName: "High Blood Pressure Risk",
         vitalValue: statusHelper.getVitalValue(
@@ -456,7 +458,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       buildCard(
         vitalKey: VitalKeys.highHemoglobinA1cRisk,
         imageAsset: CommonHealthAsset().getHbA1cAsset(
-          getVitalValue(VitalSignTypes.highHemoglobinA1CRisk),
+          statusHelper.getVitalStringStatus(
+            VitalSignTypes.highHemoglobinA1CRisk,
+          ),
         ),
         vitalName: "High HbA1c Risk",
         vitalValue: statusHelper.getVitalValue(
@@ -473,7 +477,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       buildCard(
         vitalKey: VitalKeys.highFastingGlucoseRisk,
         imageAsset: CommonHealthAsset().gethighFastingGlucoseRiskAsset(
-          getVitalValue(VitalSignTypes.highFastingGlucoseRisk),
+          statusHelper.getVitalStringStatus(
+            VitalSignTypes.highFastingGlucoseRisk,
+          ),
         ),
         vitalName: "High Fasting Glucose Risk",
         vitalValue: statusHelper.getVitalValue(
@@ -487,7 +493,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       buildCard(
         vitalKey: VitalKeys.highTotalCholesterolRisk,
         imageAsset: CommonHealthAsset().gethighCholesterolRiskAsset(
-          getVitalValue(VitalSignTypes.highTotalCholesterolRisk),
+          statusHelper.getVitalStringStatus(
+            VitalSignTypes.highTotalCholesterolRisk,
+          ),
         ),
         vitalName: "High Total Cholesterol Risk",
         vitalValue: statusHelper.getVitalValue(
@@ -502,7 +510,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       buildCard(
         vitalKey: VitalKeys.lowHemoglobinRisk,
         imageAsset: CommonHealthAsset().getLowHemoglobinRiskAsset(
-          getVitalValue(VitalSignTypes.lowHemoglobinRisk),
+          statusHelper.getVitalStringStatus(VitalSignTypes.lowHemoglobinRisk),
         ),
         vitalName: "Low Hemoglobin Risk",
         vitalValue: statusHelper.getVitalValue(
@@ -528,10 +536,6 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     final normalizedStressValue = double.tryParse(
       normalizedStressValueStr ?? '',
     );
-
-    // Determine status based on value
-
-    // Determine status based on value
     String stressLevel = '';
     if (normalizedStressValue != null) {
       if (normalizedStressValue < 29) {
@@ -546,7 +550,6 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         stressLevel = 'Very High';
       }
     }
-
     return [
       buildCard(
         vitalKey: VitalKeys.stressLevel,
@@ -560,7 +563,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         isExpand: true,
         isVitalActive: false,
         imageAsset: CommonHealthAsset().getStressLevelAsset(
-          statusHelper.getVitalValue(VitalSignTypes.stressLevel),
+          statusHelper.getVitalStringStatus(VitalSignTypes.stressLevel),
         ),
         expandedWidget: Column(
           children: [
@@ -599,8 +602,6 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
           ],
         ),
       ),
-      // You mentioned "Stress Level" and "Normalized Stress Index" but didn't give cards for them.
-      // You can add similar cards here if you have data for those.
     ];
   }
 
@@ -649,7 +650,6 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               titleText: WellnessMetricDescriptions.rmssd,
               statusText:
                   "Your RMSSD is ${_getVitalStatus(VitalSignTypes.rmssd, 25, 43).toFirstCaps()}",
-              //need to get it with avg
               valueText: statusHelper.getVitalValue(VitalSignTypes.rmssd),
               imageAsset: CommonHealthAsset().getRmssdAsset(
                 _getVitalStatus(VitalSignTypes.rmssd, 25, 43),
@@ -674,7 +674,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       buildCard(
         vitalKey: VitalKeys.pnsZone,
         imageAsset: CommonHealthAsset().getRecoveryAbilityAsset(
-          statusHelper.getVitalValue(VitalSignTypes.pnsZone),
+          statusHelper.getVitalStringStatus(VitalSignTypes.pnsZone),
         ),
         vitalName: "Recovery Ability (PNS Zone)",
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.pnsZone),
@@ -700,7 +700,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       buildCard(
         vitalKey: VitalKeys.snsZone,
         imageAsset: CommonHealthAsset().getSnsIndexAsset(
-          getVitalValue(VitalSignTypes.snsZone),
+          statusHelper.getVitalStringStatus(VitalSignTypes.snsZone),
         ),
         vitalName: "Stress Response (SNS Zone) ",
         vitalValue: statusHelper.getVitalValue(VitalSignTypes.snsZone),
@@ -807,9 +807,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     if (value == null) return '';
     if (value <= 29) return 'low';
     if (value <= 40) return "normal";
-    if (value <= 67) return "Mild";
-    if (value <= 97) return "High";
-    if (value > 97) return "Very High";
+    if (value <= 67) return "mild";
+    if (value <= 97) return "high";
+    if (value > 97) return "very High";
     return 'medium';
   }
 

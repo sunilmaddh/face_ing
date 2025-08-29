@@ -476,6 +476,7 @@ class CommonDialog {
     DateTime now = DateTime.now();
     DateTime initialDate = DateTime(now.year - 18, now.month, now.day);
     DateTime selectedDate = initialDate;
+    bool isFutureDate = false;
     commonDialogCard(
       title: "Select Date of birth",
       context: context,
@@ -492,21 +493,23 @@ class CommonDialog {
         //   DateTime.now().day,
         // ),
         onDateTimeChanged: (DateTime newDate) {
-          selectedDate = newDate;
-
           if (newDate.isAfter(initialDate)) {
             AppSnackbar.show(
               isError: true,
               title: "Error",
-              message: "You must be at least 18 years old.",
+              message: "You must be at least 18 years old",
             );
+            isFutureDate = true;
           } else {
+            isFutureDate = false;
             selectedDate = newDate;
           }
         },
       ),
       onConfirm: () {
-        onDateSelected(selectedDate);
+        if (!isFutureDate) {
+          onDateSelected(selectedDate);
+        }
       },
     );
   }
