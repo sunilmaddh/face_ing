@@ -16,6 +16,11 @@ class Getvitalstatus {
     return value.toString();
   }
 
+  String getVitalStringStatus(type) {
+    final result = _measurementController.vitalsResults.value.getResult(type);
+    return result!.value.toString().toLowerCase();
+  }
+
   String getWellnessStatus(vitalType, num min, num max) {
     final rawValue = getVitalValue(vitalType ?? 0);
     final value = double.tryParse(rawValue);

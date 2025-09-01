@@ -12,7 +12,7 @@ class VitalKeys {
   static const highBloodPressureRisk = 'high_blood_pressure_risk';
   static const highHemoglobinA1cRisk = 'high_hemoglobin_a1C_risk';
   static const highFastingGlucoseRisk = 'high_fasting_glucose_risk';
-  static const highTotalCholesterolRisk = 'highTotal_cholesterol_risk';
+  static const highTotalCholesterolRisk = 'high_Total_cholesterol_risk';
   static const lowHemoglobinRisk = 'low_hemoglobin_risk';
   static const stressLevel = 'stress_level';
   static const stressIndex = 'stress_index';

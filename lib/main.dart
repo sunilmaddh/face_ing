@@ -39,6 +39,11 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: AppRoutes.splashScreen,
         getPages: AppPages.getPages,
+        routingCallback: (routing) {
+          if (Get.isSnackbarOpen) {
+            Get.closeCurrentSnackbar();
+          }
+        },
       ),
     );
   }

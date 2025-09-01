@@ -48,8 +48,8 @@ class HealthDetailList {
   String? vitalHeading;
   String? vitalDescription;
   String? vitalUnit;
+  String? vitalConfidence;
   List<HealthDetailList>? vitalSubList;
-
   HealthDetailList({
     this.vitalKey,
     this.vitalValue,
@@ -61,8 +61,8 @@ class HealthDetailList {
     this.vitalDescription,
     this.vitalUnit,
     this.vitalSubList,
+    this.vitalConfidence,
   });
-
   factory HealthDetailList.fromJson(Map<String, dynamic> json) =>
       HealthDetailList(
         vitalKey: UtilMethods.stringParser(json["vitalKey"]),
@@ -74,6 +74,7 @@ class HealthDetailList {
         vitalHeading: UtilMethods.stringParser(json["vitalHeading"]),
         vitalDescription: UtilMethods.stringParser(json["vitalDescription"]),
         vitalUnit: UtilMethods.stringParser(json["vitalUnit"]),
+        vitalConfidence: UtilMethods.stringParser(json["vitalConfLevel"]),
         vitalSubList:
             json["vitalSubList"] == null
                 ? []

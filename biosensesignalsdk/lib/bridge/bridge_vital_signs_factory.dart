@@ -47,41 +47,89 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/wellness_level.dar
 
 Map<int, VitalSign Function(dynamic value, VitalSignConfidence? confidence)>
     vitalSignsResolver = {
-      VitalSignTypes.pulseRate: (dynamic value, VitalSignConfidence? confidence) => VitalSignPulseRate(value as int, confidence: confidence),
-      VitalSignTypes.respirationRate: (dynamic value, VitalSignConfidence? confidence) => VitalSignRespirationRate(value as int, confidence: confidence),
-      VitalSignTypes.oxygenSaturation: (dynamic value, VitalSignConfidence? confidence) => VitalSignOxygenSaturation(value as int),
-      VitalSignTypes.sdnn: (dynamic value, VitalSignConfidence? confidence) => VitalSignSdnn(value as int, confidence: confidence),
-      VitalSignTypes.stressLevel: (dynamic value, VitalSignConfidence? confidence) => VitalSignStressLevel(StressLevel.values[value as int]),
-      VitalSignTypes.rri: (dynamic value, VitalSignConfidence? confidence) {
-        final rri = List<dynamic>.from(value)
-          .map((rriValue) => Rri.fromJson(Map<String, dynamic>.from(rriValue)))
-          .toList();
-        return VitalSignRri(rri, confidence: confidence);
-      },
-      VitalSignTypes.bloodPressure: (dynamic jsonValue, VitalSignConfidence? confidence) => VitalSignBloodPressure(BloodPressure.fromJson(Map<String, dynamic>.from(jsonValue))),
-      VitalSignTypes.stressIndex: (dynamic value, VitalSignConfidence? confidence) => VitalSignStressIndex(value as int),
-      VitalSignTypes.meanRri: (dynamic value, VitalSignConfidence? confidence) => VitalSignMeanRri(value as int, confidence: confidence),
-      VitalSignTypes.rmssd: (dynamic value, VitalSignConfidence? confidence) => VitalSignRmssd(value as int),
-      VitalSignTypes.sd1: (dynamic value, VitalSignConfidence? confidence) => VitalSignSd1(value as int),
-      VitalSignTypes.sd2: (dynamic value, VitalSignConfidence? confidence) => VitalSignSd2(value as int),
-      VitalSignTypes.prq: (dynamic value, VitalSignConfidence? confidence) => VitalSignPrq(value as double, confidence: confidence),
-      VitalSignTypes.pnsIndex: (dynamic value, VitalSignConfidence? confidence) => VitalSignPnsIndex(value as double),
-      VitalSignTypes.pnsZone: (dynamic value, VitalSignConfidence? confidence) => VitalSignPnsZone(PnsZone.values[value as int]),
-      VitalSignTypes.snsIndex: (dynamic value, VitalSignConfidence? confidence) => VitalSignSnsIndex(value as double),
-      VitalSignTypes.snsZone: (dynamic value, VitalSignConfidence? confidence) => VitalSignSnsZone(SnsZone.values[value as int]),
-      VitalSignTypes.wellnessIndex: (dynamic value, VitalSignConfidence? confidence) => VitalSignWellnessIndex(value as int),
-      VitalSignTypes.wellnessLevel: (dynamic value, VitalSignConfidence? confidence) => VitalSignWellnessLevel(WellnessLevel.values[value as int]),
-      VitalSignTypes.lfhf: (dynamic value, VitalSignConfidence? confidence) => VitalSignLfhf(value as double),
-      VitalSignTypes.hemoglobin: (dynamic value, VitalSignConfidence? confidence) => VitalSignHemoglobin(value),
-      VitalSignTypes.hemoglobinA1C: (dynamic value, VitalSignConfidence? confidence) => VitalSignHemoglobinA1C(value),
-      VitalSignTypes.highHemoglobinA1CRisk: (dynamic value, VitalSignConfidence? confidence) => VitalSignHighHemoglobinA1CRisk(HighHemoglobinA1CRisk.values[value as int]),
-      VitalSignTypes.highBloodPressureRisk: (dynamic value, VitalSignConfidence? confidence) => VitalSignHighBloodPressureRisk(HighBloodPressureRisk.values[value as int]),
-      VitalSignTypes.ascvdRisk: (dynamic value, VitalSignConfidence? confidence) => VitalSignAscvdRisk(value as double),
-      VitalSignTypes.normalizedStressIndex: (dynamic value, VitalSignConfidence? confidence) => VitalSignNormalizedStressIndex(value as int),
-      VitalSignTypes.heartAge: (dynamic value, VitalSignConfidence? confidence) => VitalSignHeartAge(value as int),
-      VitalSignTypes.highFastingGlucoseRisk: (dynamic value, VitalSignConfidence? confidence) => VitalSignHighFastingGlucoseRisk(HighFastingGlucoseRisk.values[value as int]),
-      VitalSignTypes.highTotalCholesterolRisk: (dynamic value, VitalSignConfidence? confidence) => VitalSignHighTotalCholesterolRisk(HighTotalCholesterolRisk.values[value as int]),
-      VitalSignTypes.lowHemoglobinRisk: (dynamic value, VitalSignConfidence? confidence) => VitalSignLowHemoglobinRisk(LowHemoglobinRisk.values[value as int]),
+  VitalSignTypes.pulseRate: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignPulseRate(value as int, confidence: confidence),
+  VitalSignTypes.respirationRate:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignRespirationRate(value as int, confidence: confidence),
+  VitalSignTypes.oxygenSaturation:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignOxygenSaturation(value as int),
+  VitalSignTypes.sdnn: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignSdnn(value as int, confidence: confidence),
+  VitalSignTypes.stressLevel:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignStressLevel(StressLevel.values[value as int]),
+  VitalSignTypes.rri: (dynamic value, VitalSignConfidence? confidence) {
+    final rri = List<dynamic>.from(value)
+        .map((rriValue) => Rri.fromJson(Map<String, dynamic>.from(rriValue)))
+        .toList();
+    return VitalSignRri(rri, confidence: confidence);
+  },
+  VitalSignTypes.bloodPressure:
+      (dynamic jsonValue, VitalSignConfidence? confidence) =>
+          VitalSignBloodPressure(
+              BloodPressure.fromJson(Map<String, dynamic>.from(jsonValue))),
+  VitalSignTypes.stressIndex:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignStressIndex(value as int),
+  VitalSignTypes.meanRri: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignMeanRri(value as int, confidence: confidence),
+  VitalSignTypes.rmssd: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignRmssd(value as int),
+  VitalSignTypes.sd1: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignSd1(value as int),
+  VitalSignTypes.sd2: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignSd2(value as int),
+  VitalSignTypes.prq: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignPrq(value as double, confidence: confidence),
+  VitalSignTypes.pnsIndex: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignPnsIndex(value as double),
+  VitalSignTypes.pnsZone: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignPnsZone(PnsZone.values[value as int]),
+  VitalSignTypes.snsIndex: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignSnsIndex(value as double),
+  VitalSignTypes.snsZone: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignSnsZone(SnsZone.values[value as int]),
+  VitalSignTypes.wellnessIndex:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignWellnessIndex(value as int),
+  VitalSignTypes.wellnessLevel:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignWellnessLevel(WellnessLevel.values[value as int]),
+  VitalSignTypes.lfhf: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignLfhf(value as double),
+  VitalSignTypes.hemoglobin: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignHemoglobin(value),
+  VitalSignTypes.hemoglobinA1C:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignHemoglobinA1C(value),
+  VitalSignTypes.highHemoglobinA1CRisk:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignHighHemoglobinA1CRisk(
+              HighHemoglobinA1CRisk.values[value as int]),
+  VitalSignTypes.highBloodPressureRisk:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignHighBloodPressureRisk(
+              HighBloodPressureRisk.values[value as int]),
+  VitalSignTypes.ascvdRisk: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignAscvdRisk(value as double),
+  VitalSignTypes.normalizedStressIndex:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignNormalizedStressIndex(value as int),
+  VitalSignTypes.heartAge: (dynamic value, VitalSignConfidence? confidence) =>
+      VitalSignHeartAge(value as int),
+  VitalSignTypes.highFastingGlucoseRisk:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignHighFastingGlucoseRisk(
+              HighFastingGlucoseRisk.values[value as int]),
+  VitalSignTypes.highTotalCholesterolRisk:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignHighTotalCholesterolRisk(
+              HighTotalCholesterolRisk.values[value as int]),
+  VitalSignTypes.lowHemoglobinRisk:
+      (dynamic value, VitalSignConfidence? confidence) =>
+          VitalSignLowHemoglobinRisk(LowHemoglobinRisk.values[value as int]),
 };
 
 VitalSign? createVitalSign(Map<String, dynamic> data) {
@@ -98,13 +146,11 @@ VitalSignsResults createFinalResults(List<dynamic> resultsList) {
       confidence =
           VitalSignConfidence(level: ConfidenceLevel.values[confidenceLevel]);
     }
-
     var vitalSign = vitalSignsResolver[vitalSignInfo['type']]
         ?.call(vitalSignInfo['value'], confidence);
     if (vitalSign != null) {
       vitalSignsResults.setResult(vitalSign);
     }
   }
-
   return vitalSignsResults;
 }

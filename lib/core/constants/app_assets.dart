@@ -54,5 +54,7 @@ class AppAssets {
       wellnessScore = "$baseUrlSvg/wellness_score.svg",
       appIcon = "$baseUrlPng/app_icon.png",
       dwonArrowTab = "$baseUrlSvg/down_arrow_tab.svg",
+      noMeasurement = "$baseUrlPng/no-measure.png",
+      noMeasurementTaken = "$baseUrlSvg/no-measure.svg",
       highImage = "$baseUrlSvg/high_im.svg";
 }

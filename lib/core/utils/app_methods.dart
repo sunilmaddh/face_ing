@@ -228,8 +228,8 @@ class AppMethods {
         return "Please enter a valid number";
       } else if (parsedWeight < 40.0) {
         return "Weight must be 40 or greater";
-      } else if (parsedWeight > 200.0) {
-        return "Weight must be 200 or less";
+      } else if (parsedWeight > 155.0) {
+        return "Weight must be 155 or less";
       }
     }
 
@@ -302,6 +302,11 @@ class AppMethods {
   Future<int> getBatteryLevel() async {
     final level = await _battery.batteryLevel;
     return level;
+  }
+
+  Future<bool> getBatterySaveMode() async {
+    final saveMode = await _battery.isInBatterySaveMode;
+    return saveMode;
   }
 
   // List<Widget> tabWidgets = [

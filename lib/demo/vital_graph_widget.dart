@@ -2,59 +2,75 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 
 class VitalGraphWidget extends StatefulWidget {
-  VitalGraphWidget({
+  const VitalGraphWidget({
     super.key,
     required this.leftTitle,
     required this.bottomTitles,
     required this.vitalValue,
   });
+
   final Color leftBarColor = AppColors.primary;
   final Color rightBarColor = AppColors.borderColor;
   final List<String> leftTitle;
   final List<String> bottomTitles;
-  final List<String> vitalValue;
-  // final BarChartGroupData showingBarGroups;
-  // final Widget leftTitles;
-  // final Widget bottomTitles;
+  final List<HealthList> vitalValue;
 
-  // final Color avgColor =
-  //     AppColors.contentColorOrange.avg(AppColors.contentColorRed);
   @override
-  State<StatefulWidget> createState() => VitalGraphWidgetState();
+  State<VitalGraphWidget> createState() => _VitalGraphWidgetState();
 }
 
-class VitalGraphWidgetState extends State<VitalGraphWidget> {
+class _VitalGraphWidgetState extends State<VitalGraphWidget> {
   final double width = 20;
 
-  late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
-  int touchedGroupIndex = 5;
 
   @override
   void initState() {
     super.initState();
-    storeBarCharData();
+    storeBarChartData();
   }
 
-  storeBarCharData() {
+  void storeBarChartData() {
     final items = <BarChartGroupData>[];
-    for (int i = 0; i <= 4; i++) {
-      final barGroup1 = makeGroupData(0, i.toDouble());
-      items.add(barGroup1);
+    for (int i = 0; i < widget.vitalValue.length; i++) {
+      final value = double.tryParse(widget.vitalValue[i].value ?? "0") ?? 0;
+      final barGroup = makeGroupData(i, value);
+      items.add(barGroup);
     }
-    rawBarGroups = items;
-    showingBarGroups = rawBarGroups;
+    showingBarGroups = items;
   }
 
-  List<Widget> tabWidget = [];
+  /// 🔹 Calculate maxY dynamically
+  double getMaxY() {
+    if (widget.vitalValue.isEmpty) return 1;
+    final values =
+        widget.vitalValue
+            .map((e) => double.tryParse(e.value ?? "0") ?? 0)
+            .toList();
+    final maxVal = values.reduce((a, b) => a > b ? a : b);
+    return (maxVal + 1).ceilToDouble(); // add padding
+  }
+
+  /// 🔹 Calculate Y-axis interval dynamically
+  double getInterval(double maxY) {
+    if (maxY <= 5) return 1;
+    if (maxY <= 20) return 2;
+    if (maxY <= 50) return 5;
+    return (maxY / 10).ceilToDouble(); // fallback: ~10 steps
+  }
+
   @override
   Widget build(BuildContext context) {
+    final maxY = getMaxY();
+    final interval = getInterval(maxY);
+
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       color: AppColors.historyCardColor,
       child: CommonCard(
         widget: AspectRatio(
@@ -66,18 +82,21 @@ class VitalGraphWidgetState extends State<VitalGraphWidget> {
               child: SizedBox(
                 width: AppDimensions.width(320.0),
                 child: BarChart(
+                  transformationConfig: FlTransformationConfig(
+                    scaleAxis: FlScaleAxis.horizontal,
+                  ),
                   BarChartData(
+                    baselineY: 0,
+                    maxY: maxY,
                     alignment: BarChartAlignment.spaceAround,
-                    maxY: 20,
                     barTouchData: BarTouchData(
                       enabled: true,
                       touchTooltipData: BarTouchTooltipData(
+                        fitInsideVertically: true,
                         getTooltipItem: (group, groupIndex, rod, rodIndex) {
                           return BarTooltipItem(
-                            rod.toY.toStringAsFixed(
-                              0,
-                            ), // Display the bar's value
-                            TextStyle(color: Colors.white, fontSize: 12),
+                            rod.toY.toStringAsFixed(1),
+                            const TextStyle(color: Colors.white, fontSize: 12),
                           );
                         },
                       ),
@@ -93,15 +112,15 @@ class VitalGraphWidgetState extends State<VitalGraphWidget> {
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          getTitlesWidget: bottomTitles,
                           reservedSize: 42,
+                          getTitlesWidget: bottomTitles,
                         ),
                       ),
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 28,
-                          interval: 1,
+                          interval: interval,
                           getTitlesWidget: leftTitles,
                         ),
                       ),
@@ -131,71 +150,48 @@ class VitalGraphWidgetState extends State<VitalGraphWidget> {
     );
   }
 
+  /// 🔹 Left Y-axis labels
   Widget leftTitles(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Color(0xff7589a2),
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-    );
-    String text;
-    if (value == 0) {
-      text = '1K';
-    } else if (value == 10) {
-      text = '5K';
-    } else if (value == 19) {
-      text = '10K';
-    } else {
-      return Container();
-    }
     return SideTitleWidget(
       meta: meta,
-      space: 4,
-      child: Text(text, style: style),
-    );
-  }
-
-  Widget bottomTitles(double value, TitleMeta meta) {
-    // final titles = <String>['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    final titles = <String>[
-      "10.00AM",
-      "10.05AM",
-      "10.30AM",
-      "10.45AM",
-      "10.00AM",
-    ];
-    final Widget text = Text(
-      titles[value.toInt()],
-      style: const TextStyle(
-        color: Color(0xff7589a2),
-        fontWeight: FontWeight.bold,
-        fontSize: 14,
+      space: 0,
+      child: Text(
+        value.toInt().toString(),
+        style: const TextStyle(
+          color: Color(0xff7589a2),
+          fontWeight: FontWeight.bold,
+          fontSize: 10,
+        ),
       ),
     );
-
-    return SideTitleWidget(
-      meta: meta,
-      space: 1, //margin top
-      child: text,
-    );
   }
 
+  /// 🔹 Bottom X-axis labels
+  Widget bottomTitles(double value, TitleMeta meta) {
+    if (value.toInt() < widget.bottomTitles.length) {
+      return SideTitleWidget(
+        meta: meta,
+        space: 4,
+        child: Text(
+          widget.bottomTitles[value.toInt()],
+          style: const TextStyle(
+            color: Color(0xff7589a2),
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+        ),
+      );
+    }
+    return const SizedBox.shrink();
+  }
+
+  /// 🔹 Build each bar
   BarChartGroupData makeGroupData(int x, double y1) {
     return BarChartGroupData(
-      barsSpace: 10,
       x: x,
-      barRods: List.generate(1, (v) {
-        return BarChartRodData(
-          toY: y1,
-          color: widget.leftBarColor,
-          width: width,
-        );
-      }),
-      // [
-
-      //   BarChartRodData(toY: y2, color: widget.rightBarColor, width: width),
-      //   BarChartRodData(toY: y2, color: widget.rightBarColor, width: width),
-      //   BarChartRodData(toY: y2, color: widget.rightBarColor, width: width),
-      // ],
+      barRods: [
+        BarChartRodData(toY: y1, color: widget.leftBarColor, width: width),
+      ],
     );
   }
 }

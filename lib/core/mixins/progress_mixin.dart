@@ -70,8 +70,18 @@ mixin ProgressHandlerMixin on GetxController {
       vitalsResults.getResult(VitalSignTypes.highFastingGlucoseRisk),
       vitalsResults.getResult(VitalSignTypes.highTotalCholesterolRisk),
       vitalsResults.getResult(VitalSignTypes.lowHemoglobinRisk),
+      vitalsResults.getResult(VitalSignTypes.stressLevel),
       vitalsResults.getResult(VitalSignTypes.stressIndex),
+      vitalsResults.getResult(VitalSignTypes.normalizedStressIndex),
       vitalsResults.getResult(VitalSignTypes.sdnn),
+      vitalsResults.getResult(VitalSignTypes.meanRri),
+      vitalsResults.getResult(VitalSignTypes.rmssd),
+      vitalsResults.getResult(VitalSignTypes.pnsZone),
+      vitalsResults.getResult(VitalSignTypes.pnsIndex),
+      vitalsResults.getResult(VitalSignTypes.snsZone),
+      vitalsResults.getResult(VitalSignTypes.snsIndex),
+      vitalsResults.getResult(VitalSignTypes.sd1),
+      vitalsResults.getResult(VitalSignTypes.sd2),
       vitalsResults.getResult(VitalSignTypes.lfhf),
     ];
   }
@@ -79,15 +89,9 @@ mixin ProgressHandlerMixin on GetxController {
   static Future<bool> checkingVitalResult(
     VitalSignsResults vitalsResults,
   ) async {
-    final list = await storingVitalResult(vitalsResults);
-    debugPrint("vital list null ${list.toString()} ");
-    for (var result in list) {
-      debugPrint("Null or 0.0 value found: $result");
-      if (result == null || result == 0.0) {
-        debugPrint("Null or 0.0 value found: $result");
-        return true;
-      }
-    }
-    return false;
+    final List<dynamic> list = await storingVitalResult(vitalsResults);
+    debugPrint("Vital list: $list");
+    final hasInvalid = list.any((result) => result == null || result == 0.0);
+    return hasInvalid;
   }
 }

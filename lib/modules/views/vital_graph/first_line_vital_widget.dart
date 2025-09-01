@@ -1,10 +1,10 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
-import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/menu/custom_dropdown_menu.dart';
 import 'package:ntt_data/widgets/menu/indo_custom_data_picker_ranger.dart';
 
@@ -14,27 +14,31 @@ class FirstLineVitalWidget extends StatelessWidget {
 
   DateTime firstDate = DateTime(2025);
   DateTime lastDate = DateTime.now();
+
+  final _vitalGraphController = Get.find<VitalGraphController>();
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: AppDimensions.symmetric(horizontal: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          CommonText.text(
-            fontFamily: AppTextStyles.fontFamilyGilroy,
-            fontSize: AppDimensions.font(13),
-            fontWeight: FontWeight.w700,
-            "18 Aug 2025 - 20 Aug 2025",
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              CustomDropdownMenu(
-                selectedValue: '1D',
-                onSelectionChanged: (v) {},
-                onTap: () {},
-                items: VitalGraphHelper().filterTypeList,
+              Obx(
+                () => CustomDropdownMenu(
+                  selectedValue: _vitalGraphController.selectedValue.value,
+                  onSelectionChanged: (v) {
+                    _vitalGraphController.selectedValue.value = v;
+                    VitalGraphHelper().callForGuestWithFilter(
+                      _vitalGraphController.selectedValue.value,
+                      "1000000039",
+                    );
+                  },
+                  onTap: () {},
+                  items: VitalGraphHelper().filterTypeList,
+                ),
               ),
               IconButton(
                 padding: EdgeInsets.zero,
@@ -45,7 +49,13 @@ class FirstLineVitalWidget extends StatelessWidget {
                         (context) => IndoCustomDateRangePicker(
                           primaryColor: AppColors.primary,
                           backgroundColor: AppColors.btntext,
-                          onApplyClick: (v, v2) {},
+                          onApplyClick: (v, v2) {
+                            VitalGraphHelper().callForGuestWithDateRange(
+                              v.toString(),
+                              v2.toString(),
+                              "1000000039",
+                            );
+                          },
                           minimumDate: firstDate,
                           onCancelClick: () {},
                           maximumDate: lastDate,

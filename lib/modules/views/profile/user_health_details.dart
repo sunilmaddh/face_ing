@@ -113,6 +113,7 @@ class UserHealthDetails extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: IndoSakuraCommonCard(
+              confidenceLevel: result.vitalConfidence.toString(),
               isSdkType: true,
               isLowGood: stringToBool(result.isTypeVital!),
               vitalName: result.vitalName!,

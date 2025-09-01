@@ -4,6 +4,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
+import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
 
 class StressInfoCard extends StatelessWidget {
   final String vitalName;
@@ -13,6 +14,7 @@ class StressInfoCard extends StatelessWidget {
   final String valueText;
   final String unitText;
   final String imageAsset;
+  final String vitalConfidenceLevel;
 
   final VoidCallback onTop;
 
@@ -24,6 +26,7 @@ class StressInfoCard extends StatelessWidget {
     required this.statusText,
     required this.valueText,
     required this.unitText,
+    this.vitalConfidenceLevel = "",
     this.imageAsset = "",
     required this.onTop,
   }) : super(key: key);
@@ -35,10 +38,12 @@ class StressInfoCard extends StatelessWidget {
         const Divider(height: 1, color: Color(0xffD9D9D9)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: Column(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     titleText,
@@ -48,24 +53,7 @@ class StressInfoCard extends StatelessWidget {
                       color: Color(0xff575656),
                     ),
                   ),
-                  Spacer(),
-                  Expanded(
-                    child: Text(
-                      statusText.toFirstCaps(),
-                      textAlign: TextAlign.end,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff575656),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                  SizedBox(height: AppDimensions.height(5)),
                   RichText(
                     text: TextSpan(
                       children: [
@@ -88,24 +76,68 @@ class StressInfoCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Column(
-                    children: [
-                      this.imageAsset.isNotEmpty
-                          ? SvgPicture.asset(
-                            this.imageAsset,
-                            width: 20,
-                            height: 20,
-                          )
-                          : SizedBox(),
-                      SizedBox(height: AppDimensions.height(5)),
-                      InkWell(
-                        onTap: onTop,
-                        child: Icon(
-                          Icons.info_rounded,
-                          color: AppColors.infoIconColor,
-                        ),
+                ],
+              ),
+              Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: AppDimensions.width(150),
+                    child: Text(
+                      textAlign: TextAlign.start,
+                      maxLines: 2,
+                      statusText.toFirstCaps(),
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff575656),
                       ),
-                    ],
+                    ),
+                  ),
+                  SizedBox(height: AppDimensions.height(5)),
+                  this.imageAsset.isNotEmpty
+                      ? SvgPicture.asset(this.imageAsset, width: 20, height: 20)
+                      : SizedBox(),
+                  vitalConfidenceLevel.isNotEmpty
+                      ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          CircleAvatar(
+                            radius: 8.5,
+                            backgroundColor: getStatusColor(
+                              vitalConfidenceLevel,
+                            ),
+                          ),
+
+                          TextButton(
+                            onPressed: () {
+                              CustomBottomSheetConfidence.show(
+                                status: vitalConfidenceLevel.toFirstCaps(),
+                              );
+                            },
+                            child: Text(
+                              "${vitalConfidenceLevel.toFirstCaps()} Confidence",
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.searchColor,
+                              ),
+                            ),
+
+                            // vitalConfidenceLevel.toFirstCaps(),
+                          ),
+                        ],
+                      )
+                      : SizedBox.shrink(),
+                  SizedBox(height: AppDimensions.height(5)),
+                  InkWell(
+                    onTap: onTop,
+                    child: Icon(
+                      Icons.info_rounded,
+                      color: AppColors.infoIconColor,
+                    ),
                   ),
                 ],
               ),
@@ -120,5 +152,18 @@ class StressInfoCard extends StatelessWidget {
         // ),
       ],
     );
+  }
+
+  Color getStatusColor(String level) {
+    switch (level.toLowerCase()) {
+      case "high":
+        return const Color(0xFF1BC76D);
+      case "medium":
+        return const Color(0xFFEEC000);
+      case "low":
+        return const Color(0xFFFA704E);
+      default:
+        return Colors.grey;
+    }
   }
 }

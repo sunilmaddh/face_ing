@@ -65,17 +65,31 @@ class CustomFormField extends StatelessWidget {
             obscureText: isObscureText.value,
             validator: validator,
             contextMenuBuilder: (context, editableTextState) {
-              final List<ContextMenuButtonItem> buttonItems =
-                  editableTextState.contextMenuButtonItems;
-
-              final filteredItems =
-                  buttonItems.where((item) {
-                    return item.label != 'Scan Text';
-                  }).toList();
-
-              return AdaptiveTextSelectionToolbar.buttonItems(
+              return AdaptiveTextSelectionToolbar(
                 anchors: editableTextState.contextMenuAnchors,
-                buttonItems: filteredItems,
+                children: [
+                  // TextButton(
+                  //   onPressed:
+                  //       () => editableTextState.copySelection(
+                  //         SelectionChangedCause.toolbar,
+                  //       ),
+                  //   child: const Text('Copy'),
+                  // ),
+                  TextButton(
+                    onPressed:
+                        () => editableTextState.pasteText(
+                          SelectionChangedCause.toolbar,
+                        ),
+                    child: const Text('Paste'),
+                  ),
+                  // TextButton(
+                  //   onPressed:
+                  //       () => editableTextState.cutSelection(
+                  //         SelectionChangedCause.toolbar,
+                  //       ),
+                  //   child: const Text('Cut'),
+                  // ),
+                ],
               );
             },
             decoration: InputDecoration(

@@ -3,6 +3,8 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/data/repository/services/vital_graph_services.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 
 class VitalGraphController extends GetxController {
   RxBool isLoading = false.obs;
@@ -23,14 +25,19 @@ class VitalGraphController extends GetxController {
   Rx<AdvancedHeartRateVariability> ahrvResponse =
       AdvancedHeartRateVariability().obs;
   var services = VitalGraphServices();
+  RxString selectedValue = "7D".obs;
+
   Future<void> callVitalGraphDataApi({
     required Map<String, dynamic> data,
   }) async {
+    isLoading(true);
     Map<String, dynamic> responseData = await services
         .callVitalGraphApiServices(data: data);
     int statusCode = responseData["statusCode"];
+    isLoading(false);
     try {
       if (statusCode == 200) {
+        await clearData();
         var result = responseData[AppConstents.response];
         vitalGraphResponse.value = VitalGraphResponseModel.fromJson(result);
         wellnessGraphResponse.value = vitalGraphResponse.value.wellness!;
@@ -41,13 +48,26 @@ class VitalGraphController extends GetxController {
         hrvResponse.value = vitalGraphResponse.value.hrvSddnn!;
         ahrvResponse.value =
             vitalGraphResponse.value.advancedHeartRateVariability!;
+
+        AppNavigation.to(AppRoutes.vitalGraphHistory);
       } else if (statusCode == 403) {
         AppSnackbar.show(title: "Error", message: "Something went wrong");
       } else {
         AppSnackbar.show(title: "Error", message: "Something went wrong");
       }
     } catch (e) {
+      isLoading(false);
       AppSnackbar.show(title: "Error", message: e.toString());
     }
+  }
+
+  Future<void> clearData() async {
+    vitalGraphResponse.value = VitalGraphResponseModel();
+    vitalSignesponse.value = AdvancedHeartRateVariability();
+    bloodlessResponse.value = AdvancedHeartRateVariability();
+    stressResponse.value = AdvancedHeartRateVariability();
+    risksResponse.value = AdvancedHeartRateVariability();
+    hrvResponse.value = AdvancedHeartRateVariability();
+    ahrvResponse.value = AdvancedHeartRateVariability();
   }
 }

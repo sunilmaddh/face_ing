@@ -4,338 +4,338 @@ class CommonHealthAsset {
   String getWellnessAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'high':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'medium':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getBreathingRateAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'normal':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'high':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       case 'low':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       default:
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
     }
   }
 
   String getPulseRateAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'normal':
-        return AppAssets.goodAsset; // marked Bad
+        return AppAssets.veryHighImage; // marked Bad
       case 'high':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       case 'low':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       default:
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
     }
   }
 
   String getPrqAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'medium':
-        return AppAssets.goodAsset;
+      case 'normal':
+        return AppAssets.veryHighImage;
       case 'high':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       default:
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
     }
   }
 
   String getSystolicBPAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'high':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       case 'normal':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'low':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
 
       default:
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
     }
   }
 
   String getDiastolicBPAsset(String vitalStatus) {
-    return AppAssets.lowAsset; // Ask Binah, default
+    return AppAssets.veryLowImage; // Ask Binah, default
   }
 
   String getOxygenSaturationAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       case 'normal':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       default:
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
     }
   }
 
   String getHemoglobinAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'medium':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'normal':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'high':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       case 'low':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       default:
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
     }
   }
 
   String getHbA1cAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'high':
-        return AppAssets.lowAsset; // Green for Normal
+        return AppAssets.veryLowImage; // Green for Normal
       case 'medium':
-        return AppAssets.mediumAsset; // Yellow for Prediabetes risk
+        return AppAssets.mediumImage; // Yellow for Prediabetes risk
       case 'low':
       default:
-        return AppAssets.goodAsset; // Red for Diabetes risk
+        return AppAssets.veryHighImage; // Red for Diabetes risk
     }
   }
 
   String getAscvdRiskAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'normal':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       case 'high':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getHeartAgeAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'medium':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String gethighBPRiskAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'hight':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       default:
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
     }
   }
 
   String gethighHbA1cRiskAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String gethighFastingGlucoseRiskAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String gethighCholesterolRiskAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'medium':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getLowHemoglobinRiskAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'medium':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getStressLevelAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'normal':
         return AppAssets.lighthigh;
       case 'mild':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       case 'veryhigh':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       case 'high':
-        return AppAssets.orengeAsset;
+        return AppAssets.lowImage;
       case 'extreme':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       default:
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
     }
   }
 
   String getStressIndexAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'medium':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       case 'high':
-      case 'Very high':
-        return AppAssets.lowAsset;
+      case 'very high':
+        return AppAssets.veryLowImage;
       default:
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
     }
   }
 
   String getmediumizedStressIndexAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'Mild':
-        return AppAssets.mediumAsset;
+      case 'mild':
+        return AppAssets.mediumImage;
       case 'low':
-        return AppAssets.goodAsset;
-      case 'Normal':
+        return AppAssets.veryHighImage;
+      case 'normal':
         return AppAssets.lighthigh;
-      case 'High':
-        return AppAssets.orengeAsset;
-      case 'Very High':
-        return AppAssets.lowAsset;
+      case 'high':
+        return AppAssets.lowImage;
+      case 'very high':
+        return AppAssets.veryLowImage;
 
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getHrvSdnnAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'Normal':
-        return AppAssets.goodAsset;
+      case 'normal':
+        return AppAssets.veryHighImage;
       case 'low':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       case 'high':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       default:
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
     }
   }
 
   String getMeanRRiAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'Normal':
-        return AppAssets.mediumAsset;
+      case 'normal':
+        return AppAssets.mediumImage;
       case 'high':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getRmssdAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'Normal':
-        return AppAssets.mediumAsset;
+      case 'normal':
+        return AppAssets.mediumImage;
       case 'high':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'low':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getRecoveryAbilityAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'medium':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       case 'high':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getPnsIndexAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       case 'normal':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       case 'high':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getSnsResponseAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'medium':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
       case 'high':
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
       default:
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
     }
   }
 
   String getSnsIndexAsset(String vitalStatus) {
     switch (vitalStatus) {
       case 'low':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       case 'medium':
-        return AppAssets.mediumAsset;
-      case 'Normal':
-        return AppAssets.mediumAsset;
+        return AppAssets.mediumImage;
+      case 'normal':
+        return AppAssets.mediumImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getSD1Asset(String vitalStatus) {
-    return AppAssets.lowAsset; // Ask Binah
+    return AppAssets.veryLowImage; // Ask Binah
   }
 
   String getSD2Asset() {
-    return AppAssets.lowAsset; // Ask Binah
+    return AppAssets.veryLowImage; // Ask Binah
   }
 
   String getLfHfAsset(String vitalStatus) {
     switch (vitalStatus) {
-      case 'Normal':
-        return AppAssets.mediumAsset;
+      case 'normal':
+        return AppAssets.mediumImage;
       case 'high':
-        return AppAssets.goodAsset;
+        return AppAssets.veryHighImage;
       default:
-        return AppAssets.lowAsset;
+        return AppAssets.veryLowImage;
     }
   }
 
   String getRRiDataAsset() {
-    return AppAssets.lowAsset; // Ask Binah
+    return AppAssets.veryLowImage; // Ask Binah
   }
 }

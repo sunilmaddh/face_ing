@@ -16,7 +16,7 @@ class CustomTabBarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+      padding: AppDimensions.only(left: 10, right: 10, top: 10),
       child: DefaultTabController(
         length: 7, // Number of tabs
         child: Column(
@@ -49,7 +49,7 @@ class CustomTabBarView extends StatelessWidget {
                     isNotRadius == false
                         ? BoxDecoration(
                           color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(30.0),
                         )
                         : BoxDecoration(),
                 tabs:

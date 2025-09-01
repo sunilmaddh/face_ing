@@ -10,6 +10,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_dialog_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -475,6 +476,7 @@ class CommonDialog {
     DateTime now = DateTime.now();
     DateTime initialDate = DateTime(now.year - 18, now.month, now.day);
     DateTime selectedDate = initialDate;
+    bool isFutureDate = false;
     commonDialogCard(
       title: "Select Date of birth",
       context: context,
@@ -484,13 +486,30 @@ class CommonDialog {
         dateOrder: DatePickerDateOrder.dmy,
         initialDateTime: initialDate,
         minimumDate: DateTime(1925),
-        maximumDate: initialDate,
+        maximumDate: DateTime(2050),
+        // DateTime(
+        //   DateTime.now().year - 18,
+        //   DateTime.now().month,
+        //   DateTime.now().day,
+        // ),
         onDateTimeChanged: (DateTime newDate) {
-          selectedDate = newDate;
+          if (newDate.isAfter(initialDate)) {
+            AppSnackbar.show(
+              isError: true,
+              title: "Error",
+              message: "You must be at least 18 years old",
+            );
+            isFutureDate = true;
+          } else {
+            isFutureDate = false;
+            selectedDate = newDate;
+          }
         },
       ),
       onConfirm: () {
-        onDateSelected(selectedDate);
+        if (!isFutureDate) {
+          onDateSelected(selectedDate);
+        }
       },
     );
   }
