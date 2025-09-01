@@ -39,6 +39,8 @@ class BinahVitalHelper {
       } else if (vitalName == "Wellness Score") {
         isWellnessScore = true;
       } else if ((vitalName == "PNS Index" && vitalStatus == "Low") ||
+          (vitalName == "Recovery Ability (PNS Zone)" &&
+              vitalStatus == "Low") ||
           (vitalName == "LF/HF" && vitalStatus == "Low") ||
           (vitalName == "ASCVD Risk" && vitalStatus == "High") ||
           (vitalName == "SNS Index" && vitalStatus == "High")) {
