@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
@@ -26,11 +27,18 @@ class VitalGraphController extends GetxController {
       AdvancedHeartRateVariability().obs;
   var services = VitalGraphServices();
   RxString selectedValue = "7D".obs;
+  RxInt touchedIndex = (-1).obs;
+  RxBool isTouched = false.obs;
+  RxDouble fontSize = 0.0.obs;
+  RxDouble radius = 0.0.obs;
 
   Future<void> callVitalGraphDataApi({
     required Map<String, dynamic> data,
+    required bool isFromHistory,
   }) async {
     isLoading(true);
+
+    debugPrint(data.toString());
     Map<String, dynamic> responseData = await services
         .callVitalGraphApiServices(data: data);
     int statusCode = responseData["statusCode"];
@@ -48,8 +56,14 @@ class VitalGraphController extends GetxController {
         hrvResponse.value = vitalGraphResponse.value.hrvSddnn!;
         ahrvResponse.value =
             vitalGraphResponse.value.advancedHeartRateVariability!;
-
-        AppNavigation.to(AppRoutes.vitalGraphHistory);
+        if (isFromHistory) {
+          isFromHistory = false;
+          selectedValue.value = data["filterType"];
+          AppNavigation.to(
+            AppRoutes.vitalGraphHistory,
+            arguments: {"guestId": data["guestId"]},
+          );
+        }
       } else if (statusCode == 403) {
         AppSnackbar.show(title: "Error", message: "Something went wrong");
       } else {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 
 final _measurementController = Get.find<MeasurementController>();
@@ -9,10 +8,11 @@ class Getvitalstatus {
   String getVitalValue(type) {
     final result = _measurementController.vitalsResults.value.getResult(type);
     final value = result?.value;
-    print(value);
+    debugPrint(type.toString());
     if (value == null) return "";
+
     if (value is double) return value.toStringAsFixed(2);
-    if (value is int) return value.toStringAsFixed(2);
+    if (value is int) return value.toString();
     return value.toString();
   }
 

@@ -20,7 +20,7 @@ import 'package:ntt_data/widgets/test_main_expand_widget.dart';
 
 // ignore: must_be_immutable
 class AnalyzingHealthData extends StatefulWidget {
-  AnalyzingHealthData({super.key});
+  const AnalyzingHealthData({super.key});
 
   @override
   State<AnalyzingHealthData> createState() => _AnalyzingHealthDataState();
@@ -430,7 +430,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       buildCard(
         vitalKey: VitalKeys.heartAge,
         vitalName: "Heart Age ",
-        vitalValue: getVitalValue(VitalSignTypes.heartAge),
+        vitalValue: statusHelper.getVitalValue(VitalSignTypes.heartAge),
         vitalMass: "years",
         vitalStatus: "",
         // WellnessMetricDescriptions.heartAge, // no comparison logic provided

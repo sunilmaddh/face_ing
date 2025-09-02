@@ -10,6 +10,8 @@ import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 
+import '../vital_graph/helper/vital_grapgh_helper.dart';
+
 class UserHistoryData extends StatelessWidget {
   UserHistoryData({super.key});
 
@@ -24,6 +26,21 @@ class UserHistoryData extends StatelessWidget {
           AppNavigation.back();
         },
         title: "User History",
+        actions: [
+          InkWell(
+            onTap: () {
+              VitalGraphHelper().callForUserWithFilter("7D", true);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                AppAssets.barImage,
+                height: AppDimensions.height(30),
+                width: AppDimensions.width(30),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Obx(
         () =>

@@ -13,10 +13,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   IndoSharedPreference.instance.init();
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    // DeviceOrientation.portraitDown, // optional if you want upside-down
-  ]);
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   AppBindings().dependencies();
   NativeCaller().setupResultListener();
   runApp(const MyApp());

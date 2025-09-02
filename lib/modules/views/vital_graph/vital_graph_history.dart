@@ -16,7 +16,9 @@ import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class VitalGraphHistory extends StatelessWidget {
   VitalGraphHistory({super.key});
+
   final _vitalGraphController = Get.find<VitalGraphController>();
+  String gusetId = Get.arguments["guestId"] ?? "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +39,7 @@ class VitalGraphHistory extends StatelessWidget {
             Container(
               padding: AppDimensions.symmetric(vertical: 20),
               color: AppColors.btntext,
-              child: FirstLineVitalWidget(),
+              child: FirstLineVitalWidget(guestId: gusetId),
             ),
             Obx(
               () =>

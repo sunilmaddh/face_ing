@@ -128,27 +128,27 @@ class VitalGraphFirstCard extends StatelessWidget {
         vitalResponse.value.vitalTypeDetails!.length,
         (i) => Obx(
           () =>
-              isNumeric(
-                    vitalResponse
-                        .value
-                        .vitalTypeDetails![i]
-                        .healthList
-                        .first
-                        .value
-                        .toString(),
-                  )
-                  ? VitalGraphWidget(
-                    leftTitle: vitalResponse.value.vitalTypeDetails![i].yValues,
+          // isNumeric(
+          //       vitalResponse
+          //           .value
+          //           .vitalTypeDetails![i]
+          //           .healthList
+          //           .first
+          //           .value
+          //           .toString(),
+          //     )
+          //     ?
+          VitalGraphWidget(
+            leftTitle: vitalResponse.value.vitalTypeDetails![i].yValues,
 
-                    bottomTitles:
-                        vitalResponse.value.vitalTypeDetails![i].xValues,
-                    vitalValue:
-                        vitalResponse.value.vitalTypeDetails![i].healthList,
-                  )
-                  : VitalPieChart(
-                    vitalValue:
-                        vitalResponse.value.vitalTypeDetails![i].healthList,
-                  ),
+            bottomTitles: vitalResponse.value.vitalTypeDetails![i].xValues,
+            vitalValue: vitalResponse.value.vitalTypeDetails![i].healthList,
+          ),
+          // : VitalPieChart(
+          //   vitalValue:
+          //       vitalResponse.value.vitalTypeDetails![i].healthList,
+          //   controller: _vitalController,
+          // ),
         ),
       ),
       isNotRadius: true,

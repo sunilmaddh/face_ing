@@ -25,12 +25,25 @@ class GuestHealthHistoryList extends StatelessWidget {
         },
         title: "Guest Health History",
         actions: [
-          IconButton(
-            onPressed: () {
-              VitalGraphHelper().callForGuestWithFilter("7D", guestId);
+          InkWell(
+            onTap: () {
+              VitalGraphHelper().callForGuestWithFilter("7D", guestId, true);
             },
-            icon: Icon(Icons.home),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                AppAssets.barImage,
+                height: AppDimensions.height(30),
+                width: AppDimensions.width(30),
+              ),
+            ),
           ),
+          // IconButton(
+          //   onPressed: () {
+          //     VitalGraphHelper().callForGuestWithFilter("7D", guestId, true);
+          //   },
+          //   icon: Icon(Icons.home),
+          // ),
         ],
       ),
       body: Obx(

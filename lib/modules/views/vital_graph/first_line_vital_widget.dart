@@ -5,12 +5,15 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/menu/custom_dropdown_menu.dart';
 import 'package:ntt_data/widgets/menu/indo_custom_data_picker_ranger.dart';
 
 // ignore: must_be_immutable
 class FirstLineVitalWidget extends StatelessWidget {
-  FirstLineVitalWidget({super.key});
+  FirstLineVitalWidget({super.key, t, required this.guestId});
+
+  final String guestId;
 
   DateTime firstDate = DateTime(2025);
   DateTime lastDate = DateTime.now();
@@ -21,8 +24,9 @@ class FirstLineVitalWidget extends StatelessWidget {
     return Padding(
       padding: AppDimensions.symmetric(horizontal: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          CommonText.text("Select Vital", fontWeight: FontWeight.w400),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -33,7 +37,8 @@ class FirstLineVitalWidget extends StatelessWidget {
                     _vitalGraphController.selectedValue.value = v;
                     VitalGraphHelper().callForGuestWithFilter(
                       _vitalGraphController.selectedValue.value,
-                      "1000000039",
+                      guestId,
+                      false,
                     );
                   },
                   onTap: () {},
@@ -53,7 +58,8 @@ class FirstLineVitalWidget extends StatelessWidget {
                             VitalGraphHelper().callForGuestWithDateRange(
                               v.toString(),
                               v2.toString(),
-                              "1000000039",
+                              guestId,
+                              false,
                             );
                           },
                           minimumDate: firstDate,

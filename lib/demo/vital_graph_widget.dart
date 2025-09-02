@@ -80,11 +80,8 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: AppDimensions.width(320.0),
+                width: AppDimensions.width(400.0),
                 child: BarChart(
-                  transformationConfig: FlTransformationConfig(
-                    scaleAxis: FlScaleAxis.horizontal,
-                  ),
                   BarChartData(
                     baselineY: 0,
                     maxY: maxY,

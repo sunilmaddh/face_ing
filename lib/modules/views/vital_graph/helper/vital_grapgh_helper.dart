@@ -113,8 +113,14 @@ class VitalGraphHelper {
   );
   List<String> filterTypeList = ["1D", "7D", "Monthly"];
   final _controller = Get.find<VitalGraphController>();
-  Future<void> callVitalGraph(Map<String, dynamic> data) async {
-    await _controller.callVitalGraphDataApi(data: data);
+  Future<void> callVitalGraph(
+    Map<String, dynamic> data,
+    bool isFromHistory,
+  ) async {
+    await _controller.callVitalGraphDataApi(
+      data: data,
+      isFromHistory: isFromHistory,
+    );
   }
 
   // 🔹 Common payload builder
@@ -153,12 +159,15 @@ class VitalGraphHelper {
       startDate: startDate,
       endDate: endDate,
     );
-    await callVitalGraph(data);
+    await callVitalGraph(data, false);
   }
 
-  Future<void> callForUserWithFilter(String filterType) async {
+  Future<void> callForUserWithFilter(
+    String filterType,
+    bool isFromHistory,
+  ) async {
     final data = _buildPayload(isUser: true, filterType: filterType);
-    await callVitalGraph(data);
+    await callVitalGraph(data, isFromHistory);
   }
 
   // 🔹 Guest API Calls
@@ -166,22 +175,27 @@ class VitalGraphHelper {
     String startDate,
     String endDate,
     String guestId,
+    bool isFormHistory,
   ) async {
     final data = _buildPayload(
-      isUser: false,
+      isUser: guestId.isEmpty ? true : false,
       startDate: startDate,
       endDate: endDate,
       guestId: guestId,
     );
-    await callVitalGraph(data);
+    await callVitalGraph(data, isFormHistory);
   }
 
-  Future<void> callForGuestWithFilter(String filterType, String guestId) async {
+  Future<void> callForGuestWithFilter(
+    String filterType,
+    String guestId,
+    bool isFromHistory,
+  ) async {
     final data = _buildPayload(
-      isUser: false,
+      isUser: guestId.isEmpty ? true : false,
       filterType: filterType,
       guestId: guestId,
     );
-    await callVitalGraph(data);
+    await callVitalGraph(data, isFromHistory);
   }
 }
