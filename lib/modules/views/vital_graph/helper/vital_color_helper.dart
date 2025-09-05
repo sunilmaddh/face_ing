@@ -1,0 +1,123 @@
+import 'package:flutter/material.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
+// Replace with your actual asset paths
+
+class VitalColorHelper {
+  bool isBreathing = false;
+  bool isBlood = false;
+  bool isHighLow = false;
+  bool isStress = false;
+  bool isWellnessScore = false;
+  bool isLowGood = false;
+  String vitalValue = "";
+
+  final String vitalName;
+  String vitalStatus;
+
+  VitalColorHelper({
+    required this.vitalName,
+    required this.vitalStatus,
+    required this.isLowGood,
+  }) {
+    _initializeFlags();
+  }
+
+  void _initializeFlags() {
+    if (isLowGood) {
+      if (_isBreathingVital()) {
+        isBreathing = true;
+      } else if (vitalName == "Blood Pressure") {
+        isBlood = true;
+      } else if (_isHighLowRiskVital()) {
+        isHighLow = true;
+      } else if (vitalName == "Stress Level") {
+        isStress = true;
+      } else if (vitalName == "Normalized Stress Index") {
+        isStress = true;
+      } else if (vitalName == "Wellness Score") {
+        isWellnessScore = true;
+      } else if ((vitalName == "PNS Index" && vitalStatus == "Low") ||
+          (vitalName == "Recovery Ability (PNS Zone)" &&
+              vitalStatus == "Low") ||
+          (vitalName == "LF/HF" && vitalStatus == "Low") ||
+          (vitalName == "ASCVD Risk" && vitalStatus == "High") ||
+          (vitalName == "SNS Index" && vitalStatus == "High")) {
+        isLowGood = false;
+      }
+      if ((vitalName == "Mean RRi" && vitalStatus == "Low") ||
+          (vitalName == "RMSSD" && vitalStatus == "Low")) {
+        isLowGood = false;
+      }
+    }
+  }
+
+  bool _isBreathingVital() {
+    return [
+      "Breathing Rate",
+      "Pulse Rate(Heart Rate)",
+      "PRQ",
+      "Hemoglobin",
+    ].contains(vitalName);
+  }
+
+  bool _isHighLowRiskVital() {
+    return [
+      "High Blood Pressure Risk",
+      "High HbA1c Risk",
+      "High Fasting Glucose Risk",
+      "High Total Cholesterol Risk",
+      "Low Hemoglobin Risk",
+      "Stress Response (SNS Zone)",
+    ].contains(vitalName);
+  }
+
+  /// Returns color based on vitalStatus and internal flags
+  Color getColor() {
+    switch (vitalStatus.toLowerCase()) {
+      case 'low':
+        return isBreathing
+            ? const Color(0xFFEEC000)
+            : isWellnessScore
+            ? const Color(0xFFFA704E)
+            : isBlood
+            ? const Color(0xFFEEC000)
+            : isLowGood
+            ? const Color(0xFF1BC76D)
+            : const Color(0xFFFA704E);
+
+      case 'normal':
+        return isBreathing
+            ? const Color(0xFF1BC76D)
+            : isBlood
+            ? const Color(0xFF1BC76D)
+            : isLowGood
+            ? const Color(0xFFEEC000)
+            : const Color(0xFF1BC76D);
+
+      case 'medium':
+      case 'mild':
+        return const Color(0xFFEEC000);
+
+      case 'high':
+        return isBreathing
+            ? const Color(0xFFEEC000)
+            : isBlood
+            ? const Color(0xFFFA704E)
+            : isLowGood
+            ? const Color(0xFF1BC76D)
+            : const Color(0xFFFA704E);
+
+      case 'very high':
+        return isLowGood ? const Color(0xFFFA704E) : const Color(0xFF1BC76D);
+      case 'prediabetes risk':
+      case 'prediabetes':
+        return const Color(0xFFEEC000);
+      case 'diabetes risk':
+      case 'diabetes':
+        return const Color(0xFFFA704E);
+
+      default:
+        return Colors.white;
+    }
+  }
+}

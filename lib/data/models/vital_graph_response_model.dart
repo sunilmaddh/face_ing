@@ -102,12 +102,20 @@ class HealthList {
   String? value;
   String? scannedDate;
   String? status;
-
-  HealthList({this.value, this.scannedDate, this.status});
+  String? isTypeVital;
+  List<String>? vitalType = [];
+  HealthList({
+    this.value,
+    this.scannedDate,
+    this.status,
+    this.isTypeVital,
+    this.vitalType,
+  });
 
   factory HealthList.fromJson(Map<String, dynamic> json) => HealthList(
     value: UtilMethods.stringParser(json["value"]),
     scannedDate: UtilMethods.stringParser(json["scannedDate"]),
     status: UtilMethods.stringParser(json["status"]),
+    isTypeVital: UtilMethods.stringParser(json["isTypeVital"]),
   );
 }

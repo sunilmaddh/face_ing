@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
+import 'package:ntt_data/modules/views/vital_graph/helper/vital_color_helper.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 
 class VitalGraphWidget extends StatefulWidget {
@@ -11,6 +12,7 @@ class VitalGraphWidget extends StatefulWidget {
     required this.leftTitle,
     required this.bottomTitles,
     required this.vitalValue,
+    required this.vitalName,
   });
 
   final Color leftBarColor = AppColors.primary;
@@ -18,6 +20,7 @@ class VitalGraphWidget extends StatefulWidget {
   final List<String> leftTitle;
   final List<String> bottomTitles;
   final List<HealthList> vitalValue;
+  final String vitalName;
 
   @override
   State<VitalGraphWidget> createState() => _VitalGraphWidgetState();
@@ -38,7 +41,16 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
     final items = <BarChartGroupData>[];
     for (int i = 0; i < widget.vitalValue.length; i++) {
       final value = double.tryParse(widget.vitalValue[i].value ?? "0") ?? 0;
-      final barGroup = makeGroupData(i, value);
+      var isTypeVital = stringToBool(
+        widget.vitalValue[i].isTypeVital.toString(),
+      );
+      debugPrint("vital name ${widget.vitalName}");
+      var vitalGraphColor = VitalColorHelper(
+        vitalName: widget.vitalName,
+        vitalStatus: widget.vitalValue[i].status.toString(),
+        isLowGood: isTypeVital,
+      );
+      final barGroup = makeGroupData(i, value, vitalGraphColor.getColor());
       items.add(barGroup);
     }
     showingBarGroups = items;
@@ -82,6 +94,9 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
               child: SizedBox(
                 width: AppDimensions.width(400.0),
                 child: BarChart(
+                  // transformationConfig: FlTransformationConfig(
+                  //   scaleAxis: FlScaleAxis.horizontal,
+                  // ),
                   BarChartData(
                     baselineY: 0,
                     maxY: maxY,
@@ -168,7 +183,7 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
     if (value.toInt() < widget.bottomTitles.length) {
       return SideTitleWidget(
         meta: meta,
-        space: 4,
+        space: 5,
         child: Text(
           widget.bottomTitles[value.toInt()],
           style: const TextStyle(
@@ -183,12 +198,14 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
   }
 
   /// 🔹 Build each bar
-  BarChartGroupData makeGroupData(int x, double y1) {
+  BarChartGroupData makeGroupData(int x, double y1, Color color) {
     return BarChartGroupData(
       x: x,
-      barRods: [
-        BarChartRodData(toY: y1, color: widget.leftBarColor, width: width),
-      ],
+      barRods: [BarChartRodData(toY: y1, color: color, width: width)],
     );
+  }
+
+  bool stringToBool(String value) {
+    return value.toLowerCase() == 'true';
   }
 }

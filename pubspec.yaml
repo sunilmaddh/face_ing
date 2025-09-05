@@ -54,6 +54,7 @@ dependencies:
   fl_chart: ^1.0.0
   custom_date_range_picker: ^1.1.0
   date_ranger: ^1.1.0
+  syncfusion_flutter_gauges: ^30.2.7
   # flutter_secure_storage: ^4.2.1
   
 

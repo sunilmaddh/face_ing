@@ -85,31 +85,66 @@ class VitalGraphHelper {
 
   static List<Widget> tabBarWellnessWidget = List.generate(
     1,
-    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+    (_) => VitalGraphWidget(
+      leftTitle: [],
+      bottomTitles: [],
+      vitalValue: [],
+      vitalName: '',
+    ),
   );
   static List<Widget> tabBarVitalSignWidget = List.generate(
     5,
-    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+    (_) => VitalGraphWidget(
+      leftTitle: [],
+      bottomTitles: [],
+      vitalValue: [],
+      vitalName: '',
+    ),
   );
   static List<Widget> tabBarBloodlessWidget = List.generate(
     2,
-    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+    (_) => VitalGraphWidget(
+      leftTitle: [],
+      bottomTitles: [],
+      vitalValue: [],
+      vitalName: '',
+    ),
   );
   static List<Widget> tabBarRiskWidget = List.generate(
     6,
-    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+    (_) => VitalGraphWidget(
+      leftTitle: [],
+      bottomTitles: [],
+      vitalValue: [],
+      vitalName: '',
+    ),
   );
   static List<Widget> tabBarStressWidget = List.generate(
     1,
-    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+    (_) => VitalGraphWidget(
+      leftTitle: [],
+      bottomTitles: [],
+      vitalValue: [],
+      vitalName: '',
+    ),
   );
   static List<Widget> tabBaHRVWidget = List.generate(
     1,
-    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+    (_) => VitalGraphWidget(
+      leftTitle: [],
+      bottomTitles: [],
+      vitalValue: [],
+      vitalName: '',
+    ),
   );
   static List<Widget> tabBarHRVWidgets = List.generate(
     7,
-    (_) => VitalGraphWidget(leftTitle: [], bottomTitles: [], vitalValue: []),
+    (_) => VitalGraphWidget(
+      leftTitle: [],
+      bottomTitles: [],
+      vitalValue: [],
+      vitalName: '',
+    ),
   );
   List<String> filterTypeList = ["1D", "7D", "Monthly"];
   final _controller = Get.find<VitalGraphController>();

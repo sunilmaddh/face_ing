@@ -7,6 +7,7 @@ import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class IndoCommonCard extends StatefulWidget {
   final String vitalName;
@@ -140,20 +141,13 @@ class _CommonCardState extends State<IndoCommonCard> {
                   ),
 
                   // Divider
-                  Container(
-                    width: 1,
-                    height: AppDimensions.height(
-                      150,
-                    ), // Adjust height as needed
-                    color: const Color(0xffD9D9D9),
-                  ),
+                  Container(width: 1, color: const Color(0xffD9D9D9)),
 
                   // Right section
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: AppDimensions.all(8.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             widget.vitalStatus.isNotEmpty
@@ -175,43 +169,47 @@ class _CommonCardState extends State<IndoCommonCard> {
                               height: 1.25,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: AppDimensions.height(20.0)),
                           widget.imageAsset.isNotEmpty
-                              ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   widget.confidenceLevel.isNotEmpty
-                                      ? Row(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 8.5,
-                                            backgroundColor: getStatusColor(
-                                              widget.confidenceLevel,
-                                            ),
-                                          ),
-
-                                          TextButton(
-                                            onPressed: () {
-                                              CustomBottomSheetConfidence.show(
-                                                status:
-                                                    widget.confidenceLevel
-                                                        .toFirstCaps(),
-                                              );
-                                            },
-                                            child: Text(
-                                              "${widget.confidenceLevel.toFirstCaps()} Confidence",
-                                              style: TextStyle(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                color: AppColors.searchColor,
+                                      ? Expanded(
+                                        flex: 8,
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 8.5,
+                                              backgroundColor: getStatusColor(
+                                                widget.confidenceLevel,
                                               ),
                                             ),
 
-                                            // vitalConfidenceLevel.toFirstCaps(),
-                                          ),
-                                        ],
+                                            TextButton(
+                                              onPressed: () {
+                                                CustomBottomSheetConfidence.show(
+                                                  status:
+                                                      widget.confidenceLevel
+                                                          .toFirstCaps(),
+                                                );
+                                              },
+                                              child: Text(
+                                                "${widget.confidenceLevel.toFirstCaps()} Confidence",
+                                                style: TextStyle(
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: AppColors.searchColor,
+                                                ),
+                                              ),
+
+                                              // vitalConfidenceLevel.toFirstCaps(),
+                                            ),
+                                          ],
+                                        ),
                                       )
                                       : Row(
                                         mainAxisAlignment:
@@ -225,7 +223,11 @@ class _CommonCardState extends State<IndoCommonCard> {
                                                     backgroundColor:
                                                         statusColor,
                                                   ),
-                                                  const SizedBox(width: 10),
+                                                  SizedBox(
+                                                    width: AppDimensions.width(
+                                                      10.0,
+                                                    ),
+                                                  ),
                                                   Text(
                                                     widget.vitalStatus
                                                         .toFirstCaps(),
@@ -243,19 +245,22 @@ class _CommonCardState extends State<IndoCommonCard> {
                                           // SvgPicture.asset(imageAsset, width: 20, height: 20),
                                         ],
                                       ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: widget.onTop,
+                                        child: Icon(
+                                          Icons.info_rounded,
+                                          color: AppColors.infoIconColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               )
-                              : SizedBox(),
-                          Container(
-                            alignment: Alignment.topRight,
-                            child: InkWell(
-                              onTap: widget.onTop,
-                              child: Icon(
-                                Icons.info_rounded,
-                                color: AppColors.infoIconColor,
-                              ),
-                            ),
-                          ),
+                              : SizedBox.shrink(),
                         ],
                       ),
                     ),
@@ -263,33 +268,47 @@ class _CommonCardState extends State<IndoCommonCard> {
                 ],
               ),
             ),
-            // Expand/Collapse button ONLY if isExpand prop is true
+            widget.isExpand
+                ? Container(height: 1, color: const Color(0xffD9D9D9))
+                : SizedBox.shrink(),
+
             widget.isExpand
                 ? Padding(
-                  padding: const EdgeInsets.only(right: 8, bottom: 15),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isExpanded = !isExpanded;
-                        });
-                      },
-                      child:
-                          isExpanded
-                              ? const Icon(Icons.minimize_outlined)
-                              : const Icon(Icons.add_outlined),
+                  padding: AppDimensions.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isExpanded = !isExpanded;
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CommonText.text(
+                          isExpanded ? "Hide Result" : "Show all Result",
+                          color: AppColors.infoIconColor,
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child:
+                              isExpanded
+                                  ? const Icon(
+                                    Icons.remove_circle_outline,
+                                    color: AppColors.infoIconColor,
+                                  )
+                                  : const Icon(
+                                    Icons.add_circle_outline,
+                                    color: AppColors.infoIconColor,
+                                  ),
+                        ),
+                      ],
                     ),
                   ),
                 )
                 : const SizedBox(),
 
-            // Show detailed card only when expanded AND vitalName is stress or blood pressure
-            if (isExpanded &&
-                (widget.vitalName.toLowerCase() == "stress level" ||
-                    widget.vitalName == "HRV SDNN" ||
-                    widget.vitalName == 'Blood Pressure'))
-              widget.expandedWidget,
+            // Expand/Collapse button ONLY if isExpand prop is true
+            if (isExpanded) widget.expandedWidget,
           ],
         ),
       ),

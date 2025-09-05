@@ -8,10 +8,8 @@ class Getvitalstatus {
   String getVitalValue(type) {
     final result = _measurementController.vitalsResults.value.getResult(type);
     final value = result?.value;
-    debugPrint(type.toString());
     if (value == null) return "";
-
-    if (value is double) return value.toStringAsFixed(2);
+    if (value is double) return value.toStringAsFixed(1);
     if (value is int) return value.toString();
     return value.toString();
   }
