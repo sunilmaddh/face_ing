@@ -15,7 +15,7 @@ import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
-import 'package:ntt_data/widgets/cards/stree_info_card.dart';
+import 'package:ntt_data/widgets/cards/stress_info_card.dart';
 import 'package:ntt_data/widgets/indo_common_card.dart';
 
 // ignore: must_be_immutable
