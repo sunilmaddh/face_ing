@@ -34,6 +34,8 @@ class BinahVitalHelper {
         isHighLow = true;
       } else if (vitalName == "Stress Level") {
         isStress = true;
+      } else if (vitalName == "Baevsky Stress Index") {
+        isStress = true;
       } else if (vitalName == "Normalized Stress Index") {
         isStress = true;
       } else if (vitalName == "Wellness Score") {
@@ -45,6 +47,12 @@ class BinahVitalHelper {
           (vitalName == "ASCVD Risk" && vitalStatus == "High") ||
           (vitalName == "SNS Index" && vitalStatus == "High")) {
         isLowGood = false;
+      } else if ((vitalName == "SD1" && vitalStatus == "Low") ||
+          (vitalName == "SD2" && vitalStatus == "High")) {
+        isLowGood = false;
+      } else if ((vitalName == "SD1" && vitalStatus == "Normal") ||
+          (vitalName == "SD2" && vitalStatus == "Normal")) {
+        isStress = true;
       }
       if ((vitalName == "Mean RRi" && vitalStatus == "Low") ||
           (vitalName == "RMSSD" && vitalStatus == "Low")) {

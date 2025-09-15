@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class StressInfoCard extends StatelessWidget {
   final String vitalName;
@@ -37,23 +39,24 @@ class StressInfoCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                flex: 4,
-                child: Text(
+                flex: 3,
+                child: CommonText.text(
+                  maxLines: 2,
                   titleText,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff575656),
-                  ),
+                  fontSize: AppDimensions.font(10),
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff575656),
                 ),
               ),
+              20.horizontalSpace,
               Expanded(
-                flex: 5,
+                flex: 6,
                 child: Text(
                   textAlign: TextAlign.start,
-                  maxLines: 2,
+                  maxLines: 3,
                   statusText.toFirstCaps(),
                   style: const TextStyle(
                     fontSize: 10,
@@ -64,7 +67,7 @@ class StressInfoCard extends StatelessWidget {
               ),
               this.imageAsset.isNotEmpty
                   ? Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: SvgPicture.asset(
@@ -90,18 +93,17 @@ class StressInfoCard extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: valueText,
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w400,
+                        style: TextStyle(
+                          fontSize: AppDimensions.font(26),
+                          fontWeight: FontWeight.w700,
                           color: Color(0xff4A4949),
                         ),
                       ),
                       TextSpan(
                         text: unitText,
                         style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff4A4949),
                         ),
                       ),
                     ],
@@ -110,7 +112,7 @@ class StressInfoCard extends StatelessWidget {
               ),
               vitalConfidenceLevel.isNotEmpty
                   ? Expanded(
-                    flex: 5,
+                    flex: 8,
                     child: Row(
                       children: [
                         CircleAvatar(
@@ -124,14 +126,12 @@ class StressInfoCard extends StatelessWidget {
                               status: vitalConfidenceLevel.toFirstCaps(),
                             );
                           },
-                          child: Text(
+                          child: CommonText.text(
                             "${vitalConfidenceLevel.toFirstCaps()} Confidence",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.searchColor,
-                            ),
+                            decoration: TextDecoration.underline,
+                            fontSize: AppDimensions.font(14),
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.searchColor,
                           ),
                         ),
                       ],

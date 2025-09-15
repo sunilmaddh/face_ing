@@ -8,6 +8,8 @@ import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
 class VitalGraphController extends GetxController {
+  RxBool isFilterTypeSelected = false.obs;
+  RxInt selectedIndex = 0.obs;
   RxBool isLoading = false.obs;
   Rx<VitalGraphResponseModel> vitalGraphResponse =
       VitalGraphResponseModel().obs;

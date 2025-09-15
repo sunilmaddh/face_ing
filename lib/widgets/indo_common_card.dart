@@ -70,6 +70,7 @@ class _CommonCardState extends State<IndoCommonCard> {
     }
 
     return CommonCard(
+      radius: AppDimensions.radius(18.0),
       widget: Container(
         // margin: EdgeInsets.all(6.0),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
@@ -82,8 +83,8 @@ class _CommonCardState extends State<IndoCommonCard> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
-                    width: AppDimensions.width(120),
-                    padding: const EdgeInsets.all(15),
+                    width: AppDimensions.width(101),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,41 +97,41 @@ class _CommonCardState extends State<IndoCommonCard> {
                             )
                             : SizedBox(),
                         SizedBox(height: AppDimensions.height(10)),
-                        Text(
+                        CommonText.text(
+                          maxLines: 3,
                           widget.vitalName,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff575656),
-                          ),
+                          fontSize: AppDimensions.font(14),
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff575656),
                           textAlign: TextAlign.left,
                         ),
-                        Text(
+
+                        CommonText.text(
                           widget.vitalCondition,
-                          style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff575656),
-                          ),
+                          fontSize: AppDimensions.font(10),
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff575656),
                         ),
                         RichText(
                           text: TextSpan(
                             children: [
                               TextSpan(
                                 text: widget.vitalValue.toFirstCaps(),
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400,
+                                style: TextStyle(
+                                  fontSize: AppDimensions.font(20),
+                                  fontWeight: FontWeight.w700,
                                   color: Color(0xff4A4949),
+                                  fontFamily: "Gilroy-Bold",
                                 ),
                               ),
                               TextSpan(
                                 text:
                                     ' ${widget.vitalMass}', // Add space before vitalMass
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                style: TextStyle(
+                                  fontSize: AppDimensions.font(12),
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xff4A4949),
+                                  fontFamily: "Gilroy-Bold",
                                 ),
                               ),
                             ],
@@ -148,26 +149,26 @@ class _CommonCardState extends State<IndoCommonCard> {
                     child: Padding(
                       padding: AppDimensions.all(8.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          CommonText.text(
+                            fontFamily: "Gilroy-Medium",
+                            maxLines: 3,
                             widget.vitalStatus.isNotEmpty
                                 ? "${widget.vitalHeading} is ${AppMethods.capitalizeFirst(widget.vitalStatus)}"
                                 : "",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff5E5D5D),
-                            ),
+
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff5E5D5D),
                           ),
                           const SizedBox(height: 10),
-                          Text(
+                          CommonText.text(
+                            maxLines: 7,
                             widget.vitalDescription,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff5E5D5D),
-                              height: 1.25,
-                            ),
+                            fontSize: AppDimensions.font(12),
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff5E5D5D),
                           ),
                           SizedBox(height: AppDimensions.height(20.0)),
                           widget.imageAsset.isNotEmpty
@@ -186,24 +187,28 @@ class _CommonCardState extends State<IndoCommonCard> {
                                                 widget.confidenceLevel,
                                               ),
                                             ),
+                                            SizedBox(
+                                              width: AppDimensions.width(5.0),
+                                            ),
 
-                                            TextButton(
-                                              onPressed: () {
+                                            InkWell(
+                                              onTap: () {
                                                 CustomBottomSheetConfidence.show(
                                                   status:
                                                       widget.confidenceLevel
                                                           .toFirstCaps(),
                                                 );
                                               },
-                                              child: Text(
+                                              child: CommonText.text(
                                                 "${widget.confidenceLevel.toFirstCaps()} Confidence",
-                                                style: TextStyle(
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: AppColors.searchColor,
+
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                fontSize: AppDimensions.font(
+                                                  13,
                                                 ),
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.searchColor,
                                               ),
 
                                               // vitalConfidenceLevel.toFirstCaps(),
@@ -225,24 +230,22 @@ class _CommonCardState extends State<IndoCommonCard> {
                                                   ),
                                                   SizedBox(
                                                     width: AppDimensions.width(
-                                                      10.0,
+                                                      5.0,
                                                     ),
                                                   ),
-                                                  Text(
+
+                                                  CommonText.text(
                                                     widget.vitalStatus
                                                         .toFirstCaps(),
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: statusColor,
-                                                    ),
+
+                                                    fontSize:
+                                                        AppDimensions.font(14),
+                                                    fontWeight: FontWeight.w400,
+                                                    color: statusColor,
                                                   ),
                                                 ],
                                               )
                                               : SizedBox(),
-
-                                          // SvgPicture.asset(imageAsset, width: 20, height: 20),
                                         ],
                                       ),
                                   Expanded(

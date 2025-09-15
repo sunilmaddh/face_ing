@@ -317,11 +317,27 @@ class CommonHealthAsset {
   }
 
   String getSD1Asset(String vitalStatus) {
-    return AppAssets.veryLowImage; // Ask Binah
+    switch (vitalStatus) {
+      case 'low':
+        return AppAssets.veryLowImage;
+      case 'normal':
+        return AppAssets.highImage;
+      default:
+        return AppAssets.veryHighImage;
+    }
+    // Ask Binah
   }
 
-  String getSD2Asset() {
-    return AppAssets.veryLowImage; // Ask Binah
+  String getSD2Asset(String vitalStatus) {
+    switch (vitalStatus) {
+      case 'low':
+        return AppAssets.veryHighImage;
+      case 'normal':
+        return AppAssets.highImage;
+      default:
+        return AppAssets.veryLowImage;
+    }
+    // Ask Binah
   }
 
   String getLfHfAsset(String vitalStatus) {

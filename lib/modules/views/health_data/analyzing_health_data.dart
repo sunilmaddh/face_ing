@@ -572,16 +572,20 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         expandedWidget: Column(
           children: [
             StressInfoCard(
-              vitalName: 'Stress Index ',
+              vitalName: 'Baevsky Stress Index',
               isExpanded: true,
-              titleText: "Stress Index",
-              statusText: "",
+              titleText: "Baevsky Stress Index",
+              statusText:
+                  "Your Baevsky Stress Index is ${_getVitalStressIndexStatus(VitalSignTypes.stressIndex).toFirstCaps()}",
               valueText: statusHelper.getVitalValue(VitalSignTypes.stressIndex),
               unitText: " ",
+              imageAsset: CommonHealthAsset().getStressLevelAsset(
+                _getVitalStressIndexStatus(VitalSignTypes.stressIndex),
+              ),
               onTop: () {
                 AppNavigation.to(
                   AppRoutes.vitalDescriptions,
-                  arguments: {"vitalKey": VitalKeys.normalizedStressIndex},
+                  arguments: {"vitalKey": VitalKeys.stressIndex},
                 );
               },
             ),
@@ -750,7 +754,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               vitalName: 'SD1',
               isExpanded: true,
               titleText: "SD1",
-              statusText: "",
+              statusText:
+                  "Your SD1 is ${_getVitSDStatus(VitalSignTypes.sd1, 16, 48).toFirstCaps()}",
               valueText: statusHelper.getVitalValue(VitalSignTypes.sd1),
               unitText: "ms",
               onTop: () {
@@ -759,6 +764,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
                   arguments: {"vitalKey": VitalKeys.sd1},
                 );
               },
+              imageAsset: CommonHealthAsset().getSD1Asset(
+                _getVitSDStatus(VitalSignTypes.sd1, 16, 48),
+              ),
             ),
           ],
         ),
@@ -776,6 +784,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         vitalHeading: "Your ${WellnessMetricDescriptions.snsZone}",
         vitalDescription: WellnessMetricDescriptionsLong.snsZone,
         isVitalActive: false,
+        isExpand: true,
         expandedWidget: Column(
           children: [
             StressInfoCard(
@@ -801,7 +810,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               isExpanded: true,
               titleText: "Heart Rate",
               statusText:
-                  "Your Heart Rate is ${statusHelper.getPulseRate(VitalSignTypes.pulseRate, 60, 100)}",
+                  "Your Heart Rate is ${statusHelper.getPulseRate(VitalSignTypes.pulseRate, 60, 100).toFirstCaps()}",
               valueText: statusHelper.getVitalValue(VitalSignTypes.pulseRate),
               unitText: "bpm",
               onTop: () {
@@ -815,13 +824,16 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
               ),
             ),
             StressInfoCard(
-              vitalName: 'Baevsky Stress Index ',
+              vitalName: 'Baevsky Stress Index',
               isExpanded: true,
               titleText: "Baevsky Stress Index",
-              statusText: "",
+              statusText:
+                  "Your Baevsky Stress Index is ${_getVitalStressIndexStatus(VitalSignTypes.stressIndex).toFirstCaps()}",
               valueText: statusHelper.getVitalValue(VitalSignTypes.stressIndex),
-
               unitText: " ",
+              imageAsset: CommonHealthAsset().getStressLevelAsset(
+                _getVitalStressIndexStatus(VitalSignTypes.stressIndex),
+              ),
               onTop: () {
                 AppNavigation.to(
                   AppRoutes.vitalDescriptions,
@@ -829,12 +841,12 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
                 );
               },
             ),
-
             StressInfoCard(
               vitalName: 'SD2',
               isExpanded: true,
               titleText: "SD2",
-              statusText: "",
+              statusText:
+                  "Your SD2 is ${_getVitSDStatus(VitalSignTypes.sd2, 52, 84).toFirstCaps()}",
               valueText: statusHelper.getVitalValue(VitalSignTypes.sd2),
               unitText: "ms",
               onTop: () {
@@ -843,25 +855,28 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
                   arguments: {"vitalKey": VitalKeys.sd2},
                 );
               },
+              imageAsset: CommonHealthAsset().getSD2Asset(
+                _getVitSDStatus(VitalSignTypes.sd2, 52, 84),
+              ),
             ),
           ],
         ),
       ),
 
-      buildCard(
-        vitalKey: VitalKeys.lfhf,
-        imageAsset: CommonHealthAsset().getLfHfAsset(
-          _getVitalStatus(VitalSignTypes.lfhf, 0.5, 2),
-        ),
-        vitalName: "LF/HF",
-        vitalMass: '',
-        vitalValue: statusHelper.getVitalValue(VitalSignTypes.lfhf),
-        vitalCondition: '',
-        vitalStatus: _getVitalStatus(VitalSignTypes.lfhf, 0.5, 2),
-        vitalHeading: "Your ${WellnessMetricDescriptions.lfhf}",
-        vitalDescription: WellnessMetricDescriptionsLong.lfHf,
-        isVitalActive: true,
-      ),
+      // buildCard(
+      //   vitalKey: VitalKeys.lfhf,
+      //   imageAsset: CommonHealthAsset().getLfHfAsset(
+      //     _getVitalStatus(VitalSignTypes.lfhf, 0.5, 2),
+      //   ),
+      //   vitalName: "LF/HF",
+      //   vitalMass: '',
+      //   vitalValue: statusHelper.getVitalValue(VitalSignTypes.lfhf),
+      //   vitalCondition: '',
+      //   vitalStatus: _getVitalStatus(VitalSignTypes.lfhf, 0.5, 2),
+      //   vitalHeading: "Your ${WellnessMetricDescriptions.lfhf}",
+      //   vitalDescription: WellnessMetricDescriptionsLong.lfHf,
+      //   isVitalActive: true,
+      // ),
     ];
   }
 
@@ -884,6 +899,28 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     if (value <= 97) return "high";
     if (value > 97) return "very High";
     return 'medium';
+  }
+
+  String _getVitalStressIndexStatus(vitalType) {
+    final rawValue = statusHelper.getVitalValue(vitalType ?? 0);
+    final value = double.tryParse(rawValue);
+    if (value == null) return '';
+    if (value <= 80) return 'low';
+    if (value <= 150) return "normal";
+    if (value <= 300) return "mild";
+    if (value <= 600) return "high";
+    if (value >= 601) return "very High";
+    return 'medium';
+  }
+
+  String _getVitSDStatus(vitalType, minValue, maxValue) {
+    final rawValue = statusHelper.getVitalValue(vitalType ?? 0);
+    final value = double.tryParse(rawValue);
+    if (value == null) return '';
+    if (value < minValue) return 'low';
+    if (value <= maxValue) return "normal";
+    // if (value <= 600) return "high";
+    return 'high';
   }
 
   List<Widget> allCards() {
@@ -918,27 +955,29 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
       ),
       SingleChildScrollView(
         padding: const EdgeInsets.all(8),
-        child: Column(children: withSpacing(basicVitalSigns())),
+        child: Column(children: withSpacing(basicVitalSignsWithSpacing())),
       ),
       SingleChildScrollView(
         padding: const EdgeInsets.all(8),
-        child: Column(children: withSpacing(bloodlessBloodTests())),
+        child: Column(children: withSpacing(bloodlessBloodTestsWithSpacing())),
       ),
       SingleChildScrollView(
         padding: const EdgeInsets.all(8),
-        child: Column(children: withSpacing(risks())),
+        child: Column(children: withSpacing(risksWithSpacing())),
       ),
       SingleChildScrollView(
         padding: const EdgeInsets.all(8),
-        child: Column(children: withSpacing(stress())),
+        child: Column(children: withSpacing(stressWithSpacing())),
       ),
       SingleChildScrollView(
         padding: const EdgeInsets.all(8),
-        child: Column(children: withSpacing(heartRateVariability())),
+        child: Column(children: withSpacing(heartRateVariabilityWithSpacing())),
       ),
       SingleChildScrollView(
         padding: const EdgeInsets.all(8),
-        child: Column(children: withSpacing(advancedHeartRateVariability())),
+        child: Column(
+          children: withSpacing(advancedHeartRateVariabilityWithSpacing()),
+        ),
       ),
     ];
     return Scaffold(
@@ -963,6 +1002,30 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
       ),
     );
+  }
+
+  List<Widget> basicVitalSignsWithSpacing() {
+    return withSpacing(basicVitalSigns());
+  }
+
+  List<Widget> bloodlessBloodTestsWithSpacing() {
+    return withSpacing(bloodlessBloodTests());
+  }
+
+  List<Widget> risksWithSpacing() {
+    return withSpacing(risks());
+  }
+
+  List<Widget> stressWithSpacing() {
+    return withSpacing(stress());
+  }
+
+  List<Widget> heartRateVariabilityWithSpacing() {
+    return withSpacing(heartRateVariability());
+  }
+
+  List<Widget> advancedHeartRateVariabilityWithSpacing() {
+    return withSpacing(advancedHeartRateVariability());
   }
 
   List<Widget> allCardsWithSpacing() {

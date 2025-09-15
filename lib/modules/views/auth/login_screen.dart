@@ -9,7 +9,6 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/auth/auth_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -33,20 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await IndoSharedPreference.instance.saveWalkScreen(true);
     });
     return Scaffold(
-      floatingActionButton: PrimaryButton(
-        isLoading: _authController.isLoading.value,
-        text: AppConstents.login,
-        // isLoading: _authController.isLoading.value,
-        onPressed: () {
-          // AppNavigation.to(AppRoutes.homeScreen);
-          if (_formKey.currentState!.validate()) {
-            _authController.userLogin();
-            // AppNavigation.to(AppRoutes.homeScreen);
-          }
-
-          // AppNavigation.to(AppRoutes.homeScreen);
-        },
-      ),
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         isLeading: false,
@@ -56,14 +42,14 @@ class _LoginScreenState extends State<LoginScreen> {
         title: "Login",
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Stack(
           children: [
             SafeArea(
               child: Form(
                 key: _formKey,
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: AppDimensions.height(30)),
@@ -121,25 +107,21 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
 
-            // Obx(
-            //   () => Align(
-            //     alignment: Alignment.bottomRight,
-            //     child: PrimaryButton(
-            //       isLoading: _authController.isLoading.value,
-            //       text: AppConstents.login,
-            //       // isLoading: _authController.isLoading.value,
-            //       onPressed: () {
-            //         // AppNavigation.to(AppRoutes.homeScreen);
-            //         if (_formKey.currentState!.validate()) {
-            //           _authController.userLogin();
-            //           // AppNavigation.to(AppRoutes.homeScreen);
-            //         }
+            Obx(
+              () => Align(
+                alignment: Alignment.bottomRight,
+                child: PrimaryButton(
+                  isLoading: _authController.isLoading.value,
+                  text: AppConstents.login,
 
-            //         // AppNavigation.to(AppRoutes.homeScreen);
-            //       },
-            //     ),
-            //   ),
-            // ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _authController.userLogin();
+                    }
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),

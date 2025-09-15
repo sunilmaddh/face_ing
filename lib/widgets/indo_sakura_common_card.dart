@@ -74,6 +74,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CommonCard(
+        radius: AppDimensions.radius(18.0),
         padding: 0.0,
         widget: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +85,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: AppDimensions.width(120),
+                    width: AppDimensions.width(101),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
@@ -126,8 +127,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                 TextSpan(
                                   text: AppMethods.capitalizeFirst(vitalValue),
                                   style: TextStyle(
-                                    fontSize: AppDimensions.font(26),
-                                    fontWeight: FontWeight.w400,
+                                    fontSize: AppDimensions.font(20),
+                                    fontWeight: FontWeight.w700,
                                     color: Color(0xff4A4949),
                                   ),
                                 ),
@@ -175,7 +176,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                               if (status.isNotEmpty)
                                 confidenceLevel.isNotEmpty
                                     ? Expanded(
-                                      flex: 8,
+                                      flex: 7,
                                       child: Row(
                                         children: [
                                           CircleAvatar(
@@ -185,23 +186,27 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                             ),
                                           ),
 
-                                          TextButton(
-                                            onPressed: () {
+                                          SizedBox(
+                                            width: AppDimensions.width(5.0),
+                                          ),
+
+                                          InkWell(
+                                            onTap: () {
                                               CustomBottomSheetConfidence.show(
                                                 status:
                                                     confidenceLevel
                                                         .toFirstCaps(),
                                               );
                                             },
-                                            child: Text(
+                                            child: CommonText.text(
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
                                               "${confidenceLevel.toFirstCaps()} Confidence",
-                                              style: TextStyle(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                color: AppColors.searchColor,
-                                              ),
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.searchColor,
                                             ),
 
                                             // vitalConfidenceLevel.toFirstCaps(),
@@ -216,7 +221,7 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                           backgroundColor: color,
                                         ),
                                         SizedBox(
-                                          width: AppDimensions.width(10),
+                                          width: AppDimensions.width(5.0),
                                         ),
                                         CommonText.text(
                                           AppMethods.capitalizeFirst(status),
@@ -413,15 +418,15 @@ class VitalSubListWidget extends StatelessWidget {
                                             text: result.vitalValue,
                                             style: TextStyle(
                                               fontSize: AppDimensions.font(26),
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w700,
                                               color: Color(0xff4A4949),
                                             ),
                                           ),
                                           TextSpan(
                                             text: result.vitalUnit,
                                             style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                              color: Color(0xff4A4949),
                                             ),
                                           ),
                                         ],
