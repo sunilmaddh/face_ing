@@ -14,8 +14,6 @@ class VitalGraphWidget extends StatefulWidget {
     required this.vitalName,
   });
 
-  final Color leftBarColor = AppColors.primary;
-  final Color rightBarColor = AppColors.borderColor;
   final List<String> leftTitle;
   final List<String> bottomTitles;
   final List<HealthList> vitalValue;
@@ -26,47 +24,58 @@ class VitalGraphWidget extends StatefulWidget {
 }
 
 class _VitalGraphWidgetState extends State<VitalGraphWidget> {
-  final double width = 10;
+  final double barWidth = 10;
 
   late List<BarChartGroupData> showingBarGroups;
-  late List<double> normalizedLeftTitles;
+
+  // Numeric left values
+  late List<double> numericLeftValues;
+  late double minY;
+  late double maxY;
 
   @override
   void initState() {
     super.initState();
-    normalizedLeftTitles = normalizeYAxis(widget.leftTitle);
+    processLeftAxis();
     storeBarChartData();
   }
 
-  List<double> normalizeYAxis(List<String> yAxis) {
-    if (yAxis.isEmpty) return [0.0];
+  void processLeftAxis() {
+    // Convert left labels to double
+    numericLeftValues =
+        widget.leftTitle.map((e) => double.tryParse(e) ?? 0).toList();
 
-    List<double> normalized =
-        yAxis.map((e) => double.tryParse(e) ?? 0.0).toList();
-
-    // Ensure the first value is 0.0
-    if (normalized.first != 0.0) {
-      normalized[0] = 0.0;
+    if (numericLeftValues.isEmpty) {
+      minY = 0;
+      maxY = 10;
+      return;
     }
 
-    return normalized;
+    numericLeftValues.sort();
+    minY = numericLeftValues.first;
+    maxY = numericLeftValues.last;
+
+    // Ensure zero is included if minY > 0
+    if (minY > 0) minY = 0;
+
+    // Add 10% padding to top
+    double range = maxY - minY;
+    if (range == 0) range = maxY * 0.1;
+    maxY += range * 0.1;
   }
 
   void storeBarChartData() {
-    final items = <BarChartGroupData>[];
+    showingBarGroups = [];
 
     for (int i = 0; i < widget.bottomTitles.length; i++) {
       double value = 0;
-      Color color = AppColors.borderColor; // default color for missing value
+      Color color = AppColors.borderColor;
 
       if (i < widget.vitalValue.length) {
-        if (widget.vitalValue[i].value != "5.7") {
-          value = double.tryParse(widget.vitalValue[i].value ?? "0") ?? 0;
-        }
+        value = double.tryParse(widget.vitalValue[i].value ?? "0") ?? 0;
 
-        var isTypeVital = stringToBool(
-          widget.vitalValue[i].isTypeVital.toString(),
-        );
+        var isTypeVital =
+            widget.vitalValue[i].isTypeVital.toString().toLowerCase() == "true";
 
         var vitalGraphColor = VitalColorHelper(
           vitalName: widget.vitalName,
@@ -77,11 +86,13 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
         color = vitalGraphColor.getColor();
       }
 
-      final barGroup = makeGroupData(i, value, color);
-      items.add(barGroup);
+      showingBarGroups.add(
+        BarChartGroupData(
+          x: i,
+          barRods: [BarChartRodData(toY: value, color: color, width: barWidth)],
+        ),
+      );
     }
-
-    showingBarGroups = items;
   }
 
   String getLabel(double numericValue) {
@@ -95,32 +106,25 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
     return "";
   }
 
-  double getMaxY() {
-    final yValues = normalizedLeftTitles.map((e) => e ?? 0).toList();
-    final maxVal = yValues.reduce((a, b) => a > b ? a : b);
-    return maxVal +
-        (getYAxisInterval() * 0.5); // add 50% of interval as padding
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(8.0),
-
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
           width: AppDimensions.width(1000.0),
-          height: 150,
+          height: 200,
           child: BarChart(
             BarChartData(
               baselineY: 0,
-              maxY: getMaxY(),
+              maxY: maxY,
               alignment: BarChartAlignment.spaceAround,
               barTouchData: BarTouchData(
                 enabled: true,
                 touchTooltipData: BarTouchTooltipData(
+                  tooltipMargin: 8,
                   fitInsideVertically: true,
                   getTooltipItem: (group, groupIndex, rod, rodIndex) {
                     return BarTooltipItem(
@@ -149,17 +153,17 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
                 leftTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
-                    reservedSize: 45,
+                    reservedSize: 35,
+                    interval: 1,
                     getTitlesWidget: leftTitles,
-                    interval: getYAxisInterval(), // ✅ dynamic interval
                   ),
                 ),
               ),
               borderData: FlBorderData(
-                show: false,
+                show: true,
                 border: Border(
-                  left: BorderSide(width: 1.0, color: AppColors.searchColor),
-                  bottom: BorderSide(width: 1.0, color: AppColors.searchColor),
+                  left: BorderSide(width: 0.5, color: Color(0xffE0E0E0)),
+                  bottom: BorderSide(width: 0.5, color: Color(0xffE0E0E0)),
                 ),
               ),
               barGroups: showingBarGroups,
@@ -171,32 +175,15 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
     );
   }
 
-  /// 🔹 Calculate interval from Y-axis list
-  double getYAxisInterval() {
-    final yValues = normalizedLeftTitles.map((e) => e ?? 0).toList();
-    if (yValues.length < 2) return 1; // fallback
-
-    // take the smallest positive difference between values
-    double minStep = double.infinity;
-    for (int i = 1; i < yValues.length; i++) {
-      final diff = (yValues[i] - yValues[i - 1]).abs();
-      if (diff > 0 && diff < minStep) {
-        minStep = diff;
-      }
-    }
-    return minStep == double.infinity ? 1 : minStep;
-  }
-
   Widget leftTitles(double value, TitleMeta meta) {
-    final yValues = normalizedLeftTitles.map((e) => e ?? 0).toList();
-
-    // Only show labels that match the defined list
-    if (yValues.any((element) => (element - value).abs() < 0.01)) {
+    // Show only if value exactly matches a numericLeftValue
+    if (numericLeftValues.contains(value)) {
+      int index = numericLeftValues.indexOf(value);
       return SideTitleWidget(
         meta: meta,
-        space: 8,
+        space: 4,
         child: Text(
-          value.toStringAsFixed(1), // keep same format as your list
+          widget.leftTitle[index],
           style: const TextStyle(
             color: Color(0xff7589a2),
             fontWeight: FontWeight.bold,
@@ -205,13 +192,10 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
         ),
       );
     }
-
     return const SizedBox.shrink();
   }
 
-  /// 🔹 Bottom X-axis labels
   Widget bottomTitles(double value, TitleMeta meta) {
-    debugPrint(widget.bottomTitles.toString());
     if (value.toInt() < widget.bottomTitles.length) {
       return SideTitleWidget(
         meta: meta,
@@ -227,17 +211,5 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
       );
     }
     return const SizedBox.shrink();
-  }
-
-  /// 🔹 Build each bar
-  BarChartGroupData makeGroupData(int x, double y1, Color color) {
-    return BarChartGroupData(
-      x: x,
-      barRods: [BarChartRodData(toY: y1, color: color, width: width)],
-    );
-  }
-
-  bool stringToBool(String value) {
-    return value.toLowerCase() == 'true';
   }
 }
