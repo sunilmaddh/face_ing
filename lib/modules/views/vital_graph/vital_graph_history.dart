@@ -6,19 +6,43 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
+import 'package:ntt_data/modules/views/vital_graph/first_line_vital_widget.dart';
+import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
 import 'package:ntt_data/modules/views/vital_graph/vital_graph_first_card.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 // ignore: must_be_immutable
-class VitalGraphHistory extends StatelessWidget {
+class VitalGraphHistory extends StatefulWidget {
   VitalGraphHistory({super.key});
 
+  @override
+  State<VitalGraphHistory> createState() => _VitalGraphHistoryState();
+}
+
+class _VitalGraphHistoryState extends State<VitalGraphHistory> {
   final _vitalGraphController = Get.find<VitalGraphController>();
+
   String gusetId = Get.arguments["guestId"] ?? "";
 
-  List<String> filterType = ["Today", "Weakly", "Monthly"];
+  List<String> filterType = ["Today", "Weekly", "Monthly"];
+  @override
+  void initState() {
+    // TODO: implement initState
+    callFunction();
+    super.initState();
+  }
+
+  callFunction() {
+    _vitalGraphController.isGraphFilterType.value = "Weekly";
+    if (gusetId.isNotEmpty) {
+      VitalGraphHelper().callForGuestWithFilter("7D", gusetId, true);
+    } else {
+      VitalGraphHelper().callForUserWithFilter("7D", true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +56,7 @@ class VitalGraphHistory extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
-              // ✅ Center vertically
+              // ✅ Center
               crossAxisAlignment:
                   CrossAxisAlignment.center, // ✅ Center horizontally
               children: List.generate(filterType.length, (index) {
@@ -40,6 +64,42 @@ class VitalGraphHistory extends StatelessWidget {
                   () => InkWell(
                     onTap: () {
                       _vitalGraphController.selectedIndex.value = index;
+                      if (filterType[index] == "Today") {
+                        _vitalGraphController.isGraphFilterType.value = "Today";
+                        if (gusetId.isNotEmpty) {
+                          VitalGraphHelper().callForGuestWithFilter(
+                            "1D",
+                            gusetId,
+                            true,
+                          );
+                        } else {
+                          VitalGraphHelper().callForUserWithFilter("1D", true);
+                        }
+                      } else if (filterType[index] == "Weekly") {
+                        _vitalGraphController.isGraphFilterType.value =
+                            "Weekly";
+                        if (gusetId.isNotEmpty) {
+                          VitalGraphHelper().callForGuestWithFilter(
+                            "7D",
+                            gusetId,
+                            true,
+                          );
+                        } else {
+                          VitalGraphHelper().callForUserWithFilter("7D", true);
+                        }
+                      } else {
+                        _vitalGraphController.isGraphFilterType.value =
+                            "Monthly";
+                        if (gusetId.isNotEmpty) {
+                          VitalGraphHelper().callForGuestWithFilter(
+                            "4W",
+                            gusetId,
+                            true,
+                          );
+                        } else {
+                          VitalGraphHelper().callForUserWithFilter("4W", true);
+                        }
+                      }
                     },
                     child: Padding(
                       padding: AppDimensions.symmetric(
@@ -87,7 +147,6 @@ class VitalGraphHistory extends StatelessWidget {
           ],
         ),
       ),
-
       appBar: CustomAppBar(
         onTop: () {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -99,73 +158,64 @@ class VitalGraphHistory extends StatelessWidget {
       backgroundColor: AppColors.btntext,
       body: Padding(
         padding: AppDimensions.only(top: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Container(
-            //   padding: AppDimensions.symmetric(vertical: 20),
-            //   color: AppColors.btntext,
-            //   child: FirstLineVitalWidget(guestId: gusetId),
-            // ),
-            Obx(
-              () =>
-                  _vitalGraphController.isLoading.isTrue
-                      ? CircularProgressIndicator()
-                      : _vitalGraphController
-                              .vitalGraphResponse
-                              .value
-                              .wellness !=
-                          null
-                      ? VitalGraphFirstCard()
-                      : Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(AppAssets.noMeasurementTaken),
-                            10.verticalSpace,
-                            CommonText.text(
-                              "No Measurements were taken during this period",
-                            ),
-                          ],
-                        ),
-                      ),
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight:
+                  MediaQuery.of(context).size.height -
+                  100, // adjust for padding/appbar
             ),
-            // 30.verticalSpace,
-
-            // Obx(
-            //   () => Visibility(
-            //     visible:
-            //         _vitalGraphController.vitalGraphResponse.value.dateRange !=
-            //         null,
-
-            //     child: Padding(
-            //       padding: AppDimensions.symmetric(horizontal: 10),
-            //       child: SizedBox(
-            //         width: MediaQuery.of(context).size.width,
-            //         child: CommonCard(
-            //           widget: Padding(
-            //             padding: const EdgeInsets.all(8.0),
-            //             child: CommonText.text(
-            //               textAlign: TextAlign.center,
-            //               fontFamily: AppTextStyles.fontFamilyGilroy,
-            //               fontSize: AppDimensions.font(13),
-            //               fontWeight: FontWeight.w700,
-            //               _vitalGraphController
-            //                   .vitalGraphResponse
-            //                   .value
-            //                   .dateRange
-            //                   .toString(),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-          ],
+            child: IntrinsicHeight(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    padding: AppDimensions.symmetric(vertical: 20),
+                    color: AppColors.btntext,
+                    child: FirstLineVitalWidget(guestId: gusetId),
+                  ),
+                  Obx(() {
+                    if (_vitalGraphController.isLoading.isTrue) {
+                      return Expanded(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    } else if (_vitalGraphController
+                            .vitalGraphResponse
+                            .value
+                            .wellness !=
+                        null) {
+                      return VitalGraphFirstCard();
+                    } else {
+                      return Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(AppAssets.noMeasurementTaken),
+                              10.verticalSpace,
+                              CommonText.text(
+                                "No Measurements were taken during this period",
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _vitalGraphController.isGraphFilterType.value = "";
+    _vitalGraphController.selectedIndex.value = 1;
+    super.dispose();
   }
 }

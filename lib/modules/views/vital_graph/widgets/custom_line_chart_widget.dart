@@ -1,137 +1,152 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/data/models/vital_graph_response_model.dart';
+import 'package:ntt_data/modules/views/vital_graph/helper/vital_color_helper.dart';
 
-class CustomLineChartWidget extends StatefulWidget {
-  const CustomLineChartWidget({super.key});
+class CustomLineChartWidget extends StatelessWidget {
+  const CustomLineChartWidget({
+    super.key,
+    required this.leftTitles,
+    required this.bottomTitles,
+    required this.vitalValues,
+    required this.vitalName,
+  });
 
-  @override
-  State<CustomLineChartWidget> createState() => _CustomLineChartWidgetState();
-}
+  final List<String> leftTitles;
+  final List<String> bottomTitles;
+  final List<HealthList> vitalValues;
+  final String vitalName;
+  // final String status;
+  // final String isVitalType;
 
-class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
-  List<Color> gradientColors = [
-    Color(0xffD0FBFF).withOpacity(0.60),
-    Color(0xffDDF2F4).withOpacity(0.0),
-  ];
-
-  bool showAvg = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(width: 200, child: Center(child: LineChart(mainData())));
+  List<FlSpot> _generateSpots() {
+    return List.generate(vitalValues.length, (index) {
+      final x = index.toDouble();
+      final y = double.tryParse(vitalValues[index].value ?? "0.0") ?? 0.0;
+      return FlSpot(x, y);
+    });
   }
 
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
-    Widget text;
-    switch (value.toInt()) {
-      case 0:
-        text = const Text('1', style: style);
-      case 2:
-        text = const Text('2', style: style);
-        break;
-      case 4:
-        text = const Text('3', style: style);
-        break;
-      case 6:
-        text = const Text('4', style: style);
-        break;
-      case 8:
-        text = const Text('5', style: style);
-        break;
-      // case 9:
-      //   text = const Text('6', style: style);
-      //   break;
-      // case 11:
-      //   text = const Text('7', style: style);
-      //   break;
-      default:
-        text = const Text('', style: style);
-        break;
+  Widget _buildBottomTitle(double value, TitleMeta meta) {
+    List<int> xValues =
+        bottomTitles.map((x) {
+          if (x == "Yesterday") return DateTime.now().day - 1;
+          if (x == "Today") return DateTime.now().day;
+          return int.tryParse(x) ?? 0;
+        }).toList();
+    int index = value.toInt();
+    if (index >= 0 && index < xValues.length) {
+      return Text(
+        xValues[index].toString(),
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: Color(0xffE0E0E0),
+        ),
+      );
     }
-
-    return SideTitleWidget(meta: meta, child: text);
+    return const SizedBox.shrink();
   }
 
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '10K';
-        break;
-      case 3:
-        text = '30k';
-        break;
-      case 5:
-        text = '50k';
-        break;
-      default:
-        return Container();
+  // 🔹 Left titles (Y-Axis)
+  Widget _buildLeftTitle(double value, TitleMeta meta) {
+    int index = value.toInt();
+    if (index >= 0 && index < leftTitles.length) {
+      var resValue = double.tryParse(leftTitles[index]);
+      return Text(
+        leftTitles[index],
+        // resValue!.toStringAsFixed(1),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+      );
     }
-
-    return Text(text, style: style, textAlign: TextAlign.left);
+    return const SizedBox.shrink();
   }
 
-  LineChartData mainData() {
+  LineChartData _buildChartData() {
+    final spots = _generateSpots();
     return LineChartData(
+      minY: 0,
+      maxX: (bottomTitles.length - 1).toDouble(),
       gridData: FlGridData(show: false),
+      borderData: FlBorderData(show: false),
       titlesData: FlTitlesData(
         show: true,
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 30,
             interval: 1,
-            getTitlesWidget: bottomTitleWidgets,
+            getTitlesWidget: _buildBottomTitle,
           ),
         ),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: false,
             interval: 1,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 20,
+            reservedSize: 30,
+            maxIncluded: false,
           ),
         ),
       ),
-      borderData: FlBorderData(show: true, border: Border()),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
       lineBarsData: [
+        // Full line without bar area
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            // FlSpot(9.5, 5),
-            // FlSpot(11, 2),
-          ],
+          spots: spots,
           isCurved: true,
-          color: Color(0xff5175A8),
+          color: AppColors.primary,
           barWidth: 2,
-          isStrokeCapRound: true,
-          dotData: const FlDotData(show: false),
-          isStepLineChart: false,
+          dotData: FlDotData(
+            show: true,
+            getDotPainter: (spot, percent, barData, index) {
+              final item = vitalValues[index];
+
+              // Call your helper
+              var vitalGraphColor = VitalColorHelper(
+                vitalName: vitalName,
+                vitalStatus: item.status.toString(),
+                isLowGood: stringToBool(item.isTypeVital.toString()),
+              );
+
+              return FlDotCirclePainter(
+                radius: 4,
+                color: vitalGraphColor.getColor(),
+                strokeWidth: 1.5,
+                strokeColor: AppColors.btntext,
+              );
+            },
+          ),
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
-              begin: Alignment.center,
+              begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: gradientColors,
+              colors: [
+                const Color(0xffD0FBFF).withOpacity(0.6),
+                const Color(0xffDDF2F4).withOpacity(0.0),
+              ],
             ),
           ),
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: AppDimensions.height(200),
+      child: Padding(
+        padding: AppDimensions.symmetric(horizontal: 10, vertical: 10),
+        child: Center(child: LineChart(_buildChartData())),
+      ),
+    );
+  }
+
+  bool stringToBool(String value) {
+    return value.toLowerCase() == 'true';
   }
 }

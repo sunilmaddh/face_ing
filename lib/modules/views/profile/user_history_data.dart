@@ -6,7 +6,9 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/views/profile/widgets/user_history_card.dart';
+import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 
@@ -16,6 +18,7 @@ class UserHistoryData extends StatelessWidget {
   UserHistoryData({super.key});
 
   final _profileController = Get.find<ProfileController>();
+  final _vitalGraphController = Get.find<VitalGraphController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,12 @@ class UserHistoryData extends StatelessWidget {
         actions: [
           InkWell(
             onTap: () {
-              VitalGraphHelper().callForUserWithFilter("7D", true);
+              _vitalGraphController.selectedIndex.value = 1;
+
+              AppNavigation.to(
+                AppRoutes.vitalGraphHistory,
+                arguments: {"guestId": ""},
+              );
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

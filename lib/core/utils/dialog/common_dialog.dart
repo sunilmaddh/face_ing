@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
@@ -472,19 +473,22 @@ class CommonDialog {
   static void showFullWidthCupertinoDatePicker({
     required BuildContext context,
     required Function(DateTime) onDateSelected,
+    String title = "Select Date of birth",
+    bool isNotDob = false,
   }) {
     DateTime now = DateTime.now();
     DateTime initialDate = DateTime(now.year - 18, now.month, now.day);
-    DateTime selectedDate = initialDate;
+    DateTime selectedDate = isNotDob ? now : initialDate;
     bool isFutureDate = false;
+
     commonDialogCard(
-      title: "Select Date of birth",
+      title: title,
       context: context,
       widget: CupertinoDatePicker(
         itemExtent: 50,
         mode: CupertinoDatePickerMode.date,
         dateOrder: DatePickerDateOrder.dmy,
-        initialDateTime: initialDate,
+        initialDateTime: isNotDob ? now : initialDate,
         minimumDate: DateTime(1925),
         maximumDate: DateTime(2050),
         // DateTime(
@@ -493,15 +497,19 @@ class CommonDialog {
         //   DateTime.now().day,
         // ),
         onDateTimeChanged: (DateTime newDate) {
-          if (newDate.isAfter(initialDate)) {
-            AppSnackbar.show(
-              isError: true,
-              title: "Error",
-              message: "You must be at least 18 years old",
-            );
-            isFutureDate = true;
+          if (isNotDob == false) {
+            if (newDate.isAfter(initialDate)) {
+              AppSnackbar.show(
+                isError: true,
+                title: "Error",
+                message: "You must be at least 18 years old",
+              );
+              isFutureDate = true;
+            } else {
+              isFutureDate = false;
+              selectedDate = newDate;
+            }
           } else {
-            isFutureDate = false;
             selectedDate = newDate;
           }
         },
@@ -644,6 +652,150 @@ class CommonDialog {
       ),
       onConfirm: () {
         onRangeSelected(startDate, endDate);
+      },
+    );
+  }
+
+  Future<Map<String, dynamic>?> showMonthYearPickerDialog(
+    BuildContext context, {
+    required Function(String month, String year) onTop,
+  }) async {
+    final List<Map<String, String>> months = [
+      {"monthName": "January", "value": "01"},
+      {"monthName": "February", "value": "02"},
+      {"monthName": "March", "value": "03"},
+      {"monthName": "April", "value": "04"},
+      {"monthName": "May", "value": "05"},
+      {"monthName": "June", "value": "06"},
+      {"monthName": "July", "value": "07"},
+      {"monthName": "August", "value": "08"},
+      {"monthName": "September", "value": "09"},
+      {"monthName": "October", "value": "10"},
+      {"monthName": "November", "value": "11"},
+      {"monthName": "December", "value": "12"},
+    ];
+    int selectedYear = DateTime.now().year;
+    int selectedMonthIndex = DateTime.now().month - 1;
+
+    return showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: AppColors.btntext,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: SizedBox(
+            height: 400,
+            child: Column(
+              children: [
+                // 🔹 Header
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(30),
+                    ),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Select Month & Year",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+
+                // 🔹 Year Selector
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_left),
+                        onPressed: () {
+                          selectedYear--;
+                          (context as Element).markNeedsBuild();
+                        },
+                      ),
+                      Text(
+                        "$selectedYear",
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_right),
+                        onPressed: () {
+                          selectedYear++;
+                          (context as Element).markNeedsBuild();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
+                // 🔹 Months Grid
+                Expanded(
+                  child: GridView.builder(
+                    padding: const EdgeInsets.all(12),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 2,
+                        ),
+                    itemCount: months.length,
+                    itemBuilder: (context, index) {
+                      bool isSelected = index == selectedMonthIndex;
+                      return GestureDetector(
+                        onTap: () {
+                          onTop(
+                            months[index]["value"]!,
+                            selectedYear.toString(),
+                          );
+                          Get.back();
+                        },
+                        // () {
+                        //   // Navigator.of(context).pop({
+                        //   //   "month": months[index],
+                        //   //   "monthIndex": index + 1,
+                        //   //   "year": selectedYear,
+                        //   // });
+                        // },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color:
+                                isSelected
+                                    ? AppColors.primary
+                                    : Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            months[index]["monthName"].toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: isSelected ? Colors.white : Colors.black,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }

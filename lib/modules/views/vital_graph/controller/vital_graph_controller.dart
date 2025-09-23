@@ -28,11 +28,13 @@ class VitalGraphController extends GetxController {
   Rx<AdvancedHeartRateVariability> ahrvResponse =
       AdvancedHeartRateVariability().obs;
   var services = VitalGraphServices();
-  RxString selectedValue = "7D".obs;
+  RxString selectedValue = "Weekly".obs;
   RxInt touchedIndex = (-1).obs;
   RxBool isTouched = false.obs;
   RxDouble fontSize = 0.0.obs;
   RxDouble radius = 0.0.obs;
+  RxString selectedDate = "".obs;
+  RxString isGraphFilterType = "".obs;
 
   Future<void> callVitalGraphDataApi({
     required Map<String, dynamic> data,
@@ -60,11 +62,11 @@ class VitalGraphController extends GetxController {
             vitalGraphResponse.value.advancedHeartRateVariability!;
         if (isFromHistory) {
           isFromHistory = false;
-          selectedValue.value = data["filterType"];
-          AppNavigation.to(
-            AppRoutes.vitalGraphHistory,
-            arguments: {"guestId": data["guestId"]},
-          );
+          // selectedValue.value = data["filterType"];
+          // AppNavigation.to(
+          //   AppRoutes.vitalGraphHistory,
+          //   arguments: {"guestId": data["guestId"]},
+          // );
         }
       } else if (statusCode == 403) {
         AppSnackbar.show(title: "Error", message: "Something went wrong");

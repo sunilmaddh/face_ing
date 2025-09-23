@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/data/models/vital_graph_response_model.dart';
+import 'package:ntt_data/modules/views/vital_graph/helper/vital_graph_status.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/common_graph_card.dart';
 // Replace with your actual asset paths
 
 class VitalColorHelper {
@@ -71,7 +75,7 @@ class VitalColorHelper {
     ].contains(vitalName);
   }
 
-  /// Returns color based on vitalStatus and internal flags
+  /// Returns color based on vitalStatus and internal flagss
   Color getColor() {
     switch (vitalStatus.toLowerCase()) {
       case 'low':
@@ -87,12 +91,14 @@ class VitalColorHelper {
 
       case 'normal':
         return isBreathing
-            ? const Color(0xFF1BC76D)
+            ? Color(0xFF1BC76D)
             : isBlood
-            ? const Color(0xFF1BC76D)
+            ? Color(0xFF1BC76D)
+            : isStress
+            ? Color(0xff9ED042)
             : isLowGood
-            ? const Color(0xFFEEC000)
-            : const Color(0xFF1BC76D);
+            ? Color(0xFFEEC000)
+            : Color(0xFF1BC76D);
 
       case 'medium':
       case 'mild':
@@ -103,6 +109,10 @@ class VitalColorHelper {
             ? const Color(0xFFEEC000)
             : isBlood
             ? const Color(0xFFFA704E)
+            : isStress
+            ? Color(0xffED9A33)
+            : isHighLow
+            ? Color(0xFFFA704E)
             : isLowGood
             ? const Color(0xFF1BC76D)
             : const Color(0xFFFA704E);
@@ -120,4 +130,69 @@ class VitalColorHelper {
         return Colors.white;
     }
   }
+}
+
+Color getStatusAndIsTypical(
+  String vitalName,
+  String value,
+  List<HealthList> healthList,
+) {
+  // if (isNumeric(value)) {
+
+  // }
+
+  if (isNumeric(value)) {
+    var vitalHelper = VitalColorHelper(
+      vitalName: vitalName,
+      vitalStatus: VitalGraphStatus().getStatus(vitalName, value),
+      isLowGood: stringToBool(healthList.first.isTypeVital ?? "false"),
+    );
+    return vitalHelper.getColor();
+  } else {
+    var vitalHelper = VitalColorHelper(
+      vitalName: vitalName,
+      vitalStatus: value,
+      isLowGood: stringToBool(healthList.first.isTypeVital ?? "false"),
+    );
+    return vitalHelper.getColor();
+  }
+
+  // for (int i = 0; i < healthList.length; i++) {
+  //   if (isNumeric(value)) {
+  //     final double? target = double.tryParse(value);
+  //     final double? itemValue = double.tryParse(healthList[i].value ?? "");
+  //     if (target == null) return Colors.black;
+  //     debugPrint("getStatusAndIsTypical $target ${healthList[i].value}");
+
+  //     if (itemValue != null && target == itemValue) {
+  //       var vitalHelper = VitalColorHelper(
+  //         vitalName: vitalName,
+  //         vitalStatus: healthList[i].status ?? "",
+  //         isLowGood: stringToBool(healthList[i].isTypeVital ?? "false"),
+  //       );
+  //       return vitalHelper.getColor(); // loop stops here
+  //     }
+  //   } else {
+  //     debugPrint("getStatusAndIsTypical $value ${healthList[i].value}");
+  //     if (value != null &&
+  //         value.isCaseInsensitiveContainsAny(healthList[i].value!)) {
+  //       var vitalHelper = VitalColorHelper(
+  //         vitalName: vitalName,
+  //         vitalStatus: healthList[i].value ?? "",
+  //         isLowGood: stringToBool(healthList[i].isTypeVital ?? "false"),
+  //       );
+  //       return vitalHelper.getColor(); // loop stops here
+  //     }
+  //   }
+  // }
+
+  // return Colors.black; // default if not matched
+}
+
+bool stringToBool(String value) {
+  return value.toLowerCase() == 'true';
+}
+
+bool isNumeric(String value) {
+  return double.tryParse(value) != null;
 }

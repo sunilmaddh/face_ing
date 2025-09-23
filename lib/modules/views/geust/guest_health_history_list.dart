@@ -8,6 +8,7 @@ import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/profile/widgets/user_history_card.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 
@@ -24,27 +25,30 @@ class GuestHealthHistoryList extends StatelessWidget {
           AppNavigation.back();
         },
         title: "Guest Health History",
-        // actions: [
-        //   InkWell(
-        //     onTap: () {
-        //       VitalGraphHelper().callForGuestWithFilter("7D", guestId, true);
-        //     },
-        //     child: Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: Image.asset(
-        //         AppAssets.barImage,
-        //         height: AppDimensions.height(30),
-        //         width: AppDimensions.width(30),
-        //       ),
-        //     ),
-        //   ),
-        //   // IconButton(
-        //   //   onPressed: () {
-        //   //     VitalGraphHelper().callForGuestWithFilter("7D", guestId, true);
-        //   //   },
-        //   //   icon: Icon(Icons.home),
-        //   // ),
-        // ],
+        actions: [
+          InkWell(
+            onTap: () {
+              AppNavigation.to(
+                AppRoutes.vitalGraphHistory,
+                arguments: {"guestId": guestId},
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                AppAssets.barImage,
+                height: AppDimensions.height(30),
+                width: AppDimensions.width(30),
+              ),
+            ),
+          ),
+          // IconButton(
+          //   onPressed: () {
+          //     VitalGraphHelper().callForGuestWithFilter("7D", guestId, true);
+          //   },
+          //   icon: Icon(Icons.home),
+          // ),
+        ],
       ),
       body: Obx(
         () =>

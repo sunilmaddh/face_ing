@@ -3,19 +3,45 @@ import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class GaugeWithBadges extends StatelessWidget {
-  const GaugeWithBadges({super.key});
+  const GaugeWithBadges({
+    super.key,
+    this.rangeList,
+    required this.vitalValue,
+    this.maxValue,
+    this.statusLabels,
+  });
+
+  /// Example for numeric mode → [20, 40, 60]
+  final List<int>? rangeList;
+
+  /// Vital value could be `"75"` or `"high"`
+  final String vitalValue;
+
+  /// Maximum value (only needed for numeric mode)
+  final double? maxValue;
+
+  /// Example for string mode → ["low","normal","mild","medium","high"]
+  final List<String>? statusLabels;
 
   @override
   Widget build(BuildContext context) {
-    // Define ranges dynamically (each with a label + color + start/end values)
-    final List<_RangeData> ranges = [
-      _RangeData("60", 0, 21.3, Colors.red),
-      _RangeData("50", 21.3, 33.3, Colors.amber),
-      _RangeData("70", 33.3, 52.0, Colors.black),
-      _RangeData("80", 52.0, 66.6, Colors.red),
-      _RangeData("90", 66.6, 77.0, Colors.amber),
-      _RangeData("100", 77.0, 100, Colors.black),
-    ];
+    final bool isNumeric = double.tryParse(vitalValue) != null;
+
+    // Generate gauge ranges
+    final List<_RangeData> gaugeList =
+        isNumeric
+            ? _generateNumericRanges(rangeList ?? [], maxValue ?? 100)
+            : _generateStatusRanges(statusLabels ?? []);
+
+    // Pointer value (numeric = number, string = segment index midpoint)
+    final double pointerValue =
+        isNumeric
+            ? double.parse(vitalValue)
+            : _mapStatusToIndex(vitalValue, statusLabels ?? []);
+
+    // Effective max value for gauge
+    final double effectiveMax =
+        isNumeric ? (maxValue ?? 100) : (statusLabels?.length.toDouble() ?? 1);
 
     return Scaffold(
       body: Center(
@@ -25,9 +51,9 @@ class GaugeWithBadges extends StatelessWidget {
             RadialAxis(
               showFirstLabel: false,
               minimum: 0,
-              maximum: 100,
-              startAngle: 115, // arc start
-              endAngle: 425, // arc end (115 + 310°)
+              maximum: effectiveMax,
+              startAngle: 115,
+              endAngle: 425,
               showTicks: false,
               showLabels: false,
               radiusFactor: 0.60,
@@ -37,7 +63,7 @@ class GaugeWithBadges extends StatelessWidget {
                 color: Color(0xFFDFE2EC),
               ),
               ranges:
-                  ranges
+                  gaugeList
                       .map(
                         (r) => GaugeRange(
                           startValue: r.start,
@@ -46,20 +72,29 @@ class GaugeWithBadges extends StatelessWidget {
                         ),
                       )
                       .toList(),
-              pointers: const <GaugePointer>[],
+              pointers: <GaugePointer>[
+                MarkerPointer(
+                  value: pointerValue,
+                  color: Colors.white,
+                  markerType: MarkerType.circle,
+                  markerHeight: 10,
+                  markerWidth: 10,
+                  enableAnimation: true,
+                ),
+              ],
               annotations:
-                  ranges
+                  gaugeList
                       .map(
                         (r) => GaugeAnnotation(
                           widget: _buildBadge(r.label),
                           angle: _valueToAngle(
-                            (r.start + r.end) / 2, // midpoint of range
+                            (r.start + r.end) / 2,
                             0,
-                            100,
+                            effectiveMax,
                             115,
                             425,
                           ),
-                          positionFactor: 1.2, // place outside arc
+                          positionFactor: 1.4,
                         ),
                       )
                       .toList(),
@@ -68,6 +103,73 @@ class GaugeWithBadges extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Numeric ranges from API list
+  List<_RangeData> _generateNumericRanges(List<int> apiData, double maxValue) {
+    final List<_RangeData> ranges = [];
+    double start = 0;
+    for (int i = 0; i < apiData.length; i++) {
+      double end = apiData[i].toDouble();
+      ranges.add(
+        _RangeData(
+          "${start.toInt()} - ${end.toInt()}",
+          start,
+          end,
+          _pickColor(i),
+        ),
+      );
+      start = end;
+    }
+    if (start < maxValue) {
+      ranges.add(
+        _RangeData(
+          "${start.toInt()} - ${maxValue.toInt()}",
+          start,
+          maxValue,
+          Colors.green,
+        ),
+      );
+    }
+    return ranges;
+  }
+
+  /// String status ranges (divide gauge equally)
+  List<_RangeData> _generateStatusRanges(List<String> labels) {
+    final List<_RangeData> ranges = [];
+    final double step = 1; // each status = 1 unit
+    double start = 0;
+    for (int i = 0; i < labels.length; i++) {
+      double end = start + step;
+      ranges.add(_RangeData(labels[i], start, end, _pickColor(i)));
+      start = end;
+    }
+    return ranges;
+  }
+
+  /// Map status string → segment midpoint
+  double _mapStatusToIndex(String status, List<String> labels) {
+    final index = labels.indexWhere(
+      (e) => e.toLowerCase() == status.toLowerCase(),
+    );
+    if (index == -1) return 0;
+    return index + 0.5; // midpoint of that segment
+  }
+
+  /// Pick color for segments
+  Color _pickColor(int index) {
+    switch (index) {
+      case 0:
+        return Colors.blue;
+      case 1:
+        return Colors.green;
+      case 2:
+        return Colors.orange;
+      case 3:
+        return Colors.amber;
+      default:
+        return Colors.red;
+    }
   }
 
   /// Badge widget
@@ -95,12 +197,10 @@ class GaugeWithBadges extends StatelessWidget {
   }
 }
 
-/// Helper class for range + label
 class _RangeData {
   final String label;
   final double start;
   final double end;
   final Color color;
-
   _RangeData(this.label, this.start, this.end, this.color);
 }

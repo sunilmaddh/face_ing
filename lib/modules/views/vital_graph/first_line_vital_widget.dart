@@ -1,13 +1,14 @@
-import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/dialog/common_date_picker.dart';
+import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/menu/custom_dropdown_menu.dart';
-import 'package:ntt_data/widgets/menu/indo_custom_data_picker_ranger.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class FirstLineVitalWidget extends StatelessWidget {
@@ -27,51 +28,92 @@ class FirstLineVitalWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CommonText.text("Select Vital", fontWeight: FontWeight.w400),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Obx(
-                () => CustomDropdownMenu(
-                  selectedValue: _vitalGraphController.selectedValue.value,
-                  onSelectionChanged: (v) {
-                    _vitalGraphController.selectedValue.value = v;
-                    VitalGraphHelper().callForGuestWithFilter(
-                      _vitalGraphController.selectedValue.value,
-                      guestId,
-                      false,
-                    );
+          InkWell(
+            onTap: () {
+              if (_vitalGraphController.isGraphFilterType.value == "Today") {
+                showCommonDatePicker(
+                  context: context,
+                  firstDate: DateTime(2025),
+                  lastDate: DateTime.now(),
+                  onDateSelected: (DateTime selectedDate) {
+                    String formattedDate = DateFormat(
+                      'yyyy/MM/dd',
+                    ).format(selectedDate);
+
+                    if (guestId.isNotEmpty) {
+                      VitalGraphHelper().callForGuestWithDateRange(
+                        "1D",
+                        formattedDate,
+                        guestId,
+                        true,
+                      );
+                    } else {
+                      VitalGraphHelper().callForUserWithDateRange(
+                        "1D",
+                        formattedDate,
+                      );
+                    }
                   },
-                  onTap: () {},
-                  items: VitalGraphHelper().filterTypeList,
-                ),
+                );
+              } else if (_vitalGraphController.isGraphFilterType.value ==
+                  "Monthly") {
+                CommonDialog().showMonthYearPickerDialog(
+                  context,
+                  onTop: (String month, String year) {
+                    if (guestId.isNotEmpty) {
+                      VitalGraphHelper().callForGuestWithDateRange(
+                        "4W",
+                        "$year/$month",
+                        guestId,
+                        true,
+                      );
+                    } else {
+                      VitalGraphHelper().callForUserWithDateRange(
+                        "4W",
+                        "$year/$month",
+                      );
+                    }
+                  },
+                );
+              } else {
+                showCommonDatePicker(
+                  context: context,
+                  firstDate: DateTime(2025),
+                  lastDate: DateTime.now(),
+                  onDateSelected: (DateTime selectedDate) {
+                    String formattedDate = DateFormat(
+                      'yyyy/MM/dd',
+                    ).format(selectedDate);
+
+                    if (guestId.isNotEmpty) {
+                      VitalGraphHelper().callForGuestWithDateRange(
+                        "7D",
+                        formattedDate,
+                        guestId,
+                        true,
+                      );
+                    } else {
+                      VitalGraphHelper().callForUserWithDateRange(
+                        "7D",
+                        formattedDate,
+                      );
+                    }
+                  },
+                );
+              }
+            },
+            child: Container(
+              padding: AppDimensions.symmetric(vertical: 5, horizontal: 5),
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(10),
               ),
-              IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () async {
-                  showDialog<CustomDateRangePicker>(
-                    context: context,
-                    builder:
-                        (context) => IndoCustomDateRangePicker(
-                          primaryColor: AppColors.primary,
-                          backgroundColor: AppColors.btntext,
-                          onApplyClick: (v, v2) {
-                            VitalGraphHelper().callForGuestWithDateRange(
-                              v.toString(),
-                              v2.toString(),
-                              guestId,
-                              false,
-                            );
-                          },
-                          minimumDate: firstDate,
-                          onCancelClick: () {},
-                          maximumDate: lastDate,
-                          initialStartDate: DateTime.now(),
-                        ),
-                  );
-                },
-                icon: Icon(Icons.date_range),
-              ),
-            ],
+              child: Icon(Icons.calendar_month_outlined, color: Colors.white),
+              // Text(
+              //   _vitalGraphController.isGraphFilterType.value,
+              //   style: TextStyle(color: AppColors.btntext),
+              // ),
+            ),
           ),
         ],
       ),

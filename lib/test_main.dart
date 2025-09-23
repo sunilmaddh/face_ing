@@ -5,8 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/custom_line_chart_widget.dart';
+import 'package:ntt_data/modules/views/vital_graph/helper/vital_color_helper.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/vital_gauge_paichart.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -63,11 +64,7 @@ class CallGraphWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        width: double.infinity,
-        height: 120,
-        child: CustomLineChartWidget(),
-      ),
+      child: SizedBox(width: double.infinity, height: 120, child: SizedBox()),
 
       // Column(
       //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -126,87 +123,191 @@ class CallGraphWidget extends StatelessWidget {
   }
 }
 
-class CommonGraphCard extends StatelessWidget {
-  const CommonGraphCard({super.key, required this.widget});
-  final Widget widget;
-  @override
-  Widget build(BuildContext context) {
-    return CommonCard(
-      isBorder: true,
-      radius: 12.0,
-      widget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(6.0),
-                  // margin: EdgeInsets.symmetric(horizontal: 15),
-                  width: 37.85,
-                  height: 37.85,
-                  decoration: BoxDecoration(
-                    color: Color(0xffFBF0F3),
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: SvgPicture.asset("assets/images/svg/pulse_graph.svg"),
-                ),
-                CommonText.text(
-                  "Pulse Rate",
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "Mulish",
-                  color: Color(0xff616161),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              child: Row(
-                children: [
-                  CommonText.text(
-                    "Avg.",
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Mulish",
-                    color: Color(0xff818181),
-                  ),
-                  SizedBox(width: 10),
-                  RichText(
-                    text: TextSpan(
-                      text: "98",
-                      style: TextStyle(
-                        color: Color(0xff4ADE80),
-                        fontSize: 19,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "Mulish",
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "bpm",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "Mulish",
-                            color: Color(0xff616161),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(alignment: Alignment.center, child: widget),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class CommonGraphCard extends StatelessWidget {
+//   const CommonGraphCard({
+//     super.key,
+//     required this.widget,
+//     required this.vitalName,
+//     required this.avg,
+//     required this.unit,
+//     // required this.statusList,
+//     // required this.isVitalType,
+//   });
+//   final Widget widget;
+//   final String vitalName;
+//   final String avg;
+//   final String unit;
+//   // final List<String> statusList;
+//   // final String isVitalType;
+//   @override
+//   Widget build(BuildContext context) {
+//     return CommonCard(
+//       isBorder: true,
+//       radius: 12.0,
+//       widget: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//         child: Stack(
+//           children: [
+//             // statusList != null
+//             //     ? Align(
+//             //       alignment: Alignment.bottomCenter,
+//             //       child: Padding(
+//             //         padding: AppDimensions.symmetric(vertical: 5),
+//             //         child: Row(
+//             //           mainAxisSize: MainAxisSize.min,
+//             //           crossAxisAlignment: CrossAxisAlignment.start,
+//             //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+//             //           children:
+//             //               List.generate(statusList.length, (index) {
+//             //                 var vitalGraphColor = VitalColorHelper(
+//             //                   vitalName: vitalName,
+//             //                   vitalStatus: statusList[index],
+//             //                   isLowGood: stringToBool(isVitalType),
+//             //                 );
+//             //                 return Expanded(
+//             //                   flex: 8,
+//             //                   child: Text(
+//             //                     textAlign: TextAlign.center,
+//             //                     maxLines: 2,
+//             //                     statusList[index],
+//             //                     style: TextStyle(
+//             //                       color: vitalGraphColor.getColor(),
+//             //                     ),
+//             //                   ),
+//             //                 );
+//             //               }).toList(),
+//             //         ),
+//             //       ),
+//             //     )
+//             //     : SizedBox.shrink(),
+//             Column(
+//               mainAxisSize: MainAxisSize.min,
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 Row(
+//                   children: [
+//                     Flexible(
+//                       flex: 2,
+//                       child: Container(
+//                         padding: EdgeInsets.all(6.0),
+//                         // margin: EdgeInsets.symmetric(horizontal: 15),
+//                         width: 37.85,
+//                         height: 37.85,
+//                         decoration: BoxDecoration(
+//                           color: Color(0xffFBF0F3),
+//                           borderRadius: BorderRadius.circular(12.0),
+//                         ),
+//                         child: SvgPicture.asset(
+//                           "assets/images/svg/pulse_graph.svg",
+//                         ),
+//                       ),
+//                     ),
+//                     8.horizontalSpace,
+//                     Flexible(
+//                       flex: 7,
+//                       child: CommonText.text(
+//                         maxLines: 2,
+//                         vitalName,
+//                         fontSize: 13,
+//                         fontWeight: FontWeight.w600,
+//                         fontFamily: "Mulish",
+//                         color: Color(0xff616161),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 0),
+//                   child: Row(
+//                     children: [
+//                       CommonText.text(
+//                         "Avg.",
+//                         fontSize: 13,
+//                         fontWeight: FontWeight.w600,
+//                         fontFamily: "Mulish",
+//                         color: Color(0xff818181),
+//                       ),
+//                       SizedBox(width: 10),
+//                       RichText(
+//                         text: TextSpan(
+//                           text: avg,
+//                           style: TextStyle(
+//                             color: Color(0xff4ADE80),
+//                             fontSize: 19,
+//                             fontWeight: FontWeight.w700,
+//                             fontFamily: "Mulish",
+//                           ),
+//                           children: [
+//                             TextSpan(
+//                               text: unit,
+//                               style: TextStyle(
+//                                 fontSize: 13,
+//                                 fontWeight: FontWeight.w600,
+//                                 fontFamily: "Mulish",
+//                                 color: Color(0xff616161),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//                 Container(
+//                   margin: AppDimensions.all(8.0),
+//                   alignment: Alignment.center,
+//                   child: widget,
+//                 ),
+//                 // Padding(
+//                 //   padding: AppDimensions.symmetric(vertical: 5),
+//                 //   child: Wrap(
+//                 //     spacing: 5,
+//                 //     runSpacing: 5,
+//                 //     children:
+//                 //         List.generate(statusList.length, (index) {
+//                 //           print(
+//                 //             "statusList length = ${statusList.length}, accessing index = $index",
+//                 //           );
+
+//                 //           var vitalGraphColor = VitalColorHelper(
+//                 //             vitalName: vitalName,
+//                 //             vitalStatus: statusList[index],
+//                 //             isLowGood: stringToBool(isVitalType),
+//                 //           );
+
+//                 //           return Container(
+//                 //             constraints: const BoxConstraints(
+//                 //               minWidth: 60,
+//                 //             ), // optional width
+//                 //             padding: const EdgeInsets.all(4),
+//                 //             child:
+//                 //                 index < statusList.length
+//                 //                     ? Text(
+//                 //                       statusList[index],
+//                 //                       textAlign: TextAlign.center,
+//                 //                       maxLines: 2
+//                 //                       style: TextStyle(
+//                 //                         color: vitalGraphColor.getColor(),
+//                 //                       ),
+//                 //                     )
+//                 //                     : SizedBox.shrink(),
+//                 //           );
+//                 //         }).toList(),
+//                 //   ),
+//                 // ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+//   bool stringToBool(String value) {
+//     return value.toLowerCase() == 'true';
+//   }
+// }
 
 class GaugeDemo extends StatelessWidget {
   const GaugeDemo({super.key});
@@ -217,7 +318,7 @@ class GaugeDemo extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Half Circle Gauge")),
-      body: GaugeWithBadges(),
+      body: GaugeWithBadges(rangeList: [], vitalValue: '', maxValue: 0.0),
       // SingleChildScrollView(
       //   scrollDirection: Axis.horizontal,
       //   child: Row(

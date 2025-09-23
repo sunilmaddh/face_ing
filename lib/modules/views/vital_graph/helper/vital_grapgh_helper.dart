@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/demo/vital_graph_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
+import 'package:intl/intl.dart';
 
 class VitalGraphHelper {
   // Main Tabs
@@ -146,7 +148,7 @@ class VitalGraphHelper {
       vitalName: '',
     ),
   );
-  List<String> filterTypeList = ["1D", "7D", "Monthly"];
+  List<String> filterTypeList = ["Weekly", "Monthly"];
   final _controller = Get.find<VitalGraphController>();
   Future<void> callVitalGraph(
     Map<String, dynamic> data,
@@ -161,15 +163,14 @@ class VitalGraphHelper {
   // 🔹 Common payload builder
   Map<String, dynamic> _buildPayload({
     required bool isUser,
-    String? startDate,
+
     String? endDate,
     String? filterType,
     String? guestId,
   }) {
     final payload = <String, dynamic>{"userFlag": isUser.toString()};
 
-    if (startDate != null && endDate != null) {
-      payload["startDate"] = startDate;
+    if (endDate != null) {
       payload["endDate"] = endDate;
     }
 
@@ -186,13 +187,13 @@ class VitalGraphHelper {
 
   // 🔹 User API Calls
   Future<void> callForUserWithDateRange(
-    String startDate,
+    String filterType,
     String endDate,
   ) async {
     final data = _buildPayload(
       isUser: true,
-      startDate: startDate,
       endDate: endDate,
+      filterType: filterType,
     );
     await callVitalGraph(data, false);
   }
@@ -207,14 +208,14 @@ class VitalGraphHelper {
 
   // 🔹 Guest API Calls
   Future<void> callForGuestWithDateRange(
-    String startDate,
+    String filterType,
     String endDate,
     String guestId,
     bool isFormHistory,
   ) async {
     final data = _buildPayload(
+      filterType: filterType,
       isUser: guestId.isEmpty ? true : false,
-      startDate: startDate,
       endDate: endDate,
       guestId: guestId,
     );
@@ -232,5 +233,47 @@ class VitalGraphHelper {
       guestId: guestId,
     );
     await callVitalGraph(data, isFromHistory);
+  }
+
+  List<HealthList> normalizeHealthData(
+    List<String> xValues,
+    List<HealthList> healthList,
+  ) {
+    List<HealthList> normalizedList = [];
+
+    for (String x in xValues) {
+      // Convert "Today" to current day
+      String dayString =
+          (x == "Today") ? DateFormat("d").format(DateTime.now()) : x;
+
+      int? dayNum = int.tryParse(dayString);
+      if (dayNum == null) {
+        // Invalid day, add empty
+        normalizedList.add(
+          HealthList(value: "", scannedDate: "", status: "", isTypeVital: ""),
+        );
+        continue;
+      }
+
+      // Find any health data with matching day
+      HealthList? match = healthList.firstWhere(
+        (h) {
+          if (h.scannedDate == null || h.scannedDate!.isEmpty) return false;
+          DateTime scannedDate = DateTime.parse(h.scannedDate!);
+          return scannedDate.day == dayNum;
+        },
+        orElse:
+            () => HealthList(
+              value: "",
+              scannedDate: "",
+              status: "",
+              isTypeVital: "",
+            ),
+      );
+
+      normalizedList.add(match);
+    }
+
+    return normalizedList;
   }
 }

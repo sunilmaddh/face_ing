@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
-import 'package:ntt_data/demo/status_gauge_list.dart';
-import 'package:ntt_data/demo/vital_graph_piachart.dart';
 import 'package:ntt_data/demo/vital_graph_widget.dart';
+import 'package:ntt_data/demo/vital_graph_widget_string.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/caterigical_guage.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/common_graph_card.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/custom_line_bar_chart_string.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/custom_line_chart_widget.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/vital_gauge_paichart.dart';
-import 'package:ntt_data/test_main.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/vital_guage.dart';
 import 'package:ntt_data/widgets/bar/graph_tab_bar_widget.dart';
 
 // ignore: must_be_immutable
@@ -18,6 +20,7 @@ class VitalGraphFirstCard extends StatelessWidget {
   List<Widget> tabWidget = [];
   var vitalHelper = VitalGraphHelper();
   final _vitalController = Get.find<VitalGraphController>();
+  // late var value;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -26,107 +29,196 @@ class VitalGraphFirstCard extends StatelessWidget {
         isNotRadius: false,
         tabWidgets: VitalGraphHelper.tabGraphWidgets,
         tabBarWidgets: [
-          _buildVitalGridSection(),
-          _buildVitalGridSection(),
-          _buildVitalGridSection(),
-          _buildVitalGridSection(),
-          _buildVitalGridSection(),
-          _buildVitalGridSection(),
-          _buildVitalGridSection(),
+          _buildVitalGridSection(_vitalController.wellnessGraphResponse),
+          _buildVitalGridSection(_vitalController.vitalSignesponse),
+          _buildVitalGridSection(_vitalController.bloodlessResponse),
+          _buildVitalGridSection(_vitalController.risksResponse),
+          _buildVitalGridSection(_vitalController.stressResponse),
+          _buildVitalGridSection(_vitalController.hrvResponse),
+          _buildVitalGridSection(_vitalController.ahrvResponse),
         ],
       ),
     );
   }
 
   // _buildVitalSection(_vitalController.ahrvResponse),
-  Widget _buildVitalGridSection() {
+  Widget _buildVitalGridSection(
+    Rx<AdvancedHeartRateVariability> vitalResponse,
+  ) {
+    var result = vitalResponse.value.vitalTypeDetails!;
     return Padding(
       padding: AppDimensions.all(8.0),
-      child: GridView.builder(
-        shrinkWrap: true,
-        // physics: const NeverScrollableScrollPhysics(),
-        itemCount: 7,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 0.8,
-          crossAxisCount: 2,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-        ),
-        itemBuilder: (context, index) {
-          return
-          // Expanded(
-          //   child: CommonGraphCard(
-          //     widget: Flexible(
-          //       child: Container(
-          //         alignment: Alignment.center,
-          //         height: 155,
-          //         child: GaugeWithBadges(),
-          //       ),
-          //     ),
-          //   ),
-          // );
-          CommonGraphCard(
-            widget: SizedBox(
-              height: 120,
-              child: Expanded(
-                child: Padding(
-                  padding: AppDimensions.only(left: 30),
-                  child: CustomLineChartWidget(),
+      child:
+          _vitalController.isGraphFilterType.contains("Monthly")
+              ? ListView.builder(
+                padding: AppDimensions.only(bottom: 100),
+                itemCount: result.length,
+
+                itemBuilder: (context, index) {
+                  var healthList = VitalGraphHelper().normalizeHealthData(
+                    result[index].xValues!,
+                    result[index].healthList!,
+                  );
+                  return Padding(
+                    padding: AppDimensions.only(bottom: 10),
+                    child: CommonGraphCard(
+                      // vitalValue: result[index].vitalValue!.toFirstCaps(),
+                      widget:
+                          !isNumeric(result[index].healthList!.first.value!)
+                              ? VitalGraphWidgetString(
+                                leftTitle: result[index].yValues!,
+                                bottomTitles: result[index].xValues!,
+                                vitalValue: healthList,
+                                vitalName: result[index].vitalName!,
+                              )
+                              : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: VitalGraphWidget(
+                                  leftTitle: result[index].yValues!,
+                                  bottomTitles: result[index].xValues!,
+                                  vitalValue: healthList,
+                                  vitalName: result[index].vitalName!,
+                                ),
+                              ),
+                      vitalName: result[index].vitalName!,
+                      avg: result[index].vitalAvgValue!,
+                      unit: result[index].vitalUnit!,
+                      statusList: result[index].vitalStatusList!,
+                      healthList: result[index].healthList!,
+                    ),
+                  );
+                },
+              )
+              : _vitalController.isGraphFilterType.value == "Today"
+              ? Padding(
+                padding: AppDimensions.only(bottom: 70),
+                child: GridView.builder(
+                  itemCount: result.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    childAspectRatio: 0.67,
+                    crossAxisCount: 2,
+                  ),
+                  itemBuilder: (context, index) {
+                    var value = double.tryParse(result[index].vitalValue!);
+                    return Padding(
+                      padding: AppDimensions.only(bottom: 0),
+                      child: CommonGraphCard(
+                        vitalValue: result[index].vitalValue!.toFirstCaps(),
+                        widget: Padding(
+                          padding: AppDimensions.symmetric(
+                            vertical: 0,
+                            horizontal: 10,
+                          ),
+                          child:
+                              isNumeric(result[index].vitalValue!)
+                                  ? SizedBox(
+                                    height: AppDimensions.height(120),
+                                    child: VitalGauge(
+                                      vitalName: result[index].vitalName!,
+                                      value: value!,
+                                    ),
+                                  )
+                                  : SizedBox(
+                                    height: AppDimensions.height(120),
+                                    child: CategoricalGauge(
+                                      vitalName: result[index].vitalName!,
+                                      currentStatus: result[index].vitalValue!,
+                                    ),
+                                  ),
+                        ),
+                        vitalName: result[index].vitalName.toString(),
+                        avg: "",
+                        unit: result[index].vitalUnit.toString(),
+                        statusList: result[index].vitalStatusList!,
+                        healthList: result[index].healthList!,
+                      ),
+                    );
+                  },
+                ),
+              )
+              : Padding(
+                padding: AppDimensions.only(bottom: 70),
+                child: ListView.builder(
+                  physics: const ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: result.length,
+                  itemBuilder: (context, index) {
+                    var healthList = VitalGraphHelper().normalizeHealthData(
+                      result[index].xValues!,
+                      result[index].healthList!,
+                    );
+
+                    debugPrint(healthList.toList().toString());
+                    return !isNumeric(result[index].healthList!.first.value!)
+                        ? Padding(
+                          padding: AppDimensions.only(bottom: 10),
+                          child: CommonGraphCard(
+                            vitalValue: "",
+                            widget: Padding(
+                              padding: AppDimensions.symmetric(
+                                horizontal: 0,
+                                vertical: 10,
+                              ),
+                              child: CustomLineBarChart(
+                                leftTitles: [
+                                  "low",
+                                  "medium",
+                                  "normal",
+                                  "mild",
+                                  "high",
+                                  "very high",
+                                ],
+                                bottomTitles: result[index].xValues!,
+                                vitalValues: healthList,
+                                vitalName: result[index].vitalName!,
+                              ),
+                            ),
+                            vitalName: result[index].vitalName.toString(),
+                            avg: "",
+                            unit: result[index].vitalUnit.toString(),
+                            statusList: result[index].vitalStatusList!,
+                            healthList: healthList,
+                          ),
+                        )
+                        : Padding(
+                          padding: AppDimensions.only(bottom: 10),
+                          child: CommonGraphCard(
+                            // vitalValue: result[index].vitalValue!,
+                            widget: Padding(
+                              padding: AppDimensions.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
+                              ),
+                              child: CustomLineChartWidget(
+                                leftTitles: result[index].yValues!,
+                                bottomTitles: result[index].xValues!,
+                                vitalValues: healthList,
+                                vitalName: result[index].vitalName!,
+                              ),
+                            ),
+                            vitalName: result[index].vitalName.toString(),
+                            avg: result[index].vitalAvgValue.toString(),
+                            unit: result[index].vitalUnit.toString(),
+                            statusList: result[index].vitalStatusList!,
+                            healthList: healthList,
+                          ),
+                        );
+                  },
                 ),
               ),
-            ),
-          );
-          // VitalGraphWidget(
-          //   leftTitle: const [],
-          //   bottomTitles: const [],
-          //   vitalValue: const [],
-          //   vitalName: "1",
-          // ),
-          // );
-        },
-      ),
-    );
-  }
-
-  _buildVitalSection(Rx<AdvancedHeartRateVariability> vitalResponse) {
-    var data = vitalResponse.value.vitalType;
-    return GraphTabBarWidget(
-      tabWidgets: List.generate(
-        vitalResponse.value.vitalType!.length,
-        (i) => Obx(() {
-          return Tab(text: vitalResponse.value.vitalType![i]);
-        }),
-      ),
-      tabBarWidgets: List.generate(
-        vitalResponse.value.vitalTypeDetails!.length,
-
-        (i) => Obx(() {
-          return isNumeric(
-                vitalResponse.value.vitalTypeDetails![i].healthList.first.value
-                    .toString(),
-              )
-              ? CommonGraphCard(
-                widget: VitalGraphWidget(
-                  leftTitle: vitalResponse.value.vitalTypeDetails![i].yValues,
-
-                  bottomTitles:
-                      vitalResponse.value.vitalTypeDetails![i].xValues,
-                  vitalValue:
-                      vitalResponse.value.vitalTypeDetails![i].healthList,
-                  vitalName: data![i],
-                ),
-              )
-              : VitalPieChart(
-                vitalValue: vitalResponse.value.vitalTypeDetails![i].healthList,
-                controller: _vitalController,
-              );
-        }),
-      ),
-      isNotRadius: true,
     );
   }
 
   bool isNumeric(String value) {
     return double.tryParse(value) != null;
+  }
+
+  double getVitalValue(String v) {
+    if (isNumeric(v)) {
+      return double.parse(v);
+    }
+    return 0.0;
   }
 }

@@ -51,12 +51,14 @@ dependencies:
   battery_plus: ^6.2.2
   math_expressions: ^3.0.0
   flutter_widget_from_html: ^0.16.1
-  fl_chart: ^1.0.0
+
   custom_date_range_picker: ^1.1.0
   date_ranger: ^1.1.0
   syncfusion_flutter_gauges: ^30.2.7
   device_preview: ^1.2.0
   gauge_indicator: ^0.4.3
+  fl_chart: 1.0.0
+  flutter_staggered_grid_view: ^0.7.0
   # flutter_secure_storage: ^4.2.1
   
 
