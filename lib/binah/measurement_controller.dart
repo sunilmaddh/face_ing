@@ -11,7 +11,10 @@ import 'package:ntt_data/binah/handler/vital_navigation_service.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
+import 'package:ntt_data/data/models/binah_scan_progress_message_response.dart';
+import 'package:ntt_data/data/repository/services/measurement_services.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -64,6 +67,8 @@ class MeasurementController extends GetxController
   RxString smokerType = ''.obs;
   RxString guestId = "".obs;
   final TextEditingController smokerTypeController = TextEditingController();
+
+  RxList<String> scanMessageList = <String>[].obs;
 
   RxList<String> vitlaList = <String>[].obs;
   @override
@@ -247,6 +252,7 @@ class MeasurementController extends GetxController
     }
     await _terminateSession();
     await _reset();
+    scanMessageList.clear();
   }
 
   stopeasurement() async {
@@ -329,11 +335,27 @@ class MeasurementController extends GetxController
 
   Future<bool> _requestCameraPermission() async {
     var status = await Permission.camera.status;
-
     if (status.isDenied) {
       status = await Permission.camera.request();
     }
-
     return status.isGranted;
+  }
+
+  Future<void> getScanMeassage() async {
+    try {
+      Map<String, dynamic> responseData =
+          await MeasurementServices().getScanMesageServices();
+      int statusCode = responseData[AppConstents.statusCode];
+      if (statusCode == 200) {
+        var result = BinahScanProgressMessageResponse.fromJson(
+          responseData[AppConstents.response],
+        );
+        scanMessageList.value = result.scannedMessage!;
+      } else {
+        AppSnackbar.show(title: "Error", message: "Something went wrong");
+      }
+    } catch (e) {
+      AppSnackbar.show(title: "Exception", message: e.toString());
+    }
   }
 }

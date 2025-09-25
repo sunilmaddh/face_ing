@@ -18,8 +18,6 @@ class CustomLineChartWidget extends StatelessWidget {
   final List<String> bottomTitles;
   final List<HealthList> vitalValues;
   final String vitalName;
-  // final String status;
-  // final String isVitalType;
 
   List<FlSpot> _generateSpots() {
     return List.generate(vitalValues.length, (index) {
@@ -29,6 +27,18 @@ class CustomLineChartWidget extends StatelessWidget {
     });
   }
 
+  /// 🔹 Calculate dynamic minY and maxY
+  double _getMinY(List<FlSpot> spots) {
+    if (spots.isEmpty) return 0;
+    final minValue = spots.map((s) => s.y).reduce((a, b) => a < b ? a : b);
+    return minValue > 0 ? 0 : minValue; // keep 0 if all values are positive
+  }
+
+  double _getMaxY(List<FlSpot> spots) {
+    if (spots.isEmpty) return 0;
+    return spots.map((s) => s.y).reduce((a, b) => a > b ? a : b);
+  }
+
   Widget _buildBottomTitle(double value, TitleMeta meta) {
     List<int> xValues =
         bottomTitles.map((x) {
@@ -36,6 +46,7 @@ class CustomLineChartWidget extends StatelessWidget {
           if (x == "Today") return DateTime.now().day;
           return int.tryParse(x) ?? 0;
         }).toList();
+
     int index = value.toInt();
     if (index >= 0 && index < xValues.length) {
       return Text(
@@ -43,21 +54,18 @@ class CustomLineChartWidget extends StatelessWidget {
         style: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: Color(0xffE0E0E0),
+          color: AppColors.searchColor,
         ),
       );
     }
     return const SizedBox.shrink();
   }
 
-  // 🔹 Left titles (Y-Axis)
   Widget _buildLeftTitle(double value, TitleMeta meta) {
     int index = value.toInt();
     if (index >= 0 && index < leftTitles.length) {
-      var resValue = double.tryParse(leftTitles[index]);
       return Text(
         leftTitles[index],
-        // resValue!.toStringAsFixed(1),
         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
       );
     }
@@ -66,8 +74,12 @@ class CustomLineChartWidget extends StatelessWidget {
 
   LineChartData _buildChartData() {
     final spots = _generateSpots();
+    final minY = _getMinY(spots);
+    final maxY = _getMaxY(spots);
+
     return LineChartData(
       minY: 0,
+      maxY: maxY,
       maxX: (bottomTitles.length - 1).toDouble(),
       gridData: FlGridData(show: false),
       borderData: FlBorderData(show: false),
@@ -92,7 +104,6 @@ class CustomLineChartWidget extends StatelessWidget {
         ),
       ),
       lineBarsData: [
-        // Full line without bar area
         LineChartBarData(
           spots: spots,
           isCurved: true,
@@ -102,14 +113,11 @@ class CustomLineChartWidget extends StatelessWidget {
             show: true,
             getDotPainter: (spot, percent, barData, index) {
               final item = vitalValues[index];
-
-              // Call your helper
               var vitalGraphColor = VitalColorHelper(
                 vitalName: vitalName,
                 vitalStatus: item.status.toString(),
                 isLowGood: stringToBool(item.isTypeVital.toString()),
               );
-
               return FlDotCirclePainter(
                 radius: 4,
                 color: vitalGraphColor.getColor(),
@@ -120,6 +128,7 @@ class CustomLineChartWidget extends StatelessWidget {
           ),
           belowBarData: BarAreaData(
             show: true,
+            applyCutOffY: true,
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -131,6 +140,17 @@ class CustomLineChartWidget extends StatelessWidget {
           ),
         ),
       ],
+      // 🔹 Optional: Draw a zero line for clarity
+      // extraLinesData: ExtraLinesData(
+      //   horizontalLines: [
+      //     if (minY < 0)
+      //       HorizontalLine(
+      //         y: 0,
+      //         color: AppColors.borderColor,
+      //         strokeWidth: 1.5, // thicker for visibility
+      //       ),
+      //   ],
+      // ),
     );
   }
 

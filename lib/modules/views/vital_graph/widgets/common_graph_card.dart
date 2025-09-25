@@ -4,11 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_color_helper.dart';
+import 'package:ntt_data/modules/views/vital_graph/helper/vital_graph_status.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class CommonGraphCard extends StatelessWidget {
-  CommonGraphCard({
+  const CommonGraphCard({
     super.key,
     required this.widget,
     required this.vitalName,
@@ -17,7 +18,6 @@ class CommonGraphCard extends StatelessWidget {
     required this.statusList,
     this.vitalValue = "",
     required this.healthList,
-    // required this.isVitalType,
   });
   final Widget widget;
   final String vitalName;
@@ -26,10 +26,10 @@ class CommonGraphCard extends StatelessWidget {
   final String unit;
   final List<String> statusList;
   final List<HealthList> healthList;
-  //  final String isVitalType;
+
   @override
   Widget build(BuildContext context) {
-    var statusListWith = statusListWithColor[vitalName];
+    var statusListWith = VitalGraphStatus().statusListWithColor[vitalName];
     var val = avg.isNotEmpty ? avg : vitalValue;
     Color color = getStatusAndIsTypical(vitalName, val, healthList);
     return CommonCard(
@@ -50,7 +50,6 @@ class CommonGraphCard extends StatelessWidget {
                   flex: 2,
                   child: Container(
                     padding: EdgeInsets.all(6.0),
-                    // margin: EdgeInsets.symmetric(horizontal: 15),
                     width: 37.85,
                     height: 37.85,
                     decoration: BoxDecoration(
@@ -151,6 +150,7 @@ class CommonGraphCard extends StatelessWidget {
 
             Container(
               margin: AppDimensions.all(8.0),
+              padding: EdgeInsets.only(bottom: 0),
               alignment: Alignment.center,
               child: widget,
             ),
@@ -208,152 +208,4 @@ class CommonGraphCard extends StatelessWidget {
   bool stringToBool(String value) {
     return value.toLowerCase() == 'true';
   }
-
-  final Map<String, List<StatusListColor>> statusListWithColor = {
-    "Wellness Score": [
-      StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Medium", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xff1BC76D)),
-    ],
-    "Breathing Rate": [
-      StatusListColor(status: "Low", color: Color(0xffEEC000)),
-      StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-      StatusListColor(status: "High", color: Color(0xffEEC000)),
-    ],
-    "Heart Rate": [
-      StatusListColor(status: "Low", color: Color(0xffEEC000)),
-      StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-      StatusListColor(status: "High", color: Color(0xffEEC000)),
-    ],
-    "PRQ": [
-      StatusListColor(status: "Low", color: Color(0xffEEC000)),
-      StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-      StatusListColor(status: "High", color: Color(0xffEEC000)),
-    ],
-    "Blood Pressure Systolic": [
-      StatusListColor(status: "Low", color: Color(0xffEEC000)),
-      StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "Blood Pressure Daistolic": [
-      StatusListColor(status: "Low", color: Color(0xffEEC000)),
-      StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "Oxygen Saturation": [
-      StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-    ],
-    "Hemoglobin": [
-      StatusListColor(status: "Low", color: Color(0xffEEC000)),
-      StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-      StatusListColor(status: "High", color: Color(0xffEEC000)),
-    ],
-    "Hemoglobin A1C": [
-      StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Prediabetes risk", color: Color(0xffEEC000)),
-      StatusListColor(status: "Diabetes risk", color: Color(0xffFA704E)),
-    ],
-    "ASCVD Risk": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "High Blood Pressure Risk": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Medium", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "High HbA1c Risk": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Medium", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "High Fasting Glucose Risk": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "High Total Cholesterol Risk": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Medium", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "Low Hemoglobin Risk": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "Stress Level": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Normal", color: Color(0xff9ED042)),
-      StatusListColor(status: "Mild", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xffED9A33)),
-      StatusListColor(status: "Very High", color: Color(0xffFA704E)),
-    ],
-    "Recovery Ability (PNS Zone)": [
-      StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xff1BC76D)),
-    ],
-    "Stress Response (SNS Zone)": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
-
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "Normalized Stress Index ": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Normal", color: Color(0xff9ED042)),
-      StatusListColor(status: "Mild", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xffED9A33)),
-      StatusListColor(status: "Very High", color: Color(0xffFA704E)),
-    ],
-    "Baesky Stress Index ": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Normal", color: Color(0xff9ED042)),
-      StatusListColor(status: "Mild", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xffED9A33)),
-      StatusListColor(status: "Very High", color: Color(0xffFA704E)),
-    ],
-    "Mean RRi": [
-      StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xff1BC76D)),
-    ],
-    "RMSSD": [
-      StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xff1BC76D)),
-    ],
-    "HRV SDNN": [
-      StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-    ],
-    "PNS Index": [
-      StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xff1BC76D)),
-    ],
-    "SNS Index": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-    "SD1": [
-      StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xff1BC76D)),
-    ],
-    "SD2": [
-      StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
-    ],
-  };
-}
-
-class StatusListColor {
-  final String status;
-  final Color color;
-  StatusListColor({required this.status, required this.color});
 }

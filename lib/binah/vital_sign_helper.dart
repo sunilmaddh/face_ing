@@ -106,3 +106,36 @@ class VitalSignHelper {
     return "";
   }
 }
+
+class MeasurementHelper {
+  final List<String> scanMessageList;
+  MeasurementHelper({required this.scanMessageList});
+  // final List<String> messages = [
+  //   "Measurement has started. Please remain still during the process.",
+  //   "Calm your mind and focus on the screen.",
+  //   "Measure daily to better understand your health condition.",
+  //   "It is recommended to measure at the same time each day.",
+  //   "The messages displayed here can be customized.",
+  //   "Various types of messages can be shown.",
+  //   "Measurement is complete. Thank you for your cooperation."
+  // ];
+
+  final List<RangeValues> ranges = [
+    RangeValues(0, 15),
+    RangeValues(16, 30),
+    RangeValues(31, 45),
+    RangeValues(46, 60),
+    RangeValues(61, 75),
+    RangeValues(76, 90),
+    RangeValues(91, 100),
+  ];
+
+  String getProgressMessage(int progress) {
+    for (int i = 0; i < ranges.length; i++) {
+      if (progress >= ranges[i].start && progress <= ranges[i].end) {
+        return scanMessageList[i];
+      }
+    }
+    return ""; // default if out-of-range
+  }
+}

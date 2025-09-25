@@ -16,22 +16,6 @@ class StringToNumericMapper {
   /// Get numeric value for a string
   double getValue(String str) {
     str = str.toLowerCase();
-
-    // Predefined Y-axis categories with Low starting at 5
-    final categories = {
-      "low"
-          "medium"
-          "normal"
-          "mild"
-          "high"
-          "very high",
-    };
-
-    // if (!isXAxis && categories.containsKey(str)) {
-    //   return categories[str]!.toDouble();
-    // }
-
-    // For X-axis mapping
     final map = <String, double>{};
     for (int i = 0; i < values.length; i++) {
       var val = values[i];
@@ -50,19 +34,6 @@ class StringToNumericMapper {
 
   /// Get string label from numeric value
   String getLabel(double numericValue) {
-    // final categories = {
-    //   5: "Low",
-    //   6: "Medium",
-    //   7: "Normal",
-    //   8: "Mild",
-    //   9: "High",
-    //   10: "Very High",
-    // };
-
-    // if (!isXAxis && categories.containsKey(numericValue.toInt())) {
-    //   return categories[numericValue.toInt()]!;
-    // }
-
     int index = numericValue.toInt();
     if (index >= 0 && index < values.length) {
       if (isXAxis) {
@@ -125,7 +96,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
       style: const TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        color: Color(0xffE0E0E0),
+        color: AppColors.searchColor,
       ),
     );
   }
@@ -145,7 +116,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
       style: const TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        color: Color(0xffE0E0E0),
+        color: AppColors.searchColor,
       ),
     );
   }
@@ -163,7 +134,6 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
 
   @override
   void initState() {
-    // TODO: implement initState
     stringToIndex = {
       for (int i = 0; i < yLevels.length; i++) yLevels[i]: i + 1,
     };
@@ -205,8 +175,8 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
             ),
             minX: 0,
             maxX: (widget.bottomTitles.length - 1).toDouble(),
-            minY: 0, // start at Low
-            maxY: 6, // end at Very High
+            minY: 0,
+            maxY: 6,
             gridData: FlGridData(show: false),
             borderData: FlBorderData(
               show: true,

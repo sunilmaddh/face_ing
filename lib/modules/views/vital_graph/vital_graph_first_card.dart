@@ -187,15 +187,26 @@ class VitalGraphFirstCard extends StatelessWidget {
                           child: CommonGraphCard(
                             // vitalValue: result[index].vitalValue!,
                             widget: Padding(
-                              padding: AppDimensions.symmetric(
-                                horizontal: 10,
-                                vertical: 10,
-                              ),
-                              child: CustomLineChartWidget(
-                                leftTitles: result[index].yValues!,
-                                bottomTitles: result[index].xValues!,
-                                vitalValues: healthList,
-                                vitalName: result[index].vitalName!,
+                              padding:
+                                  result[index].vitalName == "PNS Index" ||
+                                          result[index].vitalName == "SNS Index"
+                                      ? AppDimensions.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 60,
+                                      )
+                                      : AppDimensions.symmetric(
+                                        horizontal: 10,
+                                        vertical: 20,
+                                      ),
+                              child: Expanded(
+                                child: CustomLineChartWidget(
+                                  leftTitles: result[index].yValues!,
+                                  bottomTitles: result[index].xValues!,
+                                  vitalValues: healthList,
+                                  vitalName: result[index].vitalName!,
+                                ),
                               ),
                             ),
                             vitalName: result[index].vitalName.toString(),

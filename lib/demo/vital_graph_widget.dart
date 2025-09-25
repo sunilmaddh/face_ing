@@ -25,7 +25,6 @@ class VitalGraphWidget extends StatefulWidget {
 
 class _VitalGraphWidgetState extends State<VitalGraphWidget> {
   final double barWidth = 10;
-
   late List<BarChartGroupData> showingBarGroups;
 
   // Numeric left values
@@ -41,9 +40,12 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
   }
 
   void processLeftAxis() {
-    // Convert left labels to double
+    List<int> intList =
+        widget.leftTitle.map((e) => double.parse(e).round()).toList();
+
+    List<String> backToString = intList.map((e) => e.toString()).toList();
     numericLeftValues =
-        widget.leftTitle.map((e) => double.tryParse(e) ?? 0).toList();
+        backToString.map((e) => double.tryParse(e) ?? 0).toList();
 
     if (numericLeftValues.isEmpty) {
       minY = 0;
@@ -52,13 +54,19 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
     }
 
     numericLeftValues.sort();
-    minY = numericLeftValues.first;
-    maxY = numericLeftValues.last;
 
-    // Ensure zero is included if minY > 0
-    if (minY > 0) minY = 0;
+    minY = 0;
 
-    // Add 10% padding to top
+    double positiveMax = numericLeftValues
+        .where((v) => v > 0)
+        .fold<double>(
+          0,
+          (previousValue, element) =>
+              element > previousValue ? element : previousValue,
+        );
+    maxY = positiveMax;
+
+    // Add 10% padding
     double range = maxY - minY;
     if (range == 0) range = maxY * 0.1;
     maxY += range * 0.1;
@@ -74,7 +82,7 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
       if (i < widget.vitalValue.length) {
         value = double.tryParse(widget.vitalValue[i].value ?? "0") ?? 0;
 
-        var isTypeVital =
+        bool isTypeVital =
             widget.vitalValue[i].isTypeVital.toString().toLowerCase() == "true";
 
         var vitalGraphColor = VitalColorHelper(
@@ -89,7 +97,15 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
       showingBarGroups.add(
         BarChartGroupData(
           x: i,
-          barRods: [BarChartRodData(toY: value, color: color, width: barWidth)],
+          barRods: [
+            BarChartRodData(
+              fromY: value < 0 ? 0 : 0,
+              toY: value,
+              color: color,
+              width: barWidth,
+              borderRadius: BorderRadius.zero,
+            ),
+          ],
         ),
       );
     }
@@ -111,6 +127,7 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(8.0),
+      clipBehavior: Clip.none, // allow negative bars to overflow
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
@@ -118,11 +135,19 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
           height: 200,
           child: BarChart(
             BarChartData(
-              baselineY: 0,
+              minY: 0,
               maxY: maxY,
               alignment: BarChartAlignment.spaceAround,
               barTouchData: BarTouchData(
+                handleBuiltInTouches: true,
+                touchExtraThreshold: EdgeInsets.only(
+                  top: 0,
+                  bottom: 50,
+                  left: 0,
+                  right: 0,
+                ),
                 enabled: true,
+
                 touchTooltipData: BarTouchTooltipData(
                   tooltipMargin: 8,
                   fitInsideVertically: true,
@@ -162,8 +187,8 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
               borderData: FlBorderData(
                 show: true,
                 border: Border(
-                  left: BorderSide(width: 0.5, color: Color(0xffE0E0E0)),
-                  bottom: BorderSide(width: 0.5, color: Color(0xffE0E0E0)),
+                  left: BorderSide(width: 1.0, color: AppColors.searchColor),
+                  bottom: BorderSide(width: 1.0, color: AppColors.searchColor),
                 ),
               ),
               barGroups: showingBarGroups,
@@ -176,21 +201,23 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
   }
 
   Widget leftTitles(double value, TitleMeta meta) {
-    // Show only if value exactly matches a numericLeftValue
-    if (numericLeftValues.contains(value)) {
-      int index = numericLeftValues.indexOf(value);
-      return SideTitleWidget(
-        meta: meta,
-        space: 4,
-        child: Text(
-          widget.leftTitle[index],
-          style: const TextStyle(
-            color: Color(0xff7589a2),
-            fontWeight: FontWeight.bold,
-            fontSize: 10,
+    for (int i = 0; i < numericLeftValues.length; i++) {
+      if ((numericLeftValues[i] - value).abs() < 0.001) {
+        var v = double.tryParse(widget.leftTitle[i]) ?? 0;
+        var value = v.toInt();
+        return SideTitleWidget(
+          meta: meta,
+          space: 4,
+          child: Text(
+            value.toString(),
+            style: const TextStyle(
+              color: AppColors.searchColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
     return const SizedBox.shrink();
   }
@@ -205,7 +232,7 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
           style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: Color(0xffE0E0E0),
+            color: AppColors.searchColor,
           ),
         ),
       );

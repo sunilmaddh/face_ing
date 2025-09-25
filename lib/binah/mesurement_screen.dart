@@ -9,12 +9,14 @@ import 'package:lottie/lottie.dart';
 import 'package:ntt_data/binah/camera_preview.dart';
 import 'package:ntt_data/binah/measurement_controller.dart';
 import 'package:ntt_data/binah/start_stop_button.dart';
+import 'package:ntt_data/binah/vital_sign_helper.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
+import 'dart:async';
 
 class MeasurementScreen extends StatefulWidget {
   const MeasurementScreen({super.key});
@@ -31,6 +33,13 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
   void dispose() {
     controller.cloase();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller.getScanMeassage();
+    super.initState();
   }
 
   @override
@@ -262,15 +271,24 @@ class MeasurmentProgress extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Align(alignment: Alignment.center, child: PulseRate()),
-                SizedBox(
-                  width: AppDimensions.width(300),
-                  height: AppDimensions.height(140),
-                  child: LottieBuilder.asset(
-                    AppAssets.heartRateAnim,
-                    fit: BoxFit.fill,
-                    repeat: true,
-                  ),
-                ),
+                Obx(() {
+                  int currentProgress = controller.progress.value.toInt();
+                  var helper = MeasurementHelper(
+                    scanMessageList: controller.scanMessageList,
+                  );
+
+                  return Padding(
+                    padding: AppDimensions.only(left: 20, right: 20, top: 10),
+                    child: TypewriterText(
+                      text: helper.getProgressMessage(currentProgress),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      speed: const Duration(
+                        milliseconds: 40,
+                      ), // Adjust typing speed
+                    ),
+                  );
+                }),
               ],
             ),
 
@@ -283,8 +301,14 @@ class MeasurmentProgress extends StatelessWidget {
                 ),
                 child: FAProgressBar(
                   progressColor: Colors.green,
-                  currentValue: controller.progress.value.toDouble(),
+                  currentValue:
+                      controller.progress.value
+                          .toDouble(), // convert int → double
                   displayText: "%",
+                  formatValue:
+                      (value, _) =>
+                          value.toInt().toString(), // show only integer
+                  // ensures no extra decimals
                 ),
               ),
             ),
@@ -336,5 +360,75 @@ class OverlayWithOvalHolePainter extends CustomPainter {
         oldDelegate.radiusX != radiusX ||
         oldDelegate.radiusY != radiusY ||
         oldDelegate.overlayColor != overlayColor;
+  }
+}
+
+class TypewriterText extends StatefulWidget {
+  final String text;
+  final TextAlign textAlign;
+  final int maxLines;
+  final Duration speed;
+
+  const TypewriterText({
+    super.key,
+    required this.text,
+    this.textAlign = TextAlign.start,
+    this.maxLines = 1,
+    this.speed = const Duration(milliseconds: 50),
+  });
+
+  @override
+  State<TypewriterText> createState() => _TypewriterTextState();
+}
+
+class _TypewriterTextState extends State<TypewriterText> {
+  String _displayedText = '';
+  late Timer _timer;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTyping();
+  }
+
+  void _startTyping() {
+    _displayedText = '';
+    _currentIndex = 0;
+
+    _timer = Timer.periodic(widget.speed, (timer) {
+      if (_currentIndex < widget.text.length) {
+        setState(() {
+          _displayedText += widget.text[_currentIndex];
+          _currentIndex++;
+        });
+      } else {
+        _timer.cancel();
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant TypewriterText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.text != widget.text) {
+      _timer.cancel();
+      _startTyping();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonText.text(
+      textAlign: widget.textAlign,
+      maxLines: widget.maxLines,
+      _displayedText,
+    );
   }
 }

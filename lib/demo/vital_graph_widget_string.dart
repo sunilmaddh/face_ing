@@ -90,24 +90,10 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
   String getLabel(double numericValue) {
     int index = numericValue.toInt();
 
-    // if (!isXAxis) {
-    //   final categories = [
-    //     "Low",
-    //     "Medium",
-    //     "Normal",
-    //     "Mild",
-    //     "High",
-    //     "Very High",
-    //   ];
-    //   if (index >= 0 && index < categories.length) return categories[index];
-    // }
     if (index >= 0 && index < widget.bottomTitles.length) {
       if (widget.bottomTitles[index].toLowerCase() == "yesterday") {
         return (DateTime.now().day - 1).toString();
       }
-      // else if (widget.bottomTitles[index].toLowerCase() == "today") {
-      //   return DateTime.now().day.toString();
-      // }
 
       return widget.bottomTitles[index];
     }
@@ -128,10 +114,6 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
           width: AppDimensions.width(1000.0),
           height: 200,
           child: BarChart(
-            // swapAnimationDuration: const Duration(
-            //   seconds: 6,
-            // ), // Animation duration
-            // swapAnimationCurve: Curves.bounceOut,
             BarChartData(
               baselineY: 0,
               maxY: maxY,
@@ -141,7 +123,6 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
                 touchTooltipData: BarTouchTooltipData(
                   fitInsideVertically: true,
                   getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                    // Reverse lookup string label for tooltip
                     String label =
                         stringToIndex.entries
                             .firstWhere(
@@ -186,8 +167,8 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
               borderData: FlBorderData(
                 show: true,
                 border: Border(
-                  left: BorderSide(width: 0.5, color: Color(0xffE0E0E0)),
-                  bottom: BorderSide(width: 0.5, color: Color(0xffE0E0E0)),
+                  left: BorderSide(width: 1.0, color: AppColors.searchColor),
+                  bottom: BorderSide(width: 1.0, color: AppColors.searchColor),
                 ),
               ),
               barGroups: showingBarGroups,
@@ -215,7 +196,7 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
       style: const TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        color: Color(0xffE0E0E0),
+        color: AppColors.searchColor,
       ),
     );
   }
@@ -231,7 +212,7 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
           style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: Color(0xffE0E0E0),
+            color: AppColors.searchColor,
           ),
         ),
       );
@@ -243,7 +224,14 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
   BarChartGroupData makeGroupData(int x, double y1, Color color) {
     return BarChartGroupData(
       x: x,
-      barRods: [BarChartRodData(toY: y1, color: color, width: width)],
+      barRods: [
+        BarChartRodData(
+          toY: y1,
+          color: color,
+          width: width,
+          borderRadius: BorderRadius.zero,
+        ),
+      ],
     );
   }
 

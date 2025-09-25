@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/modules/views/vital_graph/helper/vital_graph_status.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class CategoricalGauge extends StatelessWidget {
@@ -14,7 +15,7 @@ class CategoricalGauge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = categoricalVitals[vitalName] ?? [];
+    final categories = VitalGraphStatus().categoricalVitals[vitalName] ?? [];
     if (categories.isEmpty) {
       return Center(child: Text("No data for $vitalName"));
     }
@@ -72,54 +73,4 @@ class CategoricalGauge extends StatelessWidget {
       ],
     );
   }
-
-  final Map<String, List<GaugeCategory>> categoricalVitals = {
-    "High HbA1c Risk": [
-      GaugeCategory(status: "Low", color: Color(0xff1BC76D)),
-      GaugeCategory(status: "Medium", color: Color(0xffEEC000)),
-      GaugeCategory(status: "High", color: Color(0xffFA704E)),
-    ],
-    "High Fasting Glucose Risk": [
-      GaugeCategory(status: "Low", color: Color(0xff1BC76D)),
-      GaugeCategory(status: "High", color: Color(0xffFA704E)),
-    ],
-    "High Total Cholesterol Risk": [
-      GaugeCategory(status: "Low", color: Color(0xff1BC76D)),
-      GaugeCategory(status: "Medium", color: Color(0xffEEC000)),
-      GaugeCategory(status: "High", color: Color(0xffFA704E)),
-    ],
-    "Low Hemoglobin Risk": [
-      GaugeCategory(status: "Low", color: Color(0xff1BC76D)),
-      GaugeCategory(status: "High", color: Color(0xffFA704E)),
-    ],
-    "Stress Level": [
-      GaugeCategory(status: "Low", color: Color(0xff1BC76D)),
-      GaugeCategory(status: "Normal", color: Color(0xff9ED042)),
-      GaugeCategory(status: "Mild", color: Color(0xffEEC000)),
-      GaugeCategory(status: "High", color: Color(0xffED9A33)),
-      GaugeCategory(status: "Very High", color: Color(0xffFA704E)),
-    ],
-    "High Blood Pressure Risk": [
-      GaugeCategory(status: "Low", color: Color(0xff1BC76D)),
-      GaugeCategory(status: "Medium", color: Color(0xffEEC000)),
-      GaugeCategory(status: "High", color: Color(0xffFA704E)),
-    ],
-    "Recovery Ability (PNS Zone)": [
-      GaugeCategory(status: "Low", color: Color(0xffFA704E)),
-      GaugeCategory(status: "Normal", color: Color(0xffEEC000)),
-      GaugeCategory(status: "High", color: Color(0xff1BC76D)),
-    ],
-    "Stress Response (SNS Zone)": [
-      GaugeCategory(status: "Low", color: Color(0xff1BC76D)),
-      GaugeCategory(status: "Normal", color: Color(0xffEEC000)),
-      GaugeCategory(status: "High", color: Color(0xffFA704E)),
-    ],
-  };
-}
-
-class GaugeCategory {
-  final String status; // e.g., "Low", "Medium", "High"
-  final Color color;
-
-  GaugeCategory({required this.status, required this.color});
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
-import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_graph_status.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/common_graph_card.dart';
 // Replace with your actual asset paths
 
 class VitalColorHelper {
@@ -30,7 +27,9 @@ class VitalColorHelper {
     if (isLowGood) {
       if (_isBreathingVital()) {
         isBreathing = true;
-      } else if (vitalName == "Blood Pressure") {
+      } else if (vitalName == "Blood Pressure Systolic") {
+        isBlood = true;
+      } else if (vitalName == "Blood Pressure Daistolic") {
         isBlood = true;
       } else if (_isHighLowRiskVital()) {
         isHighLow = true;
@@ -40,16 +39,17 @@ class VitalColorHelper {
         isStress = true;
       } else if (vitalName == "Wellness Score") {
         isWellnessScore = true;
-      } else if ((vitalName == "PNS Index" && vitalStatus == "Low") ||
+      } else if ((vitalName == "PNS Index" &&
+              vitalStatus.toLowerCase() == "low") ||
           (vitalName == "Recovery Ability (PNS Zone)" &&
               vitalStatus == "Low") ||
-          (vitalName == "LF/HF" && vitalStatus == "Low") ||
-          (vitalName == "ASCVD Risk" && vitalStatus == "High") ||
-          (vitalName == "SNS Index" && vitalStatus == "High")) {
+          (vitalName == "LF/HF" && vitalStatus.toLowerCase() == "low") ||
+          (vitalName == "ASCVD Risk" && vitalStatus.toLowerCase() == "high") ||
+          (vitalName == "SNS Index" && vitalStatus.toLowerCase() == "high")) {
         isLowGood = false;
       }
-      if ((vitalName == "Mean RRi" && vitalStatus == "Low") ||
-          (vitalName == "RMSSD" && vitalStatus == "Low")) {
+      if ((vitalName == "Mean RRi" && vitalStatus.toLowerCase() == "low") ||
+          (vitalName == "RMSSD" && vitalStatus.toLowerCase() == "low")) {
         isLowGood = false;
       }
     }
@@ -58,7 +58,7 @@ class VitalColorHelper {
   bool _isBreathingVital() {
     return [
       "Breathing Rate",
-      "Pulse Rate(Heart Rate)",
+      "Heart Rate",
       "PRQ",
       "Hemoglobin",
     ].contains(vitalName);
@@ -142,9 +142,11 @@ Color getStatusAndIsTypical(
   // }
 
   if (isNumeric(value)) {
+    var status = VitalGraphStatus().getStatus(vitalName, value);
+    debugPrint("$vitalName $status");
     var vitalHelper = VitalColorHelper(
       vitalName: vitalName,
-      vitalStatus: VitalGraphStatus().getStatus(vitalName, value),
+      vitalStatus: status,
       isLowGood: stringToBool(healthList.first.isTypeVital ?? "false"),
     );
     return vitalHelper.getColor();
@@ -156,37 +158,6 @@ Color getStatusAndIsTypical(
     );
     return vitalHelper.getColor();
   }
-
-  // for (int i = 0; i < healthList.length; i++) {
-  //   if (isNumeric(value)) {
-  //     final double? target = double.tryParse(value);
-  //     final double? itemValue = double.tryParse(healthList[i].value ?? "");
-  //     if (target == null) return Colors.black;
-  //     debugPrint("getStatusAndIsTypical $target ${healthList[i].value}");
-
-  //     if (itemValue != null && target == itemValue) {
-  //       var vitalHelper = VitalColorHelper(
-  //         vitalName: vitalName,
-  //         vitalStatus: healthList[i].status ?? "",
-  //         isLowGood: stringToBool(healthList[i].isTypeVital ?? "false"),
-  //       );
-  //       return vitalHelper.getColor(); // loop stops here
-  //     }
-  //   } else {
-  //     debugPrint("getStatusAndIsTypical $value ${healthList[i].value}");
-  //     if (value != null &&
-  //         value.isCaseInsensitiveContainsAny(healthList[i].value!)) {
-  //       var vitalHelper = VitalColorHelper(
-  //         vitalName: vitalName,
-  //         vitalStatus: healthList[i].value ?? "",
-  //         isLowGood: stringToBool(healthList[i].isTypeVital ?? "false"),
-  //       );
-  //       return vitalHelper.getColor(); // loop stops here
-  //     }
-  //   }
-  // }
-
-  // return Colors.black; // default if not matched
 }
 
 bool stringToBool(String value) {

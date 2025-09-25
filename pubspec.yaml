@@ -75,7 +75,7 @@ flutter_launcher_icons:
   adaptive_icon_foreground: "assets/images/png/app-logo.png"
 dependency_overrides:
   wakelock_windows: any
-  win32: any
+  win32: 5.13.0
 flutter:
 
   uses-material-design: true

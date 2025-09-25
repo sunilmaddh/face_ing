@@ -120,7 +120,8 @@ abstract class BaseApiService {
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint(uri.toString());
     try {
-      var accessToken = "";
+      var accessToken = await IndoSharedPreference.instance.getAccessToken();
+      ;
       debugPrint("Access toke $accessToken");
       Uri uri;
       if (isHttps) {
