@@ -78,7 +78,7 @@ class CustomLineChartWidget extends StatelessWidget {
     final maxY = _getMaxY(spots);
 
     return LineChartData(
-      minY: 0,
+      minY: minY,
       maxY: maxY,
       maxX: (bottomTitles.length - 1).toDouble(),
       gridData: FlGridData(show: false),
@@ -141,16 +141,16 @@ class CustomLineChartWidget extends StatelessWidget {
         ),
       ],
       // 🔹 Optional: Draw a zero line for clarity
-      // extraLinesData: ExtraLinesData(
-      //   horizontalLines: [
-      //     if (minY < 0)
-      //       HorizontalLine(
-      //         y: 0,
-      //         color: AppColors.borderColor,
-      //         strokeWidth: 1.5, // thicker for visibility
-      //       ),
-      //   ],
-      // ),
+      extraLinesData: ExtraLinesData(
+        horizontalLines: [
+          if (minY < 0)
+            HorizontalLine(
+              y: 0,
+              color: AppColors.borderColor,
+              strokeWidth: 1.5, // thicker for visibility
+            ),
+        ],
+      ),
     );
   }
 

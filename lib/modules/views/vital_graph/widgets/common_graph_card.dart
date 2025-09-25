@@ -159,7 +159,7 @@ class CommonGraphCard extends StatelessWidget {
               child: Padding(
                 padding: AppDimensions.only(bottom: 10),
                 child: Wrap(
-                  alignment: WrapAlignment.center,
+                  alignment: WrapAlignment.start,
                   direction: Axis.horizontal,
                   spacing: 10,
                   runSpacing: 3,

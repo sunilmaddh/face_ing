@@ -6,6 +6,7 @@ import 'package:ntt_data/modules/views/vital_graph/helper/vital_graph_status.dar
 class VitalColorHelper {
   bool isBreathing = false;
   bool isBlood = false;
+  bool isDBlood = false;
   bool isHighLow = false;
   bool isStress = false;
   bool isWellnessScore = false;
@@ -30,7 +31,7 @@ class VitalColorHelper {
       } else if (vitalName == "Blood Pressure Systolic") {
         isBlood = true;
       } else if (vitalName == "Blood Pressure Daistolic") {
-        isBlood = true;
+        isDBlood = true;
       } else if (_isHighLowRiskVital()) {
         isHighLow = true;
       } else if (vitalName == "Stress Level") {
@@ -42,7 +43,7 @@ class VitalColorHelper {
       } else if ((vitalName == "PNS Index" &&
               vitalStatus.toLowerCase() == "low") ||
           (vitalName == "Recovery Ability (PNS Zone)" &&
-              vitalStatus == "Low") ||
+              vitalStatus.toLowerCase() == "low") ||
           (vitalName == "LF/HF" && vitalStatus.toLowerCase() == "low") ||
           (vitalName == "ASCVD Risk" && vitalStatus.toLowerCase() == "high") ||
           (vitalName == "SNS Index" && vitalStatus.toLowerCase() == "high")) {
@@ -85,6 +86,8 @@ class VitalColorHelper {
             ? const Color(0xFFFA704E)
             : isBlood
             ? const Color(0xFFEEC000)
+            : isDBlood
+            ? const Color(0xffED9A33)
             : isLowGood
             ? const Color(0xFF1BC76D)
             : const Color(0xFFFA704E);
@@ -109,6 +112,8 @@ class VitalColorHelper {
             ? const Color(0xFFEEC000)
             : isBlood
             ? const Color(0xFFFA704E)
+            : isDBlood
+            ? const Color(0xffED9A33)
             : isStress
             ? Color(0xffED9A33)
             : isHighLow

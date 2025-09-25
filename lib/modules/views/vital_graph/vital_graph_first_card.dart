@@ -95,9 +95,9 @@ class VitalGraphFirstCard extends StatelessWidget {
                 child: GridView.builder(
                   itemCount: result.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 8,
+                    mainAxisSpacing: 6,
                     crossAxisSpacing: 8,
-                    childAspectRatio: 0.67,
+                    childAspectRatio: 0.65,
                     crossAxisCount: 2,
                   ),
                   itemBuilder: (context, index) {
@@ -200,13 +200,11 @@ class VitalGraphFirstCard extends StatelessWidget {
                                         horizontal: 10,
                                         vertical: 20,
                                       ),
-                              child: Expanded(
-                                child: CustomLineChartWidget(
-                                  leftTitles: result[index].yValues!,
-                                  bottomTitles: result[index].xValues!,
-                                  vitalValues: healthList,
-                                  vitalName: result[index].vitalName!,
-                                ),
+                              child: CustomLineChartWidget(
+                                leftTitles: result[index].yValues!,
+                                bottomTitles: result[index].xValues!,
+                                vitalValues: healthList,
+                                vitalName: result[index].vitalName!,
                               ),
                             ),
                             vitalName: result[index].vitalName.toString(),
