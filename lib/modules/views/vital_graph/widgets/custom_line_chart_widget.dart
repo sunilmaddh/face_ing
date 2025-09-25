@@ -27,10 +27,11 @@ class CustomLineChartWidget extends StatelessWidget {
     });
   }
 
+  /// 🔹 Calculate dynamic minY and maxY
   double _getMinY(List<FlSpot> spots) {
     if (spots.isEmpty) return 0;
     final minValue = spots.map((s) => s.y).reduce((a, b) => a < b ? a : b);
-    return minValue > 0 ? 0 : minValue;
+    return minValue > 0 ? 0 : minValue; // keep 0 if all values are positive
   }
 
   double _getMaxY(List<FlSpot> spots) {
@@ -60,6 +61,17 @@ class CustomLineChartWidget extends StatelessWidget {
     return const SizedBox.shrink();
   }
 
+  Widget _buildLeftTitle(double value, TitleMeta meta) {
+    int index = value.toInt();
+    if (index >= 0 && index < leftTitles.length) {
+      return Text(
+        leftTitles[index],
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+      );
+    }
+    return const SizedBox.shrink();
+  }
+
   LineChartData _buildChartData(List<FlSpot> spots, double minY, double maxY) {
     return LineChartData(
       minY: minY,
@@ -78,7 +90,13 @@ class CustomLineChartWidget extends StatelessWidget {
         ),
         topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: false,
+            interval: 1,
+            reservedSize: 30,
+          ),
+        ),
       ),
       lineBarsData: [
         LineChartBarData(
@@ -87,26 +105,25 @@ class CustomLineChartWidget extends StatelessWidget {
           color: AppColors.primary,
           barWidth: 2,
           dotData: FlDotData(show: true),
+          // 👇 enable all dots as "active"
+          showingIndicators: List.generate(spots.length, (i) => i),
         ),
       ],
-
-      // 👇 This is the trick: always show tooltips at every dot
-      showingTooltipIndicators: [
-        for (int i = 0; i < spots.length; i++)
-          ShowingTooltipIndicators([
-            LineBarSpot(LineChartBarData(spots: spots), 0, spots[i]),
-          ]),
-      ],
-
       lineTouchData: LineTouchData(
-        enabled: false, // disable user touch, we want "always show"
+        enabled: true,
+        handleBuiltInTouches: false, // disable user touch
+        getTouchedSpotIndicator: (barData, indicators) {
+          return indicators.map((index) {
+            return TouchedSpotIndicatorData(
+              FlLine(color: Colors.transparent), // no line
+              FlDotData(show: false), // don’t draw extra dot
+            );
+          }).toList();
+        },
         touchTooltipData: LineTouchTooltipData(
-          // tooltipBgColor: Colors.transparent,
-          showOnTopOfTheChartBoxArea: true,
+          // tooltipBgColor: Colors.transparent, // no box
           tooltipPadding: EdgeInsets.zero,
           tooltipMargin: 0,
-          fitInsideHorizontally: true,
-          fitInsideVertically: true,
           getTooltipItems: (touchedSpots) {
             return touchedSpots.map((spot) {
               final item = vitalValues[spot.spotIndex];
@@ -117,7 +134,7 @@ class CustomLineChartWidget extends StatelessWidget {
               );
 
               return LineTooltipItem(
-                spot.y.toInt().toString(),
+                spot.y.toInt().toString(), // value above dot
                 TextStyle(
                   color: vitalGraphColor.getColor(),
                   fontSize: 12,
@@ -142,12 +159,66 @@ class CustomLineChartWidget extends StatelessWidget {
       height: AppDimensions.height(350),
       child: Padding(
         padding: AppDimensions.symmetric(horizontal: 10, vertical: 10),
-        child: Center(
-          child: SizedBox(
-            width: 400,
-            height: 200,
-            child: LineChart(_buildChartData(spots, minY, maxY)),
-          ),
+        child: Stack(
+          children: [
+            Center(
+              child: SizedBox(
+                width: 400,
+                height: 200,
+                child: LineChart(_buildChartData(spots, minY, maxY)),
+              ),
+            ),
+            // Overlay values above/below each dot
+            Positioned.fill(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SizedBox(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    child: Stack(
+                      children:
+                          spots.asMap().entries.map((entry) {
+                            final index = entry.key;
+                            final item = vitalValues[index];
+
+                            final spot = entry.value;
+
+                            var vitalGraphColor = VitalColorHelper(
+                              vitalName: vitalName,
+                              vitalStatus: item.status.toString(),
+                              isLowGood: stringToBool(
+                                item.isTypeVital.toString(),
+                              ),
+                            );
+
+                            // 🔹 Map spot.y into chart height, supporting negative values
+                            final dx =
+                                spot.x /
+                                (bottomTitles.length - 1) *
+                                constraints.maxWidth;
+                            final dy =
+                                (1 - (spot.y - minY) / (maxY - minY)) *
+                                constraints.minHeight;
+
+                            return Positioned(
+                              left: dx,
+                              top: dy,
+                              child: Text(
+                                spot.y.toInt().toString(),
+                                style: TextStyle(
+                                  color: vitalGraphColor.getColor(),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
