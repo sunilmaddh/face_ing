@@ -95,9 +95,9 @@ class VitalGraphFirstCard extends StatelessWidget {
                 child: GridView.builder(
                   itemCount: result.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 6,
+                    mainAxisSpacing: 8,
                     crossAxisSpacing: 8,
-                    childAspectRatio: 0.65,
+                    childAspectRatio: 0.67,
                     crossAxisCount: 2,
                   ),
                   itemBuilder: (context, index) {

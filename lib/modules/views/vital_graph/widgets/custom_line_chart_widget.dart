@@ -121,8 +121,8 @@ class CustomLineChartWidget extends StatelessWidget {
               return FlDotCirclePainter(
                 radius: 4,
                 color: vitalGraphColor.getColor(),
-                strokeWidth: 1.5,
-                strokeColor: AppColors.btntext,
+                strokeWidth: 1,
+                strokeColor: AppColors.backArrowColor,
               );
             },
           ),
@@ -133,8 +133,8 @@ class CustomLineChartWidget extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                const Color(0xffD0FBFF).withOpacity(0.6),
-                const Color(0xffDDF2F4).withOpacity(0.0),
+                const Color(0xffD0FBFF),
+                const Color(0xffDDF2F4).withOpacity(0.2),
               ],
             ),
           ),
@@ -150,6 +150,36 @@ class CustomLineChartWidget extends StatelessWidget {
               strokeWidth: 1.5, // thicker for visibility
             ),
         ],
+      ),
+      lineTouchData: LineTouchData(
+        enabled: true, // disable user touch, we want "always show"
+        touchTooltipData: LineTouchTooltipData(
+          // tooltipBgColor: Colors.transparent,
+          tooltipPadding: EdgeInsets.all(8.0),
+          // tooltipMargin: 30,
+          showOnTopOfTheChartBoxArea: true,
+          // fitInsideHorizontally: true,
+          // fitInsideVertically: true,
+          getTooltipItems: (touchedSpots) {
+            return touchedSpots.map((spot) {
+              final item = vitalValues[spot.spotIndex];
+              var vitalGraphColor = VitalColorHelper(
+                vitalName: vitalName,
+                vitalStatus: item.status.toString(),
+                isLowGood: stringToBool(item.isTypeVital.toString()),
+              );
+
+              return LineTooltipItem(
+                spot.y.toStringAsFixed(1),
+                TextStyle(
+                  color: vitalGraphColor.getColor(),
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            }).toList();
+          },
+        ),
       ),
     );
   }

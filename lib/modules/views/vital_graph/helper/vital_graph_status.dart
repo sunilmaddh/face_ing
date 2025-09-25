@@ -642,12 +642,12 @@ class VitalGraphStatus {
     ],
     "Recovery Ability (PNS Zone)": [
       StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
+      StatusListColor(status: "Medium", color: Color(0xffEEC000)),
       StatusListColor(status: "High", color: Color(0xff1BC76D)),
     ],
     "Stress Response (SNS Zone)": [
       StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
+      StatusListColor(status: "Medium", color: Color(0xffEEC000)),
 
       StatusListColor(status: "High", color: Color(0xffFA704E)),
     ],

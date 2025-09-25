@@ -153,8 +153,15 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
             lineTouchData: LineTouchData(
               touchTooltipData: LineTouchTooltipData(
                 fitInsideVertically: true,
+                showOnTopOfTheChartBoxArea: true,
                 getTooltipItems: (touchedSpots) {
                   return touchedSpots.map((spot) {
+                    final item = widget.vitalValues[spot.spotIndex];
+                    var vitalGraphColor = VitalColorHelper(
+                      vitalName: widget.vitalName,
+                      vitalStatus: item.status.toString(),
+                      isLowGood: stringToBool(item.isTypeVital.toString()),
+                    );
                     // Reverse lookup string label for tooltip
                     String label =
                         stringToIndex.entries
@@ -167,7 +174,10 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                       label.isNotEmpty
                           ? label.toFirstCaps()
                           : spot.y.toStringAsFixed(1),
-                      const TextStyle(color: Colors.white, fontSize: 12),
+                      TextStyle(
+                        color: vitalGraphColor.getColor(),
+                        fontSize: 12,
+                      ),
                     );
                   }).toList();
                 },
@@ -228,8 +238,8 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                     return FlDotCirclePainter(
                       radius: 4,
                       color: vitalGraphColor.getColor(),
-                      strokeWidth: 1.5,
-                      strokeColor: AppColors.btntext,
+                      strokeWidth: 1,
+                      strokeColor: AppColors.backArrowColor,
                     );
                   },
                 ),
