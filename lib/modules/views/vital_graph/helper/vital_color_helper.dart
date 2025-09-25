@@ -42,7 +42,7 @@ class VitalColorHelper {
       } else if ((vitalName == "PNS Index" &&
               vitalStatus.toLowerCase() == "low") ||
           (vitalName == "Recovery Ability (PNS Zone)" &&
-              vitalStatus == "Low") ||
+              vitalStatus.toLowerCase() == "low") ||
           (vitalName == "LF/HF" && vitalStatus.toLowerCase() == "low") ||
           (vitalName == "ASCVD Risk" && vitalStatus.toLowerCase() == "high") ||
           (vitalName == "SNS Index" && vitalStatus.toLowerCase() == "high")) {
