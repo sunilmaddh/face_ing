@@ -27,11 +27,10 @@ class CustomLineChartWidget extends StatelessWidget {
     });
   }
 
-  /// 🔹 Calculate dynamic minY and maxY
   double _getMinY(List<FlSpot> spots) {
     if (spots.isEmpty) return 0;
     final minValue = spots.map((s) => s.y).reduce((a, b) => a < b ? a : b);
-    return minValue > 0 ? 0 : minValue; // keep 0 if all values are positive
+    return minValue > 0 ? 0 : minValue;
   }
 
   double _getMaxY(List<FlSpot> spots) {
@@ -61,24 +60,9 @@ class CustomLineChartWidget extends StatelessWidget {
     return const SizedBox.shrink();
   }
 
-  Widget _buildLeftTitle(double value, TitleMeta meta) {
-    int index = value.toInt();
-    if (index >= 0 && index < leftTitles.length) {
-      return Text(
-        leftTitles[index],
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-      );
-    }
-    return const SizedBox.shrink();
-  }
-
-  LineChartData _buildChartData() {
-    final spots = _generateSpots();
-    final minY = _getMinY(spots);
-    final maxY = _getMaxY(spots);
-
+  LineChartData _buildChartData(List<FlSpot> spots, double minY, double maxY) {
     return LineChartData(
-      minY: 0,
+      minY: minY,
       maxY: maxY,
       maxX: (bottomTitles.length - 1).toDouble(),
       gridData: FlGridData(show: false),
@@ -94,14 +78,7 @@ class CustomLineChartWidget extends StatelessWidget {
         ),
         topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: false,
-            interval: 1,
-            reservedSize: 30,
-            maxIncluded: false,
-          ),
-        ),
+        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
       ),
       lineBarsData: [
         LineChartBarData(
@@ -109,64 +86,72 @@ class CustomLineChartWidget extends StatelessWidget {
           isCurved: true,
           color: AppColors.primary,
           barWidth: 2,
-          dotData: FlDotData(
-            show: true,
-            getDotPainter: (spot, percent, barData, index) {
-              final item = vitalValues[index];
+          dotData: FlDotData(show: true),
+        ),
+      ],
+
+      // 👇 This is the trick: always show tooltips at every dot
+      showingTooltipIndicators: [
+        for (int i = 0; i < spots.length; i++)
+          ShowingTooltipIndicators([
+            LineBarSpot(LineChartBarData(spots: spots), 0, spots[i]),
+          ]),
+      ],
+
+      lineTouchData: LineTouchData(
+        enabled: false, // disable user touch, we want "always show"
+        touchTooltipData: LineTouchTooltipData(
+          // tooltipBgColor: Colors.transparent,
+          showOnTopOfTheChartBoxArea: true,
+          tooltipPadding: EdgeInsets.zero,
+          tooltipMargin: 0,
+          fitInsideHorizontally: true,
+          fitInsideVertically: true,
+          getTooltipItems: (touchedSpots) {
+            return touchedSpots.map((spot) {
+              final item = vitalValues[spot.spotIndex];
               var vitalGraphColor = VitalColorHelper(
                 vitalName: vitalName,
                 vitalStatus: item.status.toString(),
                 isLowGood: stringToBool(item.isTypeVital.toString()),
               );
-              return FlDotCirclePainter(
-                radius: 4,
-                color: vitalGraphColor.getColor(),
-                strokeWidth: 1.5,
-                strokeColor: AppColors.btntext,
+
+              return LineTooltipItem(
+                spot.y.toInt().toString(),
+                TextStyle(
+                  color: vitalGraphColor.getColor(),
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
               );
-            },
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            applyCutOffY: true,
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                const Color(0xffD0FBFF).withOpacity(0.6),
-                const Color(0xffDDF2F4).withOpacity(0.0),
-              ],
-            ),
-          ),
+            }).toList();
+          },
         ),
-      ],
-      // 🔹 Optional: Draw a zero line for clarity
-      // extraLinesData: ExtraLinesData(
-      //   horizontalLines: [
-      //     if (minY < 0)
-      //       HorizontalLine(
-      //         y: 0,
-      //         color: AppColors.borderColor,
-      //         strokeWidth: 1.5, // thicker for visibility
-      //       ),
-      //   ],
-      // ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final spots = _generateSpots();
+    final minY = _getMinY(spots);
+    final maxY = _getMaxY(spots);
+
     return SizedBox(
       width: double.infinity,
-      height: AppDimensions.height(200),
+      height: AppDimensions.height(350),
       child: Padding(
         padding: AppDimensions.symmetric(horizontal: 10, vertical: 10),
-        child: Center(child: LineChart(_buildChartData())),
+        child: Center(
+          child: SizedBox(
+            width: 400,
+            height: 200,
+            child: LineChart(_buildChartData(spots, minY, maxY)),
+          ),
+        ),
       ),
     );
   }
 
-  bool stringToBool(String value) {
-    return value.toLowerCase() == 'true';
-  }
+  bool stringToBool(String value) => value.toLowerCase() == 'true';
 }

@@ -229,7 +229,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                       radius: 4,
                       color: vitalGraphColor.getColor(),
                       strokeWidth: 1.5,
-                      strokeColor: AppColors.btntext,
+                      strokeColor: AppColors.blackColor,
                     );
                   },
                 ),
@@ -239,8 +239,8 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      const Color(0xffD0FBFF).withOpacity(0.6),
-                      const Color(0xffDDF2F4).withOpacity(0.0),
+                      const Color(0xffD0FBFF),
+                      const Color(0xffDDF2F4).withOpacity(0.2),
                     ],
                   ),
                 ),
