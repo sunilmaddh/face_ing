@@ -111,16 +111,18 @@ class CustomLineChartWidget extends StatelessWidget {
       ],
       lineTouchData: LineTouchData(
         enabled: true,
-        handleBuiltInTouches: false, // disable user touch
+        handleBuiltInTouches: true, // disable user touch
         getTouchedSpotIndicator: (barData, indicators) {
           return indicators.map((index) {
             return TouchedSpotIndicatorData(
               FlLine(color: Colors.transparent), // no line
-              FlDotData(show: false), // don’t draw extra dot
+              FlDotData(show: true), // don’t draw extra dot
             );
           }).toList();
         },
+
         touchTooltipData: LineTouchTooltipData(
+          showOnTopOfTheChartBoxArea: true,
           // tooltipBgColor: Colors.transparent, // no box
           tooltipPadding: EdgeInsets.zero,
           tooltipMargin: 0,
@@ -156,18 +158,19 @@ class CustomLineChartWidget extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: AppDimensions.height(350),
+      height: AppDimensions.height(200),
       child: Padding(
         padding: AppDimensions.symmetric(horizontal: 10, vertical: 10),
         child: Stack(
           children: [
-            Center(
-              child: SizedBox(
-                width: 400,
-                height: 200,
-                child: LineChart(_buildChartData(spots, minY, maxY)),
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.center,
+            //   child: SizedBox(
+            //     width: 400,
+            //     // height: 200,
+            //     child: LineChart(_buildChartData(spots, minY, maxY)),
+            //   ),
+            // ),
             // Overlay values above/below each dot
             Positioned.fill(
               child: LayoutBuilder(
@@ -204,7 +207,7 @@ class CustomLineChartWidget extends StatelessWidget {
                               left: dx,
                               top: dy,
                               child: Text(
-                                spot.y.toInt().toString(),
+                                spot.y.toStringAsFixed(1),
                                 style: TextStyle(
                                   color: vitalGraphColor.getColor(),
                                   fontSize: 12,
@@ -217,6 +220,10 @@ class CustomLineChartWidget extends StatelessWidget {
                   );
                 },
               ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: LineChart(_buildChartData(spots, minY, maxY)),
             ),
           ],
         ),
