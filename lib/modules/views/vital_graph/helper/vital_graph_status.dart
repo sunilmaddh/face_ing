@@ -341,8 +341,8 @@ class VitalGraphStatus {
       ),
       GaugeCondition(min: 81, max: 90, label: "High", color: Color(0xffED9A33)),
       GaugeCondition(
-        min: 81,
-        max: 90,
+        min: 91,
+        max: 120,
         label: "Very High",
         color: Color(0xffFA704E),
       ),
@@ -583,9 +583,11 @@ class VitalGraphStatus {
       StatusListColor(status: "High", color: Color(0xffFA704E)),
     ],
     "Blood Pressure Daistolic": [
-      StatusListColor(status: "Low", color: Color(0xffEEC000)),
+      StatusListColor(status: "Low", color: Color(0xffED9A33)),
       StatusListColor(status: "Normal", color: Color(0xff1BC76D)),
-      StatusListColor(status: "High", color: Color(0xffFA704E)),
+      StatusListColor(status: "Medium", color: Color(0xffEEC000)),
+      StatusListColor(status: "High", color: Color(0xffED9A33)),
+      StatusListColor(status: "Very High", color: Color(0xffFA704E)),
     ],
     "Oxygen Saturation": [
       StatusListColor(status: "Low", color: Color(0xffFA704E)),
@@ -627,7 +629,8 @@ class VitalGraphStatus {
     ],
     "Low Hemoglobin Risk": [
       StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-
+      StatusListColor(status: "Normal", color: Color(0xff9ED042)),
+      StatusListColor(status: "Mild", color: Color(0xffEEC000)),
       StatusListColor(status: "High", color: Color(0xffFA704E)),
     ],
     "Stress Level": [
@@ -639,12 +642,12 @@ class VitalGraphStatus {
     ],
     "Recovery Ability (PNS Zone)": [
       StatusListColor(status: "Low", color: Color(0xffFA704E)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
+      StatusListColor(status: "Medium", color: Color(0xffEEC000)),
       StatusListColor(status: "High", color: Color(0xff1BC76D)),
     ],
     "Stress Response (SNS Zone)": [
       StatusListColor(status: "Low", color: Color(0xff1BC76D)),
-      StatusListColor(status: "Normal", color: Color(0xffEEC000)),
+      StatusListColor(status: "Medium", color: Color(0xffEEC000)),
 
       StatusListColor(status: "High", color: Color(0xffFA704E)),
     ],
@@ -715,6 +718,8 @@ class VitalGraphStatus {
     ],
     "Low Hemoglobin Risk": [
       GaugeCategory(status: "Low", color: Color(0xff1BC76D)),
+      GaugeCategory(status: "Normal", color: Color(0xff9ED042)),
+      GaugeCategory(status: "Mild", color: Color(0xffEEC000)),
       GaugeCategory(status: "High", color: Color(0xffFA704E)),
     ],
     "Stress Level": [

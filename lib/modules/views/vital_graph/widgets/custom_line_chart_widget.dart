@@ -75,6 +75,7 @@ class CustomLineChartWidget extends StatelessWidget {
   LineChartData _buildChartData(List<FlSpot> spots, double minY, double maxY) {
     return LineChartData(
       minY: minY,
+
       maxY: maxY,
       maxX: (bottomTitles.length - 1).toDouble(),
       gridData: FlGridData(show: false),
@@ -158,20 +159,11 @@ class CustomLineChartWidget extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: AppDimensions.height(200),
+      height: AppDimensions.height(150),
       child: Padding(
         padding: AppDimensions.symmetric(horizontal: 10, vertical: 10),
         child: Stack(
           children: [
-            // Align(
-            //   alignment: Alignment.center,
-            //   child: SizedBox(
-            //     width: 400,
-            //     // height: 200,
-            //     child: LineChart(_buildChartData(spots, minY, maxY)),
-            //   ),
-            // ),
-            // Overlay values above/below each dot
             Positioned.fill(
               child: LayoutBuilder(
                 builder: (context, constraints) {

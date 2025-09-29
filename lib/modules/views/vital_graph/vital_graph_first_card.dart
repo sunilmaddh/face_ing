@@ -203,7 +203,7 @@ class VitalGraphFirstCard extends StatelessWidget {
                               child: CustomLineChartWidget(
                                 leftTitles: result[index].yValues!,
                                 bottomTitles: result[index].xValues!,
-                                vitalValues: result[index].healthList!,
+                                vitalValues: healthList,
                                 vitalName: result[index].vitalName!,
                               ),
                             ),

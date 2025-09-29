@@ -194,7 +194,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                               SvgPicture.asset(AppAssets.noMeasurementTaken),
                               10.verticalSpace,
                               CommonText.text(
-                                "No Measurements were taken during this period",
+                                "No Measurement Taken Period Selection",
                               ),
                             ],
                           ),

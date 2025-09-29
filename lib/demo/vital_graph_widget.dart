@@ -135,7 +135,7 @@ class _VitalGraphWidgetState extends State<VitalGraphWidget> {
           height: 200,
           child: BarChart(
             BarChartData(
-              minY: 0,
+              minY: minY,
               maxY: maxY,
               alignment: BarChartAlignment.spaceAround,
               barTouchData: BarTouchData(
