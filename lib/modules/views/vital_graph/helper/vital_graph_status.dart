@@ -121,7 +121,7 @@ class VitalGraphStatus {
     final value = double.tryParse(v);
     if (value == null) return '';
     if (value < 50) return 'low';
-    if (value > 100) return 'high';
+    // if (value > 100) return 'high';
     return 'normal';
   }
 

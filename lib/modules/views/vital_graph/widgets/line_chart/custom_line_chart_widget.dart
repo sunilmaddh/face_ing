@@ -55,13 +55,39 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
   }
 
   Widget _buildBottomTitle(double value, TitleMeta meta) {
-    debugPrint("bottomtile ${widget.bottomTitles} ${value.toInt()}");
     int index = value.toInt();
+
     if (index < 0 || index >= widget.bottomTitles.length) {
       return const SizedBox.shrink();
     }
+
+    String label = widget.bottomTitles[index];
+    final scannedDateStr = widget.vitalValues[index].scannedDate;
+
+    if (scannedDateStr != null && scannedDateStr.isNotEmpty) {
+      try {
+        final scannedDate = DateTime.parse(scannedDateStr);
+        final today = DateTime.now();
+        final yesterday = today.subtract(const Duration(days: 1));
+
+        bool isSameDay(DateTime a, DateTime b) =>
+            a.year == b.year && a.month == b.month && a.day == b.day;
+
+        if (isSameDay(scannedDate, today)) {
+          label = "Today";
+        } else if (isSameDay(scannedDate, yesterday)) {
+          label = "Yesterday";
+        } else {
+          // fallback: show only day number (e.g. "30")
+          label = scannedDate.day.toString().padLeft(2, '0');
+        }
+      } catch (e) {
+        // If parsing fails, just keep original label
+      }
+    }
+
     return Text(
-      widget.bottomTitles[index],
+      label,
       style: const TextStyle(fontSize: 12, color: AppColors.searchColor),
     );
   }
@@ -99,10 +125,12 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
       child: Padding(
         padding: AppDimensions.symmetric(horizontal: 10, vertical: 10),
         child: LineChart(
+          curve: Curves.easeInCirc,
+          duration: const Duration(milliseconds: 1200),
           LineChartData(
             minY: minY,
-            maxY: maxY,
             minX: 0,
+            maxY: maxY,
             maxX: (widget.bottomTitles.length - 1).toDouble(),
             gridData: FlGridData(show: false),
             borderData: FlBorderData(show: false),
@@ -147,9 +175,9 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
 
                     if (touchedIndex == spot.x.toInt()) {
                       return FlDotCirclePainter(
-                        radius: 0,
+                        radius: 1,
                         color: color,
-                        strokeWidth: 0,
+                        strokeWidth: 1,
                       );
                     }
                     return _ValueDotPainter(spot, textColor: color);
@@ -177,9 +205,12 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                   setState(() => touchedIndex = null);
                   return;
                 }
-                setState(
-                  () => touchedIndex = response.lineBarSpots![0].spotIndex,
-                );
+                setState(() {
+                  for (var data in response.lineBarSpots!) {
+                    touchedIndex = data.x.toInt();
+                    return;
+                  }
+                });
               },
               getTouchedSpotIndicator: (barData, indicators) {
                 return indicators.map((index) {
@@ -211,7 +242,7 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
               touchTooltipData: LineTouchTooltipData(
                 getTooltipItems: (touchedSpots) {
                   return touchedSpots.map((spot) {
-                    final item = widget.vitalValues[spot.spotIndex];
+                    final item = widget.vitalValues[spot.x.toInt()];
                     final color =
                         VitalColorHelper(
                           vitalName: widget.vitalName,

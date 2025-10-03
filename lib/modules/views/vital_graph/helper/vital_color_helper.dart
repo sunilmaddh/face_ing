@@ -40,6 +40,11 @@ class VitalColorHelper {
         isStress = true;
       } else if (vitalName == "Wellness Score") {
         isWellnessScore = true;
+      } else if (vitalName == "Wellness Score") {
+        isWellnessScore = true;
+      } else if (vitalName == "SD2" && vitalStatus.toLowerCase() == "high" ||
+          vitalName == "SD1" && vitalStatus.toLowerCase() == "low") {
+        isLowGood = false;
       } else if ((vitalName == "PNS Index" &&
               vitalStatus.toLowerCase() == "low") ||
           (vitalName == "Recovery Ability (PNS Zone)" &&
@@ -142,17 +147,19 @@ Color getStatusAndIsTypical(
   String value,
   List<HealthList> healthList,
 ) {
-  // if (isNumeric(value)) {
-
-  // }
-
   if (isNumeric(value)) {
+    var isTypeVital;
     var status = VitalGraphStatus().getStatus(vitalName, value);
-    debugPrint("$vitalName $status");
+    for (var data in healthList) {
+      if (data.isTypeVital == "true") {
+        isTypeVital = data.isTypeVital;
+      }
+    }
+    debugPrint("$vitalName $status ${isTypeVital}");
     var vitalHelper = VitalColorHelper(
       vitalName: vitalName,
       vitalStatus: status,
-      isLowGood: stringToBool(healthList.first.isTypeVital ?? "false"),
+      isLowGood: stringToBool(isTypeVital ?? "false"),
     );
     return vitalHelper.getColor();
   } else {

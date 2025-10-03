@@ -299,54 +299,7 @@ class GuestHalper {
         },
       },
     };
-    // var binahData = {
-    //   "pulseRate": statusHelper.getVitalValue(VitalSignTypes.pulseRate),
-    //   "respirationRate": statusHelper.getVitalValue(
-    //     VitalSignTypes.respirationRate,
-    //   ),
-    //   "oxygenSaturation": statusHelper.getVitalValue(
-    //     VitalSignTypes.oxygenSaturation,
-    //   ),
-    //   "sdnn": statusHelper.getVitalValue(VitalSignTypes.sdnn),
-    //   "stressLevel": statusHelper.getVitalValue(VitalSignTypes.stressLevel),
-    //   "rri": statusHelper.getVitalValue(VitalSignTypes.rri),
-    //   "bloodPressure": statusHelper.getVitalValue(VitalSignTypes.bloodPressure),
-    //   "stressIndex": statusHelper.getVitalValue(VitalSignTypes.stressIndex),
-    //   "meanRri": statusHelper.getVitalValue(VitalSignTypes.meanRri),
-    //   "rmssd": statusHelper.getVitalValue(VitalSignTypes.rmssd),
-    //   "sd1": statusHelper.getVitalValue(VitalSignTypes.sd1),
-    //   "sd2": statusHelper.getVitalValue(VitalSignTypes.sd2),
-    //   "prq": statusHelper.getVitalValue(VitalSignTypes.prq),
-    //   "pnsIndex": statusHelper.getVitalValue(VitalSignTypes.pnsIndex),
-    //   "pnsZone": statusHelper.getVitalValue(VitalSignTypes.pnsZone),
-    //   "snsIndex": statusHelper.getVitalValue(VitalSignTypes.snsIndex),
-    //   "snsZone": statusHelper.getVitalValue(VitalSignTypes.snsZone),
-    //   "wellnessIndex": statusHelper.getVitalValue(VitalSignTypes.wellnessIndex),
-    //   "wellnessLevel": statusHelper.getVitalValue(VitalSignTypes.wellnessLevel),
-    //   "lfhf": statusHelper.getVitalValue(VitalSignTypes.lfhf),
-    //   "hemoglobin": statusHelper.getVitalValue(VitalSignTypes.hemoglobin),
-    //   "hemoglobinA1C": statusHelper.getVitalValue(VitalSignTypes.hemoglobinA1C),
-    //   "highHemoglobinA1CRisk": statusHelper.getVitalValue(
-    //     VitalSignTypes.highHemoglobinA1CRisk,
-    //   ),
-    //   "highBloodPressureRisk": statusHelper.getVitalValue(
-    //     VitalSignTypes.highBloodPressureRisk,
-    //   ),
-    //   "ascvdRisk": statusHelper.getVitalValue(VitalSignTypes.ascvdRisk),
-    //   "normalizedStressIndex": statusHelper.getVitalValue(
-    //     VitalSignTypes.normalizedStressIndex,
-    //   ),
-    //   "heartAge": statusHelper.getVitalValue(VitalSignTypes.heartAge),
-    //   "highTotalCholesterolRisk": statusHelper.getVitalValue(
-    //     VitalSignTypes.highTotalCholesterolRisk,
-    //   ),
-    //   "highFastingGlucoseRisk": statusHelper.getVitalValue(
-    //     VitalSignTypes.highFastingGlucoseRisk,
-    //   ),
-    //   "lowHemoglobinRisk": statusHelper.getVitalValue(
-    //     VitalSignTypes.lowHemoglobinRisk,
-    //   ),
-    // };
+
     return binahData;
   }
 

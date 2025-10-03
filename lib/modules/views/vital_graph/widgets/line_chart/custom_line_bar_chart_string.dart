@@ -90,8 +90,35 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
       values: widget.bottomTitles,
       isXAxis: true,
     );
+
+    String label = xMapper.getLabel(value);
+
+    // Try to parse as integer day
+    final scannedDateStr = widget.vitalValues[value.toInt()].scannedDate;
+
+    if (scannedDateStr != null && scannedDateStr.isNotEmpty) {
+      try {
+        final scannedDate = DateTime.parse(scannedDateStr);
+        final today = DateTime.now();
+        final yesterday = today.subtract(const Duration(days: 1));
+
+        bool isSameDay(DateTime a, DateTime b) =>
+            a.year == b.year && a.month == b.month && a.day == b.day;
+
+        if (isSameDay(scannedDate, today)) {
+          label = "Today";
+        } else if (isSameDay(scannedDate, yesterday)) {
+          label = "Yesterday";
+        } else {
+          label = scannedDate.day.toString().padLeft(2, '0');
+        }
+      } catch (e) {
+        // If parsing fails, just keep original label
+      }
+    }
+
     return Text(
-      xMapper.getLabel(value),
+      label,
       style: const TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
@@ -150,17 +177,44 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
         child: LineChart(
           LineChartData(
             lineTouchData: LineTouchData(
+              getTouchedSpotIndicator: (barData, indicators) {
+                return indicators.map((index) {
+                  return TouchedSpotIndicatorData(
+                    FlLine(color: AppColors.primary, strokeWidth: 2),
+                    FlDotData(
+                      show: true,
+                      getDotPainter: (spot, percent, barData, index) {
+                        final item = widget.vitalValues[spot.x.toInt()];
+                        final color =
+                            VitalColorHelper(
+                              vitalName: widget.vitalName,
+                              vitalStatus: item.value.toString(),
+                              isLowGood: stringToBool(
+                                item.isTypeVital.toString(),
+                              ),
+                            ).getColor();
+                        return FlDotCirclePainter(
+                          radius: 6,
+                          color: color,
+                          strokeWidth: 1,
+                          strokeColor: AppColors.btntext,
+                        );
+                      },
+                    ),
+                  );
+                }).toList();
+              },
               touchTooltipData: LineTouchTooltipData(
                 fitInsideVertically: true,
                 showOnTopOfTheChartBoxArea: true,
                 getTooltipItems: (touchedSpots) {
                   return touchedSpots.map((spot) {
-                    final item = widget.vitalValues[spot.spotIndex.toInt()];
+                    final item = widget.vitalValues[spot.x.toInt()];
                     debugPrint("Status ${item.value.toString()}");
                     var color =
                         VitalColorHelper(
                           vitalName: widget.vitalName,
-                          vitalStatus: item.status.toString(),
+                          vitalStatus: item.value.toString(),
                           isLowGood: stringToBool(item.isTypeVital.toString()),
                         ).getColor();
 
@@ -175,10 +229,11 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                       label.isNotEmpty
                           ? label.toFirstCaps()
                           : spot.y.toStringAsFixed(1),
-                      TextStyle(color: color, fontSize: 12),
+                      TextStyle(color: color, fontWeight: FontWeight.bold),
                     );
                   }).toList();
                 },
+                getTooltipColor: (touchedSpot) => Colors.transparent,
               ),
             ),
             minX: 0,
@@ -233,7 +288,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                     return FlDotCirclePainter(
                       radius: 4,
                       color: vitalGraphColor.getColor(),
-                      strokeWidth: 1,
+                      strokeWidth: 0,
                       strokeColor: AppColors.backArrowColor,
                     );
                   },
