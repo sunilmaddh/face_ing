@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/utils/network_utils.dart';
-import 'package:ntt_data/modules/views/onboard/onboard_controller.dart';
+import 'package:ntt_data/modules/views/onboard/controllers/onboard_controller.dart';
 
 class SplashScreen extends StatelessWidget {
   SplashScreen({super.key});

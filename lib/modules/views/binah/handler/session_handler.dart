@@ -1,7 +1,7 @@
 import 'package:biosensesignal_flutter_sdk/session/session_state.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/binah/handler/measurment_handler.dart';
+import 'package:ntt_data/modules/views/binah/handler/measurment_handler.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SessionStateHandler {

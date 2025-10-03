@@ -105,7 +105,7 @@ class GeustController extends GetxController
       );
       final guestController = Get.find<GeustController>();
       healthDetailsList.value = data.healthDetail!;
-      await GlobleHalper().storeTabData(data, guestController);
+      await GlobleHalper().storeTabData(data, guestController, "guest");
       AppNavigation.to(AppRoutes.guestHistoryDetails);
       debugPrint(data.toString());
     } else if (statusCode == 500) {

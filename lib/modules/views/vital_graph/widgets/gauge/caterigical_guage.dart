@@ -7,7 +7,7 @@ class CategoricalGauge extends StatelessWidget {
   final String vitalName;
   final String currentStatus; // e.g., "Medium"
 
-  CategoricalGauge({
+  const CategoricalGauge({
     super.key,
     required this.vitalName,
     required this.currentStatus,

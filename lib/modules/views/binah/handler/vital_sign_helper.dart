@@ -8,7 +8,7 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_rri.dar
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_sdnn.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
 
 class VitalSignHelper {
   final _measurementController = Get.find<MeasurementController>();
@@ -82,10 +82,6 @@ class VitalSignHelper {
     );
     if (vitalSign != null && vitalSign is VitalSignPrq) {
       VitalSignPrq prq = vitalSign;
-
-      debugPrint(
-        "Prq Confidence Level: ${prq.confidence?.level.toString() ?? "N/A"}",
-      );
       return prq.confidence?.level.toString() ?? "";
     }
     return "";
@@ -98,9 +94,6 @@ class VitalSignHelper {
     if (vitalSign != null && vitalSign is VitalSignRri) {
       VitalSignRri rri = vitalSign;
 
-      debugPrint(
-        "Prq Confidence Level: ${rri.confidence?.level.toString() ?? "N/A"}",
-      );
       return rri.confidence?.level.toString() ?? "";
     }
     return "";
@@ -110,15 +103,6 @@ class VitalSignHelper {
 class MeasurementHelper {
   final List<String> scanMessageList;
   MeasurementHelper({required this.scanMessageList});
-  // final List<String> messages = [
-  //   "Measurement has started. Please remain still during the process.",
-  //   "Calm your mind and focus on the screen.",
-  //   "Measure daily to better understand your health condition.",
-  //   "It is recommended to measure at the same time each day.",
-  //   "The messages displayed here can be customized.",
-  //   "Various types of messages can be shown.",
-  //   "Measurement is complete. Thank you for your cooperation."
-  // ];
 
   final List<RangeValues> ranges = [
     RangeValues(0, 15),

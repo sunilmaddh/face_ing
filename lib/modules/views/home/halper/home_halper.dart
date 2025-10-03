@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';

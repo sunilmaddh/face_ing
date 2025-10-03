@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/modules/views/auth/auth_controller.dart'
+import 'package:ntt_data/modules/views/auth/controllers/auth_controller.dart'
     show AuthController;
 import 'package:ntt_data/widgets/common_list_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';

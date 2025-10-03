@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
-import 'package:ntt_data/demo/vital_graph_widget.dart';
-import 'package:ntt_data/demo/vital_graph_widget_string.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_widget.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_widget_string.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/caterigical_guage.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/gauge/caterigical_guage.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/common_graph_card.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/custom_line_bar_chart_string.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/custom_line_chart_widget.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/vital_guage.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/line_chart/custom_line_bar_chart_string.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/line_chart/custom_line_chart_widget.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/gauge/vital_guage.dart';
 import 'package:ntt_data/widgets/bar/graph_tab_bar_widget.dart';
 
 // ignore: must_be_immutable
@@ -162,14 +162,7 @@ class VitalGraphFirstCard extends StatelessWidget {
                                 vertical: 10,
                               ),
                               child: CustomLineBarChart(
-                                leftTitles: [
-                                  "low",
-                                  "medium",
-                                  "normal",
-                                  "mild",
-                                  "high",
-                                  "very high",
-                                ],
+                                leftTitles: result[index].yValues!,
                                 bottomTitles: result[index].xValues!,
                                 vitalValues: healthList,
                                 vitalName: result[index].vitalName!,

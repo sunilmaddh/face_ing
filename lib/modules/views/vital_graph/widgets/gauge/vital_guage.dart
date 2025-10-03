@@ -3,6 +3,7 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_graph_status.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+// ignore: must_be_immutable
 class VitalGauge extends StatelessWidget {
   final String vitalName;
   final double value;

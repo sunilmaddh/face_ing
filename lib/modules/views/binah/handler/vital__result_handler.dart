@@ -3,7 +3,7 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart'
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:ntt_data/binah/handler/vital_navigation_service.dart';
+import 'package:ntt_data/modules/views/binah/handler/vital_navigation_service.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';

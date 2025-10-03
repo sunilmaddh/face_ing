@@ -8,6 +8,7 @@ import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/indo_sakura_common_card.dart';
 
 // ignore: must_be_immutable
@@ -20,7 +21,7 @@ class GuestHistoryDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     tabWidget = [
-      _buildWidget(_controller.healthDetailsList),
+      // _buildWidget(_controller.healthDetailsList),
       _buildWidget(_controller.basicVitalSigns),
       _buildWidget(_controller.bloodlessBloodTests),
       _buildWidget(_controller.risks),
@@ -29,6 +30,7 @@ class GuestHistoryDetails extends StatelessWidget {
       _buildWidget(_controller.advancedHeartRateVariability),
     ];
     return Scaffold(
+      bottomSheet: CustomBottomSheet(title: 'fffg', content: Text("hello")),
       appBar: CustomAppBar(
         onTop: () {
           AppNavigation.back();
@@ -44,7 +46,7 @@ class GuestHistoryDetails extends StatelessWidget {
         ),
         child: CustomTabBarView(
           isNotRadius: false,
-          tabWidgets: AppMethods.tabWidgets,
+          tabWidgets: AppMethods.tabGuestWidget,
           tabBarWidgets: tabWidget,
         ),
       ),
@@ -52,41 +54,78 @@ class GuestHistoryDetails extends StatelessWidget {
   }
 
   _buildWidget(List<HealthDetailList> healthDetailsList) {
-    return Obx(
-      () => ListView.builder(
-        shrinkWrap: true,
-        // padding: EdgeInsets.all(10),
-        itemCount: healthDetailsList.length,
-        itemBuilder: (context, index) {
-          var result = healthDetailsList[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: IndoSakuraCommonCard(
-              confidenceLevel: result.vitalConfidence.toString(),
-              isSdkType: true,
-              isLowGood: stringToBool(result.isTypeVital!),
-              vitalName: result.vitalName!,
-              vitalCondition: result.vitalRange!,
-              vitalDescription: result.vitalDescription!,
-              vitalStatus: result.vitalStatus!,
-              vitalValue: result.vitalValue!,
-              vitalHeading: result.vitalHeading!,
-              vitalMass: result.vitalUnit!,
-              vitalSubList: result.vitalSubList!,
-              onInfoTop: () {
-                AppNavigation.to(
-                  AppRoutes.vitalDescriptions,
-                  arguments: {"vitalKey": result.vitalKey},
-                );
-              },
-            ),
-          );
-        },
-      ),
-    );
+    return healthDetailsList.isEmpty
+        ? Center(
+          child: CommonText.text("You can view all result after registering."),
+        )
+        : Obx(
+          () => ListView.builder(
+            shrinkWrap: true,
+            // padding: EdgeInsets.all(10),
+            itemCount: healthDetailsList.length,
+            itemBuilder: (context, index) {
+              var result = healthDetailsList[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: IndoSakuraCommonCard(
+                  confidenceLevel: result.vitalConfidence.toString(),
+                  isSdkType: true,
+                  isLowGood: stringToBool(result.isTypeVital!),
+                  vitalName: result.vitalName!,
+                  vitalCondition: result.vitalRange!,
+                  vitalDescription: result.vitalDescription!,
+                  vitalStatus: result.vitalStatus!,
+                  vitalValue: result.vitalValue!,
+                  vitalHeading: result.vitalHeading!,
+                  vitalMass: result.vitalUnit!,
+                  vitalSubList: result.vitalSubList!,
+                  onInfoTop: () {
+                    AppNavigation.to(
+                      AppRoutes.vitalDescriptions,
+                      arguments: {"vitalKey": result.vitalKey},
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        );
   }
 
   bool stringToBool(String value) {
     return value.toLowerCase() == 'true';
+  }
+}
+
+class CustomBottomSheet extends StatelessWidget {
+  final String title;
+  final Widget content;
+
+  const CustomBottomSheet({
+    Key? key,
+    required this.title,
+    required this.content,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          content,
+        ],
+      ),
+    );
   }
 }

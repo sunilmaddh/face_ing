@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/binah/handler/error_handler.dart';
-import 'package:ntt_data/binah/handler/session_manager.dart';
+import 'package:ntt_data/modules/views/binah/handler/error_handler.dart';
+import 'package:ntt_data/modules/views/binah/handler/session_manager.dart';
 
 class MeasurementManager {
   final RxBool isStarted = false.obs;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/binah/measurement_controller.dart';
+import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
 
 final _measurementController = Get.find<MeasurementController>();
 

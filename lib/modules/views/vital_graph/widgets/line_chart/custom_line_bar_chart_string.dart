@@ -70,19 +70,18 @@ class CustomLineBarChart extends StatefulWidget {
 
 class _CustomLineBarChartState extends State<CustomLineBarChart> {
   List<FlSpot> _generateSpots() {
-    final yMapper = StringToNumericMapper(values: widget.leftTitles);
-    return List.generate(widget.vitalValues.length, (index) {
-      final x = index.toDouble();
-      final yValue = widget.vitalValues[index].value ?? "";
-      String strValue =
-          (index < widget.vitalValues.length)
-              ? widget.vitalValues[index].value?.toLowerCase() ?? ""
-              : "";
-
-      double value = stringToIndex[strValue]?.toDouble() ?? 0;
-      final y = yMapper.getValue(yValue);
-      return FlSpot(x, value);
-    });
+    List<FlSpot> spots = [];
+    for (int i = 0; i < widget.vitalValues.length; i++) {
+      final val = widget.vitalValues[i].value;
+      if (val != null && val.isNotEmpty) {
+        // Convert string value to numeric index
+        final y = stringToIndex[val.toLowerCase()]?.toDouble();
+        if (y != null) {
+          spots.add(FlSpot(i.toDouble(), y)); // index-based X
+        }
+      }
+    }
+    return spots;
   }
 
   /// Build X-axis titles
@@ -156,13 +155,15 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                 showOnTopOfTheChartBoxArea: true,
                 getTooltipItems: (touchedSpots) {
                   return touchedSpots.map((spot) {
-                    final item = widget.vitalValues[spot.spotIndex];
-                    var vitalGraphColor = VitalColorHelper(
-                      vitalName: widget.vitalName,
-                      vitalStatus: item.status.toString(),
-                      isLowGood: stringToBool(item.isTypeVital.toString()),
-                    );
-                    // Reverse lookup string label for tooltip
+                    final item = widget.vitalValues[spot.spotIndex.toInt()];
+                    debugPrint("Status ${item.value.toString()}");
+                    var color =
+                        VitalColorHelper(
+                          vitalName: widget.vitalName,
+                          vitalStatus: item.status.toString(),
+                          isLowGood: stringToBool(item.isTypeVital.toString()),
+                        ).getColor();
+
                     String label =
                         stringToIndex.entries
                             .firstWhere(
@@ -174,10 +175,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                       label.isNotEmpty
                           ? label.toFirstCaps()
                           : spot.y.toStringAsFixed(1),
-                      TextStyle(
-                        color: vitalGraphColor.getColor(),
-                        fontSize: 12,
-                      ),
+                      TextStyle(color: color, fontSize: 12),
                     );
                   }).toList();
                 },
@@ -226,15 +224,12 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                 dotData: FlDotData(
                   show: true,
                   getDotPainter: (spot, percent, barData, index) {
-                    final item = widget.vitalValues[index];
-
-                    // Call your helper
+                    final item = widget.vitalValues[spot.x.toInt()];
                     var vitalGraphColor = VitalColorHelper(
                       vitalName: widget.vitalName,
                       vitalStatus: item.value.toString(),
                       isLowGood: stringToBool(item.isTypeVital.toString()),
                     );
-
                     return FlDotCirclePainter(
                       radius: 4,
                       color: vitalGraphColor.getColor(),

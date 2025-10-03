@@ -6,10 +6,10 @@ import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.da
 import 'package:focus_detector/focus_detector.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:ntt_data/binah/camera_preview.dart';
-import 'package:ntt_data/binah/measurement_controller.dart';
-import 'package:ntt_data/binah/start_stop_button.dart';
-import 'package:ntt_data/binah/vital_sign_helper.dart';
+import 'package:ntt_data/modules/views/binah/camera_preview.dart';
+import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
+import 'package:ntt_data/modules/views/binah/widgets/start_stop_button.dart';
+import 'package:ntt_data/modules/views/binah/handler/vital_sign_helper.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';

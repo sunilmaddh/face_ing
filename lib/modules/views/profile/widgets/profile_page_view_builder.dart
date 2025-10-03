@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ntt_data/modules/views/auth/auth_controller.dart';
+import 'package:ntt_data/modules/views/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/views/profile/widgets/profile_page_data.dart';
 import 'package:ntt_data/widgets/button/rounded_button.dart';
 import 'package:ntt_data/widgets/face_progress_indicator.dart';

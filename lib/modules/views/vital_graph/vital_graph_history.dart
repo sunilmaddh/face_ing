@@ -15,7 +15,7 @@ import 'package:ntt_data/widgets/fields/common_text.dart';
 
 // ignore: must_be_immutable
 class VitalGraphHistory extends StatefulWidget {
-  VitalGraphHistory({super.key});
+  const VitalGraphHistory({super.key});
 
   @override
   State<VitalGraphHistory> createState() => _VitalGraphHistoryState();
@@ -29,7 +29,6 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
   List<String> filterType = ["Today", "Weekly", "Monthly"];
   @override
   void initState() {
-    // TODO: implement initState
     callFunction();
     super.initState();
   }

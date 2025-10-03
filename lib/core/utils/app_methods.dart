@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/demo/bar_chart_sample_4.dart';
-import 'package:ntt_data/demo/vital_graph_widget.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:intl/intl.dart';
-import 'package:ntt_data/test_main.dart';
 import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 
 class AppMethods {
@@ -138,7 +135,6 @@ class AppMethods {
     }
 
     try {
-      // Parse with strict format
       final parseDate = DateFormat("dd/MM/yyyy").parseStrict(dob.trim());
       parseDate.year;
       final now = DateTime.now();
@@ -309,16 +305,14 @@ class AppMethods {
     return saveMode;
   }
 
-  // List<Widget> tabWidgets = [
-  //   Tab(text: "All"),
-  //   Tab(text: "Basic Vital Signs"),
-  //   Tab(text: "Bloodless Blood Tests"),
-  //   Tab(text: "Risks"),
-  //   Tab(text: "Stress"),
-  //   Tab(text: "Heart Rate Variability"),
-  //   Tab(text: "Advanced Heart Rate Variability"),
-  // ];
-
+  static const List<String> tabGuestTitles = [
+    "Basic Vital Signs",
+    "Bloodless Blood Tests",
+    "Risks",
+    "Stress",
+    "Heart Rate Variability",
+    "Advanced Heart Rate Variability",
+  ];
   static const List<String> tabTitles = [
     "All",
     "Basic Vital Signs",
@@ -330,4 +324,6 @@ class AppMethods {
   ];
   static final List<Widget> tabWidgets =
       tabTitles.map((title) => Tab(text: title)).toList();
+  static final List<Widget> tabGuestWidget =
+      tabGuestTitles.map((title) => Tab(text: title)).toList();
 }

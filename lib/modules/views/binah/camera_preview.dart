@@ -4,9 +4,9 @@ import 'package:biosensesignal_flutter_sdk/ui/camera_preview_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/binah/face_detection_view.dart';
-import 'package:ntt_data/binah/measurement_controller.dart';
-import 'package:ntt_data/binah/widget_size.dart';
+import 'package:ntt_data/modules/views/binah/widgets/face_detection_view.dart';
+import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
+import 'package:ntt_data/modules/views/binah/widgets/widget_size.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 

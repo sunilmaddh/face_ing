@@ -15,7 +15,7 @@ import 'package:ntt_data/data/models/medical_question_model.dart';
 import 'package:ntt_data/data/models/update_details_response_model.dart';
 import 'package:ntt_data/data/models/user_history_list_model.dart';
 import 'package:ntt_data/data/models/vital_descriptions_model.dart';
-import 'package:ntt_data/modules/views/auth/auth_controller.dart';
+import 'package:ntt_data/modules/views/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/views/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -120,7 +120,7 @@ class ProfileController extends GetxController
       );
 
       binahHIstoryDetails.value = result.healthDetail!;
-      await GlobleHalper().storeTabData(result, profileController);
+      await GlobleHalper().storeTabData(result, profileController, "");
       AppNavigation.to(AppRoutes.userHealthDatails);
     } else {
       binahHIstoryDetails.clear();

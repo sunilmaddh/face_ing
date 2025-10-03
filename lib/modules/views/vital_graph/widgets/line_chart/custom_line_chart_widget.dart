@@ -26,30 +26,40 @@ class CustomLineChartWidget extends StatefulWidget {
 class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
   int? touchedIndex;
 
-  List<FlSpot> get spots => List.generate(widget.vitalValues.length, (i) {
-    final y = double.tryParse(widget.vitalValues[i].value ?? "0.0") ?? 0.0;
-    return FlSpot(i.toDouble(), y);
-  });
+  /// Generate FlSpots for only scanned days
+  List<FlSpot> getSpots() {
+    List<FlSpot> spots = [];
+    for (int i = 0; i < widget.vitalValues.length; i++) {
+      final val = widget.vitalValues[i].value;
+      if (val != null && val.isNotEmpty) {
+        final y = double.tryParse(val);
+        if (y != null) {
+          spots.add(FlSpot(i.toDouble(), y)); // index-based X
+        }
+      }
+    }
+    return spots;
+  }
 
   bool stringToBool(String value) => value.toLowerCase() == 'true';
 
   double getMinY(List<FlSpot> spots) {
     if (spots.isEmpty) return 0;
     double minY = spots.map((s) => s.y).reduce((a, b) => a < b ? a : b);
-    if (minY > 0) minY = 0; // keep 0 if all values are positive
-    return minY;
+    return minY > 0 ? 0 : minY;
   }
 
   double getMaxY(List<FlSpot> spots) {
     if (spots.isEmpty) return 1;
-    double maxY = spots.map((s) => s.y).reduce((a, b) => a > b ? a : b);
-    return maxY;
+    return spots.map((s) => s.y).reduce((a, b) => a > b ? a : b);
   }
 
   Widget _buildBottomTitle(double value, TitleMeta meta) {
+    debugPrint("bottomtile ${widget.bottomTitles} ${value.toInt()}");
     int index = value.toInt();
-    if (index < 0 || index >= widget.bottomTitles.length)
+    if (index < 0 || index >= widget.bottomTitles.length) {
       return const SizedBox.shrink();
+    }
     return Text(
       widget.bottomTitles[index],
       style: const TextStyle(fontSize: 12, color: AppColors.searchColor),
@@ -58,8 +68,9 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
 
   Widget _buildLeftTitle(double value, TitleMeta meta) {
     int index = value.toInt();
-    if (index < 0 || index >= widget.leftTitles.length)
+    if (index < 0 || index >= widget.leftTitles.length) {
       return const SizedBox.shrink();
+    }
     return Text(
       widget.leftTitles[index],
       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -68,9 +79,9 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final chartSpots = spots;
+    final spots = getSpots();
 
-    if (chartSpots.isEmpty) {
+    if (spots.isEmpty) {
       return SizedBox(
         width: double.infinity,
         height: AppDimensions.height(150),
@@ -78,10 +89,8 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
       );
     }
 
-    double minY = getMinY(chartSpots);
-    double maxY = getMaxY(chartSpots);
-
-    // Prevent zero range
+    double minY = getMinY(spots);
+    double maxY = getMaxY(spots);
     if (minY == maxY) maxY = minY + 1;
 
     return SizedBox(
@@ -93,6 +102,7 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
           LineChartData(
             minY: minY,
             maxY: maxY,
+            minX: 0,
             maxX: (widget.bottomTitles.length - 1).toDouble(),
             gridData: FlGridData(show: false),
             borderData: FlBorderData(show: false),
@@ -120,6 +130,31 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
             ),
             lineBarsData: [
               LineChartBarData(
+                spots: spots,
+                isCurved: true,
+                color: AppColors.primary,
+                barWidth: 2,
+                dotData: FlDotData(
+                  show: true,
+                  getDotPainter: (spot, percent, barData, index) {
+                    final item = widget.vitalValues[spot.x.toInt()];
+                    final color =
+                        VitalColorHelper(
+                          vitalName: widget.vitalName,
+                          vitalStatus: item.status.toString(),
+                          isLowGood: stringToBool(item.isTypeVital.toString()),
+                        ).getColor();
+
+                    if (touchedIndex == spot.x.toInt()) {
+                      return FlDotCirclePainter(
+                        radius: 0,
+                        color: color,
+                        strokeWidth: 0,
+                      );
+                    }
+                    return _ValueDotPainter(spot, textColor: color);
+                  },
+                ),
                 belowBarData: BarAreaData(
                   show: true,
                   gradient: LinearGradient(
@@ -130,33 +165,6 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                       const Color(0xffDDF2F4).withOpacity(0.2),
                     ],
                   ),
-                ),
-                spots: chartSpots,
-                isCurved: true,
-                color: AppColors.primary,
-                barWidth: 2,
-                dotData: FlDotData(
-                  show: true,
-                  getDotPainter: (spot, percent, barData, index) {
-                    final item = widget.vitalValues[index];
-                    final color =
-                        VitalColorHelper(
-                          vitalName: widget.vitalName,
-                          vitalStatus: item.status.toString(),
-                          isLowGood: stringToBool(item.isTypeVital.toString()),
-                        ).getColor();
-
-                    // Hide permanent value if this spot is being touched
-                    if (touchedIndex == index) {
-                      return FlDotCirclePainter(
-                        radius: 0,
-                        color: color,
-                        strokeWidth: 0,
-                      );
-                    }
-
-                    return _ValueDotPainter(spot, textColor: color);
-                  },
                 ),
               ),
             ],
@@ -176,11 +184,11 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
               getTouchedSpotIndicator: (barData, indicators) {
                 return indicators.map((index) {
                   return TouchedSpotIndicatorData(
-                    FlLine(color: AppColors.primary, strokeWidth: 2.0),
+                    FlLine(color: AppColors.primary, strokeWidth: 2),
                     FlDotData(
                       show: true,
                       getDotPainter: (spot, percent, barData, index) {
-                        final item = widget.vitalValues[index];
+                        final item = widget.vitalValues[spot.x.toInt()];
                         final color =
                             VitalColorHelper(
                               vitalName: widget.vitalName,
@@ -189,9 +197,6 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                                 item.isTypeVital.toString(),
                               ),
                             ).getColor();
-
-                        // Hide permanent value if this spot is being touched
-
                         return FlDotCirclePainter(
                           radius: 6,
                           color: color,
@@ -231,20 +236,27 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
 }
 
 /// Permanent value painter
+// Permanent dot + value painter
 class _ValueDotPainter extends FlDotPainter {
   final FlSpot spot;
   final Color textColor;
+  final double radius;
   final EdgeInsets padding;
 
   _ValueDotPainter(
     this.spot, {
     required this.textColor,
+    this.radius = 4,
     this.padding = const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
   });
 
   @override
   void draw(Canvas canvas, FlSpot spot, Offset offsetInCanvas) {
-    // Prepare text
+    // Draw circle
+    final paint = Paint()..color = textColor;
+    canvas.drawCircle(offsetInCanvas, radius, paint);
+
+    // Draw value above dot
     final textPainter = TextPainter(
       text: TextSpan(
         text: formatDouble(spot.y).toString(),
@@ -258,55 +270,26 @@ class _ValueDotPainter extends FlDotPainter {
       textDirection: TextDirection.ltr,
     )..layout();
 
-    // Calculate background rect with padding
-    final rect = Rect.fromLTWH(
-      offsetInCanvas.dx - textPainter.width / 2 - padding.left - 2,
-      offsetInCanvas.dy -
-          textPainter.height -
-          padding.top -
-          10, // 4 for spacing above the dot
-      textPainter.width + padding.horizontal,
-      textPainter.height + padding.vertical,
+    final textOffset = Offset(
+      offsetInCanvas.dx - textPainter.width / 2,
+      offsetInCanvas.dy - textPainter.height - 4,
     );
 
-    // Draw rounded background
-    final paint =
-        Paint()..color = Colors.transparent; // optional background color
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(rect, const Radius.circular(4)),
-      paint,
-    );
-
-    // Draw text
-    textPainter.paint(
-      canvas,
-      Offset(rect.left + padding.left, rect.top + padding.top),
-    );
+    textPainter.paint(canvas, textOffset);
   }
 
   @override
   Size getSize(FlSpot spot) => const Size(0, 0);
-
   @override
-  // TODO: implement mainColor
   Color get mainColor => throw UnimplementedError();
-
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
-
   @override
-  FlDotPainter lerp(FlDotPainter a, FlDotPainter b, double t) {
-    // TODO: implement lerp
-    throw UnimplementedError();
-  }
+  FlDotPainter lerp(FlDotPainter a, FlDotPainter b, double t) =>
+      throw UnimplementedError();
 }
 
 dynamic formatDouble(double value) {
-  // If the value has no fractional part, return as int
-  if (value % 1 == 0) {
-    return value.toInt();
-  }
-  // Otherwise, return as double
+  if (value % 1 == 0) return value.toInt();
   return value;
 }
