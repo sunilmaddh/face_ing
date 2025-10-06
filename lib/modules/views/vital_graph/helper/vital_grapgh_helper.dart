@@ -17,6 +17,14 @@ class VitalGraphHelper {
     "Heart Rate Variability",
     "Advanced Heart Rate Variability",
   ];
+  static const List<String> tabGuestGraphTitles = [
+    "Basic Vital Signs",
+    "Bloodless Blood Tests",
+    "Risks",
+    "Stress",
+    "Heart Rate Variability",
+    "Advanced Heart Rate Variability",
+  ];
 
   static const List<String> tabWellnessTitles = ["Wellness"];
 

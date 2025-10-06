@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/dialog/bottomsheet_helper.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_widget.dart';
@@ -15,36 +16,84 @@ import 'package:ntt_data/modules/views/vital_graph/widgets/gauge/vital_guage.dar
 import 'package:ntt_data/widgets/bar/graph_tab_bar_widget.dart';
 
 // ignore: must_be_immutable
-class VitalGraphFirstCard extends StatelessWidget {
-  VitalGraphFirstCard({super.key});
+class VitalGraphFirstCard extends StatefulWidget {
+  const VitalGraphFirstCard({super.key, required this.gusetId});
+
+  final String gusetId;
+
+  @override
+  State<VitalGraphFirstCard> createState() => _VitalGraphFirstCardState();
+}
+
+class _VitalGraphFirstCardState extends State<VitalGraphFirstCard>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   List<Widget> tabWidget = [];
+
   var vitalHelper = VitalGraphHelper();
+
   final _vitalController = Get.find<VitalGraphController>();
+
+  @override
+  void initState() {
+    _tabController = TabController(
+      length: VitalGraphHelper.tabGraphWidgets.length,
+      vsync: this,
+    );
+    super.initState();
+  }
+
   // late var value;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: AppDimensions.height(610),
       child: GraphTabBarWidget(
+        tabController: _tabController,
         isNotRadius: false,
         tabWidgets: VitalGraphHelper.tabGraphWidgets,
         tabBarWidgets: [
-          _buildVitalGridSection(_vitalController.wellnessGraphResponse),
-          _buildVitalGridSection(_vitalController.vitalSignesponse),
-          _buildVitalGridSection(_vitalController.bloodlessResponse),
-          _buildVitalGridSection(_vitalController.risksResponse),
-          _buildVitalGridSection(_vitalController.stressResponse),
-          _buildVitalGridSection(_vitalController.hrvResponse),
-          _buildVitalGridSection(_vitalController.ahrvResponse),
+          BuildVitalGridSectionWidget(
+            vitalResponse: _vitalController.wellnessGraphResponse,
+          ),
+          BuildVitalGridSectionWidget(
+            vitalResponse: _vitalController.vitalSignesponse,
+          ),
+          BuildVitalGridSectionWidget(
+            vitalResponse: _vitalController.bloodlessResponse,
+          ),
+          BuildVitalGridSectionWidget(
+            vitalResponse: _vitalController.risksResponse,
+          ),
+          BuildVitalGridSectionWidget(
+            vitalResponse: _vitalController.stressResponse,
+          ),
+          BuildVitalGridSectionWidget(
+            vitalResponse: _vitalController.hrvResponse,
+          ),
+          BuildVitalGridSectionWidget(
+            vitalResponse: _vitalController.ahrvResponse,
+          ),
         ],
+        onTabChanged: (index) {
+          if (widget.gusetId.isNotEmpty) {
+            if (index > 0) {
+              BottomsheetHelper.showBottomSheetAlert(context, _tabController);
+            }
+          }
+        },
       ),
     );
   }
+}
 
-  // _buildVitalSection(_vitalController.ahrvResponse),
-  Widget _buildVitalGridSection(
-    Rx<AdvancedHeartRateVariability> vitalResponse,
-  ) {
+class BuildVitalGridSectionWidget extends StatelessWidget {
+  BuildVitalGridSectionWidget({super.key, required this.vitalResponse});
+  final Rx<AdvancedHeartRateVariability> vitalResponse;
+
+  final _vitalController = Get.find<VitalGraphController>();
+  @override
+  Widget build(BuildContext context) {
     var result = vitalResponse.value.vitalTypeDetails!;
     return Padding(
       padding: AppDimensions.all(8.0),

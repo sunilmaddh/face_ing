@@ -1,6 +1,8 @@
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/core/utils/dialog/bottomsheet_helper.dart';
 import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/modules/views/binah/handler/vital_sign_helper.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
@@ -26,14 +28,18 @@ class AnalyzingHealthData extends StatefulWidget {
   State<AnalyzingHealthData> createState() => _AnalyzingHealthDataState();
 }
 
-class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
+class _AnalyzingHealthDataState extends State<AnalyzingHealthData>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   @override
   void initState() {
     barWidgets = [
-      SingleChildScrollView(
-        padding: const EdgeInsets.all(8),
-        child: Column(children: withSpacing(allCardsWithSpacing())),
-      ),
+      if (_measurementController.scanType.value != "add-guest" &&
+          _measurementController.scanType.value != "re-scan")
+        SingleChildScrollView(
+          padding: const EdgeInsets.all(8),
+          child: Column(children: withSpacing(allCardsWithSpacing())),
+        ),
       SingleChildScrollView(
         padding: const EdgeInsets.all(8),
         child: Column(children: withSpacing(basicVitalSigns())),
@@ -59,6 +65,11 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         child: Column(children: withSpacing(advancedHeartRateVariability())),
       ),
     ];
+    _tabController = TabController(
+      length: AppMethods.tabGuestWidget.length,
+      vsync: this,
+    );
+
     super.initState();
   }
 
@@ -934,25 +945,17 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
     ];
   }
 
-  List<Widget> tabWidgets = [
-    Tab(text: "All"),
-    Tab(text: "Basic Vital Signs"),
-    Tab(text: "Bloodless Blood Tests"),
-    Tab(text: "Risks"),
-    Tab(text: "Stress"),
-    Tab(text: "Heart Rate Variability"),
-    Tab(text: "Advanced Heart Rate Variability"),
-  ];
-
   List<Widget> barWidgets = [];
 
   @override
   Widget build(BuildContext context) {
     barWidgets = [
-      SingleChildScrollView(
-        padding: const EdgeInsets.all(8),
-        child: Column(children: withSpacing(allCardsWithSpacing())),
-      ),
+      if (_measurementController.scanType.value != "add-guest" &&
+          _measurementController.scanType.value != "re-scan")
+        SingleChildScrollView(
+          padding: const EdgeInsets.all(8),
+          child: Column(children: withSpacing(allCardsWithSpacing())),
+        ),
       SingleChildScrollView(
         padding: const EdgeInsets.all(8),
         child: Column(children: withSpacing(basicVitalSignsWithSpacing())),
@@ -997,8 +1000,21 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData> {
         ),
         child: CustomTabBarView(
           isNotRadius: false,
-          tabWidgets: tabWidgets,
+          tabWidgets:
+              (_measurementController.scanType.value != "add-guest" &&
+                      _measurementController.scanType.value != "re-scan")
+                  ? AppMethods.tabWidgets
+                  : AppMethods.tabGuestWidget,
           tabBarWidgets: barWidgets,
+          tabController: _tabController,
+          onTabChanged: (index) {
+            if (_measurementController.scanType.value == "add-guest" ||
+                _measurementController.scanType.value == "re-scan") {
+              if (index > 0) {
+                BottomsheetHelper.showBottomSheetAlert(context, _tabController);
+              }
+            }
+          },
         ),
       ),
     );

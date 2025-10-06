@@ -11,8 +11,10 @@ class CustomBottomSheet {
     required String title,
     required Widget content,
     bool isDismissible = true,
+    bool isEnableDra = true,
   }) {
     Get.bottomSheet(
+      enableDrag: isEnableDra,
       Container(
         width: Get.width,
         decoration: BoxDecoration(
@@ -24,10 +26,12 @@ class CustomBottomSheet {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Title
-            Text(
-              title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            title.isNotEmpty
+                ? Text(
+                  title,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                )
+                : SizedBox.shrink(),
             SizedBox(height: 10),
 
             // Custom Content
@@ -38,6 +42,7 @@ class CustomBottomSheet {
         ),
       ),
       isDismissible: isDismissible,
+
       backgroundColor: Colors.transparent,
     );
   }

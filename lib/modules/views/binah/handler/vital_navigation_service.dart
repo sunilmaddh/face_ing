@@ -17,6 +17,7 @@ class VitalNavigationService {
         isFullStory ? AppRoutes.analyzingHealthData : AppRoutes.allReportScreen;
     AppNavigation.off(
       route,
+      arguments: ["scanType"],
       action: () {
         action?.call();
       },

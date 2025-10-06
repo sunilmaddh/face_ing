@@ -2,23 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
-class GraphTabBarWidget extends StatelessWidget {
+class GraphTabBarWidget extends StatefulWidget {
   GraphTabBarWidget({
     super.key,
     required this.tabWidgets,
     required this.tabBarWidgets,
     required this.isNotRadius,
+    this.tabController,
+    this.onTabChanged,
   });
   final List<Widget> tabWidgets;
   final List<Widget> tabBarWidgets;
   bool isNotRadius = false;
+  final TabController? tabController;
+  final ValueChanged<int>? onTabChanged;
+
+  @override
+  State<GraphTabBarWidget> createState() => _GraphTabBarWidgetState();
+}
+
+class _GraphTabBarWidgetState extends State<GraphTabBarWidget>
+    with SingleTickerProviderStateMixin {
+  TabController? _internalController;
+
+  TabController get _controller => widget.tabController ?? _internalController!;
+
+  @override
+  void initState() {
+    if (widget.tabController == null) {
+      _internalController = TabController(
+        length: widget.tabWidgets.length,
+        vsync: this,
+      );
+    }
+
+    _controller.addListener(() {
+      if (!_controller.indexIsChanging) {
+        widget.onTabChanged?.call(_controller.index);
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 0, right: 0, top: 0),
       child: DefaultTabController(
-        length: tabWidgets.length, // Number of tabs
+        length: widget.tabWidgets.length, // Number of tabs
         child: Container(
           color: AppColors.btntext,
           child: Column(
@@ -27,10 +58,8 @@ class GraphTabBarWidget extends StatelessWidget {
             children: [
               Container(
                 margin: AppDimensions.symmetric(horizontal: 15),
-                // padding: EdgeInsets.only(top: 5, bottom: 0, left: 10, right: 10),
-                // alignment: Alignment.centerLeft,
                 decoration:
-                    isNotRadius
+                    widget.isNotRadius
                         ? BoxDecoration()
                         : BoxDecoration(
                           color: AppColors.btntext,
@@ -41,12 +70,13 @@ class GraphTabBarWidget extends StatelessWidget {
                           ),
                         ),
                 child: TabBar(
+                  controller: _controller,
                   tabAlignment: TabAlignment.start, // add this line
                   padding: EdgeInsets.zero,
                   isScrollable: true,
                   labelStyle: TextStyle(
                     fontSize:
-                        isNotRadius
+                        widget.isNotRadius
                             ? AppDimensions.font(12)
                             : AppDimensions.font(16),
                     fontWeight: FontWeight.w400,
@@ -55,7 +85,9 @@ class GraphTabBarWidget extends StatelessWidget {
                   labelPadding: EdgeInsets.zero, // Removes internal gap
                   dividerColor: Colors.transparent,
                   labelColor:
-                      isNotRadius ? AppColors.primary : AppColors.blackColor,
+                      widget.isNotRadius
+                          ? AppColors.primary
+                          : AppColors.blackColor,
                   unselectedLabelColor: Colors.grey,
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicatorPadding: AppDimensions.symmetric(
@@ -63,7 +95,7 @@ class GraphTabBarWidget extends StatelessWidget {
                     horizontal: 4,
                   ),
                   indicator:
-                      isNotRadius == false
+                      widget.isNotRadius == false
                           ? BoxDecoration(
                             color: AppColors.historyCardColor,
                             borderRadius: BorderRadius.circular(30),
@@ -81,7 +113,7 @@ class GraphTabBarWidget extends StatelessWidget {
                             ),
                           ),
                   tabs:
-                      tabWidgets.map((tab) {
+                      widget.tabWidgets.map((tab) {
                         return Tab(
                           child: Container(
                             margin: EdgeInsets.symmetric(
@@ -89,7 +121,9 @@ class GraphTabBarWidget extends StatelessWidget {
                             ), // Your custom spacing
                             padding: EdgeInsets.symmetric(
                               horizontal:
-                                  isNotRadius ? 0 : AppDimensions.width(10),
+                                  widget.isNotRadius
+                                      ? 0
+                                      : AppDimensions.width(10),
                               // vertical: AppDimensions.height(8),
                             ),
                             decoration: BoxDecoration(
@@ -102,7 +136,7 @@ class GraphTabBarWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(height: AppDimensions.height(10)),
-              isNotRadius == false
+              widget.isNotRadius == false
                   ? Divider(
                     height: 2,
                     thickness: 4,
@@ -112,8 +146,9 @@ class GraphTabBarWidget extends StatelessWidget {
 
               Expanded(
                 child: TabBarView(
+                  controller: _controller,
                   physics: NeverScrollableScrollPhysics(),
-                  children: tabBarWidgets,
+                  children: widget.tabBarWidgets,
                 ),
               ),
             ],

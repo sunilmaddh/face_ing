@@ -57,5 +57,6 @@ class AppAssets {
       noMeasurement = "$baseUrlPng/no-measure.png",
       noMeasurementTaken = "$baseUrlSvg/no-measure.svg",
       barImage = "$baseUrlPng/bar-image.png",
-      highImage = "$baseUrlSvg/high_im.svg";
+      highImage = "$baseUrlSvg/high_im.svg",
+      allReport = "$baseUrlLottie/all_report.json";
 }

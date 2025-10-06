@@ -183,7 +183,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                             .value
                             .wellness !=
                         null) {
-                      return VitalGraphFirstCard();
+                      return VitalGraphFirstCard(gusetId: gusetId);
                     } else {
                       return Expanded(
                         child: Center(
