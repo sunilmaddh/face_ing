@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
@@ -123,7 +123,6 @@ class CommonDialog {
       onSubmit: (index) {
         String formattedDate = DateFormat('yyyy/MM/dd').format(index);
         dateController.text = formattedDate;
-        print(index);
       },
       onDismiss: (p0) {
         // print(p0);
@@ -149,7 +148,6 @@ class CommonDialog {
     if (pickedDate != null) {
       String formattedDate = DateFormat('yyyy/MM/dd').format(pickedDate);
       dateController.text = formattedDate;
-      print("Selected Date: $formattedDate");
     }
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks, overridden_fields
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,6 +26,7 @@ class AuthController extends GetxController
 
   RxList<MedicalQuestionListModel> medicalQuestionListModel =
       <MedicalQuestionListModel>[].obs;
+  @override
   RxString otp = "".obs;
   RxString userUpdateName = ''.obs;
   final emailController = TextEditingController();
@@ -332,7 +335,7 @@ class AuthController extends GetxController
         userName.value =
             userCreateModel.value.commonUserDetailsDao!.userName.toString();
 
-        var result = await userCreateModel.value.commonUserDetailsDao!;
+        var result = userCreateModel.value.commonUserDetailsDao!;
 
         await AppMethods.storeUserData(
           name: result.userName!,
@@ -393,7 +396,6 @@ class AuthController extends GetxController
         // Update existing entry
         dataList[index]["answer"] = selectedAnswers;
         dataList[index]["id"] = id; // Optionally update id too
-        print("Updated existing entry: ${dataList[index]}");
       } else {
         // Add new entry
         dataList.add({
@@ -401,7 +403,6 @@ class AuthController extends GetxController
           "question": question,
           "answer": selectedAnswers,
         });
-        print("Added new entry: ${dataList.last}");
       }
     }
   }

@@ -11,6 +11,7 @@ import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/circular_image_with_shimmer.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
+// ignore: must_be_immutable
 class GeustUserHistoryCard extends StatelessWidget {
   GeustUserHistoryCard({
     super.key,

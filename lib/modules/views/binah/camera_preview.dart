@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
 import 'package:biosensesignal_flutter_sdk/ui/camera_preview_view.dart';
 import 'package:flutter/material.dart';
@@ -102,6 +101,7 @@ class FaceDetectionOverlay extends StatelessWidget {
             rect: mappedRoi,
             child: SvgPicture.asset(
               AppAssets.faceDetact,
+              // ignore: deprecated_member_use
               color:
                   imageInfo.imageValidity != ImageValidity.valid
                       ? AppColors.camreraPreviewColor

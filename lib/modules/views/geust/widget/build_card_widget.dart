@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
+import 'package:ntt_data/widgets/indo_sakura_common_card.dart';
+
+class BuildCardWidget extends StatelessWidget {
+  const BuildCardWidget({super.key, required this.healthDetailsList});
+  final RxList<HealthDetailList> healthDetailsList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return ListView.builder(
+        shrinkWrap: true,
+        itemCount: healthDetailsList.length,
+        itemBuilder: (context, index) {
+          var result = healthDetailsList[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: IndoSakuraCommonCard(
+              confidenceLevel: result.vitalConfidence.toString(),
+              isSdkType: true,
+              isLowGood: AppMethods.stringToBool(result.isTypeVital!),
+              vitalName: result.vitalName!,
+              vitalCondition: result.vitalRange!,
+              vitalDescription: result.vitalDescription!,
+              vitalStatus: result.vitalStatus!,
+              vitalValue: result.vitalValue!,
+              vitalHeading: result.vitalHeading!,
+              vitalMass: result.vitalUnit!,
+              vitalSubList: result.vitalSubList!,
+              onInfoTop: () {},
+            ),
+          );
+        },
+      );
+    });
+  }
+}

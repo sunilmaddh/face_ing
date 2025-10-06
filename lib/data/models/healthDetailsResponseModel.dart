@@ -1,6 +1,4 @@
-// To parse this JSON data, do
-//
-//     final healthDetailsResponseModel = healthDetailsResponseModelFromJson(jsonString);
+// ignore_for_file: file_names
 
 import 'dart:convert';
 

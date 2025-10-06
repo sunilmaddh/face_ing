@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
@@ -56,7 +55,7 @@ class ProfileController extends GetxController
         var result = MedicalQuestionModels.fromJson(response["responseBody"]);
         medicalQuestionListModel.value = result.list!;
         _authController.medicalQuestionListModel.value =
-            medicalQuestionListModel.value;
+            medicalQuestionListModel;
         AppSnackbar.show(title: "Success", message: result.message!);
         if (result.isSuccess == "true") {
           AppNavigation.to(AppRoutes.healthMenu);

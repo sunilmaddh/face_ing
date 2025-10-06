@@ -22,6 +22,7 @@ import 'package:ntt_data/widgets/fields/common_dropdown_text_field.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 import 'package:ntt_data/widgets/gender_widget.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable

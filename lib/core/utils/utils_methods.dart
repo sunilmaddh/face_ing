@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:intl/intl.dart';
 
 class UtilMethods {
@@ -76,7 +78,6 @@ class UtilMethods {
       DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
       return DateFormat('dd-MM-yyyy').format(parsedDate);
     } catch (e) {
-      print('Error parsing date: $e');
       return date; // Return the original date if there's an error
     }
   }

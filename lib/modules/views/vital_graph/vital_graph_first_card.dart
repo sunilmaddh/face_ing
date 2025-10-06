@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/bottomsheet_helper.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
@@ -111,9 +112,10 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                   return Padding(
                     padding: AppDimensions.only(bottom: 10),
                     child: CommonGraphCard(
-                      // vitalValue: result[index].vitalValue!.toFirstCaps(),
                       widget:
-                          !isNumeric(result[index].healthList!.first.value!)
+                          !AppMethods.isNumeric(
+                                result[index].healthList!.first.value!,
+                              )
                               ? VitalGraphWidgetString(
                                 leftTitle: result[index].yValues!,
                                 bottomTitles: result[index].xValues!,
@@ -161,7 +163,7 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                             horizontal: 10,
                           ),
                           child:
-                              isNumeric(result[index].vitalValue!)
+                              AppMethods.isNumeric(result[index].vitalValue!)
                                   ? SizedBox(
                                     height: AppDimensions.height(120),
                                     child: VitalGauge(
@@ -200,7 +202,9 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                     );
 
                     debugPrint(healthList.toList().toString());
-                    return !isNumeric(result[index].healthList!.first.value!)
+                    return !AppMethods.isNumeric(
+                          result[index].healthList!.first.value!,
+                        )
                         ? Padding(
                           padding: AppDimensions.only(bottom: 10),
                           child: CommonGraphCard(
@@ -227,7 +231,6 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                         : Padding(
                           padding: AppDimensions.only(bottom: 10),
                           child: CommonGraphCard(
-                            // vitalValue: result[index].vitalValue!,
                             widget: Padding(
                               padding:
                                   result[index].vitalName == "PNS Index" ||
@@ -262,12 +265,8 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
     );
   }
 
-  bool isNumeric(String value) {
-    return double.tryParse(value) != null;
-  }
-
   double getVitalValue(String v) {
-    if (isNumeric(v)) {
+    if (AppMethods.isNumeric(v)) {
       return double.parse(v);
     }
     return 0.0;

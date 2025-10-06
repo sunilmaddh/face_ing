@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_color_helper.dart';
@@ -189,7 +190,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                             VitalColorHelper(
                               vitalName: widget.vitalName,
                               vitalStatus: item.value.toString(),
-                              isLowGood: stringToBool(
+                              isLowGood: AppMethods.stringToBool(
                                 item.isTypeVital.toString(),
                               ),
                             ).getColor();
@@ -215,7 +216,9 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                         VitalColorHelper(
                           vitalName: widget.vitalName,
                           vitalStatus: item.value.toString(),
-                          isLowGood: stringToBool(item.isTypeVital.toString()),
+                          isLowGood: AppMethods.stringToBool(
+                            item.isTypeVital.toString(),
+                          ),
                         ).getColor();
 
                     String label =
@@ -283,7 +286,9 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                     var vitalGraphColor = VitalColorHelper(
                       vitalName: widget.vitalName,
                       vitalStatus: item.value.toString(),
-                      isLowGood: stringToBool(item.isTypeVital.toString()),
+                      isLowGood: AppMethods.stringToBool(
+                        item.isTypeVital.toString(),
+                      ),
                     );
                     return FlDotCirclePainter(
                       radius: 4,
@@ -300,6 +305,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                     end: Alignment.bottomCenter,
                     colors: [
                       const Color(0xffD0FBFF),
+                      // ignore: deprecated_member_use
                       const Color(0xffDDF2F4).withOpacity(0.2),
                     ],
                   ),
@@ -310,9 +316,5 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
         ),
       ),
     );
-  }
-
-  bool stringToBool(String value) {
-    return value.toLowerCase() == 'true';
   }
 }

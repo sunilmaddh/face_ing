@@ -91,6 +91,7 @@ class SunilCustomDateRangePickerState extends State<IndoCustomDateRangePicker>
                   borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
+                      // ignore: deprecated_member_use
                       color: Colors.grey.withOpacity(0.2),
                       offset: const Offset(4, 4),
                       blurRadius: 8.0,

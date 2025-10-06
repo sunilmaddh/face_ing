@@ -17,12 +17,10 @@ class NativeCaller {
   static Future<void> startFaceScan(Map<String, dynamic> data) async {
     try {
       await _channel.invokeMethod('startAnura', data);
-    } on PlatformException catch (e) {
+    } on PlatformException {
       // Log the error or handle it gracefully
-      print("PlatformException in startFaceScan: ${e.message}");
     } catch (e) {
       // Fallback for any other exception
-      print("Unexpected error in startFaceScan: $e");
     }
   }
 

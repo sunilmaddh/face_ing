@@ -47,6 +47,7 @@ class CustomRadioButton extends StatelessWidget {
                 ),
                 color:
                     isSelected
+                        // ignore: deprecated_member_use
                         ? activeColor.withOpacity(0.2)
                         : Colors.transparent,
               ),

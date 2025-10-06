@@ -1,3 +1,5 @@
+// ignore_for_file: overridden_fields, duplicate_ignore
+
 import 'dart:async';
 import 'dart:io';
 import 'package:biosensesignal_flutter_sdk/session/demographics/sex.dart';
@@ -72,7 +74,6 @@ class MeasurementController extends GetxController
 
   RxList<String> vitlaList = <String>[].obs;
   @override
-  // ignore: overridden_fields
   final RxBool showImageValidity = false.obs;
   Rx<VitalSignsResults> vitalsResults = VitalSignsResults().obs;
   final Rx<sdk_image_data.ImageData?> imageData = Rx<sdk_image_data.ImageData?>(

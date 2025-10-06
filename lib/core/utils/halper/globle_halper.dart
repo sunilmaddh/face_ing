@@ -2,32 +2,27 @@ import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 
 class GlobleHalper {
-  /// Categories map with names EXACTLY matching JSON
   final Map<String, List<String>> healthCategories = {
     "Basic Vital Signs": [
       "Wellness Score",
       "Breathing Rate",
-      "Pulse Rate(Heart Rate)", // ✅ Fixed to match JSON
+      "Heart Rate",
       "PRQ",
       "Blood Pressure",
-      "Oxygen Saturation", // ✅ Added from JSON
+      "Oxygen Saturation",
     ],
     "Bloodless Blood Tests": ["Hemoglobin", "Hemoglobin A1C"],
     "Risks": [
       "ASCVD Risk",
       "Heart Age",
       "High Blood Pressure Risk",
-      "High HbA1c Risk", // ✅ Fixed to match JSON
+      "High HbA1c Risk",
       "High Fasting Glucose Risk",
       "High Total Cholesterol Risk",
       "Low Hemoglobin Risk",
     ],
     "Stress": ["Stress Level", "Stress Index", "Normalized Stress Index"],
-    "Heart Rate Variability": [
-      "HRV SDNN",
-      "Mean RRi", // ✅ Fixed to match JSON
-      "RMSSD",
-    ],
+    "Heart Rate Variability": ["HRV SDNN", "Mean RRi", "RMSSD"],
     "Advanced Heart Rate Variability": [
       "Recovery Ability (PNS Zone)",
       "PNS Index",
@@ -52,13 +47,6 @@ class GlobleHalper {
     };
     void processVital(HealthDetailList result) {
       final name = (result.vitalName ?? '').toLowerCase().trim();
-      // if (isUserType == "guest") {
-      //   if (normalizedCategories["Basic Vital Signs"]!.contains(name)) {
-      //     controller.basicVitalSigns.add(result);
-      //   } else {
-      //     print('⚠️ Unclassified vital: ${result.vitalName}');
-      //   }
-      // } else {}
       if (normalizedCategories["Basic Vital Signs"]!.contains(name)) {
         controller.basicVitalSigns.add(result);
       } else if (normalizedCategories["Bloodless Blood Tests"]!.contains(
@@ -76,12 +64,9 @@ class GlobleHalper {
       } else if (normalizedCategories["Advanced Heart Rate Variability"]!
           .contains(name)) {
         controller.advancedHeartRateVariability.add(result);
-      } else {
-        print('⚠️ Unclassified vital: ${result.vitalName}');
       }
     }
 
-    // 4️⃣ Process all top-level health details
     for (var result in healthDataList.healthDetail!) {
       processVital(result);
     }

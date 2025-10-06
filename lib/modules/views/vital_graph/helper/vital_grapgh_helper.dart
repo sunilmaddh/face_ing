@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class VitalGraphHelper {

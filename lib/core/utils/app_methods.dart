@@ -6,6 +6,7 @@ import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 
@@ -23,35 +24,22 @@ class AppMethods {
     List<dynamic> selectedAnswers,
   ) {
     if (selectedAnswers.isNotEmpty) {
-      // Check if the question already exists
       int index = dataList.indexWhere(
         (element) => element["question"] == question,
       );
-
       if (index != -1) {
-        // Update existing entry
         dataList[index]["answer"] = selectedAnswers;
-        dataList[index]["id"] = id; // Optionally update id too
-        print("Updated existing entry: ${dataList[index]}");
+        dataList[index]["id"] = id;
       } else {
-        // Add new entry
         dataList.add({
           "id": id,
           "question": question,
           "answer": selectedAnswers,
         });
-        print("Added new entry: ${dataList.last}");
       }
     }
 
-    print("Updated existing entry: ${dataList.toString()}");
-    healthMenuData.value = dataList.value;
-  }
-
-  static List<Map<String, dynamic>> getstoreQuestionAnswer() {
-    List<Map<String, dynamic>> data = dataList;
-    dataList.clear();
-    return dataList;
+    healthMenuData.value = dataList;
   }
 
   late AnimationController animationController;
@@ -79,12 +67,10 @@ class AppMethods {
 
     DateTime? parsedDate;
 
-    // Try parsing with all formats
     for (var format in formats) {
       try {
         parsedDate = format.parseStrict(birthDate);
 
-        // ✅ Reject 2-digit years
         if (parsedDate.year < 1000) {
           parsedDate = null;
           continue;
@@ -326,4 +312,8 @@ class AppMethods {
       tabTitles.map((title) => Tab(text: title)).toList();
   static final List<Widget> tabGuestWidget =
       tabGuestTitles.map((title) => Tab(text: title)).toList();
+
+  static bool isNumeric(String value) {
+    return double.tryParse(value) != null;
+  }
 }

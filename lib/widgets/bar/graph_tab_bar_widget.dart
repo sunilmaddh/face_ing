@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
+// ignore: must_be_immutable
 class GraphTabBarWidget extends StatefulWidget {
   GraphTabBarWidget({
     super.key,
@@ -49,7 +50,7 @@ class _GraphTabBarWidgetState extends State<GraphTabBarWidget>
     return Padding(
       padding: const EdgeInsets.only(left: 0, right: 0, top: 0),
       child: DefaultTabController(
-        length: widget.tabWidgets.length, // Number of tabs
+        length: widget.tabWidgets.length,
         child: Container(
           color: AppColors.btntext,
           child: Column(
@@ -71,7 +72,7 @@ class _GraphTabBarWidgetState extends State<GraphTabBarWidget>
                         ),
                 child: TabBar(
                   controller: _controller,
-                  tabAlignment: TabAlignment.start, // add this line
+                  tabAlignment: TabAlignment.start,
                   padding: EdgeInsets.zero,
                   isScrollable: true,
                   labelStyle: TextStyle(
@@ -82,7 +83,7 @@ class _GraphTabBarWidgetState extends State<GraphTabBarWidget>
                     fontWeight: FontWeight.w400,
                     fontFamily: "Gilroy-Medium",
                   ),
-                  labelPadding: EdgeInsets.zero, // Removes internal gap
+                  labelPadding: EdgeInsets.zero,
                   dividerColor: Colors.transparent,
                   labelColor:
                       widget.isNotRadius
@@ -116,15 +117,12 @@ class _GraphTabBarWidgetState extends State<GraphTabBarWidget>
                       widget.tabWidgets.map((tab) {
                         return Tab(
                           child: Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ), // Your custom spacing
+                            margin: EdgeInsets.symmetric(horizontal: 5),
                             padding: EdgeInsets.symmetric(
                               horizontal:
                                   widget.isNotRadius
                                       ? 0
                                       : AppDimensions.width(10),
-                              // vertical: AppDimensions.height(8),
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),

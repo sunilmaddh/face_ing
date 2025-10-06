@@ -162,7 +162,7 @@ class CustomBottomSheetConfidence {
                               ],
                             ),
                           );
-                        }).toList(),
+                        }),
 
                         15.verticalSpace,
                       ],

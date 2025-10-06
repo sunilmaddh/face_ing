@@ -59,8 +59,10 @@ class StartStopButton extends StatelessWidget {
                         var batterySaveMode =
                             await AppMethods().getBatterySaveMode();
                         if (batteryLevel < 20) {
+                          // ignore: use_build_context_synchronously
                           DialogHelper().showBatteryLevelAlertDialog(context);
                         } else if (batterySaveMode) {
+                          // ignore: use_build_context_synchronously
                           DialogHelper().showBatterySaveAlertDialog(context);
                         } else {
                           controller.isLoading.value = true;

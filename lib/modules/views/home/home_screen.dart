@@ -13,7 +13,7 @@ import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -27,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     authController.initializedData();
     super.initState();
   }

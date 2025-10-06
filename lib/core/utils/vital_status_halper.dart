@@ -64,7 +64,7 @@ class BinahVitalHelper {
   bool _isBreathingVital() {
     return [
       "Breathing Rate",
-      "Pulse Rate(Heart Rate)",
+      "Heart Rate",
       "PRQ",
       "Hemoglobin",
     ].contains(vitalName);
@@ -216,7 +216,7 @@ class BinahVitalHelper {
 
   bool isNumeric(String value, String name) {
     if (name == "Blood Pressure") {
-      final bpParts = value.split('/') ?? [];
+      final bpParts = value.split('/');
       return int.tryParse(bpParts[0]) != null;
     } else {
       return double.tryParse(value) != null;

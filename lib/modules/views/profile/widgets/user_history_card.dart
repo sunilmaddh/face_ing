@@ -18,8 +18,6 @@ class UserHistoryCard extends StatelessWidget {
     final result = ProfileHelper().extractDateAndTime(dateTime);
     date = result['date'] ?? "";
     time = result['time'] ?? "";
-    print("Date: ${result['date']}"); // 2025-07-28
-    print("Time: ${result['time']}"); // 17:05:53
     return CommonCard(
       radius: AppDimensions.radius(16),
       widget: Padding(

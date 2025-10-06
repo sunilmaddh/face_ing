@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_color_helper.dart';
@@ -67,7 +68,7 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
       // Use your VitalColorHelper if needed
       Color color = AppColors.primary;
       if (i < widget.vitalValue.length) {
-        var isTypeVital = stringToBool(
+        var isTypeVital = AppMethods.stringToBool(
           widget.vitalValue[i].isTypeVital.toString(),
         );
         var vitalGraphColor = VitalColorHelper(
@@ -233,9 +234,5 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
         ),
       ],
     );
-  }
-
-  bool stringToBool(String value) {
-    return value.toLowerCase() == 'true';
   }
 }

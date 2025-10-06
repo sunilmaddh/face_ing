@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: file_names
+
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
 
@@ -57,7 +58,7 @@ class Getvitalstatus {
 
   String getBpSystolic(vitalType, num min, num max) {
     final value = double.tryParse(vitalType.toString());
-    debugPrint("Systolic value $value");
+
     if (value == null) return '';
     if (value < min) return 'low';
     if (value > max) return 'high';
@@ -67,7 +68,7 @@ class Getvitalstatus {
   String getOxygenSaturation(vitalType, num min, num max) {
     final rawValue = getVitalValue(vitalType ?? 0);
     final value = double.tryParse(rawValue);
-    debugPrint("Systolic value $value");
+
     if (value == null) return '';
     if (value < min) return 'low';
     if (value >= max) return 'normal';
@@ -77,7 +78,7 @@ class Getvitalstatus {
   String getHemoglobin(vitalType, num min, num max) {
     final rawValue = getVitalValue(vitalType);
     final value = double.tryParse(rawValue.toString());
-    debugPrint("Systolic value $value");
+
     if (value == null) return '';
     if (value < min) return 'low';
     if (value > max) return 'high';

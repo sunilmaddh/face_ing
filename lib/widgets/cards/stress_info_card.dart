@@ -65,13 +65,13 @@ class StressInfoCard extends StatelessWidget {
                   ),
                 ),
               ),
-              this.imageAsset.isNotEmpty
+              imageAsset.isNotEmpty
                   ? Expanded(
                     flex: 2,
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: SvgPicture.asset(
-                        this.imageAsset,
+                        imageAsset,
                         width: 20,
                         height: 20,
                       ),

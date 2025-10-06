@@ -121,7 +121,7 @@ abstract class BaseApiService {
     debugPrint(uri.toString());
     try {
       var accessToken = await IndoSharedPreference.instance.getAccessToken();
-      ;
+
       debugPrint("Access toke $accessToken");
       Uri uri;
       if (isHttps) {
@@ -254,7 +254,6 @@ abstract class BaseApiService {
     Uri uri = Uri.http(baseUrl, endpoint);
     debugPrint('URL  $uri');
     debugPrint('File  $filepath');
-    String endP = "$endpoint/$userID";
     var request = http.MultipartRequest('PUT', Uri.http(baseUrl, endpoint));
 
     request.files.add(await http.MultipartFile.fromPath('file', filepath));
@@ -269,7 +268,6 @@ abstract class BaseApiService {
     debugPrint(request.toString());
     var response = await request.send();
     http.Response responses = await http.Response.fromStream(response);
-    print(response.statusCode);
 
     return responses;
   }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
+// ignore: must_be_immutable
 class CustomFormField extends StatelessWidget {
   final String label;
   final String hint;
@@ -68,13 +68,6 @@ class CustomFormField extends StatelessWidget {
               return AdaptiveTextSelectionToolbar(
                 anchors: editableTextState.contextMenuAnchors,
                 children: [
-                  // TextButton(
-                  //   onPressed:
-                  //       () => editableTextState.copySelection(
-                  //         SelectionChangedCause.toolbar,
-                  //       ),
-                  //   child: const Text('Copy'),
-                  // ),
                   TextButton(
                     onPressed:
                         () => editableTextState.pasteText(
@@ -82,13 +75,6 @@ class CustomFormField extends StatelessWidget {
                         ),
                     child: const Text('Paste'),
                   ),
-                  // TextButton(
-                  //   onPressed:
-                  //       () => editableTextState.cutSelection(
-                  //         SelectionChangedCause.toolbar,
-                  //       ),
-                  //   child: const Text('Cut'),
-                  // ),
                 ],
               );
             },

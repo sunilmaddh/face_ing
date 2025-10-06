@@ -296,7 +296,7 @@ class VitalSubListWidget extends StatelessWidget {
       children: [
         Obx(
           () => Visibility(
-            visible: vitalSubList != null && vitalSubList.isNotEmpty,
+            visible: vitalSubList.isNotEmpty,
             child: Column(
               children: [
                 Container(height: 1, color: const Color(0xffD9D9D9)),

@@ -204,8 +204,4 @@ class CommonGraphCard extends StatelessWidget {
       ),
     );
   }
-
-  bool stringToBool(String value) {
-    return value.toLowerCase() == 'true';
-  }
 }

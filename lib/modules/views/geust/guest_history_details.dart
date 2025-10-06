@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
-import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/bottomsheet_helper.dart';
-import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
+import 'package:ntt_data/modules/views/geust/widget/build_card_widget.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
-import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
-import 'package:ntt_data/widgets/button/rounded_button.dart';
-import 'package:ntt_data/widgets/fields/common_text.dart';
-import 'package:ntt_data/widgets/indo_sakura_common_card.dart';
 
 // ignore: must_be_immutable
 class GuestHistoryDetails extends StatefulWidget {
@@ -33,7 +27,6 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
   void initState() {
     super.initState();
 
-    // total tab count based on your AppMethods.tabGuestWidget
     _tabController = TabController(
       length: AppMethods.tabGuestWidget.length,
       vsync: this,
@@ -79,52 +72,9 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
             if (value > 0) {
               BottomsheetHelper.showBottomSheetAlert(context, _tabController);
             }
-          }, // 👈 pass it here if supported
+          },
         ),
       ),
     );
   }
-}
-
-class BuildCardWidget extends StatelessWidget {
-  const BuildCardWidget({super.key, required this.healthDetailsList});
-  final RxList<HealthDetailList> healthDetailsList;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      if (healthDetailsList.isEmpty) {
-        return Center(
-          child: CommonText.text("You can view all results after registering."),
-        );
-      }
-
-      return ListView.builder(
-        shrinkWrap: true,
-        itemCount: healthDetailsList.length,
-        itemBuilder: (context, index) {
-          var result = healthDetailsList[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: IndoSakuraCommonCard(
-              confidenceLevel: result.vitalConfidence.toString(),
-              isSdkType: true,
-              isLowGood: stringToBool(result.isTypeVital!),
-              vitalName: result.vitalName!,
-              vitalCondition: result.vitalRange!,
-              vitalDescription: result.vitalDescription!,
-              vitalStatus: result.vitalStatus!,
-              vitalValue: result.vitalValue!,
-              vitalHeading: result.vitalHeading!,
-              vitalMass: result.vitalUnit!,
-              vitalSubList: result.vitalSubList!,
-              onInfoTop: () {},
-            ),
-          );
-        },
-      );
-    });
-  }
-
-  bool stringToBool(String value) => value.toLowerCase() == 'true';
 }

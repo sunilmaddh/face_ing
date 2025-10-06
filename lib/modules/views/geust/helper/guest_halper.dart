@@ -12,7 +12,6 @@ import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/health_data/widgets/getvitalStatus.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
-import 'package:intl/intl.dart';
 
 class GuestHalper {
   final controller = Get.find<MeasurementController>();

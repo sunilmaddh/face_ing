@@ -11,7 +11,7 @@ import 'package:ntt_data/modules/views/health_data/widgets/getvitalStatus.dart';
 import 'package:ntt_data/widgets/indo_common_card.dart';
 
 class AllReportScreen extends StatefulWidget {
-  AllReportScreen({super.key});
+  const AllReportScreen({super.key});
 
   @override
   State<AllReportScreen> createState() => _AllReportScreenState();
@@ -32,12 +32,9 @@ class _AllReportScreenState extends State<AllReportScreen>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    // _geustController.addGuest(_measurementController.vitalsResults.value);
   }
 
-  // Helper to build IndoCommonCard with less repetition
   Widget buildCard({
     required String vitalName,
     String? vitalValue,
@@ -71,9 +68,8 @@ class _AllReportScreenState extends State<AllReportScreen>
   final statusHelper = Getvitalstatus();
   List<Widget> allVitalSigns() {
     final bpValue = statusHelper.getVitalValue(VitalSignTypes.bloodPressure);
-    final bpParts = bpValue?.split('/') ?? [];
+    final bpParts = bpValue.split('/');
     final systolic = bpParts.isNotEmpty ? int.tryParse(bpParts[0]) : null;
-    final diastolic = bpParts.length > 1 ? int.tryParse(bpParts[1]) : null;
 
     return [
       buildCard(
@@ -176,7 +172,7 @@ class _AllReportScreenState extends State<AllReportScreen>
     final a1cValueStr = statusHelper.getVitalValue(
       VitalSignTypes.hemoglobinA1C,
     );
-    final a1cValue = double.tryParse(a1cValueStr ?? '');
+    final a1cValue = double.tryParse(a1cValueStr);
 
     String a1cStatus = 'low'; // default for safety
     String a1cConditionText = '';
@@ -268,6 +264,7 @@ class _AllReportScreenState extends State<AllReportScreen>
 // Dummy description classes
 class WellnessMetricDescriptions {
   static const wellnessScore = "Wellness Score";
+  // ignore: constant_identifier_names
   static const BreathingRate = "Breathing Rate";
   static const bloodPressureDiastolic = "Blood Pressure";
   static const pulseRate = "Pulse Rate";
@@ -294,6 +291,7 @@ class WellnessMetricDescriptions {
   static const sd1 = "SD1";
   static const sd2 = "SD2";
   static const lfhf = "LF/HF";
+  // ignore: constant_identifier_names
   static const RRiData = "RRi Data ";
 }
 
@@ -304,6 +302,7 @@ class WellnessMetricDescriptionsLong {
   static const wellnessScore =
       "The Wellness Score is a prediction risk score that is used to predict a person's cardiovascular risk for the next 5 to 10 years.";
 
+  // ignore: constant_identifier_names
   static const RRiData = "The number of breaths you take per minute.";
 
   static const pulseRate = "The number of times your heart beats per minute.";
@@ -383,6 +382,7 @@ class WellnessMetricDescriptionsLong {
 
   static const sd2 =
       "SD2 is a poincaré plot standard deviation along the line of identity.";
+  // ignore: constant_identifier_names
   static const LfHf =
       "LF and HF stand for Low-Frequency and High-Frequency bands, which represent the Sympathetic and Parasympathetic activity, respectively.";
   static const lfHf =

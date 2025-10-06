@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:http/src/response.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/data/repository/services/base_api_services.dart';
 

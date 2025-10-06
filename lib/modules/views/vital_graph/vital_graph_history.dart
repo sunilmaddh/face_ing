@@ -110,6 +110,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                         fontFamily: "Manrope",
                         fontSize: AppDimensions.font(20.0),
                         color:
+                            // ignore: unrelated_type_equality_checks
                             _vitalGraphController.selectedIndex == index
                                 ? AppColors.primary
                                 : Color(0xffE0E0E0),
@@ -134,6 +135,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color:
+                          // ignore: unrelated_type_equality_checks
                           _vitalGraphController.selectedIndex == index
                               ? AppColors.primary
                               : Color(0xffE0E0E0),
@@ -212,7 +214,6 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _vitalGraphController.isGraphFilterType.value = "";
     _vitalGraphController.selectedIndex.value = 1;
     super.dispose();

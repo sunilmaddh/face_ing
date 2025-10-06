@@ -23,10 +23,10 @@ class FaceDetectionView extends StatelessWidget {
       final widthFactor = size!.width / imageInfo!.imageWidth;
       final heightFactor = size!.height / imageInfo.imageHeight;
 
-      final left = (roi.left ?? 0.0) * widthFactor;
-      final top = (roi.top ?? 0.0) * heightFactor;
-      final roiWidth = (roi.width ?? 0.0) * widthFactor;
-      final roiHeight = (roi.height ?? 0.0) * heightFactor;
+      final left = (roi.left) * widthFactor;
+      final top = (roi.top) * heightFactor;
+      final roiWidth = (roi.width) * widthFactor;
+      final roiHeight = (roi.height) * heightFactor;
 
       return Positioned(
         left: left,
@@ -35,6 +35,7 @@ class FaceDetectionView extends StatelessWidget {
           AppAssets.faceDetact,
           width: roiWidth,
           height: roiHeight,
+          // ignore: deprecated_member_use
           color:
               imageInfo.imageValidity != ImageValidity.valid
                   ? AppColors.camreraPreviewColor

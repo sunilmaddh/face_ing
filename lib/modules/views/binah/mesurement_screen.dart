@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
 import 'package:biosensesignal_flutter_sdk/session/session_state.dart'
     show SessionState;
@@ -37,7 +39,6 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     controller.getScanMeassage();
     super.initState();
   }

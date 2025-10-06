@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_graph_status.dart';
 // Replace with your actual asset paths
@@ -147,35 +148,28 @@ Color getStatusAndIsTypical(
   String value,
   List<HealthList> healthList,
 ) {
-  if (isNumeric(value)) {
-    var isTypeVital;
+  if (AppMethods.isNumeric(value)) {
+    String? isTypeVital;
     var status = VitalGraphStatus().getStatus(vitalName, value);
     for (var data in healthList) {
       if (data.isTypeVital == "true") {
         isTypeVital = data.isTypeVital;
       }
     }
-    debugPrint("$vitalName $status ${isTypeVital}");
     var vitalHelper = VitalColorHelper(
       vitalName: vitalName,
       vitalStatus: status,
-      isLowGood: stringToBool(isTypeVital ?? "false"),
+      isLowGood: AppMethods.stringToBool(isTypeVital ?? "false"),
     );
     return vitalHelper.getColor();
   } else {
     var vitalHelper = VitalColorHelper(
       vitalName: vitalName,
       vitalStatus: value,
-      isLowGood: stringToBool(healthList.first.isTypeVital ?? "false"),
+      isLowGood: AppMethods.stringToBool(
+        healthList.first.isTypeVital ?? "false",
+      ),
     );
     return vitalHelper.getColor();
   }
-}
-
-bool stringToBool(String value) {
-  return value.toLowerCase() == 'true';
-}
-
-bool isNumeric(String value) {
-  return double.tryParse(value) != null;
 }
