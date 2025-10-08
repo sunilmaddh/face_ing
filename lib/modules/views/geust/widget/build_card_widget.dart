@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/indo_sakura_common_card.dart';
 
 class BuildCardWidget extends StatelessWidget {
@@ -30,7 +32,12 @@ class BuildCardWidget extends StatelessWidget {
               vitalHeading: result.vitalHeading!,
               vitalMass: result.vitalUnit!,
               vitalSubList: result.vitalSubList!,
-              onInfoTop: () {},
+              onInfoTop: () {
+                AppNavigation.to(
+                  AppRoutes.vitalDescriptions,
+                  arguments: {"vitalKey": result.vitalKey},
+                );
+              },
             ),
           );
         },

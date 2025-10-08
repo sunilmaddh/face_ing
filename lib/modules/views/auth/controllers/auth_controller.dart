@@ -130,7 +130,6 @@ class AuthController extends GetxController
       }
     } catch (e) {
       debugPrint(e.toString());
-      // AppSnackbar.show(title: "Exception", message: e.toString());
     } finally {
       isLoading(false);
     }
@@ -273,7 +272,7 @@ class AuthController extends GetxController
         if (result.isSuccess == true) {
           AppNavigation.to(AppRoutes.healthMenu);
         }
-        // AppSnackbar.show(title: "Success", message: errorResponse.value.message!);
+
         if (errorResponse.value.success == true) {
           clearData();
           AppNavigation.offAll(AppRoutes.loginScreen);

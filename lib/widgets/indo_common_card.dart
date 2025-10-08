@@ -22,7 +22,7 @@ class IndoCommonCard extends StatefulWidget {
   final bool isExpand;
   final bool isVitalActive;
   final Widget expandedWidget;
-  final VoidCallback onTop;
+
   final VoidCallback onInfoTop;
 
   const IndoCommonCard({
@@ -39,7 +39,6 @@ class IndoCommonCard extends StatefulWidget {
     this.isExpand = false,
     this.isVitalActive = true,
     this.expandedWidget = const SizedBox(),
-    required this.onTop,
     required this.onInfoTop, // fixed default widget
   });
   @override
@@ -224,7 +223,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                                               ? Row(
                                                 children: [
                                                   CircleAvatar(
-                                                    radius: 10.5,
+                                                    radius: 8.5,
                                                     backgroundColor:
                                                         statusColor,
                                                   ),
@@ -253,7 +252,7 @@ class _CommonCardState extends State<IndoCommonCard> {
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: InkWell(
-                                        onTap: widget.onTop,
+                                        onTap: widget.onInfoTop,
                                         child: Icon(
                                           Icons.info_rounded,
                                           color: AppColors.infoIconColor,

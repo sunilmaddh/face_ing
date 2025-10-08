@@ -30,6 +30,8 @@ class GeustController extends GetxController
   final weightTextController = TextEditingController();
   final heightTextController = TextEditingController();
   final dobTextController = TextEditingController();
+  RxList<Widget> tabWidget = <Widget>[].obs;
+
   RxList<GuestHealthAnuraHistory> guestAnuraHistory =
       <GuestHealthAnuraHistory>[].obs;
   RxList<Map<String, dynamic>> anuraHIstoryDetails =
@@ -47,6 +49,7 @@ class GeustController extends GetxController
   RxBool isTermAccepted = false.obs;
   RxList<HealthDetailList> healthDetailsList = <HealthDetailList>[].obs;
   RxList<GuestList> filteredItems = <GuestList>[].obs;
+  RxBool isFullStory = false.obs;
 
   Future<void> getGeustHistory() async {
     isLoading(true);

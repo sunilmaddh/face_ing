@@ -29,6 +29,7 @@ class ProfileController extends GetxController
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController dobController = TextEditingController();
+  RxBool isFullStory = false.obs;
   Rx<VitalDescriptionsModel> vitalDescriptionModel =
       VitalDescriptionsModel().obs;
   RxString userUpdateImage = ''.obs;
@@ -41,6 +42,7 @@ class ProfileController extends GetxController
       AnlyzeHealthDataResponseModel().obs;
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
   RxString vitalDesc = "".obs;
+  RxList<Widget> tabWidget = <Widget>[].obs;
   RxList<MedicalQuestionListModel> medicalQuestionListModel =
       <MedicalQuestionListModel>[].obs;
   final _profileService = Get.put(ProfileServices());

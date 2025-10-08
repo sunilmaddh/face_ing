@@ -50,13 +50,12 @@ class VitalCard extends StatelessWidget {
       vitalDescription: vitalDescription,
       isExpand: isExpand,
       expandedWidget: expandedWidget,
-      onTop: () {
+      onInfoTop: () {
         AppNavigation.to(
           AppRoutes.vitalDescriptions,
           arguments: {"vitalKey": vitalKey},
         );
       },
-      onInfoTop: () {},
     );
   }
 }

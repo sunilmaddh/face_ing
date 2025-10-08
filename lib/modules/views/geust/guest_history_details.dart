@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/bottomsheet_helper.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
@@ -21,16 +23,32 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
     with SingleTickerProviderStateMixin {
   final _controller = Get.find<GeustController>();
   late TabController _tabController;
-  List<Widget> tabWidget = [];
 
   @override
   void initState() {
     super.initState();
-
+    initiateData();
     _tabController = TabController(
       length: AppMethods.tabGuestWidget.length,
       vsync: this,
     );
+  }
+
+  initiateData() async {
+    _controller.isFullStory.value =
+        await IndoSharedPreference.instance.getHistoryType();
+    if (_controller.isFullStory.isTrue) {
+      _controller.tabWidget.value = [
+        BuildCardWidget(healthDetailsList: _controller.basicVitalSigns),
+        BuildCardWidget(healthDetailsList: _controller.bloodlessBloodTests),
+        BuildCardWidget(healthDetailsList: _controller.risks),
+        BuildCardWidget(healthDetailsList: _controller.stress),
+        BuildCardWidget(healthDetailsList: _controller.heartRateVariability),
+        BuildCardWidget(
+          healthDetailsList: _controller.advancedHeartRateVariability,
+        ),
+      ];
+    }
   }
 
   @override
@@ -41,17 +59,6 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
 
   @override
   Widget build(BuildContext context) {
-    tabWidget = [
-      BuildCardWidget(healthDetailsList: _controller.basicVitalSigns),
-      BuildCardWidget(healthDetailsList: _controller.bloodlessBloodTests),
-      BuildCardWidget(healthDetailsList: _controller.risks),
-      BuildCardWidget(healthDetailsList: _controller.stress),
-      BuildCardWidget(healthDetailsList: _controller.heartRateVariability),
-      BuildCardWidget(
-        healthDetailsList: _controller.advancedHeartRateVariability,
-      ),
-    ];
-
     return Scaffold(
       appBar: CustomAppBar(
         onTop: () => AppNavigation.back(),
@@ -63,16 +70,32 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
           color: AppColors.historyCardColor,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: CustomTabBarView(
-          tabController: _tabController,
-          isNotRadius: false,
-          tabWidgets: AppMethods.tabGuestWidget,
-          tabBarWidgets: tabWidget,
-          onTabChanged: (value) {
-            if (value > 0) {
-              BottomsheetHelper.showBottomSheetAlert(context, _tabController);
-            }
-          },
+        child: Obx(
+          () =>
+              _controller.isFullStory.isTrue
+                  ? CustomTabBarView(
+                    tabController: _tabController,
+                    isNotRadius: false,
+                    tabWidgets: AppMethods.tabGuestWidget,
+                    tabBarWidgets: _controller.tabWidget,
+                    onTabChanged: (value) {
+                      if (value > 0) {
+                        BottomsheetHelper.showBottomSheetAlert(
+                          context,
+                          _tabController,
+                        );
+                      }
+                    },
+                  )
+                  : Padding(
+                    padding: AppDimensions.symmetric(
+                      horizontal: 10.0,
+                      vertical: 10.0,
+                    ),
+                    child: BuildCardWidget(
+                      healthDetailsList: _controller.basicVitalSigns,
+                    ),
+                  ),
         ),
       ),
     );
