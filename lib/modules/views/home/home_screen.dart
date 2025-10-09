@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/modules/views/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
-import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
-import 'package:ntt_data/widgets/button/scan_button.dart';
-import 'package:ntt_data/widgets/fields/common_text.dart';
+import 'package:ntt_data/core/utils/common_assets.dart';
+import 'package:ntt_data/modules/views/home/widgets/circle_card_widget.dart';
+import 'package:ntt_data/modules/views/home/widgets/menu_card.dart';
+import 'package:ntt_data/modules/views/home/widgets/wellness_card.dart';
+import 'package:ntt_data/widgets/cards/common_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,8 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    authController.initializedData();
     super.initState();
+    authController.initializedData();
   }
 
   @override
@@ -36,93 +39,94 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: FaceDrawer(),
-      body: PopScope(
-        canPop: false,
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppDimensions.width(10.0),
-              vertical: AppDimensions.width(30.0),
-            ),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Obx(
-                        () => Center(
-                          child: ScanButton(
-                            isLoading: gcontroller.isHomeLoading.value,
-                            width: AppDimensions.width(230),
-                            onPressed: () async {
-                              HomeHalper().callMeasurement();
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: AppDimensions.height(15)),
-                      CommonText.text(
-                        "Note: ${AppConstents.notDiscription}",
-                        fontSize: AppDimensions.font(12),
-                        fontWeight: FontWeight.w500,
-                        maxLines: 2,
-                        color: Colors.grey,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  // physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: InkWell(
-                              onTap: () {
-                                _scaffoldKey.currentState!.openDrawer();
-                              },
-                              child: CommonAssets.svgAsset(
-                                AppAssets.homeMenu,
-                                width: AppDimensions.width(60),
-                                height: AppDimensions.height(60),
-                              ),
-                            ), // Keeps at the start
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2, // More space for centering
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: CommonAssets.svgAsset(
-                              AppAssets.logo,
-                            ), // Keeps in the center
-                          ),
-                        ),
-                        Expanded(child: SizedBox()), // Balancing the layout
-                      ],
-                    ),
-                    SizedBox(height: AppDimensions.height(30)),
-                    CommonAssets.svgAsset(AppAssets.scanIllustration),
-                    SizedBox(height: AppDimensions.height(40)),
-                    CommonText.text(
-                      AppConstents.scanDiscri,
-                      fontSize: AppDimensions.font(18),
-                      fontWeight: FontWeight.w500,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: AppDimensions.height(40)),
-                  ],
-                ),
-              ],
+      body: Stack(
+        children: [
+          Positioned.fill(
+            top: AppDimensions.height(90),
+            child: SvgPicture.asset(
+              AppAssets.homeBg, // Your SVG path
+              fit: BoxFit.cover, // Fill the container
             ),
           ),
-        ),
+          SafeArea(
+            child: Padding(
+              padding: AppDimensions.symmetric(horizontal: 15),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  // Top AppBar Row
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Row(
+                      children: [
+                        // Drawer Icon
+                        InkWell(
+                          onTap: () {
+                            _scaffoldKey.currentState!.openDrawer();
+                          },
+                          child: CommonAssets.svgAsset(
+                            AppAssets.person,
+                            width: AppDimensions.width(40),
+                            height: AppDimensions.height(40),
+                          ),
+                        ),
+                        const Spacer(),
+                        // Logo in center
+                        CommonAssets.svgAsset(AppAssets.logo),
+                        const Spacer(flex: 2),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: AppDimensions.height(30)),
+                  WellnessCard(guageValue: 7),
+                  SizedBox(height: AppDimensions.height(30)),
+                  CommonCard(
+                    widget: SizedBox(
+                      width: Get.width,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          15.verticalSpace,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              MenuCard(
+                                menuTitle: "Pulse Survey",
+                                image: AppAssets.pulseServe,
+                              ),
+                              15.horizontalSpace,
+                              MenuCard(
+                                menuTitle: "Voice Scan",
+                                image: AppAssets.voiceScan,
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: AppDimensions.symmetric(
+                              horizontal: 15.0,
+                              vertical: 15.0,
+                            ),
+                            child: CommonCard(
+                              color: AppColors.homeCardColor,
+                              widget: SizedBox(
+                                height: AppDimensions.height(71),
+                                width: Get.width,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

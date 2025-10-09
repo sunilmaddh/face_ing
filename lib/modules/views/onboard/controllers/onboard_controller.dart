@@ -12,7 +12,7 @@ class OnboardController extends GetxController {
     if (userId.isNotEmpty) {
       final isOnboard = await _indoSharedPreference.getOnBoard();
       if (isOnboard == "true") {
-        AppNavigation.off(AppRoutes.homeScreen);
+        AppNavigation.off(AppRoutes.landingSceen);
       } else {
         AppNavigation.off(AppRoutes.createAccount);
       }

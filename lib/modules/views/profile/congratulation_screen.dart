@@ -18,7 +18,7 @@ class CongratulationScreen extends StatelessWidget {
       floatingActionButton: PrimaryButton(
         text: "Thank you",
         onPressed: () {
-          AppNavigation.to(AppRoutes.homeScreen);
+          AppNavigation.to(AppRoutes.landingSceen);
         },
       ),
       body: Center(

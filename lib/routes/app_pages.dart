@@ -8,6 +8,7 @@ import 'package:ntt_data/modules/views/geust/guest_history_details.dart';
 import 'package:ntt_data/modules/views/health_data/all_report_screen.dart';
 import 'package:ntt_data/modules/views/health_data/analyzing_health_data.dart';
 import 'package:ntt_data/modules/views/home/home_screen.dart';
+import 'package:ntt_data/modules/views/landing/landing_screen.dart';
 import 'package:ntt_data/modules/views/profile/congratulation_screen.dart';
 import 'package:ntt_data/modules/views/profile/create_account_screen.dart';
 import 'package:ntt_data/modules/views/auth/login_screen.dart';
@@ -36,6 +37,7 @@ class AppPages {
     GetPage(name: AppRoutes.loginScreen, page: () => LoginScreen()),
     GetPage(name: AppRoutes.homeScreen, page: () => HomeScreen()),
     GetPage(name: AppRoutes.resetPassword, page: () => ResetPasswordScreen()),
+    GetPage(name: AppRoutes.landingSceen, page: () => LandingScreen()),
     GetPage(name: AppRoutes.onboardScreen, page: () => OnboardScreen()),
     GetPage(
       name: AppRoutes.analyzingHealthData,

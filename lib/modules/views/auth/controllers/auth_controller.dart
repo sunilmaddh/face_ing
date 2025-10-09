@@ -111,7 +111,7 @@ class AuthController extends GetxController
             );
 
             GuestHalper().clearLoading();
-            AppNavigation.off(AppRoutes.homeScreen);
+            AppNavigation.off(AppRoutes.landingSceen);
           }
           clearData();
         } else {

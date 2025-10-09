@@ -62,5 +62,10 @@ class AppAssets {
       voice = "$baseUrlSvg/voice.svg",
       home = "$baseUrlSvg/home.svg",
       pulse = "$baseUrlSvg/pulse.svg",
+      person = "$baseUrlSvg/person.svg",
+      homeBg = "$baseUrlSvg/home_background.svg",
+      pulseServe = "$baseUrlPng/pulse_serve.png",
+      voiceScan = "$baseUrlPng/voice_scan.png",
+      correct = "$baseUrlSvg/correct.svg",
       allReport = "$baseUrlLottie/all_report.json";
 }

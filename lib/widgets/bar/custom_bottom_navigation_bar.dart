@@ -2,40 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/widgets/bar/custom_bottom_navigation_bar.dart';
+import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+class CustomBottomNavigationBar extends StatefulWidget {
+  const CustomBottomNavigationBar({super.key, required this.pageList});
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final List<Widget> pageList;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: CustomBottomNavigationBar(
-        pageList: const [
-          ColoredBox(color: Colors.red),
-          ColoredBox(color: Colors.green),
-          ColoredBox(color: Colors.blue),
-        ],
-      ),
-    );
-  }
+  State<CustomBottomNavigationBar> createState() =>
+      _CustomBottomNavigationBarState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 1;
+class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
+  int _selectedIndex = 0;
   late PageController pageController;
 
   @override
@@ -56,23 +37,21 @@ class _MyHomePageState extends State<MyHomePage> {
       body: PageView(
         controller: pageController,
         onPageChanged: (index) => setState(() => _selectedIndex = index),
-        children: const [
-          ColoredBox(color: Colors.red),
-          ColoredBox(color: Colors.green),
-          ColoredBox(color: Colors.blue),
-        ],
+        children: widget.pageList,
       ),
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         backgroundColor: AppColors.primary,
-        onPressed: () => onTabTapped(1),
+        onPressed: () {
+          HomeHalper().callMeasurement();
+        },
         child: SvgPicture.asset(AppAssets.scan),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         padding: EdgeInsets.only(top: 18.0),
         shape: CircularNotchedRectangle(),
-        notchMargin: 5,
+        notchMargin: 6,
         color: Colors.white,
         elevation: 8,
         child: SizedBox(

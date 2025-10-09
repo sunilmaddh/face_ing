@@ -35,7 +35,8 @@ class AppColors {
       guestOptionColor = Color(0xff3C3C3C),
       infoIconColor = Color(0xffA1A1A1),
       checkBoxBorderColor = Color(0xffD4D2D2),
-      bottomTextColor = Color(0xff575656);
+      bottomTextColor = Color(0xff575656),
+      homeCardColor = Color(0xffF5FAFD);
   // ignore: deprecated_member_use
   static Color progressColorDeactive = Color(0xff0072BC).withOpacity(0.26);
   //  historyCardColor=Color(0xffedf5fa).withOpacity(0.07),

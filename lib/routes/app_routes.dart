@@ -24,5 +24,6 @@ class AppRoutes {
       updateUserGuestDetails = '/update_user_guest_details',
       vitalDescriptions = "/vital_descriptions",
       vitalGraphHistory = "/Vital_graph_history",
+      landingSceen = "/landing_screen",
       analyzingHealthData = '/analyzing_health_data';
 }

@@ -12,8 +12,8 @@ class BottomsheetHelper {
     TabController tabController,
   ) {
     return CustomBottomSheet.show(
-      isDismissible: false,
-      isEnableDra: false,
+      isDismissible: true,
+      isEnableDra: true,
       title: "",
       content: SizedBox(
         height: MediaQuery.of(context).size.height * 0.99,
