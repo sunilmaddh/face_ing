@@ -99,28 +99,51 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData>
     bool isExpand = false,
     bool isVitalActive = true,
     Widget expandedWidget = const SizedBox(),
+    final isBasicVital = false,
   }) {
-    return IndoCommonCard(
-      confidenceLevel: vitalConfidence ?? "",
-      imageAsset: imageAsset ?? '',
-      isVitalActive: isVitalActive,
-      vitalName: vitalName,
-      vitalValue: vitalValue ?? 'N/A',
-      vitalCondition: vitalCondition ?? '',
-      vitalMass: vitalMass ?? "",
-      vitalStatus: vitalStatus,
-      vitalHeading: vitalHeading,
-      vitalDescription: vitalDescription,
-      isExpand: isExpand,
-      expandedWidget: expandedWidget,
-      onTop: () {
-        AppNavigation.to(
-          AppRoutes.vitalDescriptions,
-          arguments: {"vitalKey": vitalKey},
+    return isBasicVital == true
+        ? IndoCommonCard(
+          confidenceLevel: vitalConfidence ?? "",
+          imageAsset: imageAsset ?? '',
+          isVitalActive: isVitalActive,
+          vitalName: vitalName,
+          vitalValue: vitalValue ?? 'N/A',
+          vitalCondition: vitalCondition ?? '',
+          vitalMass: vitalMass ?? "",
+          vitalStatus: vitalStatus,
+          vitalHeading: vitalHeading,
+          vitalDescription: vitalDescription,
+          isExpand: isExpand,
+          expandedWidget: expandedWidget,
+          onTop: () {
+            AppNavigation.to(
+              AppRoutes.vitalDescriptions,
+              arguments: {"vitalKey": vitalKey},
+            );
+          },
+          onInfoTop: () {},
+        )
+        : IndoCommonCard(
+          confidenceLevel: "",
+          imageAsset: '',
+          isVitalActive: false,
+          vitalName: vitalName,
+          vitalValue: "",
+          vitalCondition: '',
+          vitalMass: "",
+          vitalStatus: "",
+          vitalHeading: "",
+          vitalDescription: vitalDescription,
+          isExpand: false,
+          expandedWidget: SizedBox(),
+          onTop: () {
+            // AppNavigation.to(
+            //   AppRoutes.vitalDescriptions,
+            //   arguments: {"vitalKey": vitalKey},
+            // );
+          },
+          onInfoTop: () {},
         );
-      },
-      onInfoTop: () {},
-    );
   }
 
   List<Widget> allVitalSigns() {

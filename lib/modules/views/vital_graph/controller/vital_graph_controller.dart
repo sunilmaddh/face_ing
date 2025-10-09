@@ -4,8 +4,6 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/data/repository/services/vital_graph_services.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 
 class VitalGraphController extends GetxController {
   RxBool isFilterTypeSelected = false.obs;
@@ -62,11 +60,6 @@ class VitalGraphController extends GetxController {
             vitalGraphResponse.value.advancedHeartRateVariability!;
         if (isFromHistory) {
           isFromHistory = false;
-          // selectedValue.value = data["filterType"];
-          // AppNavigation.to(
-          //   AppRoutes.vitalGraphHistory,
-          //   arguments: {"guestId": data["guestId"]},
-          // );
         }
       } else if (statusCode == 403) {
         AppSnackbar.show(title: "Error", message: "Something went wrong");
