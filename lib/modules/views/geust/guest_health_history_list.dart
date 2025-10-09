@@ -24,24 +24,24 @@ class GuestHealthHistoryList extends StatelessWidget {
           AppNavigation.back();
         },
         title: "Guest Health History",
-        actions: [
-          InkWell(
-            onTap: () {
-              AppNavigation.to(
-                AppRoutes.vitalGraphHistory,
-                arguments: {"guestId": guestId},
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                AppAssets.barImage,
-                height: AppDimensions.height(30),
-                width: AppDimensions.width(30),
-              ),
-            ),
-          ),
-        ],
+        // actions: [
+        //   InkWell(
+        //     onTap: () {
+        //       AppNavigation.to(
+        //         AppRoutes.vitalGraphHistory,
+        //         arguments: {"guestId": guestId},
+        //       );
+        //     },
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Image.asset(
+        //         AppAssets.barImage,
+        //         height: AppDimensions.height(30),
+        //         width: AppDimensions.width(30),
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       body: Obx(
         () =>

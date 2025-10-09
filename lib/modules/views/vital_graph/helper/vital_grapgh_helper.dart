@@ -285,4 +285,8 @@ class VitalGraphHelper {
 
     return normalizedList;
   }
+
+  static String cleanRange(String input) {
+    return input.replaceAll(RegExp(r'\s?20\d{2}'), '');
+  }
 }

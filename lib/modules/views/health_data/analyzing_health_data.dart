@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/bottomsheet_helper.dart';
 import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
@@ -43,13 +44,34 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData>
     barWidgets = [
       if (_measurementController.scanType.value != "add-guest" &&
           _measurementController.scanType.value != "re-scan")
-        VitalCartWidget(allList: HealthReportHelper().allVitalCards),
-      VitalCartWidget(allList: HealthReportHelper().basicVital),
-      VitalCartWidget(allList: HealthReportHelper().bloodlessVital),
-      VitalCartWidget(allList: HealthReportHelper().riskList),
-      VitalCartWidget(allList: HealthReportHelper().stress),
-      VitalCartWidget(allList: HealthReportHelper().hrvsddnList),
-      VitalCartWidget(allList: HealthReportHelper().adhrvsddnList),
+        VitalCartWidget(
+          allList: HealthReportHelper().allVitalCards,
+          isBasicVital: true.obs,
+        ),
+      VitalCartWidget(
+        allList: HealthReportHelper().basicVital,
+        isBasicVital: true.obs,
+      ),
+      VitalCartWidget(
+        allList: HealthReportHelper().bloodlessVital,
+        isBasicVital: false.obs,
+      ),
+      VitalCartWidget(
+        allList: HealthReportHelper().riskList,
+        isBasicVital: false.obs,
+      ),
+      VitalCartWidget(
+        allList: HealthReportHelper().stress,
+        isBasicVital: false.obs,
+      ),
+      VitalCartWidget(
+        allList: HealthReportHelper().hrvsddnList,
+        isBasicVital: false.obs,
+      ),
+      VitalCartWidget(
+        allList: HealthReportHelper().adhrvsddnList,
+        isBasicVital: false.obs,
+      ),
     ];
     return Scaffold(
       backgroundColor: AppColors.btntext,

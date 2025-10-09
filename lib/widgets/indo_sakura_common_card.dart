@@ -231,19 +231,21 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                       ],
                                     ),
 
-                              Expanded(
-                                flex: 1,
-                                child: InkWell(
-                                  onTap: onInfoTop,
-                                  child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Icon(
-                                      Icons.info,
-                                      color: AppColors.infoIconColor,
+                              if (vitalValue.isNotEmpty ||
+                                  vitalStatus.isNotEmpty)
+                                Expanded(
+                                  flex: 1,
+                                  child: InkWell(
+                                    onTap: onInfoTop,
+                                    child: Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: Icon(
+                                        Icons.info,
+                                        color: AppColors.infoIconColor,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ],
