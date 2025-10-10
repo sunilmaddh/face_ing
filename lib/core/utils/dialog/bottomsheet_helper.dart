@@ -17,16 +17,19 @@ class BottomsheetHelper {
       title: "",
       content: SizedBox(
         height: MediaQuery.of(context).size.height * 0.99,
-        // alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            RoundedButton(
-              onPressed: () {
-                Get.back();
-                tabController.animateTo(0);
-              },
+            Align(
+              alignment: Alignment.topRight,
+              child: RoundedButton(
+                isAppBar: false,
+                isClose: true,
+                onPressed: () {
+                  Get.back();
+                  // tabController.animateTo(0);
+                },
+              ),
             ),
 
             SizedBox(
@@ -49,20 +52,6 @@ class BottomsheetHelper {
                 ],
               ),
             ),
-            // IconButton(
-            //   onPressed: () {
-            //     Get.back();
-            //     _tabController.animateTo(0);
-            //   },
-            //   icon: Icon(Icons.arrow_back_ios),
-            // ),
-            // Text(
-            //   "You are now viewing:",
-            //   style: const TextStyle(
-            //     fontSize: 16,
-            //     fontWeight: FontWeight.w500,
-            //   ),
-            // ),
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:ntt_data/modules/views/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/onboard/controllers/onboard_controller.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
+import 'package:ntt_data/modules/views/pulse/controller/pulse_survey_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 
 class AppBindings extends Bindings {
@@ -16,5 +17,6 @@ class AppBindings extends Bindings {
     Get.put(GeustController());
     Get.put(MeasurementController());
     Get.put(VitalGraphController());
+    Get.put(PulseSurveyController());
   }
 }

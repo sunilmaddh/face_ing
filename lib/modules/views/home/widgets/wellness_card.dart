@@ -12,7 +12,7 @@ class WellnessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleCardWidget(
-      size: 230,
+      size: 215,
       widget: Stack(
         children: [
           Align(
@@ -29,7 +29,7 @@ class WellnessCard extends StatelessWidget {
                 ),
                 CommonText.text(
                   guageValue.toStringAsFixed(0),
-                  fontSize: AppDimensions.font(60),
+                  fontSize: AppDimensions.font(55),
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,
                   fontFamily: "League Spartan",
@@ -59,7 +59,7 @@ class WellnessCard extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: CircularPercentIndicator(
-              radius: 110,
+              radius: 102,
               lineWidth: 15,
               percent: guageValue / 10, // dynamic value
               animation: true,

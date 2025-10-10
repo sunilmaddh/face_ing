@@ -25,13 +25,18 @@ class CommonListCard extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: AppDimensions.height(48),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.white,
+          color: isSelected ? AppColors.selectedList : Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.textFieldColor, width: 1),
+          border:
+              isSelected
+                  ? Border()
+                  : Border.all(color: Color(0xffDDDDDD), width: 1),
         ),
         child: CommonText.text(
+          fontSize: AppDimensions.font(16),
+          fontWeight: FontWeight.w600,
           text,
-          color: isSelected ? AppColors.btntext : AppColors.blackColor,
+          color: isSelected ? AppColors.primary : Color(0xff717171),
         ),
       );
     });

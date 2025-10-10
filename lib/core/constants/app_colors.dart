@@ -39,6 +39,8 @@ class AppColors {
       homeCardColor = Color(0xffF5FAFD);
   // ignore: deprecated_member_use
   static Color progressColorDeactive = Color(0xff0072BC).withOpacity(0.26);
+  // ignore: deprecated_member_use
+  static Color selectedList = Color(0xffd9f0ff).withOpacity(0.53);
   //  historyCardColor=Color(0xffedf5fa).withOpacity(0.07),
   //  measurmentTakenCardColor=Color(0xffc0baac).withOpacity(0.01)
 }

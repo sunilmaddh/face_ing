@@ -8,6 +8,7 @@ import 'package:ntt_data/core/utils/dialog/bottomsheet_helper.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/geust/widget/build_card_widget.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
 
@@ -39,13 +40,29 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
         await IndoSharedPreference.instance.getHistoryType();
     if (_controller.isFullStory.isTrue) {
       _controller.tabWidget.value = [
-        BuildCardWidget(healthDetailsList: _controller.basicVitalSigns),
-        BuildCardWidget(healthDetailsList: _controller.bloodlessBloodTests),
-        BuildCardWidget(healthDetailsList: _controller.risks),
-        BuildCardWidget(healthDetailsList: _controller.stress),
-        BuildCardWidget(healthDetailsList: _controller.heartRateVariability),
+        BuildCardWidget(
+          healthDetailsList: _controller.basicVitalSigns,
+          isBasicVital: true.obs,
+        ),
+        BuildCardWidget(
+          healthDetailsList: _controller.bloodlessBloodTests,
+          isBasicVital: false.obs,
+        ),
+        BuildCardWidget(
+          healthDetailsList: _controller.risks,
+          isBasicVital: false.obs,
+        ),
+        BuildCardWidget(
+          healthDetailsList: _controller.stress,
+          isBasicVital: false.obs,
+        ),
+        BuildCardWidget(
+          healthDetailsList: _controller.heartRateVariability,
+          isBasicVital: false.obs,
+        ),
         BuildCardWidget(
           healthDetailsList: _controller.advancedHeartRateVariability,
+          isBasicVital: false.obs,
         ),
       ];
     }
@@ -94,6 +111,7 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
                     ),
                     child: BuildCardWidget(
                       healthDetailsList: _controller.basicVitalSigns,
+                      isBasicVital: true.obs,
                     ),
                   ),
         ),

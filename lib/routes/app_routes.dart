@@ -25,5 +25,9 @@ class AppRoutes {
       vitalDescriptions = "/vital_descriptions",
       vitalGraphHistory = "/Vital_graph_history",
       landingSceen = "/landing_screen",
+      pulseProgressWidget = "/pulse_survey_progress_widget",
+      pulseSurveyAnalyzingScreen = "/pulse_survey_analyzing_screen",
+      pulseSurveyScreen = "/pulse_survey_screen",
+      pulseScreen = "/pulse_screen",
       analyzingHealthData = '/analyzing_health_data';
 }

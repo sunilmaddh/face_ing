@@ -67,5 +67,14 @@ class AppAssets {
       pulseServe = "$baseUrlPng/pulse_serve.png",
       voiceScan = "$baseUrlPng/voice_scan.png",
       correct = "$baseUrlSvg/correct.svg",
+      dailyAdvice = "$baseUrlSvg/daily_advice.svg",
+      dailyAd = "$baseUrlPng/daily_ad.png",
+      pulseAnlyzing = "$baseUrlPng/pulse_anlyzing.png",
+      success = "$baseUrlSvg/success.svg",
+      pulseScreen = "$baseUrlPng/pulse_screen.png",
+      sunAsset = "$baseUrlSvg/sun.svg",
+      rainAsset = "$baseUrlSvg/rain.svg",
+      stromAsset = "$baseUrlSvg/storm.svg",
+      cloudAsset = "$baseUrlSvg/cloud.svg",
       allReport = "$baseUrlLottie/all_report.json";
 }

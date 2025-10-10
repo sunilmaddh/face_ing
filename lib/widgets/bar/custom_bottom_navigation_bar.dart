@@ -58,17 +58,14 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           height: 60,
           child: Stack(
             children: [
-              Flexible(
-                flex: 2,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: CommonText.text(
-                    "Face Scan",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Manrope",
-                    color: AppColors.bottomTextColor,
-                  ),
+              Align(
+                alignment: Alignment.center,
+                child: CommonText.text(
+                  "Face Scan",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Manrope",
+                  color: AppColors.bottomTextColor,
                 ),
               ),
               Row(

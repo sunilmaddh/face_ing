@@ -9,14 +9,16 @@ class RoundedButton extends StatelessWidget {
   final double size;
   final bool isAppBar;
   final bool isAdd;
-  
+  final bool isClose;
+
   const RoundedButton({
     super.key,
     required this.onPressed,
     this.color = AppColors.circleColor,
     this.size = 50.0,
-    this.isAppBar=true,
-    this.isAdd=false
+    this.isAppBar = true,
+    this.isAdd = false,
+    this.isClose = false,
   });
 
   @override
@@ -26,18 +28,28 @@ class RoundedButton extends StatelessWidget {
       height: size,
       child: ElevatedButton(
         onPressed: onPressed,
-        style:isAppBar? ElevatedButton.styleFrom(
-          shape: const CircleBorder(),
-          padding: EdgeInsets.zero,
-          backgroundColor: color,
-          elevation: 0,
-        ): ElevatedButton.styleFrom(
-          shape: const CircleBorder(),
-          padding: EdgeInsets.zero,
-          backgroundColor: AppColors.primary,
-          elevation: 0,
-        ),
-        child: isAppBar? SvgPicture.asset(AppAssets.back):isAdd==true?Icon(Icons.add,color: Colors.white):Icon(Icons.arrow_forward_ios, color: Colors.white),
+        style:
+            isAppBar
+                ? ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: EdgeInsets.zero,
+                  backgroundColor: color,
+                  elevation: 0,
+                )
+                : ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: EdgeInsets.zero,
+                  backgroundColor: isClose ? color : AppColors.primary,
+                  elevation: 0,
+                ),
+        child:
+            isAppBar
+                ? SvgPicture.asset(AppAssets.back)
+                : isAdd == true
+                ? Icon(Icons.add, color: Colors.white)
+                : isClose
+                ? Icon(Icons.close, color: Colors.black)
+                : Icon(Icons.arrow_forward_ios, color: Colors.white),
       ),
     );
   }

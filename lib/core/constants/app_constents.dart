@@ -23,7 +23,11 @@ class AppConstents {
   upload = "Upload",
   scanId = "Scan Id",
   dateTime = "Date & Time",
+  todayResult = "Today’s Result",
+  howDoYouFeelToday = "How Do You Feel Today?",
   continueBtn = "Continue",
+  analyzingYourPulseSurvey = "Analyzing your pulse survey",
+  allDone = "All done!",
   uploadPhotoHeading = "Upload photo for creating you account",
   name = "Name",
   confidenceLevelDiscription =

@@ -26,7 +26,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
 
   String gusetId = Get.arguments["guestId"] ?? "";
 
-  List<String> filterType = ["Today", "Weekly", "Monthly"];
+  List<String> filterType = ["Weekly", "Monthly"];
   @override
   void initState() {
     callFunction();
@@ -215,7 +215,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
   @override
   void dispose() {
     _vitalGraphController.isGraphFilterType.value = "";
-    _vitalGraphController.selectedIndex.value = 1;
+    _vitalGraphController.selectedIndex.value = 0;
     super.dispose();
   }
 }

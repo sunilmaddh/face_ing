@@ -9,9 +9,10 @@ class PrimaryButton extends StatelessWidget {
   final Color textColor;
   final double borderRadius;
   final double padding;
+  double width;
   final bool isLoading;
 
-  const PrimaryButton({
+  PrimaryButton({
     super.key,
     required this.text,
     required this.onPressed,
@@ -20,12 +21,13 @@ class PrimaryButton extends StatelessWidget {
     this.borderRadius = 12.0,
     this.padding = 16.0,
     this.isLoading = false,
+    this.width = 155,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: AppDimensions.width(155),
+      width: AppDimensions.width(width),
       height: AppDimensions.height(50),
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed, // Disable button when loading

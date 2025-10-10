@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/health_data/helper/health_report_helper.dart';
@@ -40,6 +41,7 @@ class _AllReportScreenState extends State<AllReportScreen>
           padding: AppDimensions.symmetric(horizontal: 8.0, vertical: 8.0),
           child: VitalCartWidget(
             allList: HealthReportHelper().minimunVitalCards,
+            isBasicVital: true.obs,
           ),
         ),
       ),

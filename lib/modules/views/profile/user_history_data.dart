@@ -30,7 +30,7 @@ class UserHistoryData extends StatelessWidget {
         actions: [
           InkWell(
             onTap: () {
-              _vitalGraphController.selectedIndex.value = 1;
+              _vitalGraphController.selectedIndex.value = 0;
 
               AppNavigation.to(
                 AppRoutes.vitalGraphHistory,
