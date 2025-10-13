@@ -36,17 +36,17 @@ class StringToNumericMapper {
   /// Get string label from numeric value
   String getLabel(double numericValue) {
     int index = numericValue.toInt();
-    if (index >= 0 && index < values.length) {
-      if (isXAxis) {
-        if (values[index].toLowerCase() == "yesterday") {
-          return (DateTime.now().day - 1).toString();
-        } else if (values[index].toLowerCase() == "today") {
-          return DateTime.now().day.toString();
-        }
-      }
-      return values[index];
-    }
-    return "";
+    // if (index >= 0 && index < values.length) {
+    //   if (isXAxis) {
+    //     if (values[index].toLowerCase() == "yesterday") {
+    //       return (DateTime.now().day - 1).toString();
+    //     } else if (values[index].toLowerCase() == "today") {
+    //       return DateTime.now().day.toString();
+    //     }
+    //   }
+    //   return values[index];
+    // }
+    return values[index];
   }
 }
 
@@ -95,28 +95,28 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
     String label = xMapper.getLabel(value);
 
     // Try to parse as integer day
-    final scannedDateStr = widget.vitalValues[value.toInt()].scannedDate;
+    // final scannedDateStr = widget.vitalValues[value.toInt()].scannedDate;
 
-    if (scannedDateStr != null && scannedDateStr.isNotEmpty) {
-      try {
-        final scannedDate = DateTime.parse(scannedDateStr);
-        final today = DateTime.now();
-        final yesterday = today.subtract(const Duration(days: 1));
+    // if (scannedDateStr != null && scannedDateStr.isNotEmpty) {
+    //   try {
+    //     final scannedDate = DateTime.parse(scannedDateStr);
+    //     final today = DateTime.now();
+    //     final yesterday = today.subtract(const Duration(days: 1));
 
-        bool isSameDay(DateTime a, DateTime b) =>
-            a.year == b.year && a.month == b.month && a.day == b.day;
+    //     bool isSameDay(DateTime a, DateTime b) =>
+    //         a.year == b.year && a.month == b.month && a.day == b.day;
 
-        if (isSameDay(scannedDate, today)) {
-          label = "Today";
-        } else if (isSameDay(scannedDate, yesterday)) {
-          label = "Yesterday";
-        } else {
-          label = scannedDate.day.toString().padLeft(2, '0');
-        }
-      } catch (e) {
-        // If parsing fails, just keep original label
-      }
-    }
+    //     if (isSameDay(scannedDate, today)) {
+    //       label = "Today";
+    //     } else if (isSameDay(scannedDate, yesterday)) {
+    //       label = "Yesterday";
+    //     } else {
+    //       label = scannedDate.day.toString().padLeft(2, '0');
+    //     }
+    //   } catch (e) {
+    //     // If parsing fails, just keep original label
+    //   }
+    // }
 
     return Text(
       label,

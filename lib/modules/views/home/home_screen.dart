@@ -106,9 +106,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     image: AppAssets.pulseServe,
                                   ),
                                 ),
-                                MenuCard(
-                                  menuTitle: "Voice Scan",
-                                  image: AppAssets.voiceScan,
+                                InkWell(
+                                  onTap: () {
+                                    AppNavigation.to(AppRoutes.voiceScreen);
+                                  },
+                                  child: MenuCard(
+                                    menuTitle: "Voice Scan",
+                                    image: AppAssets.voiceScan,
+                                  ),
                                 ),
                               ],
                             ),

@@ -25,6 +25,7 @@ import 'package:ntt_data/modules/views/pulse/views/pulse_survey_analyzing_screen
 import 'package:ntt_data/modules/views/pulse/views/pulse_survey_progress_widget.dart';
 import 'package:ntt_data/modules/views/pulse/views/pulse_survey_screen.dart';
 import 'package:ntt_data/modules/views/vital_graph/vital_graph_history.dart';
+import 'package:ntt_data/modules/views/voice/view/voice_screen.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
 class AppPages {
@@ -82,5 +83,6 @@ class AppPages {
     ),
     GetPage(name: AppRoutes.pulseSurveyScreen, page: () => PulseSurveyScreen()),
     GetPage(name: AppRoutes.pulseScreen, page: () => PulseScreen()),
+    GetPage(name: AppRoutes.voiceScreen, page: () => VoiceScreen()),
   ];
 }

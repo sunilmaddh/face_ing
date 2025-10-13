@@ -6,6 +6,7 @@ import 'package:ntt_data/modules/views/onboard/controllers/onboard_controller.da
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/views/pulse/controller/pulse_survey_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
+import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
 
 class AppBindings extends Bindings {
   @override
@@ -18,5 +19,6 @@ class AppBindings extends Bindings {
     Get.put(MeasurementController());
     Get.put(VitalGraphController());
     Get.put(PulseSurveyController());
+    Get.put(VoiceController());
   }
 }

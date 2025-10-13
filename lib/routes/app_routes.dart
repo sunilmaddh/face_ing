@@ -29,5 +29,6 @@ class AppRoutes {
       pulseSurveyAnalyzingScreen = "/pulse_survey_analyzing_screen",
       pulseSurveyScreen = "/pulse_survey_screen",
       pulseScreen = "/pulse_screen",
+      voiceScreen = "/voice_screen",
       analyzingHealthData = '/analyzing_health_data';
 }

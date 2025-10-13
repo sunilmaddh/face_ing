@@ -76,5 +76,10 @@ class AppAssets {
       rainAsset = "$baseUrlSvg/rain.svg",
       stromAsset = "$baseUrlSvg/storm.svg",
       cloudAsset = "$baseUrlSvg/cloud.svg",
+      voiceBg = "$baseUrlPng/voice_bg.png",
+      voiceImage = "$baseUrlSvg/voice_image.svg",
+      voiceLottie = "$baseUrlLottie/voice.json",
+      voiceProgress = "$baseUrlLottie/voice_progress.json",
+      maintence = "$baseUrlLottie/maintence.json",
       allReport = "$baseUrlLottie/all_report.json";
 }
