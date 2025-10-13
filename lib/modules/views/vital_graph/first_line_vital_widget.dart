@@ -33,10 +33,13 @@ class FirstLineVitalWidget extends StatelessWidget {
             children: [
               Obx(
                 () => CommonText.text(
-                  VitalGraphHelper.cleanRange(
-                    _vitalGraphController.vitalGraphResponse.value.dateRange
-                        .toString(),
-                  ),
+                  _vitalGraphController.vitalGraphResponse.value.dateRange !=
+                          null
+                      ? VitalGraphHelper.cleanRange(
+                        _vitalGraphController.vitalGraphResponse.value.dateRange
+                            .toString(),
+                      )
+                      : "",
                   fontWeight: FontWeight.bold,
                   fontSize: AppDimensions.font(21),
                 ),

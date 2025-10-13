@@ -63,29 +63,29 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
     }
 
     String label = widget.bottomTitles[index];
-    final scannedDateStr = widget.vitalValues[index].scannedDate;
+    // final scannedDateStr = widget.vitalValues[index].scannedDate;
 
-    if (scannedDateStr != null && scannedDateStr.isNotEmpty) {
-      try {
-        final scannedDate = DateTime.parse(scannedDateStr);
-        final today = DateTime.now();
-        final yesterday = today.subtract(const Duration(days: 1));
+    // if (scannedDateStr != null && scannedDateStr.isNotEmpty) {
+    //   try {
+    //     final scannedDate = DateTime.parse(scannedDateStr);
+    //     final today = DateTime.now();
+    //     final yesterday = today.subtract(const Duration(days: 1));
 
-        bool isSameDay(DateTime a, DateTime b) =>
-            a.year == b.year && a.month == b.month && a.day == b.day;
+    //     bool isSameDay(DateTime a, DateTime b) =>
+    //         a.year == b.year && a.month == b.month && a.day == b.day;
 
-        if (isSameDay(scannedDate, today)) {
-          label = "Today";
-        } else if (isSameDay(scannedDate, yesterday)) {
-          label = "Yesterday";
-        } else {
-          // fallback: show only day number (e.g. "30")
-          label = scannedDate.day.toString().padLeft(2, '0');
-        }
-      } catch (e) {
-        // If parsing fails, just keep original label
-      }
-    }
+    //     if (isSameDay(scannedDate, today)) {
+    //       label = "Today";
+    //     } else if (isSameDay(scannedDate, yesterday)) {
+    //       label = "Yesterday";
+    //     } else {
+    //       // fallback: show only day number (e.g. "30")
+    //       label = scannedDate.day.toString().padLeft(2, '0');
+    //     }
+    //   } catch (e) {
+    //     // If parsing fails, just keep original label
+    //   }
+    // }
 
     return Text(
       label,
