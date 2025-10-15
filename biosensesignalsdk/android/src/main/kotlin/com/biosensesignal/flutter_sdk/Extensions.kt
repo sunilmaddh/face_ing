@@ -13,6 +13,7 @@ import android.graphics.Bitmap
 import android.graphics.Rect
 import android.view.TextureView
 import com.biosensesignal.sdk.api.fall_detection.FallDetectionData
+import com.biosensesignal.sdk.api.logs.LogsInfo
 
 fun TextureView.drawBitmap(bitmap: Bitmap) {
     lockCanvas()?.apply {
@@ -124,6 +125,7 @@ fun VitalSign.toMap(): Map<String, Any>? {
         is VitalSignHighFastingGlucoseRisk -> value.ordinal
         is VitalSignHighTotalCholesterolRisk -> value.ordinal
         is VitalSignLowHemoglobinRisk -> value.ordinal
+        is VitalSignASCVDRiskLevel -> value.ordinal
         else -> value
     }
 
@@ -150,5 +152,12 @@ fun PPGDeviceInfo.toMap(): Map<String, Any> {
         Pair("deviceType", type.ordinal),
         Pair("version", version)
 
+    )
+}
+
+fun LogsInfo.toMap(): Map<String, Any> {
+    return mapOf(
+        Pair("measurementDuration", measurementDuration),
+        Pair("logsPath", logsPath)
     )
 }

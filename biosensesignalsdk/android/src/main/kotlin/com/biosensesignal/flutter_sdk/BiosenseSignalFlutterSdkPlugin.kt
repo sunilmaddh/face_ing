@@ -76,6 +76,8 @@ class BiosenseSignalFlutterSdkPlugin: FlutterPlugin, ActivityAware, MethodCallHa
             call.argument<Boolean>("strictMeasurementGuidance"),
             call.argument<Boolean>("sdkAnalytics"),
             call.argument<Int>("cameraLocation"),
+            call.argument<Int>("logsLevel"),
+            call.argument<Boolean>("saveLogsToPublicFolder"),
             call.argument<Map<String, Any>>("options")
           )
           result.success(null)
@@ -94,6 +96,8 @@ class BiosenseSignalFlutterSdkPlugin: FlutterPlugin, ActivityAware, MethodCallHa
             call.argument<Int>("subjectSmokingStatus"),
             call.argument<Boolean>("fallDetection"),
             call.argument<Boolean>("sdkAnalytics"),
+            call.argument<Int>("logsLevel"),
+            call.argument<Boolean>("saveLogsToPublicFolder"),
             call.argument<Map<String, Any>>("options")
           )
           result.success(null)

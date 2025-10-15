@@ -9,6 +9,7 @@ import 'package:biosensesignal_flutter_sdk/images/image_data.dart';
 import 'package:biosensesignal_flutter_sdk/license/license_activation_info.dart';
 import 'package:biosensesignal_flutter_sdk/license/license_info.dart';
 import 'package:biosensesignal_flutter_sdk/license/license_offline_measurements.dart';
+import 'package:biosensesignal_flutter_sdk/logs/logs_info.dart';
 import 'package:biosensesignal_flutter_sdk/session/session_enabled_vital_signs.dart';
 import 'package:biosensesignal_flutter_sdk/session/session_state.dart';
 import 'package:biosensesignal_flutter_sdk/alerts/warning_data.dart';
@@ -80,4 +81,11 @@ PPGDeviceInfo createPPGDeviceInfo(Map<String, dynamic> data) {
 FallDetectionData createFallDetectionData(Map<String, dynamic> data) {
   var timeMillis = data['time'] as int;
   return FallDetectionData(DateTime.fromMillisecondsSinceEpoch(timeMillis));
+}
+
+LogsInfo createLogsInfo(Map<String, dynamic> data) {
+  return LogsInfo(
+    measurementDuration: data['measurementDuration'] as int,
+    logsPath: data['logsPath'] as String,
+  );
 }

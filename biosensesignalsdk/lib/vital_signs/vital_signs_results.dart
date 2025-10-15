@@ -1,6 +1,7 @@
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign.dart';
 
 class VitalSignsResults {
+  
   final Map<int, VitalSign> _results = {};
 
   setResult(VitalSign vitalSign) {

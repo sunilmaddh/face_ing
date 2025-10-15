@@ -29,4 +29,9 @@ abstract class VitalSignTypes {
   static const int highTotalCholesterolRisk = 0x20000000;
   static const int highFastingGlucoseRisk = 0x200000000;
   static const int lowHemoglobinRisk = 0x400000000;
+  static const int ascvdRiskLevel = 0x800000000;
+  static const int meanArterialPressure = 0x1000000000;
+  static const int cardiacWorkload = 0x2000000000;
+  static const int pulsePressure = 0x4000000000;
+  static const int bodyTensionScore = 0x8000000000;
 }

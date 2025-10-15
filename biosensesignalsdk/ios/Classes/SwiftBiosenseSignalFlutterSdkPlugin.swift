@@ -14,7 +14,10 @@ public class SwiftBiosenseSignalFlutterSdkPlugin: NSObject, FlutterPlugin {
     }
     
     init(binaryMessenger: FlutterBinaryMessenger) {
-        SessionManager.shared.eventChannel = BiosenseSignalEventChannel(messenger: binaryMessenger)
+        if SessionManager.shared.eventChannel == nil {
+            SessionManager.shared.eventChannel = BiosenseSignalEventChannel(messenger: binaryMessenger)
+        }
+        
         BiosenseSignalPreviewFactory.shared.setDataSource(imageDataSource: SessionManager.shared)
     }
     
@@ -37,6 +40,8 @@ public class SwiftBiosenseSignalFlutterSdkPlugin: NSObject, FlutterPlugin {
                         strictMeasurementGuidance: arguments?["strictMeasurementGuidance"] as? Bool,
                         sdkAnalytics: arguments?["sdkAnalytics"] as? Bool,
                         cameraLocation: arguments?["cameraLocation"] as? Int,
+                        logsLevel: arguments?["logsLevel"] as? Int,
+                        saveLogsToPublicFolder: arguments?["saveLogsToPublicFolder"] as? Bool,
                         options: arguments?["options"] as? [String: Any]
                     )
                     result(nil)
@@ -53,6 +58,8 @@ public class SwiftBiosenseSignalFlutterSdkPlugin: NSObject, FlutterPlugin {
                     subjectSmokingStatus: arguments?["subjectSmokingStatus"] as? Int,
                     fallDetection: arguments?["fallDetection"] as? Bool ?? false,
                     sdkAnalytics: arguments?["sdkAnalytics"] as? Bool,
+                    logsLevel: arguments?["logsLevel"] as? Int,
+                    saveLogsToPublicFolder: arguments?["saveLogsToPublicFolder"] as? Bool,
                     options: arguments?["options"] as? [String: Any]
                 )
                 result(nil)

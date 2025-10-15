@@ -11,6 +11,7 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_listener.dart
 import 'package:biosensesignal_flutter_sdk/bridge/bridge_events.dart';
 import 'package:biosensesignal_flutter_sdk/bridge/bridge_models_factory.dart';
 import 'package:biosensesignal_flutter_sdk/bridge/bridge_vital_signs_factory.dart';
+import 'package:biosensesignal_flutter_sdk/logs/logs_listener.dart';
 
 class Session {
   final SessionInfoListener? sessionInfoListener;
@@ -18,13 +19,15 @@ class Session {
   final ImageDataListener? imageDataListener;
   final PPGDeviceInfoListener? ppgDeviceInfoListener;
   final FallDetectionListener? fallDetectionListener;
-
+  final LogsListener? logsListener;
+  
   Session(
       {this.sessionInfoListener,
       this.vitalSignsListener,
       this.imageDataListener,
       this.ppgDeviceInfoListener,
-      this.fallDetectionListener}) {
+      this.fallDetectionListener,
+      this.logsListener}) {
     _registerToSessionEvents();
   }
 
@@ -82,6 +85,10 @@ class Session {
           var fallDetectionData =
               createFallDetectionData(Map<String, dynamic>.from(payload));
           fallDetectionListener?.onFallDetection(fallDetectionData);
+          break;
+        case BridgeEvents.logsReady:
+          var logsInfo = createLogsInfo(Map<String, dynamic>.from(payload));
+          logsListener?.onLogsReady(logsInfo);
           break;
         default:
           break;

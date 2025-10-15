@@ -75,6 +75,9 @@ extension VitalSign {
         else if let vitalSign = self as? VitalSignLowHemoglobinRisk {
             value = vitalSign.value.rawValue
         }
+        else if let vitalSign = self as? VitalSignASCVDRiskLevel {
+            value = vitalSign.value.rawValue
+        }
         else if let vitalSign = self as? VitalSignInt {
             value = vitalSign.value
         }
@@ -217,3 +220,11 @@ extension AlertDomains {
     }
 }
 
+extension LogsInfo {
+    func toMap() -> [String: Any] {
+        return [
+            "measurementDuration": measurementDuration,
+            "logsPath": logsPath
+        ]
+    }
+}

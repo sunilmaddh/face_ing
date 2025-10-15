@@ -16,5 +16,6 @@ class NativeBridgeEvents {
         const val ppgDeviceInfo = "ppg_device_info"
         const val ppgDeviceBattery = "ppg_device_battery_level"
         const val fallDetectionData = "fall_detection_data"
+        const val logsReady = "logs_ready"
     }
 }
