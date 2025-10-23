@@ -247,22 +247,22 @@ class _CommonCardState extends State<IndoCommonCard> {
                                               : SizedBox(),
                                         ],
                                       ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: InkWell(
-                                        onTap: widget.onInfoTop,
-                                        child: Icon(
-                                          Icons.info_rounded,
-                                          color: AppColors.infoIconColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               )
                               : SizedBox.shrink(),
+                          Expanded(
+                            flex: 1,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: InkWell(
+                                onTap: widget.onInfoTop,
+                                child: Icon(
+                                  Icons.info_rounded,
+                                  color: AppColors.infoIconColor,
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

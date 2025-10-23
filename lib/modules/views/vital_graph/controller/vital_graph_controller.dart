@@ -62,13 +62,21 @@ class VitalGraphController extends GetxController {
           isFromHistory = false;
         }
       } else if (statusCode == 403) {
-        AppSnackbar.show(title: "Error", message: "Something went wrong");
+        AppSnackbar.show(
+          title: "Error",
+          message: "Something went wrong",
+          isError: false,
+        );
       } else {
-        AppSnackbar.show(title: "Error", message: "Something went wrong");
+        AppSnackbar.show(
+          title: "Error",
+          message: "Something went wrong",
+          isError: false,
+        );
       }
     } catch (e) {
       isLoading(false);
-      AppSnackbar.show(title: "Error", message: e.toString());
+      // AppSnackbar.show(title: "Error", message: e.toString(), isError: false);
     }
   }
 
