@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/modules/views/landing/landing_controller.dart';
 import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
 import 'package:ntt_data/modules/views/voice/widgets/voice_recording_widget.dart';
 import 'package:ntt_data/modules/views/voice/widgets/voice_top_widget.dart';
@@ -17,6 +18,7 @@ import 'package:ntt_data/widgets/button/primary_button.dart';
 class VoiceScreen extends StatelessWidget {
   VoiceScreen({super.key});
   final _voiceController = Get.find<VoiceController>();
+  final _controller = Get.find<LandingController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,8 @@ class VoiceScreen extends StatelessWidget {
                   width: AppDimensions.width(243),
                   text: "Stop Speak",
                   onPressed: () {
-                    AppNavigation.to(AppRoutes.pulseProgressWidget);
+                    _controller.onTabTapped(0);
+                    // AppNavigation.to(AppRoutes.pulseProgressWidget);
                   },
                 )
                 : SizedBox(),

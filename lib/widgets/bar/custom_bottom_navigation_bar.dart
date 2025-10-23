@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
+import 'package:ntt_data/modules/views/landing/landing_controller.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -17,17 +19,13 @@ class CustomBottomNavigationBar extends StatefulWidget {
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int _selectedIndex = 0;
-  late PageController pageController;
+
+  final _controller = Get.find<LandingController>();
 
   @override
   void initState() {
     super.initState();
-    pageController = PageController(initialPage: _selectedIndex);
-  }
-
-  void onTabTapped(int index) {
-    setState(() => _selectedIndex = index);
-    pageController.jumpToPage(index);
+    _controller.pageController = PageController(initialPage: _selectedIndex);
   }
 
   @override
@@ -35,8 +33,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     return Scaffold(
       extendBody: true,
       body: PageView(
-        controller: pageController,
-        onPageChanged: (index) => setState(() => _selectedIndex = index),
+        controller: _controller.pageController,
+        onPageChanged: (index) {
+          _controller.selectedIndex.value = index;
+        },
         children: widget.pageList,
       ),
       floatingActionButton: FloatingActionButton(
@@ -75,7 +75,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                     flex: 2,
                     child: InkWell(
                       onTap: () {
-                        onTabTapped(0);
+                        _controller.onTabTapped(0);
                       },
                       child: Column(
                         children: [
@@ -105,7 +105,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                     flex: 2,
                     child: InkWell(
                       onTap: () {
-                        onTabTapped(1);
+                        _controller.onTabTapped(1);
                       },
                       child: Column(
                         children: [
@@ -136,7 +136,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                     flex: 2,
                     child: InkWell(
                       onTap: () {
-                        onTabTapped(2);
+                        _controller.onTabTapped(2);
                       },
                       child: Column(
                         children: [
@@ -165,7 +165,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                     flex: 2,
                     child: InkWell(
                       onTap: () {
-                        onTabTapped(3);
+                        _controller.onTabTapped(3);
                       },
                       child: Column(
                         children: [

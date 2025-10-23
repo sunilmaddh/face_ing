@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
@@ -16,6 +17,7 @@ import 'package:ntt_data/modules/views/profile/controller/profile_controller.dar
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.find<MeasurementController>();
   final gcontroller = Get.find<GeustController>();
   final authController = Get.find<AuthController>();
-  final _profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+
       drawer: FaceDrawer(),
       body: Stack(
         children: [
@@ -123,6 +125,51 @@ class _HomeScreenState extends State<HomeScreen> {
                               widget: SizedBox(
                                 height: AppDimensions.height(71),
                                 width: Get.width,
+                                child: Padding(
+                                  padding: AppDimensions.symmetric(vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          CommonText.text(
+                                            "Blood Pressure",
+                                            fontFamily: "DM Sans",
+                                            fontSize: AppDimensions.font(14),
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.primary,
+                                          ),
+                                          SvgPicture.asset(
+                                            AppAssets.bHeartAssets,
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CommonText.text(
+                                            "0.2201",
+                                            fontFamily: "DM Sans",
+                                            fontSize: AppDimensions.font(24),
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.primary,
+                                          ),
+                                          CommonText.text(
+                                            "bpm",
+                                            fontFamily: "DM Sans",
+                                            fontSize: AppDimensions.font(14),
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.blackColor,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ],

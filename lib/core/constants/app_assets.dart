@@ -81,5 +81,6 @@ class AppAssets {
       voiceLottie = "$baseUrlLottie/voice.json",
       voiceProgress = "$baseUrlLottie/voice_progress.json",
       maintence = "$baseUrlLottie/maintence.json",
+      bHeartAssets = "$baseUrlSvg/bheart.svg",
       allReport = "$baseUrlLottie/all_report.json";
 }
