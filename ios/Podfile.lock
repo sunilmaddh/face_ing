@@ -103,9 +103,9 @@ SPEC CHECKSUMS:
   audio_session: 9bb7f6c970f21241b19f5a3658097ae459681ba0
   battery_plus: b42253f6d2dde71712f8c36fef456d99121c5977
   biosensesignal_flutter_sdk: 82a40777cb964f3094a4a4ae53eeae14f5435cb2
-  camera_avfoundation: 04b44aeb14070126c6529e5ab82cc7c9fca107cf
+  camera_avfoundation: 5675ca25298b6f81fa0a325188e7df62cc217741
   connectivity_plus: cb623214f4e1f6ef8fe7403d580fdad517d2f7dd
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   fluttertoast: 2c67e14dce98bbdb200df9e1acf610d7a6264ea1
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
   just_audio: 4e391f57b79cad2b0674030a00453ca5ce817eed
@@ -117,8 +117,8 @@ SPEC CHECKSUMS:
   url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
   video_player_avfoundation: 2cef49524dd1f16c5300b9cd6efd9611ce03639b
   wakelock_plus: e29112ab3ef0b318e58cfa5c32326458be66b556
-  webview_flutter_wkwebview: 1821ceac936eba6f7984d89a9f3bcb4dea99ebb2
+  webview_flutter_wkwebview: 8ebf4fded22593026f7dbff1fbff31ea98573c8d
 
-PODFILE CHECKSUM: 4305caec6b40dde0ae97be1573c53de1882a07e5
+PODFILE CHECKSUM: 3c63482e143d1b91d2d2560aee9fb04ecc74ac7e
 
 COCOAPODS: 1.16.2

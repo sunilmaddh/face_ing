@@ -21,7 +21,7 @@ class ProfilePageViewBuilder extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          FaceProgressIndicator(pages: pages, valueCurrentIndex: _currentIndex),
+          FaceProgressIndicator(pages: pages, valueCurrentIndex: _currentIndex,),
           Expanded(
             child: PageView.builder(
               controller: _pageController,

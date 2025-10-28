@@ -18,14 +18,14 @@ class CustomBottomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  int _selectedIndex = 0;
-
   final _controller = Get.find<LandingController>();
 
   @override
   void initState() {
     super.initState();
-    _controller.pageController = PageController(initialPage: _selectedIndex);
+    _controller.pageController = PageController(
+      initialPage: _controller.selectedIndex.value,
+    );
   }
 
   @override
@@ -48,151 +48,153 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         child: SvgPicture.asset(AppAssets.scan),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        padding: EdgeInsets.only(top: 18.0),
-        shape: CircularNotchedRectangle(),
-        notchMargin: 6,
-        color: Colors.white,
-        elevation: 8,
-        child: SizedBox(
-          height: 60,
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: CommonText.text(
-                  "Face Scan",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: "Manrope",
-                  color: AppColors.bottomTextColor,
+      bottomNavigationBar: Obx(
+        () => BottomAppBar(
+          padding: EdgeInsets.only(top: 18.0),
+          shape: CircularNotchedRectangle(),
+          notchMargin: 6,
+          color: Colors.white,
+          elevation: 8,
+          child: SizedBox(
+            height: 60,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: CommonText.text(
+                    "Face Scan",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: "Manrope",
+                    color: AppColors.bottomTextColor,
+                  ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: InkWell(
-                      onTap: () {
-                        _controller.onTabTapped(0);
-                      },
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(
-                            AppAssets.home,
-                            color:
-                                _selectedIndex == 0
-                                    ? AppColors.primary
-                                    : AppColors.bottomTextColor,
-                          ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: InkWell(
+                        onTap: () {
+                          _controller.onTabTapped(0);
+                        },
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(
+                              AppAssets.home,
+                              color:
+                                  _controller.selectedIndex.value == 0
+                                      ? AppColors.primary
+                                      : AppColors.bottomTextColor,
+                            ),
 
-                          CommonText.text(
-                            "Home",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Manrope",
-                            color:
-                                _selectedIndex == 0
-                                    ? AppColors.primary
-                                    : AppColors.bottomTextColor,
-                          ),
-                        ],
+                            CommonText.text(
+                              "Home",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Manrope",
+                              color:
+                                  _controller.selectedIndex.value == 0
+                                      ? AppColors.primary
+                                      : AppColors.bottomTextColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: InkWell(
-                      onTap: () {
-                        _controller.onTabTapped(1);
-                      },
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(
-                            AppAssets.aiAdivice,
-                            color:
-                                _selectedIndex == 1
-                                    ? AppColors.primary
-                                    : AppColors.bottomTextColor,
-                          ),
-                          CommonText.text(
-                            "AI Advice",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Manrope",
-                            color:
-                                _selectedIndex == 1
-                                    ? AppColors.primary
-                                    : AppColors.bottomTextColor,
-                          ),
-                        ],
+                    Flexible(
+                      flex: 2,
+                      child: InkWell(
+                        onTap: () {
+                          _controller.onTabTapped(1);
+                        },
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(
+                              AppAssets.aiAdivice,
+                              color:
+                                  _controller.selectedIndex.value == 1
+                                      ? AppColors.primary
+                                      : AppColors.bottomTextColor,
+                            ),
+                            CommonText.text(
+                              "AI Advice",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Manrope",
+                              color:
+                                  _controller.selectedIndex.value == 1
+                                      ? AppColors.primary
+                                      : AppColors.bottomTextColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 40), // Space for FAB
+                    const SizedBox(width: 40), // Space for FAB
 
-                  Flexible(
-                    flex: 2,
-                    child: InkWell(
-                      onTap: () {
-                        _controller.onTabTapped(2);
-                      },
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(
-                            AppAssets.voice,
-                            color:
-                                _selectedIndex == 2
-                                    ? AppColors.primary
-                                    : AppColors.bottomTextColor,
-                          ),
-                          CommonText.text(
-                            "Voice",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Manrope",
-                            color:
-                                _selectedIndex == 2
-                                    ? AppColors.primary
-                                    : AppColors.bottomTextColor,
-                          ),
-                        ],
+                    Flexible(
+                      flex: 2,
+                      child: InkWell(
+                        onTap: () {
+                          _controller.onTabTapped(2);
+                        },
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(
+                              AppAssets.voice,
+                              color:
+                                  _controller.selectedIndex.value == 2
+                                      ? AppColors.primary
+                                      : AppColors.bottomTextColor,
+                            ),
+                            CommonText.text(
+                              "Voice",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Manrope",
+                              color:
+                                  _controller.selectedIndex.value == 2
+                                      ? AppColors.primary
+                                      : AppColors.bottomTextColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: InkWell(
-                      onTap: () {
-                        _controller.onTabTapped(3);
-                      },
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(
-                            AppAssets.pulse,
-                            color:
-                                _selectedIndex == 3
-                                    ? AppColors.primary
-                                    : AppColors.bottomTextColor,
-                          ),
-                          CommonText.text(
-                            "Pulse survey",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Manrope",
-                            color:
-                                _selectedIndex == 3
-                                    ? AppColors.primary
-                                    : AppColors.bottomTextColor,
-                          ),
-                        ],
+                    Flexible(
+                      flex: 2,
+                      child: InkWell(
+                        onTap: () {
+                          _controller.onTabTapped(3);
+                        },
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(
+                              AppAssets.pulse,
+                              color:
+                                  _controller.selectedIndex.value == 3
+                                      ? AppColors.primary
+                                      : AppColors.bottomTextColor,
+                            ),
+                            CommonText.text(
+                              "Pulse survey",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: "Manrope",
+                              color:
+                                  _controller.selectedIndex.value == 3
+                                      ? AppColors.primary
+                                      : AppColors.bottomTextColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
