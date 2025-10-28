@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
@@ -37,6 +40,37 @@ class HomeHalper {
         AppRoutes.mesurementScreen,
         arguments: {"scanType": "user", "userName": name},
       );
+    }
+  }
+
+  Color getWellnessColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'low':
+        return const Color(0xFFFA704E);
+      case 'medium':
+      case 'mild':
+        return const Color(0xFFEEC000);
+
+      case 'high':
+        return const Color(0xFF1BC76D);
+
+      default:
+        return Colors.white;
+    }
+  }
+
+  Color getBloodColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'low':
+        return Color(0xFFEEC000);
+      case 'normal':
+        return const Color(0xFF1BC76D);
+
+      case 'high':
+        return const Color(0xFFFA704E);
+
+      default:
+        return Colors.white;
     }
   }
 }

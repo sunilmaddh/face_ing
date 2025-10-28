@@ -24,7 +24,7 @@ class ApiEndpoints {
   // "192.168.1.114:8085";
   // "192.168.1.234:8085";
 
-  static const String login = '/login',
+  String login = '/login',
       signUp = "/signup",
       verifySignUpOtp = '/verifySignupOtp',
       continueSignUp = '/continueSignup',
@@ -46,5 +46,6 @@ class ApiEndpoints {
       logoutUser = "/logoutUser",
       graphData = "/graphData",
       scanProgressMessage = "/scanMessage",
+      getLatestScore = "/getLatestScore",
       refreshToken = '/getTokenByRefreshToken';
 }

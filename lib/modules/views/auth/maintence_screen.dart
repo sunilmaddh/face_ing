@@ -25,7 +25,7 @@ class MaintenceScreen extends StatelessWidget {
           ),
           20.verticalSpace,
           CommonText.text(
-            "Cominng Soon.......",
+            "Coming Soon.......",
             fontWeight: FontWeight.w700,
             color: AppColors.primary,
             fontSize: AppDimensions.font(30),

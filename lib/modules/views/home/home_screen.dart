@@ -9,18 +9,17 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
+import 'package:ntt_data/modules/views/home/controllers/home_controller.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
+import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
 import 'package:ntt_data/modules/views/home/widgets/daily_advice_card_widget.dart';
 import 'package:ntt_data/modules/views/home/widgets/menu_card.dart';
 import 'package:ntt_data/modules/views/home/widgets/wellness_card.dart';
-import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -31,15 +30,22 @@ class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.find<MeasurementController>();
   final gcontroller = Get.find<GeustController>();
   final authController = Get.find<AuthController>();
+  final homeController = Get.put(HomeController());
 
   @override
   void initState() {
     super.initState();
+    homeController.getWellnessScore();
     authController.initializedData();
   }
 
   @override
   Widget build(BuildContext context) {
+    homeController.wellnessScore.value =
+        double.tryParse(
+          homeController.wellnessModel.value.wellnessIndex ?? '',
+        ) ??
+        0.0;
     return Scaffold(
       key: _scaffoldKey,
 
@@ -79,7 +85,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   SizedBox(height: AppDimensions.height(10)),
 
-                  WellnessCard(guageValue: 7),
+                  Obx(
+                    () => WellnessCard(
+                      guageValue: homeController.wellnessScore.value,
+                      wellnessDiff:
+                          homeController
+                              .wellnessModel
+                              .value
+                              .wellnessIndexValueDiff
+                              .toString(),
+                      status:
+                          homeController.wellnessModel.value.wellnessIndexstatus
+                              .toString(),
+                      wellnessPosNeg:
+                          homeController
+                              .wellnessModel
+                              .value
+                              .wellnessIndexPosOrNeg
+                              .toString(),
+                    ),
+                  ),
 
                   SizedBox(height: AppDimensions.height(15)),
 
@@ -99,9 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    AppNavigation.to(
-                                      AppRoutes.pulseSurveyScreen,
-                                    );
+                                    // AppNavigation.to(
+                                    //   AppRoutes.pulseSurveyScreen,
+                                    // );
                                   },
                                   child: MenuCard(
                                     menuTitle: "Pulse Survey",
@@ -110,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    AppNavigation.to(AppRoutes.voiceScreen);
+                                    // AppNavigation.to(AppRoutes.voiceScreen);
                                   },
                                   child: MenuCard(
                                     menuTitle: "Voice Scan",
@@ -132,8 +157,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         MainAxisAlignment.spaceAround,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           CommonText.text(
                                             "Blood Pressure",
@@ -142,6 +170,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                             fontWeight: FontWeight.w700,
                                             color: AppColors.primary,
                                           ),
+
+                                          SizedBox(
+                                            height: AppDimensions.height(5),
+                                          ),
+
                                           SvgPicture.asset(
                                             AppAssets.bHeartAssets,
                                           ),
@@ -152,11 +185,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CommonText.text(
-                                            "0.2201",
+                                            homeController
+                                                .wellnessModel
+                                                .value
+                                                .bloodPressure
+                                                .toString(),
                                             fontFamily: "DM Sans",
                                             fontSize: AppDimensions.font(24),
                                             fontWeight: FontWeight.w700,
-                                            color: AppColors.primary,
+                                            color: HomeHalper().getBloodColor(
+                                              homeController
+                                                  .wellnessModel
+                                                  .value
+                                                  .bloodPressureStatus
+                                                  .toString(),
+                                            ),
                                           ),
                                           CommonText.text(
                                             "bpm",

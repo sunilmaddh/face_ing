@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
 import 'package:ntt_data/modules/views/home/widgets/circle_card_widget.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class WellnessCard extends StatelessWidget {
-  const WellnessCard({super.key, required this.guageValue});
+  const WellnessCard({
+    super.key,
+    required this.guageValue,
+    required this.wellnessDiff,
+    required this.status,
+    required this.wellnessPosNeg,
+  });
   final double guageValue;
+  final String wellnessDiff;
+  final String status;
+  final String wellnessPosNeg;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +32,7 @@ class WellnessCard extends StatelessWidget {
               children: [
                 CommonText.text(
                   "Wellness Score",
-                  fontSize: AppDimensions.font(11),
+                  fontSize: AppDimensions.font(13),
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,
                   fontFamily: "DM Sans",
@@ -31,18 +41,23 @@ class WellnessCard extends StatelessWidget {
                   guageValue.toStringAsFixed(0),
                   fontSize: AppDimensions.font(55),
                   fontWeight: FontWeight.w700,
-                  color: AppColors.primary,
+                  color: HomeHalper().getWellnessColor(status),
                   fontFamily: "League Spartan",
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.arrow_drop_down),
+                    wellnessPosNeg == "Negative"
+                        ? Icon(Icons.arrow_drop_down, color: Colors.red)
+                        : Icon(Icons.arrow_upward, color: Colors.green),
                     CommonText.text(
-                      "5",
+                      wellnessDiff,
                       fontSize: AppDimensions.font(15),
                       fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
+                      color:
+                          wellnessPosNeg == "Negative"
+                              ? Colors.red
+                              : Colors.green,
                     ),
                   ],
                 ),
@@ -64,7 +79,7 @@ class WellnessCard extends StatelessWidget {
               percent: guageValue / 10, // dynamic value
               animation: true,
               circularStrokeCap: CircularStrokeCap.round,
-              progressColor: AppColors.primary,
+              progressColor: HomeHalper().getWellnessColor(status),
               backgroundColor: Colors.grey.shade200,
               center: SizedBox(),
             ),

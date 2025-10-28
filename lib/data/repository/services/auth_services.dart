@@ -11,37 +11,37 @@ class AuthServices extends BaseApiService {
   final apiEndpoints = ApiEndpoints();
 
   Future<Map<String, dynamic>> getSignUpOtp({required var data}) async {
-    return await postRequest(ApiEndpoints.signUp, data: data);
+    return await postRequest(apiEndpoints.signUp, data: data);
   }
 
   Future<Map<String, dynamic>> verifySignUpOtp({required var data}) async {
-    return await postRequest(ApiEndpoints.verifySignUpOtp, data: data);
+    return await postRequest(apiEndpoints.verifySignUpOtp, data: data);
   }
 
   Future<Map<String, dynamic>> profileCreation({required var data}) async {
-    return await postRequest(ApiEndpoints.continueSignUp, data: data);
+    return await postRequest(apiEndpoints.continueSignUp, data: data);
   }
 
   Future<Map<String, dynamic>> userLogin({required var data}) async {
-    return await loginPostRequest(ApiEndpoints.login, data: data);
+    return await loginPostRequest(apiEndpoints.login, data: data);
   }
 
   Future<Map<String, dynamic>> getForgotOtp({required var data}) async {
-    return await postRequest(ApiEndpoints.getforgetOtp, data: data);
+    return await postRequest(apiEndpoints.getforgetOtp, data: data);
   }
 
   Future<Map<String, dynamic>> verifyForgotOtp({required var data}) async {
-    return await postRequest(ApiEndpoints.verifyForgotOtp, data: data);
+    return await postRequest(apiEndpoints.verifyForgotOtp, data: data);
   }
 
   Future<Map<String, dynamic>> resetPassword({required var data}) async {
-    return await postRequest(ApiEndpoints.resetPassword, data: data);
+    return await postRequest(apiEndpoints.resetPassword, data: data);
   }
 
   Future<Map<String, dynamic>> getMedicalQeustionList({
     required var data,
   }) async {
-    return await postRequest(ApiEndpoints.medicalQuestionList, data: data);
+    return await postRequest(apiEndpoints.medicalQuestionList, data: data);
   }
 
   Future<Map<String, dynamic>> uploadDocument(
@@ -52,7 +52,7 @@ class AuthServices extends BaseApiService {
     String isGuest,
   ) async {
     Response? response = await uploadImage(
-      ApiEndpoints.profileUpload,
+      apiEndpoints.profileUpload,
       imagePath!.path,
       userID,
       imageType,

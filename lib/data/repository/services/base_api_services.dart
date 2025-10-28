@@ -20,6 +20,8 @@ abstract class BaseApiService {
         uri = Uri.https(baseUrl, api + endpoint);
       } else {
         uri = Uri.http(baseUrl, endpoint);
+
+        debugPrint(uri.toString());
       }
 
       final response = await http.get(uri);
@@ -274,7 +276,7 @@ abstract class BaseApiService {
 
   Future<String?> refreshToken() async {
     final refreshToken = await IndoSharedPreference.instance.getRefreshToken();
-    Uri uri = Uri.http(baseUrl, ApiEndpoints.refreshToken);
+    Uri uri = Uri.http(baseUrl, ApiEndpoints().refreshToken);
     var header = {
       "Content-Type": "application/json",
       "Authorization": "Bearer $refreshToken",
