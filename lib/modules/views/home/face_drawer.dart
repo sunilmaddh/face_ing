@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
@@ -21,9 +21,11 @@ import 'package:shimmer/shimmer.dart';
 
 class FaceDrawer extends StatelessWidget {
   FaceDrawer({super.key});
-  final _profileController = Get.find<AuthController>();
-  final _controller = Get.find<ProfileController>();
 
+  final AuthController _authController = Get.find<AuthController>();
+  final ProfileController _profileController = Get.find<ProfileController>();
+
+  /// Reusable ListTile builder
   Widget _buildListTile({
     required String icon,
     required String title,
@@ -48,7 +50,7 @@ class FaceDrawer extends StatelessWidget {
           trailing: trailing,
           onTap: onTap,
         ),
-        Divider(),
+        const Divider(),
       ],
     );
   }
@@ -62,6 +64,7 @@ class FaceDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// ---- HEADER ----
             Container(
               decoration: BoxDecoration(
                 color: AppColors.drawerHeaderColor,
@@ -83,96 +86,84 @@ class FaceDrawer extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
-                            onTap: () {
-                              AppNavigation.back();
-                            },
+                            onTap: AppNavigation.back,
                             child: SvgPicture.asset(AppAssets.backButton),
                           ),
                         ),
                       ),
                       SizedBox(
                         width: AppDimensions.width(90),
-                        child: Obx(
-                          () =>
-                              _profileController.imageLoading.isTrue
-                                  ? ClipOval(
-                                    child: Shimmer.fromColors(
-                                      baseColor: Colors.grey.shade300,
-                                      highlightColor: Colors.grey.shade100,
-                                      child: Container(
-                                        width: 95,
-                                        height: 95,
-                                        color: Colors.white,
+                        child: Obx(() {
+                          if (_authController.imageLoading.isTrue) {
+                            return ClipOval(
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.grey.shade100,
+                                child: Container(
+                                  width: 95,
+                                  height: 95,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Stack(
+                              children: [
+                                _authController.userImage.isNotEmpty
+                                    ? CircularImageWithShimmer(
+                                      size: 95,
+                                      imageUrl: _authController.userImage.value,
+                                    )
+                                    : CustomCircularAvatar(
+                                      color: AppColors.guestIconColor,
+                                      widget: CommonText.text(
+                                        _authController.userName.isNotEmpty
+                                            ? _authController.userName
+                                                .substring(0, 1)
+                                                .toUpperCase()
+                                            : "",
+                                        color: AppColors.btntext,
+                                        fontSize: AppDimensions.font(30),
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
-                                  )
-                                  : Stack(
-                                    children: [
-                                      _profileController.userImage.isNotEmpty
-                                          ? CircularImageWithShimmer(
-                                            size: 95,
-                                            imageUrl:
-                                                _profileController
-                                                    .userImage
-                                                    .value,
-                                          )
-                                          : CustomCircularAvatar(
-                                            color: AppColors.guestIconColor,
-
-                                            widget: CommonText.text(
-                                              _profileController
-                                                      .userName
-                                                      .isNotEmpty
-                                                  ? _profileController.userName
-                                                      .substring(0, 1)
-                                                      .toUpperCase()
-                                                  : "",
-                                              color: AppColors.btntext,
-                                              fontSize: AppDimensions.font(30),
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: InkWell(
-                                          onTap: () {
-                                            CommonDialog().editGuestDialog(
-                                              guestOptionList:
-                                                  AppMethods().guestOptionList,
-                                              context: context,
-                                              onConfirm: (value) {
-                                                if (value == "Photo") {
-                                                  AppMethods()
-                                                      .editProfilePicture(
-                                                        _profileController,
-                                                        "",
-                                                        "false",
-                                                        () {},
-                                                      );
-                                                } else {
-                                                  ProfileHelper()
-                                                      .retainedUserData();
-                                                }
-                                              },
-                                              onCancel: () {},
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: InkWell(
+                                    onTap: () {
+                                      CommonDialog().editGuestDialog(
+                                        guestOptionList:
+                                            AppMethods().guestOptionList,
+                                        context: context,
+                                        onConfirm: (value) {
+                                          if (value == "Photo") {
+                                            AppMethods().editProfilePicture(
+                                              _authController,
+                                              "",
+                                              "false",
+                                              () {},
                                             );
-                                          },
-                                          child: SvgPicture.asset(
-                                            AppAssets.editIcon,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                          } else {
+                                            ProfileHelper().retainedUserData();
+                                          }
+                                        },
+                                        onCancel: () {},
+                                      );
+                                    },
+                                    child: SvgPicture.asset(AppAssets.editIcon),
                                   ),
-                        ),
+                                ),
+                              ],
+                            );
+                          }
+                        }),
                       ),
                       SizedBox(height: AppDimensions.height(20)),
                       Obx(
                         () => CommonText.text(
-                          _profileController.userUpdateName.isNotEmpty
-                              ? _profileController.userUpdateName.value
-                              : _profileController.userName.value,
+                          _authController.userUpdateName.isNotEmpty
+                              ? _authController.userUpdateName.value
+                              : _authController.userName.value,
                           fontSize: AppDimensions.font(16),
                           fontWeight: FontWeight.w400,
                           fontFamily: AppConstents.gilroyBold,
@@ -181,7 +172,7 @@ class FaceDrawer extends StatelessWidget {
                       SizedBox(height: AppDimensions.height(10)),
                       Obx(
                         () => CommonText.text(
-                          _profileController.userEmail.value,
+                          _authController.userEmail.value,
                           fontSize: AppDimensions.font(14),
                           fontWeight: FontWeight.w400,
                           fontFamily: AppConstents.gilroyMedium,
@@ -192,16 +183,10 @@ class FaceDrawer extends StatelessWidget {
                 ),
               ),
             ),
+
             SizedBox(height: AppDimensions.height(40)),
 
-            /// **Reusable List Tiles**
-            ///
-            // _buildListTile(
-            //   icon: AppAssets.userIcon,
-            //   title: "Edit Profile",
-            //   subtitle: "Update User Details",
-            //   onTap: () => ProfileHelper().retainedUserData(),
-            // ),
+            /// ---- MENU ITEMS ----
             _buildListTile(
               icon: AppAssets.userIcon,
               title: "Guest User",
@@ -214,41 +199,24 @@ class FaceDrawer extends StatelessWidget {
               subtitle: "User history data",
               onTap: () => AppNavigation.to(AppRoutes.userHistoryList),
             ),
-            // _buildListTile(
-            //   icon: AppAssets.notification,
-            //   title: "Push Notification",
-            //   subtitle: "Manage notifications and more",
-            //   trailing: Switch(
-            //     value: true,
-            //     onChanged: (value) {
-            //       // Handle switch toggle logic
-            //     },
-            //   ),
-            //   onTap: () {},
-            // ),
             _buildListTile(
               icon: AppAssets.logout,
               title: "Logout",
               onTap:
                   () => DialogHelper.showLogoutDialog(
                     context,
-                    _controller.isLoadingLogout.value,
+                    _profileController.isLoadingLogout.value,
                   ),
             ),
 
-            Spacer(),
+            const Spacer(),
+
+            /// ---- VERSION ----
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // CommonText.text(
-                //   "Version: ",
-                //   color: AppColors.powerBy,
-                //   fontSize: AppDimensions.font(20),
-                //   fontWeight: FontWeight.w700,
-                //   fontFamily: "Open Sans",
-                // ),
                 CommonText.text(
-                  "v:1.0.17",
+                  "v1.0.17",
                   color: AppColors.powerBy,
                   fontSize: AppDimensions.font(14),
                   fontWeight: FontWeight.w700,
@@ -257,13 +225,13 @@ class FaceDrawer extends StatelessWidget {
               ],
             ),
 
-            /// **Powered By Section**
+            /// ---- POWERED BY ----
             SafeArea(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CommonText.text(
-                    "Powered BY",
+                    "Powered By ",
                     color: AppColors.powerBy,
                     fontSize: AppDimensions.font(20),
                     fontWeight: FontWeight.w700,

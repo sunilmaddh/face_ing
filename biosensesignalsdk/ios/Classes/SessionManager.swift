@@ -8,7 +8,8 @@ class SessionManager:
         VitalSignsListener,
         SessionInfoListener,
         PPGDeviceInfoListener,
-        FallDetectionListener {
+        FallDetectionListener,
+        LogsListener {
     
     static let shared = SessionManager()
     
@@ -34,6 +35,8 @@ class SessionManager:
         strictMeasurementGuidance: Bool? = false,
         sdkAnalytics: Bool? = false,
         cameraLocation: Int? = nil,
+        logsLevel: Int? = nil,
+        saveLogsToPublicFolder: Bool? = false,
         options: [String: Any]? = nil
     
     ) throws {
@@ -66,6 +69,16 @@ class SessionManager:
             sessionBuilder = sessionBuilder.withAnalytics() as! FaceSessionBuilder
         }
         
+        if let logsLevel = resolveLogsLevel(logsLevel: logsLevel) {
+            sessionBuilder = sessionBuilder.withLogs(
+                configuration: LogsConfiguration(
+                    level: logsLevel,
+                    saveToPublicFolder: saveLogsToPublicFolder ?? false
+                ), 
+                listener: self
+            ) as! FaceSessionBuilder
+        }
+        
         session = try sessionBuilder
             .withImageListener(self)
             .withVitalSignsListener(self)
@@ -85,7 +98,9 @@ class SessionManager:
         subjectHeight: Double? = nil,
         subjectSmokingStatus: Int? = nil,
         fallDetection: Bool? = false,
-        sdkAnalytics: Bool? = false,        
+        sdkAnalytics: Bool? = false,
+        logsLevel: Int? = nil,
+        saveLogsToPublicFolder: Bool? = false,
         options: [String: Any]? = nil) throws {
             if (resolveDeviceType(deviceType: deviceType) != PPGDeviceType.polar) {
                 throw NSError(domain: AlertDomains.initialization, code: AlertCodes.ppgDeviceUnsupportedDeviceModelError)
@@ -104,6 +119,16 @@ class SessionManager:
                 sessionBuilder = sessionBuilder.withAnalytics() as! PolarSessionBuilder
             }
             
+            if let logsLevel = resolveLogsLevel(logsLevel: logsLevel) {
+                sessionBuilder = sessionBuilder.withLogs(
+                    configuration: LogsConfiguration(
+                        level: logsLevel,
+                        saveToPublicFolder: saveLogsToPublicFolder ?? false
+                    ), 
+                    listener: self
+                ) as! PolarSessionBuilder
+            }
+
             session = try sessionBuilder
                 .withVitalSignsListener(self)
                 .withSessionInfoListener(self)
@@ -199,6 +224,10 @@ class SessionManager:
         eventChannel?.sendEvent(name: NativeBridgeEvents.fallDetectionData, payload: data.toMap())
     }
 
+    func onLogsReady(logsInfo: LogsInfo) {
+        eventChannel?.sendEvent(name: NativeBridgeEvents.logsReady, payload: logsInfo.toMap())
+    }
+
     private func resolveDeviceOrientation(deviceOrientation: Int?) -> DeviceOrientation? {
         guard let orientation = deviceOrientation, let orientationEnum = DeviceOrientation.init(rawValue: orientation) else {
             return nil
@@ -212,20 +241,20 @@ class SessionManager:
             return nil
         }
         
-        let builder = UserInformationBuilder()
-        builder.setSex(Sex.init(rawValue: sex ?? 0) ?? Sex.unspecified)
+        var builder = UserInformationBuilder()
+        builder = builder.setSex(Sex.init(rawValue: sex ?? 0) ?? Sex.unspecified)
         if let age = age {
-            builder.setAge(NSNumber.init(value: age))
+            builder = builder.setAge(NSNumber.init(value: age))
         }
       
         if let weight = weight {
-            builder.setWeight(NSNumber.init(value: weight))
+            builder = builder.setWeight(NSNumber.init(value: weight))
         }
         
         if let height = height {
-            builder.setHeight(NSNumber.init(value: height))
+            builder = builder.setHeight(NSNumber.init(value: height))
         }
-        builder.setSmokingStatus(SmokingStatus.init(rawValue: smokingStatus ?? 0) ?? SmokingStatus.unspecified)
+        builder = builder.setSmokingStatus(SmokingStatus.init(rawValue: smokingStatus ?? 0) ?? SmokingStatus.unspecified)
 
         return builder.build()
     }
@@ -250,6 +279,14 @@ class SessionManager:
         }
 
         return cameraLocationEnum
+    }
+
+    private func resolveLogsLevel(logsLevel: Int?) -> LogsLevel? {
+        if logsLevel == nil {
+            return nil
+        }
+        
+        return LogsLevel.default
     }
 }
 

@@ -58,17 +58,29 @@ class VitalGraphController extends GetxController {
         hrvResponse.value = vitalGraphResponse.value.hrvSddnn!;
         ahrvResponse.value =
             vitalGraphResponse.value.advancedHeartRateVariability!;
+        hrvResponse.value.vitalTypeDetails!.first.yValues!.clear();
+
+        List<String> li = ["0.0", "75.0", "150.0"];
+        hrvResponse.value.vitalTypeDetails!.first.yValues!.addAll(li);
         if (isFromHistory) {
           isFromHistory = false;
         }
       } else if (statusCode == 403) {
-        AppSnackbar.show(title: "Error", message: "Something went wrong");
+        AppSnackbar.show(
+          title: "Error",
+          message: "Something went wrong",
+          isError: false,
+        );
       } else {
-        AppSnackbar.show(title: "Error", message: "Something went wrong");
+        AppSnackbar.show(
+          title: "Error",
+          message: "Something went wrong",
+          isError: false,
+        );
       }
     } catch (e) {
       isLoading(false);
-      AppSnackbar.show(title: "Error", message: e.toString());
+      // AppSnackbar.show(title: "Error", message: e.toString(), isError: false);
     }
   }
 

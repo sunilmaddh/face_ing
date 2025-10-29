@@ -11,12 +11,6 @@ class HomeController extends GetxController {
 
   RxDouble wellnessScore = 0.0.obs;
 
-  // @override
-  // void onInit() {
-  //   getWellnessScore();
-  //   super.onInit();
-  // }
-
   Future<void> getWellnessScore() async {
     try {
       final responseData = await _homeServices.getLatestWellnessScore();
@@ -31,6 +25,8 @@ class HomeController extends GetxController {
         debugPrint("Wellness Score Result: $result");
 
         wellnessModel.value = LatestWellnessModel.fromJson(result);
+        wellnessScore.value =
+            double.tryParse(wellnessModel.value.wellnessIndex ?? '') ?? 0.0;
       } else {
         AppSnackbar.show(
           title: "Error",

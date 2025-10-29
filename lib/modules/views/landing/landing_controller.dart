@@ -9,4 +9,9 @@ class LandingController extends GetxController {
     selectedIndex.value = index;
     pageController.jumpToPage(index);
   }
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final currentIndex = 0.obs;
+
+  void openDrawer() => scaffoldKey.currentState?.openDrawer();
 }

@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/modules/views/home/face_drawer.dart';
 import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
 import 'package:ntt_data/modules/views/landing/landing_controller.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -31,7 +32,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _controller.scaffoldKey,
       extendBody: true,
+      drawer: FaceDrawer(),
       body: PageView(
         controller: _controller.pageController,
         onPageChanged: (index) {

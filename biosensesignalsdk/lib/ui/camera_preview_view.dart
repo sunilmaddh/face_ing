@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CameraPreviewView extends StatelessWidget {
-  static const String _viewType =
-      "plugins.biosensesignal.com/camera_preview_view";
+  static const String _viewType = "plugins.biosensesignal.com/camera_preview_view";
 
   const CameraPreviewView({Key? key}) : super(key: key);
 

@@ -30,6 +30,10 @@ import com.biosensesignal.sdk.session.PolarSessionBuilder
 import android.content.Context
 import com.biosensesignal.sdk.api.fall_detection.FallDetectionData
 import com.biosensesignal.sdk.api.fall_detection.FallDetectionListener
+import com.biosensesignal.sdk.api.logs.LogsConfiguration
+import com.biosensesignal.sdk.api.logs.LogsInfo
+import com.biosensesignal.sdk.api.logs.LogsLevel
+import com.biosensesignal.sdk.api.logs.LogsListener
 import com.biosensesignal.sdk.api.session.CameraLocation
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
@@ -38,7 +42,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 class SessionManager(private val eventChannel: BiosenseSignalEventChannel):
     ImageDataSource, ImageListener, VitalSignsListener, SessionInfoListener,
-    PPGDeviceInfoListener, FallDetectionListener {
+    PPGDeviceInfoListener, FallDetectionListener, LogsListener {
 
     private val _images = MutableSharedFlow<ImageData>(replay = 0, extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_LATEST)
     private var session: Session? = null
@@ -61,6 +65,8 @@ class SessionManager(private val eventChannel: BiosenseSignalEventChannel):
         strictMeasurementGuidance: Boolean? = false,
         sdkAnalytics: Boolean? = false,
         cameraLocation: Int? = null,
+        logsLevel: Int? = null,
+        saveLogsToPublicFolder: Boolean? = false,
         options: Map<String, Any>? = null
     ) {
         val orientation = resolveDeviceOrientation(deviceOrientation)
@@ -88,6 +94,16 @@ class SessionManager(private val eventChannel: BiosenseSignalEventChannel):
             sessionBuilder.withCameraLocation(location)
         }
 
+        resolveLogsLevel(logsLevel)?.let { level ->
+            sessionBuilder.withLogs(
+                LogsConfiguration(
+                    level,
+                    saveLogsToPublicFolder ?: false
+                ),
+                this@SessionManager
+            )
+        }
+
         session = sessionBuilder
             .withImageListener(this@SessionManager)
             .withVitalSignsListener(this@SessionManager)
@@ -111,6 +127,8 @@ class SessionManager(private val eventChannel: BiosenseSignalEventChannel):
         subjectSmokingStatus: Int? = null,
         fallDetection: Boolean? = false,
         sdkAnalytics: Boolean? = false,
+        logsLevel: Int? = null,
+        saveLogsToPublicFolder: Boolean? = false,
         options: Map<String, Any>? = null
     ) {
         val userInformation = resolveUserInformation(
@@ -122,7 +140,7 @@ class SessionManager(private val eventChannel: BiosenseSignalEventChannel):
         )
 
         if (resolvePPGDeviceType(deviceType) == PPGDeviceType.POLAR) {
-            var builder = PolarSessionBuilder(context, deviceId)
+            var sessionBuilder = PolarSessionBuilder(context, deviceId)
                 .withUserInformation(userInformation)
                 .withVitalSignsListener(this@SessionManager)
                 .withSessionInfoListener(this@SessionManager)
@@ -131,10 +149,19 @@ class SessionManager(private val eventChannel: BiosenseSignalEventChannel):
                 .withOptions(options)
 
             if (fallDetection == true) {
-                builder = builder.withFallDetectionListener(this)
+                sessionBuilder = sessionBuilder.withFallDetectionListener(this)
             }
 
-            session = builder.build(LicenseDetails(licenseKey, productId))
+            resolveLogsLevel(logsLevel)?.let { level ->
+                sessionBuilder.withLogs(
+                    LogsConfiguration(
+                        level,
+                        saveLogsToPublicFolder ?: false
+                    ),
+                    this@SessionManager
+                )
+            }
+            session = sessionBuilder.build(LicenseDetails(licenseKey, productId))
         }
     }
 
@@ -244,6 +271,10 @@ class SessionManager(private val eventChannel: BiosenseSignalEventChannel):
         eventChannel.sendEvent(NativeBridgeEvents.fallDetectionData, data.toMap())
     }
 
+    override fun onLogsReady(logsInfo: LogsInfo) {
+        eventChannel.sendEvent(NativeBridgeEvents.logsReady, logsInfo.toMap())
+    }
+
     private fun resolveDeviceOrientation(deviceOrientation: Int?): DeviceOrientation? {
         return deviceOrientation?.let {orientation ->
             try {
@@ -295,6 +326,12 @@ class SessionManager(private val eventChannel: BiosenseSignalEventChannel):
             } catch (ignore: IndexOutOfBoundsException) {
                 null
             }
+        }
+    }
+
+    private fun resolveLogsLevel(logsLevel: Int?): LogsLevel? {
+        return logsLevel?.let { _ ->
+            return LogsLevel.DEFAULT
         }
     }
 }

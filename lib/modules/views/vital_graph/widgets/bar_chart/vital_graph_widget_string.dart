@@ -92,11 +92,23 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
     int index = numericValue.toInt();
 
     if (index >= 0 && index < widget.bottomTitles.length) {
-      if (widget.bottomTitles[index].toLowerCase() == "yesterday") {
-        return (DateTime.now().day - 1).toString();
+      if (widget.bottomTitles[index] == "1") {
+        return widget.bottomTitles[index];
+      } else if (widget.bottomTitles[index] == "5") {
+        return widget.bottomTitles[index];
+      } else if (widget.bottomTitles[index] == "10") {
+        return widget.bottomTitles[index];
+      } else if (widget.bottomTitles[index] == "15") {
+        return widget.bottomTitles[index];
+      } else if (widget.bottomTitles[index] == "20") {
+        return widget.bottomTitles[index];
+      } else if (widget.bottomTitles[index] == "25") {
+        return widget.bottomTitles[index];
+      } else if (widget.bottomTitles[index] == "30") {
+        return widget.bottomTitles[index];
+      } else {
+        return '';
       }
-
-      return widget.bottomTitles[index];
     }
 
     return "";
@@ -109,72 +121,69 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SizedBox(
-          width: AppDimensions.width(1000.0),
-          height: 200,
-          child: BarChart(
-            BarChartData(
-              baselineY: 0,
-              maxY: maxY,
-              alignment: BarChartAlignment.spaceAround,
-              barTouchData: BarTouchData(
-                enabled: true,
-                touchTooltipData: BarTouchTooltipData(
-                  fitInsideVertically: true,
-                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                    String label =
-                        stringToIndex.entries
-                            .firstWhere(
-                              (entry) => entry.value == rod.toY.toInt(),
-                              orElse: () => const MapEntry("", 0),
-                            )
-                            .key;
-                    return BarTooltipItem(
-                      label.isNotEmpty
-                          ? label.toFirstCaps()
-                          : rod.toY.toStringAsFixed(1),
-                      const TextStyle(color: Colors.white, fontSize: 12),
-                    );
-                  },
-                ),
+      child: SizedBox(
+        width: AppDimensions.width(1000.0),
+        height: 200,
+        child: BarChart(
+          BarChartData(
+            baselineY: 0,
+            maxY: maxY,
+            alignment: BarChartAlignment.spaceAround,
+            barTouchData: BarTouchData(
+              enabled: true,
+              touchTooltipData: BarTouchTooltipData(
+                fitInsideVertically: true,
+                getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                  String label =
+                      stringToIndex.entries
+                          .firstWhere(
+                            (entry) => entry.value == rod.toY.toInt(),
+                            orElse: () => const MapEntry("", 0),
+                          )
+                          .key;
+                  return BarTooltipItem(
+                    label.isNotEmpty
+                        ? label.toFirstCaps()
+                        : rod.toY.toStringAsFixed(1),
+                    const TextStyle(color: Colors.white, fontSize: 12),
+                  );
+                },
               ),
-              titlesData: FlTitlesData(
-                show: true,
-                rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    interval: 1,
-                    reservedSize: 42,
-                    getTitlesWidget: bottomTitles,
-                  ),
-                ),
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 55,
-                    interval: 1,
-                    getTitlesWidget: leftTitles,
-                  ),
-                ),
-              ),
-              borderData: FlBorderData(
-                show: true,
-                border: Border(
-                  left: BorderSide(width: 1.0, color: AppColors.searchColor),
-                  bottom: BorderSide(width: 1.0, color: AppColors.searchColor),
-                ),
-              ),
-              barGroups: showingBarGroups,
-              gridData: const FlGridData(show: false, drawVerticalLine: false),
             ),
+            titlesData: FlTitlesData(
+              show: true,
+              rightTitles: const AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              topTitles: const AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  interval: 5,
+                  reservedSize: 42,
+                  getTitlesWidget: bottomTitles,
+                ),
+              ),
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 55,
+                  interval: 1,
+                  getTitlesWidget: leftTitles,
+                ),
+              ),
+            ),
+            borderData: FlBorderData(
+              show: true,
+              border: Border(
+                left: BorderSide(width: 1.0, color: AppColors.searchColor),
+                bottom: BorderSide(width: 1.0, color: AppColors.searchColor),
+              ),
+            ),
+            barGroups: showingBarGroups,
+            gridData: const FlGridData(show: false, drawVerticalLine: false),
           ),
         ),
       ),
@@ -230,7 +239,11 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
           toY: y1,
           color: color,
           width: width,
-          borderRadius: BorderRadius.zero,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+          borderSide: BorderSide(color: AppColors.borderColor),
         ),
       ],
     );

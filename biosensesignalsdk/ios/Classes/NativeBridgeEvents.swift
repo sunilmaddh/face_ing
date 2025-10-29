@@ -21,4 +21,5 @@ class NativeBridgeEvents {
     static let ppgDeviceInfo = "ppg_device_info"
     static let ppgDeviceBatteryLevel = "ppg_device_battery_level"
     static let fallDetectionData = "fall_detection_data"
+    static let logsReady = "logs_ready"
 }

@@ -12,4 +12,5 @@ class BridgeEvents {
   static const String ppgDeviceInfo = "ppg_device_info";
   static const String ppgDeviceBattery = "ppg_device_battery_level";
   static const String fallDetectionData = "fall_detection_data";
+  static const String logsReady = "logs_ready";
 }

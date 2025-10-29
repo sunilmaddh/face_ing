@@ -21,71 +21,88 @@ class WellnessCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(guageValue.toString());
+    debugPrint(wellnessDiff.toString());
     return CircleCardWidget(
       size: 215,
-      widget: Stack(
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CommonText.text(
-                  "Wellness Score",
-                  fontSize: AppDimensions.font(13),
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary,
-                  fontFamily: "DM Sans",
-                ),
-                CommonText.text(
-                  guageValue.toStringAsFixed(0),
-                  fontSize: AppDimensions.font(55),
-                  fontWeight: FontWeight.w700,
-                  color: HomeHalper().getWellnessColor(status),
-                  fontFamily: "League Spartan",
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    wellnessPosNeg == "Negative"
-                        ? Icon(Icons.arrow_drop_down, color: Colors.red)
-                        : Icon(Icons.arrow_upward, color: Colors.green),
-                    CommonText.text(
-                      wellnessDiff,
-                      fontSize: AppDimensions.font(15),
-                      fontWeight: FontWeight.w600,
-                      color:
-                          wellnessPosNeg == "Negative"
-                              ? Colors.red
-                              : Colors.green,
+      widget:
+          guageValue > 0.0
+              ? Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CommonText.text(
+                          "Wellness Score",
+                          fontSize: AppDimensions.font(11),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primary,
+                          fontFamily: "DM Sans",
+                        ),
+                        CommonText.text(
+                          guageValue.toStringAsFixed(0),
+                          fontSize: AppDimensions.font(55),
+                          fontWeight: FontWeight.w700,
+                          color: HomeHalper().getWellnessColor(status),
+                          fontFamily: "League Spartan",
+                        ),
+                        wellnessDiff != "null"
+                            ? Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                wellnessPosNeg == "Negative"
+                                    ? Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.red,
+                                    )
+                                    : Icon(
+                                      Icons.arrow_drop_up,
+                                      color: Colors.green,
+                                    ),
+                                CommonText.text(
+                                  wellnessDiff,
+                                  fontSize: AppDimensions.font(15),
+                                  fontWeight: FontWeight.w600,
+                                  color:
+                                      wellnessPosNeg == "Negative"
+                                          ? Colors.red
+                                          : Colors.green,
+                                ),
+                              ],
+                            )
+                            : SizedBox.shrink(),
+                        wellnessDiff != "null"
+                            ? CommonText.text(
+                              "From Last time",
+                              fontSize: AppDimensions.font(8),
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primary,
+                            )
+                            : SizedBox.shrink(),
+                      ],
                     ),
-                  ],
-                ),
-                CommonText.text(
-                  "From Last time",
-                  fontSize: AppDimensions.font(8),
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary,
-                ),
-              ],
-            ),
-          ),
+                  ),
 
-          Align(
-            alignment: Alignment.center,
-            child: CircularPercentIndicator(
-              radius: 102,
-              lineWidth: 15,
-              percent: guageValue / 10, // dynamic value
-              animation: true,
-              circularStrokeCap: CircularStrokeCap.round,
-              progressColor: HomeHalper().getWellnessColor(status),
-              backgroundColor: Colors.grey.shade200,
-              center: SizedBox(),
-            ),
-          ),
-        ],
-      ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: CircularPercentIndicator(
+                      radius: 102,
+                      lineWidth: 15,
+                      percent: guageValue / 10, // dynamic value
+                      animation: true,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      progressColor: HomeHalper().getWellnessColor(status),
+                      backgroundColor: Colors.grey.shade200,
+                      center: SizedBox(),
+                    ),
+                  ),
+                ],
+              )
+              : Center(
+                child: CommonText.text("No Data", color: AppColors.primary),
+              ),
     );
   }
 }

@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       ensureScreenSize: true,
       child: GetMaterialApp(
         useInheritedMediaQuery: true,
-        debugShowCheckedModeBanner: true,
+        debugShowCheckedModeBanner: false,
         title: 'Face.ing',
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
