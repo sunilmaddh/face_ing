@@ -14,6 +14,7 @@ abstract class BaseApiService {
   final isHttps = false;
 
   Future<Map<String, dynamic>> getRequest(String endpoint) async {
+    var accessToken = await IndoSharedPreference.instance.getAccessToken();
     try {
       Uri uri;
       if (isHttps) {
@@ -24,7 +25,13 @@ abstract class BaseApiService {
         debugPrint(uri.toString());
       }
 
-      final response = await http.get(uri);
+      final response = await http.get(
+        uri,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $accessToken",
+        },
+      );
       if (response.statusCode == 401) {
         String? isAccessToken = await refreshToken();
         if (isAccessToken != null && isAccessToken.isNotEmpty) {
@@ -40,7 +47,7 @@ abstract class BaseApiService {
 
   Future<Map<String, dynamic>> postRequest(
     String endpoint, {
-    required Map<String, dynamic> data,
+    required dynamic data,
   }) async {
     var accessToken = await IndoSharedPreference.instance.getAccessToken();
     debugPrint("Access toke $accessToken");

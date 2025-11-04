@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
@@ -7,6 +8,8 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/home/controllers/home_controller.dart';
 import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
 import 'package:ntt_data/modules/views/home/widgets/menu_card.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
@@ -20,7 +23,7 @@ class MenuCardWidget extends StatelessWidget {
       child: Obx(
         () => CommonCard(
           widget: Padding(
-            padding: AppDimensions.symmetric(horizontal: 15, vertical: 15),
+            padding: AppDimensions.symmetric(horizontal: 10, vertical: 10),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -29,9 +32,7 @@ class MenuCardWidget extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        // AppNavigation.to(
-                        //   AppRoutes.pulseSurveyScreen,
-                        // );
+                        AppNavigation.to(AppRoutes.pulseSurveyScreen);
                       },
                       child: MenuCard(
                         menuTitle: "Pulse Survey",

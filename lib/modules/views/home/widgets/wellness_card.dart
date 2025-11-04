@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
@@ -24,7 +25,7 @@ class WellnessCard extends StatelessWidget {
     debugPrint(guageValue.toString());
     debugPrint(wellnessDiff.toString());
     return CircleCardWidget(
-      size: 215,
+      size: 170.r,
       widget:
           guageValue > 0.0
               ? Stack(
@@ -88,8 +89,8 @@ class WellnessCard extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: CircularPercentIndicator(
-                      radius: 102,
-                      lineWidth: 15,
+                      radius: 91.r,
+                      lineWidth: 15.w,
                       percent: guageValue / 10, // dynamic value
                       animation: true,
                       circularStrokeCap: CircularStrokeCap.round,

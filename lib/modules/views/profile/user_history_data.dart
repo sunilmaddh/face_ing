@@ -51,7 +51,7 @@ class UserHistoryData extends StatelessWidget {
       body: Obx(
         () =>
             _profileController.isLoading.isTrue
-                ? ShimmerLoadingScreen()
+                ? ShimmerLoadingScreen(widget: ShimmerListItem(), itemCount: 8)
                 : _profileController.userHealthList.isEmpty
                 ? Center(
                   child: Padding(

@@ -5,11 +5,24 @@ import 'package:ntt_data/modules/views/pulse/helper/pulse_helper.dart';
 import 'package:ntt_data/modules/views/pulse/widget/pulse_survey_page_view_builder.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
+import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 
-class PulseSurveyProgressWidget extends StatelessWidget {
+class PulseSurveyProgressWidget extends StatefulWidget {
   PulseSurveyProgressWidget({super.key});
 
-  final PulseSurveyController _controller = Get.find<PulseSurveyController>();
+  @override
+  State<PulseSurveyProgressWidget> createState() =>
+      _PulseSurveyProgressWidgetState();
+}
+
+class _PulseSurveyProgressWidgetState extends State<PulseSurveyProgressWidget> {
+  final _controller = Get.find<PulseSurveyController>();
+
+  @override
+  void initState() {
+    _controller.getPulseQuetionList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +37,17 @@ class PulseSurveyProgressWidget extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: PulseSurveyPageViewBuilder(
-            pages: PulseHelper.pulseServeQuestionList,
-            pulseSurveyController: _controller,
+          child: Obx(
+            () =>
+                _controller.isPulseQuestionListLoading.isTrue
+                    ? ShimmerLoadingScreen(
+                      widget: PulseQuestionShimmerListItem(),
+                      itemCount: 8,
+                    )
+                    : PulseSurveyPageViewBuilder(
+                      pages: _controller.pulseQuestionList,
+                      pulseSurveyController: _controller,
+                    ),
           ),
         ),
       ),

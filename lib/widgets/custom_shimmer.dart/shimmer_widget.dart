@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 class ShimmerLoadingScreen extends StatelessWidget {
-  const ShimmerLoadingScreen({super.key});
+  const ShimmerLoadingScreen({
+    super.key,
+    required this.widget,
+    required this.itemCount,
+  });
+
+  final Widget widget;
+  final int itemCount;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 8,
+      itemCount: itemCount,
       itemBuilder: (context, index) {
-        return const ShimmerListItem();
+        return widget;
       },
     );
   }
@@ -63,6 +71,70 @@ class ShimmerListItem extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PulseShimmerListItem extends StatelessWidget {
+  const PulseShimmerListItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Shimmer(
+            duration: const Duration(seconds: 2),
+            interval: const Duration(seconds: 0),
+            color: Colors.white,
+            colorOpacity: 0.3,
+            enabled: true,
+            direction: const ShimmerDirection.fromLTRB(),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 200.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PulseQuestionShimmerListItem extends StatelessWidget {
+  const PulseQuestionShimmerListItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Shimmer(
+            duration: const Duration(seconds: 2),
+            interval: const Duration(seconds: 0),
+            color: Colors.white,
+            colorOpacity: 0.3,
+            enabled: true,
+            direction: const ShimmerDirection.fromLTRB(),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 70.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ],

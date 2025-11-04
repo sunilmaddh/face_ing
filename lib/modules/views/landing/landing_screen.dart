@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/modules/views/auth/maintence_screen.dart';
 import 'package:ntt_data/modules/views/home/home_screen.dart';
+import 'package:ntt_data/modules/views/pulse/views/pulse_screen.dart';
 import 'package:ntt_data/widgets/bar/custom_bottom_navigation_bar.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -13,7 +14,7 @@ class LandingScreen extends StatelessWidget {
         HomeScreen(),
         const MaintenceScreen(),
         const MaintenceScreen(),
-        const MaintenceScreen(),
+        PulseScreen(),
       ],
     );
   }

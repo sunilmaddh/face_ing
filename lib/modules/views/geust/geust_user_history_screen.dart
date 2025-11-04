@@ -65,7 +65,10 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
         child: Obx(
           () =>
               _controller.isLoading.isTrue
-                  ? ShimmerLoadingScreen()
+                  ? ShimmerLoadingScreen(
+                    widget: ShimmerListItem(),
+                    itemCount: 8,
+                  )
                   : _controller.guestList.isEmpty
                   ? Center(
                     child: Padding(

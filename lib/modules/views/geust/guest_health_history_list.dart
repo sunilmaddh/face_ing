@@ -46,7 +46,7 @@ class GuestHealthHistoryList extends StatelessWidget {
       body: Obx(
         () =>
             _guestController.isLoading.isTrue
-                ? ShimmerLoadingScreen()
+                ? ShimmerLoadingScreen(widget: ShimmerListItem(), itemCount: 8)
                 : _guestController.guestHealthList.isEmpty
                 ? Center(
                   child: Padding(

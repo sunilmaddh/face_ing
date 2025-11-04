@@ -16,7 +16,7 @@ class DailyAdviceCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonCard(
       widget: Container(
-        margin: AppDimensions.symmetric(vertical: 15, horizontal: 15),
+        margin: AppDimensions.symmetric(vertical: 10, horizontal: 15),
         alignment: Alignment.center,
         padding: AppDimensions.symmetric(horizontal: 15, vertical: 15),
         decoration: BoxDecoration(
