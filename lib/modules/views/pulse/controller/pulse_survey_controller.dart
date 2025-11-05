@@ -71,6 +71,8 @@ class PulseSurveyController extends GetxController {
         AppSnackbar.show(title: "Success", message: "Save Successfull");
         final result = responseData[AppConstents.response];
         // AppNavigation.off(AppRoutes.landingSceen);
+        isEnable.value = false;
+
         AppNavigation.off(AppRoutes.landingSceen);
         await fetchPulseSurvey();
         debugPrint("Wellness Score Result: $result");

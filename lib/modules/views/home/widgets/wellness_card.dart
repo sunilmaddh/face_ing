@@ -25,7 +25,7 @@ class WellnessCard extends StatelessWidget {
     debugPrint(guageValue.toString());
     debugPrint(wellnessDiff.toString());
     return CircleCardWidget(
-      size: 170.r,
+      size: 190.w,
       widget:
           guageValue > 0.0
               ? Stack(
@@ -89,7 +89,7 @@ class WellnessCard extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: CircularPercentIndicator(
-                      radius: 91.r,
+                      radius: 91.w,
                       lineWidth: 15.w,
                       percent: guageValue / 10, // dynamic value
                       animation: true,

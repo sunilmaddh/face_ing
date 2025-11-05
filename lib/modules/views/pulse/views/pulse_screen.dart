@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
@@ -30,8 +32,9 @@ class _PulseScreenState extends State<PulseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: true,
         automaticallyImplyLeading: false,
         title: CommonText.text(
           "Pulse History",
@@ -49,6 +52,22 @@ class _PulseScreenState extends State<PulseScreen> {
               ? ShimmerLoadingScreen(
                 widget: PulseShimmerListItem(),
                 itemCount: 3,
+              )
+              : _controller.pulseSurveyADayList.isEmpty
+              ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: AppDimensions.width(300),
+                    child: LottieBuilder.asset(
+                      AppAssets.allReport,
+                      fit: BoxFit.fill,
+                      repeat: true,
+                    ),
+                  ),
+                  CommonText.text("No data available", fontSize: 24.sp),
+                ],
               )
               : Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,8 +112,13 @@ class _PulseScreenState extends State<PulseScreen> {
 
                   Container(
                     width: Get.width,
-                    padding: AppDimensions.all(20.r),
+                    height: MediaQuery.of(context).size.height - 250.h,
+                    padding: AppDimensions.symmetric(
+                      horizontal: 20.w,
+                      vertical: 10.h,
+                    ),
                     decoration: BoxDecoration(
+                      color: Color(0xffF5F5F5),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12),

@@ -83,5 +83,7 @@ class AppAssets {
       maintence = "$baseUrlLottie/maintence.json",
       bHeartAssets = "$baseUrlSvg/bheart.svg",
       homeLottie = "$baseUrlLottie/home.json",
+      cloudSunny = "$baseUrlSvg/cloud_sunny.svg",
+      rain2 = "$baseUrlSvg/rain-2.svg",
       allReport = "$baseUrlLottie/all_report.json";
 }

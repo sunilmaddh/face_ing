@@ -30,7 +30,7 @@ class PulsePageDataWidget extends StatelessWidget {
       children: [
         SizedBox(height: AppDimensions.height(40)),
         CommonText.text(
-          text,
+          question,
           color: AppColors.primary,
           fontSize: AppDimensions.font(16),
           fontWeight: FontWeight.w700,

@@ -9,11 +9,11 @@ class PulseHelper {
       case "excellent":
         return AppAssets.sunAsset;
       case "good":
-        return AppAssets.rainAsset;
+        return AppAssets.cloudSunny;
       case "normal":
-        return AppAssets.sunAsset;
+        return AppAssets.cloudAsset;
       case "not good":
-        return AppAssets.rainAsset;
+        return AppAssets.rain2;
       case "tough":
         return AppAssets.stromAsset;
       default:

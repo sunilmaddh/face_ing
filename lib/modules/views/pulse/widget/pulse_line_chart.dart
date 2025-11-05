@@ -24,7 +24,7 @@ class PulseLineChart extends StatelessWidget {
       widget: SizedBox(
         width: Get.width,
         child: Padding(
-          padding: AppDimensions.symmetric(vertical: 20.h, horizontal: 15.w),
+          padding: AppDimensions.symmetric(vertical: 30.h, horizontal: 15.w),
           child: Column(
             children: [
               PulseLineChartWidget(

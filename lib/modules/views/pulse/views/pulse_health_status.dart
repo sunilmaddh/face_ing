@@ -22,7 +22,7 @@ class PulseHealthStatus extends StatelessWidget {
         () => SizedBox(
           width: Get.width,
           child: Padding(
-            padding: AppDimensions.symmetric(horizontal: 10.w, vertical: 10.h),
+            padding: AppDimensions.symmetric(horizontal: 10.w, vertical: 20.h),
             child: Wrap(
               alignment: WrapAlignment.center,
               spacing: 20,
