@@ -53,7 +53,7 @@ class _PulseScreenState extends State<PulseScreen> {
                 widget: PulseShimmerListItem(),
                 itemCount: 3,
               )
-              : _controller.pulseSurveyADayList.isEmpty
+              : _controller.pulseSurveyADayList.isEmpty 
               ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
