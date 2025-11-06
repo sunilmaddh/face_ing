@@ -41,12 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: landingController.scaffoldKey,
       drawer: FaceDrawer(),
       body: Stack(
         children: [
           Positioned.fill(
-            // top: AppDimensions.height(20),
             child: LottieBuilder.asset(
               fit: BoxFit.cover,
               AppAssets.homeLottie,
@@ -55,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
               reverse: false,
               animate: true,
             ),
-            // SvgPicture.asset(AppAssets.homeBg, fit: BoxFit.cover),
           ),
           SafeArea(
             child: SingleChildScrollView(
