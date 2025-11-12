@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/views/pulse/controller/pulse_survey_controller.dart';
-import 'package:ntt_data/modules/views/pulse/helper/pulse_helper.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class PulsePageDataWidget extends StatelessWidget {

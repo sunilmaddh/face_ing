@@ -4,10 +4,7 @@ import 'package:ntt_data/data/models/pulse_survey_question_list_model.dart';
 import 'package:ntt_data/modules/views/landing/landing_controller.dart';
 import 'package:ntt_data/modules/views/pulse/controller/pulse_survey_controller.dart';
 import 'package:ntt_data/modules/views/pulse/widget/pulse_page_data_widget.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/button/pulse_rounded_button.dart';
-import 'package:ntt_data/widgets/button/rounded_button.dart';
 import 'package:ntt_data/widgets/face_progress_indicator.dart';
 
 // ignore: must_be_immutable

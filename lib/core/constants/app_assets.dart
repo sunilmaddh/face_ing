@@ -85,5 +85,6 @@ class AppAssets {
       homeLottie = "$baseUrlLottie/home.json",
       cloudSunny = "$baseUrlSvg/cloud_sunny.svg",
       rain2 = "$baseUrlSvg/rain-2.svg",
-      allReport = "$baseUrlLottie/all_report.json";
+      allReport = "$baseUrlLottie/all_report.json",
+      sunraiseLineImg = "$baseUrlLottie/sunraise_line_img.png";
 }

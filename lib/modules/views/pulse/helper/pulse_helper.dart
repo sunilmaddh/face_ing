@@ -11,7 +11,7 @@ class PulseHelper {
       case "good":
         return AppAssets.cloudSunny;
       case "normal":
-        return AppAssets.cloudAsset;
+        return AppAssets.sunraiseLineImg;
       case "not good":
         return AppAssets.rain2;
       case "tough":
