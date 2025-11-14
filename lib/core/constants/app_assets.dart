@@ -86,5 +86,6 @@ class AppAssets {
       cloudSunny = "$baseUrlSvg/cloud_sunny.svg",
       rain2 = "$baseUrlSvg/rain-2.svg",
       allReport = "$baseUrlLottie/all_report.json",
-      sunraiseLineImg = "$baseUrlLottie/sunraise_line_img.png";
+      sunraiseLineImg = "$baseUrlLottie/sunraise_line_img.png",
+      normalPluseIcon = "$baseUrlSvg/normal_pulse.svg";
 }

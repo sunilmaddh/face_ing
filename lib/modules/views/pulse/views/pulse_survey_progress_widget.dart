@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/views/pulse/controller/pulse_survey_controller.dart';
-import 'package:ntt_data/modules/views/pulse/helper/pulse_helper.dart';
 import 'package:ntt_data/modules/views/pulse/widget/pulse_survey_page_view_builder.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 
 class PulseSurveyProgressWidget extends StatefulWidget {
-  PulseSurveyProgressWidget({super.key});
+const PulseSurveyProgressWidget({super.key});
 
   @override
   State<PulseSurveyProgressWidget> createState() =>

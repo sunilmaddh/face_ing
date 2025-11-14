@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
@@ -17,7 +16,7 @@ import 'package:ntt_data/modules/views/home/widgets/wellness_card.dart';
 import 'package:ntt_data/modules/views/landing/landing_controller.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+ const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
