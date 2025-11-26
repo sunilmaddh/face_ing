@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
@@ -29,18 +31,23 @@ class CustomLineChartWidget extends StatefulWidget {
 class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
   int? touchedIndex;
 
-  /// Generate FlSpots for only scanned days
+  /// ***************************************
+  /// FIXED: ALWAYS RETURN SPOTS FOR ALL DATES
+  /// ***************************************
   List<FlSpot> getSpots() {
     List<FlSpot> spots = [];
-    for (int i = 0; i < widget.vitalValues.length; i++) {
-      final val = widget.vitalValues[i].value;
-      if (val != null && val.isNotEmpty) {
-        final y = double.tryParse(val);
-        if (y != null) {
-          spots.add(FlSpot(i.toDouble(), y)); // index-based X
-        }
+
+    for (int i = 0; i < widget.bottomTitles.length; i++) {
+      if (i < widget.vitalValues.length &&
+          widget.vitalValues[i].value != null &&
+          widget.vitalValues[i].value!.isNotEmpty) {
+        double? y = double.tryParse(widget.vitalValues[i].value!);
+        spots.add(FlSpot(i.toDouble(), y ?? 0));
+      } else {
+        spots.add(FlSpot(i.toDouble(), 0)); // 👈 missing → show zero dot
       }
     }
+
     return spots;
   }
 
@@ -57,36 +64,11 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
 
   Widget _buildBottomTitle(double value, TitleMeta meta) {
     int index = value.toInt();
-
     if (index < 0 || index >= widget.bottomTitles.length) {
       return const SizedBox.shrink();
     }
 
     String label = widget.bottomTitles[index];
-    // final scannedDateStr = widget.vitalValues[index].scannedDate;
-
-    // if (scannedDateStr != null && scannedDateStr.isNotEmpty) {
-    //   try {
-    //     final scannedDate = DateTime.parse(scannedDateStr);
-    //     final today = DateTime.now();
-    //     final yesterday = today.subtract(const Duration(days: 1));
-
-    //     bool isSameDay(DateTime a, DateTime b) =>
-    //         a.year == b.year && a.month == b.month && a.day == b.day;
-
-    //     if (isSameDay(scannedDate, today)) {
-    //       label = "Today";
-    //     } else if (isSameDay(scannedDate, yesterday)) {
-    //       label = "Yesterday";
-    //     } else {
-    //       // fallback: show only day number (e.g. "30")
-    //       label = scannedDate.day.toString().padLeft(2, '0');
-    //     }
-    //   } catch (e) {
-    //     // If parsing fails, just keep original label
-    //   }
-    // }
-
     return Text(
       label,
       style: const TextStyle(fontSize: 12, color: AppColors.searchColor),
@@ -157,16 +139,26 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                 ),
               ),
             ),
+
+            /// *******************************
+            /// EXACT SCREENSHOT LINE + DOTS
+            /// *******************************
             lineBarsData: [
               LineChartBarData(
                 spots: spots,
-                isCurved: true,
-                color: AppColors.primary,
-                barWidth: 2,
+                isCurved: false, // screenshot = straight lines
+                color: Colors.blue,
+                barWidth: 3,
+
+                // Dots that match your screenshot
                 dotData: FlDotData(
                   show: true,
                   getDotPainter: (spot, percent, barData, index) {
-                    final item = widget.vitalValues[spot.x.toInt()];
+                    final item =
+                        widget.vitalValues[min(
+                          spot.x.toInt(),
+                          widget.vitalValues.length - 1,
+                        )];
                     final color =
                         VitalColorHelper(
                           vitalName: widget.vitalName,
@@ -186,6 +178,8 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                     return _ValueDotPainter(spot, textColor: color);
                   },
                 ),
+
+                // Light gradient area (your original style)
                 belowBarData: BarAreaData(
                   show: true,
                   gradient: LinearGradient(
@@ -199,6 +193,10 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                 ),
               ),
             ],
+
+            /// ******************************
+            /// TOUCH HANDLERS (unchanged)
+            /// ******************************
             lineTouchData: LineTouchData(
               handleBuiltInTouches: true,
               touchCallback: (event, response) {
@@ -222,7 +220,11 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                     FlDotData(
                       show: true,
                       getDotPainter: (spot, percent, barData, index) {
-                        final item = widget.vitalValues[spot.x.toInt()];
+                        final item =
+                            widget.vitalValues[min(
+                              spot.x.toInt(),
+                              widget.vitalValues.length - 1,
+                            )];
                         final color =
                             VitalColorHelper(
                               vitalName: widget.vitalName,
@@ -231,21 +233,35 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                                 item.isTypeVital.toString(),
                               ),
                             ).getColor();
+                        final borderColor =
+                            VitalColorHelper(
+                              vitalName: widget.vitalName,
+                              vitalStatus: item.status.toString(),
+                              isLowGood: AppMethods.stringToBool(
+                                item.isTypeVital.toString(),
+                              ),
+                            ).getBoderColor();
+
                         return FlDotCirclePainter(
-                          radius: 6,
-                          color: color,
-                          strokeWidth: 1,
-                          strokeColor: AppColors.btntext,
+                          radius: 4, 
+                          strokeWidth: 20,
+                          strokeColor:
+                              borderColor, 
                         );
                       },
                     ),
                   );
                 }).toList();
               },
+
               touchTooltipData: LineTouchTooltipData(
                 getTooltipItems: (touchedSpots) {
                   return touchedSpots.map((spot) {
-                    final item = widget.vitalValues[spot.x.toInt()];
+                    final item =
+                        widget.vitalValues[min(
+                          spot.x.toInt(),
+                          widget.vitalValues.length - 1,
+                        )];
                     final color =
                         VitalColorHelper(
                           vitalName: widget.vitalName,
@@ -271,8 +287,7 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
   }
 }
 
-/// Permanent value painter
-// Permanent dot + value painter
+/// YOUR DOT PAINTER (unchanged)
 class _ValueDotPainter extends FlDotPainter {
   final FlSpot spot;
   final Color textColor;
@@ -288,11 +303,9 @@ class _ValueDotPainter extends FlDotPainter {
 
   @override
   void draw(Canvas canvas, FlSpot spot, Offset offsetInCanvas) {
-    // Draw circle
     final paint = Paint()..color = textColor;
     canvas.drawCircle(offsetInCanvas, radius, paint);
 
-    // Draw value above dot
     final textPainter = TextPainter(
       text: TextSpan(
         text: formatDouble(spot.y).toString(),

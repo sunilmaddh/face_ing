@@ -95,7 +95,7 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
   final _vitalController = Get.find<VitalGraphController>();
   @override
   Widget build(BuildContext context) {
-    var result = vitalResponse.value.vitalTypeDetails!;
+    var result = vitalResponse.value.vitalTypeDetails ?? [];
     return Padding(
       padding: AppDimensions.all(8.0),
       child:

@@ -5,7 +5,7 @@ import 'package:ntt_data/widgets/button/rounded_button.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
-  final Color backgroundColor;
+  final Color backgroundColor, surfaceTintColor;
   final Widget? leading;
   final bool isCenterTitle;
   final Color textColor;
@@ -23,11 +23,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     required this.onTop,
     this.isCenterTitle = true,
+    this.surfaceTintColor = Colors.white,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      surfaceTintColor: surfaceTintColor,
       leading:
           isLeading
               ? Padding(

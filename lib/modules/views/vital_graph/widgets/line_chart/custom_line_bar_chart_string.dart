@@ -7,45 +7,26 @@ import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_color_helper.dart';
 
-// Mapper class to convert string values to numeric for chart
+/// Mapper class to convert string values to numeric for chart (X axis)
 class StringToNumericMapper {
   final List<String> values;
   final bool isXAxis;
 
   StringToNumericMapper({required this.values, this.isXAxis = false});
 
-  /// Get numeric value for a string
   double getValue(String str) {
     str = str.toLowerCase();
     final map = <String, double>{};
     for (int i = 0; i < values.length; i++) {
-      var val = values[i];
-      if (isXAxis) {
-        if (val.toLowerCase() == "yesterday") {
-          val = (DateTime.now().day - 1).toString();
-        } else if (val.toLowerCase() == "today") {
-          val = DateTime.now().day.toString();
-        }
-      }
       map[values[i]] = i.toDouble();
     }
-
     return map[str] ?? 0.0;
   }
 
   /// Get string label from numeric value
   String getLabel(double numericValue) {
     int index = numericValue.toInt();
-    // if (index >= 0 && index < values.length) {
-    //   if (isXAxis) {
-    //     if (values[index].toLowerCase() == "yesterday") {
-    //       return (DateTime.now().day - 1).toString();
-    //     } else if (values[index].toLowerCase() == "today") {
-    //       return DateTime.now().day.toString();
-    //     }
-    //   }
-    //   return values[index];
-    // }
+    if (index < 0 || index >= values.length) return "";
     return values[index];
   }
 }
@@ -70,84 +51,6 @@ class CustomLineBarChart extends StatefulWidget {
 }
 
 class _CustomLineBarChartState extends State<CustomLineBarChart> {
-  List<FlSpot> _generateSpots() {
-    List<FlSpot> spots = [];
-    for (int i = 0; i < widget.vitalValues.length; i++) {
-      final val = widget.vitalValues[i].value;
-      if (val != null && val.isNotEmpty) {
-        // Convert string value to numeric index
-        final y = stringToIndex[val.toLowerCase()]?.toDouble();
-        if (y != null) {
-          spots.add(FlSpot(i.toDouble(), y)); // index-based X
-        }
-      }
-    }
-    return spots;
-  }
-
-  /// Build X-axis titles
-  Widget _buildBottomTitle(double value, TitleMeta meta) {
-    final xMapper = StringToNumericMapper(
-      values: widget.bottomTitles,
-      isXAxis: true,
-    );
-
-    String label = xMapper.getLabel(value);
-
-    // Try to parse as integer day
-    // final scannedDateStr = widget.vitalValues[value.toInt()].scannedDate;
-
-    // if (scannedDateStr != null && scannedDateStr.isNotEmpty) {
-    //   try {
-    //     final scannedDate = DateTime.parse(scannedDateStr);
-    //     final today = DateTime.now();
-    //     final yesterday = today.subtract(const Duration(days: 1));
-
-    //     bool isSameDay(DateTime a, DateTime b) =>
-    //         a.year == b.year && a.month == b.month && a.day == b.day;
-
-    //     if (isSameDay(scannedDate, today)) {
-    //       label = "Today";
-    //     } else if (isSameDay(scannedDate, yesterday)) {
-    //       label = "Yesterday";
-    //     } else {
-    //       label = scannedDate.day.toString().padLeft(2, '0');
-    //     }
-    //   } catch (e) {
-    //     // If parsing fails, just keep original label
-    //   }
-    // }
-
-    return Text(
-      label,
-      style: const TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: AppColors.searchColor,
-      ),
-    );
-  }
-
-  /// Build Y-axis titles
-  Widget _buildLeftTitle(double value, TitleMeta meta) {
-    String? label =
-        stringToIndex.entries
-            .firstWhere(
-              (entry) => entry.value == value.toInt(),
-              orElse: () => const MapEntry("", 0),
-            )
-            .key;
-
-    return Text(
-      label.isNotEmpty ? label.toFirstCaps() : "",
-      style: const TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: AppColors.searchColor,
-      ),
-    );
-  }
-
   final List<String> yLevels = [
     "low",
     "medium",
@@ -167,9 +70,93 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
     super.initState();
   }
 
+  /// Generate one spot for each date.
+  /// ❗ If no measurement → fix Y at 0 (bottom).
+  List<FlSpot> _generateSpots() {
+    List<FlSpot> spots = [];
+    const double noDataY = 0; // bottom line
+
+    for (int i = 0; i < widget.bottomTitles.length; i++) {
+      HealthList? item =
+          i < widget.vitalValues.length ? widget.vitalValues[i] : null;
+
+      double y;
+
+      if (item != null &&
+          item.value != null &&
+          item.value!.isNotEmpty &&
+          stringToIndex.containsKey(item.value!.toLowerCase())) {
+        y = stringToIndex[item.value!.toLowerCase()]!.toDouble();
+      } else {
+        // 🔻 no measurement → always bottom
+        y = noDataY;
+      }
+
+      spots.add(FlSpot(i.toDouble(), y));
+    }
+
+    return spots;
+  }
+
+  /// Build X-axis titles (BOTTOM)
+  Widget _buildBottomTitle(double value, TitleMeta meta) {
+    final xMapper = StringToNumericMapper(
+      values: widget.bottomTitles,
+      isXAxis: true,
+    );
+
+    String label = xMapper.getLabel(value);
+
+    return SideTitleWidget(
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: AppColors.searchColor,
+        ),
+      ),
+      meta: meta,
+      space: 4,
+    );
+  }
+
+  /// Build Y-axis titles (LEFT)
+  Widget _buildLeftTitle(double value, TitleMeta meta) {
+    String? label =
+        stringToIndex.entries
+            .firstWhere(
+              (entry) => entry.value == value.toInt(),
+              orElse: () => const MapEntry("", 0),
+            )
+            .key;
+
+    return SideTitleWidget(
+      meta: meta,
+      space: 4,
+      child: SizedBox(
+        height: 40, // ⬅ FIXED HEIGHT → all labels stay same baseline
+        child: Align(
+          alignment: Alignment.centerRight, // perfect vertical centering
+          child: Text(
+            label.isNotEmpty ? label.toFirstCaps() : "",
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              fontSize: 12,
+              height: 1.0, // removes padding
+              color: AppColors.searchColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final spots = _generateSpots();
+
     return Padding(
       padding: AppDimensions.symmetric(horizontal: 10, vertical: 10),
       child: SizedBox(
@@ -180,12 +167,30 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
             lineTouchData: LineTouchData(
               getTouchedSpotIndicator: (barData, indicators) {
                 return indicators.map((index) {
+                  final spot = barData.spots[index];
+                  final int xIndex = spot.x.toInt();
+
+                  final bool hasValue =
+                      xIndex < widget.vitalValues.length &&
+                      widget.vitalValues[xIndex].value != null &&
+                      widget.vitalValues[xIndex].value!.isNotEmpty;
+
                   return TouchedSpotIndicatorData(
                     FlLine(color: AppColors.primary, strokeWidth: 2),
                     FlDotData(
                       show: true,
                       getDotPainter: (spot, percent, barData, index) {
-                        final item = widget.vitalValues[spot.x.toInt()];
+                        if (!hasValue) {
+                          // 🔘 No measurement → hollow dot at bottom
+                          return FlDotCirclePainter(
+                            radius: 6,
+                            color: Colors.white,
+                            strokeWidth: 2,
+                            strokeColor: Colors.grey,
+                          );
+                        }
+
+                        final item = widget.vitalValues[xIndex];
                         final color =
                             VitalColorHelper(
                               vitalName: widget.vitalName,
@@ -194,6 +199,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                                 item.isTypeVital.toString(),
                               ),
                             ).getColor();
+
                         return FlDotCirclePainter(
                           radius: 6,
                           color: color,
@@ -210,9 +216,24 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                 showOnTopOfTheChartBoxArea: true,
                 getTooltipItems: (touchedSpots) {
                   return touchedSpots.map((spot) {
-                    final item = widget.vitalValues[spot.x.toInt()];
-                    debugPrint("Status ${item.value.toString()}");
-                    var color =
+                    final xIndex = spot.x.toInt();
+                    final bool hasValue =
+                        xIndex < widget.vitalValues.length &&
+                        widget.vitalValues[xIndex].value != null &&
+                        widget.vitalValues[xIndex].value!.isNotEmpty;
+
+                    if (!hasValue) {
+                      return LineTooltipItem(
+                        "No data",
+                        const TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }
+
+                    final item = widget.vitalValues[xIndex];
+                    final color =
                         VitalColorHelper(
                           vitalName: widget.vitalName,
                           vitalStatus: item.value.toString(),
@@ -228,6 +249,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                               orElse: () => const MapEntry("", 0),
                             )
                             .key;
+
                     return LineTooltipItem(
                       label.isNotEmpty
                           ? label.toFirstCaps()
@@ -239,10 +261,13 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                 getTooltipColor: (touchedSpot) => Colors.transparent,
               ),
             ),
+
+            /// SCALING
             minX: 0,
             maxX: (widget.bottomTitles.length - 1).toDouble(),
             minY: 0,
             maxY: 6,
+
             gridData: FlGridData(show: false),
             borderData: FlBorderData(
               show: true,
@@ -251,6 +276,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                 bottom: BorderSide(width: 0.5, color: Color(0xffE0E0E0)),
               ),
             ),
+
             titlesData: FlTitlesData(
               show: true,
               bottomTitles: AxisTitles(
@@ -264,40 +290,65 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                 sideTitles: SideTitles(
                   showTitles: true,
                   interval: 1,
-                  getTitlesWidget: _buildLeftTitle,
                   reservedSize: 50,
+                  getTitlesWidget: _buildLeftTitle,
                 ),
               ),
-              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-              rightTitles: AxisTitles(
+              topTitles: const AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              rightTitles: const AxisTitles(
                 sideTitles: SideTitles(showTitles: false),
               ),
             ),
+
             lineBarsData: [
               LineChartBarData(
                 spots: spots,
-                isCurved: true,
+                isCurved: false, // straight line
                 barWidth: 2,
                 color: AppColors.primary,
+
                 dotData: FlDotData(
                   show: true,
                   getDotPainter: (spot, percent, barData, index) {
-                    final item = widget.vitalValues[spot.x.toInt()];
-                    var vitalGraphColor = VitalColorHelper(
-                      vitalName: widget.vitalName,
-                      vitalStatus: item.value.toString(),
-                      isLowGood: AppMethods.stringToBool(
-                        item.isTypeVital.toString(),
-                      ),
-                    );
+                    final xIndex = spot.x.toInt();
+
+                    final bool hasValue =
+                        xIndex < widget.vitalValues.length &&
+                        widget.vitalValues[xIndex].value != null &&
+                        widget.vitalValues[xIndex].value!.isNotEmpty;
+
+                    if (!hasValue) {
+                      // hollow grey dot at bottom
+                      return FlDotCirclePainter(
+                        radius: 1,
+                        color: Colors.white,
+                        strokeWidth: 2,
+                        strokeColor: Colors.white,
+                      );
+                    }
+
+                    final item = widget.vitalValues[xIndex];
+
+                    final vitalGraphColor =
+                        VitalColorHelper(
+                          vitalName: widget.vitalName,
+                          vitalStatus: item.value.toString(),
+                          isLowGood: AppMethods.stringToBool(
+                            item.isTypeVital.toString(),
+                          ),
+                        ).getColor();
+
                     return FlDotCirclePainter(
                       radius: 4,
-                      color: vitalGraphColor.getColor(),
+                      color: vitalGraphColor,
                       strokeWidth: 0,
                       strokeColor: AppColors.backArrowColor,
                     );
                   },
                 ),
+
                 belowBarData: BarAreaData(
                   show: true,
                   gradient: LinearGradient(
@@ -305,7 +356,6 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                     end: Alignment.bottomCenter,
                     colors: [
                       const Color(0xffD0FBFF),
-                      // ignore: deprecated_member_use
                       const Color(0xffDDF2F4).withOpacity(0.2),
                     ],
                   ),

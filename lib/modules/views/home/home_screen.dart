@@ -16,7 +16,7 @@ import 'package:ntt_data/modules/views/home/widgets/wellness_card.dart';
 import 'package:ntt_data/modules/views/landing/landing_controller.dart';
 
 class HomeScreen extends StatefulWidget {
- const HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -40,14 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       drawer: FaceDrawer(),
       body: Stack(
+        clipBehavior: Clip.none,
         children: [
           Positioned.fill(
             child: LottieBuilder.asset(
               fit: BoxFit.cover,
               AppAssets.homeLottie,
-
               repeat: true,
               reverse: false,
               animate: true,
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SafeArea(
             child: SingleChildScrollView(
-              padding: EdgeInsets.only(bottom: 16.h),
+              padding: EdgeInsets.only(bottom: 200),
               child: Column(
                 children: [
                   Padding(
@@ -107,11 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   SizedBox(height: AppDimensions.height(15)),
-
                   MenuCardWidget(),
-
                   SizedBox(height: AppDimensions.height(15)),
                   DailyAdviceCardWidget(),
+                  SizedBox(height: AppDimensions.height(15)),
                 ],
               ),
             ),

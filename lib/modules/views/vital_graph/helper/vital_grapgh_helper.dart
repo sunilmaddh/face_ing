@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
-// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class VitalGraphHelper {
@@ -159,6 +158,7 @@ class VitalGraphHelper {
   );
   List<String> filterTypeList = ["Weekly", "Monthly"];
   final _controller = Get.find<VitalGraphController>();
+
   Future<void> callVitalGraph(
     Map<String, dynamic> data,
     bool isFromHistory,
@@ -169,10 +169,19 @@ class VitalGraphHelper {
     );
   }
 
-  // 🔹 Common payload builder
+  Future<void> callenderVitalGraph(
+    Map<String, dynamic> data,
+    StateSetter? updateState,
+  ) async {
+    await _controller.callenderGraphDataApi(
+      data: data,
+      updateState: updateState,
+    );
+  }
+
+  // Common payload builder
   Map<String, dynamic> _buildPayload({
     required bool isUser,
-
     String? endDate,
     String? filterType,
     String? guestId,
@@ -207,6 +216,19 @@ class VitalGraphHelper {
     await callVitalGraph(data, false);
   }
 
+  Future<void> callForCalenderWithDateRange(
+    String filterType,
+    String endDate,
+    StateSetter? updateState,
+  ) async {
+    final data = _buildPayload(
+      isUser: true,
+      endDate: endDate,
+      filterType: filterType,
+    );
+    await callenderVitalGraph(data, updateState);
+  }
+
   Future<void> callForUserWithFilter(
     String filterType,
     bool isFromHistory,
@@ -215,7 +237,8 @@ class VitalGraphHelper {
     await callVitalGraph(data, isFromHistory);
   }
 
-  // 🔹 Guest API Calls
+  // Guest API Calls
+
   Future<void> callForGuestWithDateRange(
     String filterType,
     String endDate,
@@ -286,7 +309,15 @@ class VitalGraphHelper {
     return normalizedList;
   }
 
-  static String cleanRange(String input) {
-    return input.replaceAll(RegExp(r'\s?20\d{2}'), '');
+  static String cleanRange(String range) {
+    try {
+      List<String> parts = range.split(" - ");
+      String startDate = parts[0].trim();
+      DateTime date = DateFormat("dd MMM yyyy").parse(startDate);
+
+      return DateFormat('yyyy-MMM').format(date);
+    } catch (e) {
+      return "";
+    }
   }
 }

@@ -72,6 +72,7 @@ class AppAssets {
       pulseAnlyzing = "$baseUrlPng/pulse_anlyzing.png",
       success = "$baseUrlSvg/success.svg",
       pulseScreen = "$baseUrlPng/pulse_screen.png",
+      pulseScreen1 = "$baseUrlPng/pulse_screen_1.png",
       sunAsset = "$baseUrlSvg/sun.svg",
       rainAsset = "$baseUrlSvg/rain.svg",
       stromAsset = "$baseUrlSvg/storm.svg",

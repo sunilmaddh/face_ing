@@ -164,7 +164,11 @@ class VitalGraphResponseModel {
             json["wellness"] == null
                 ? AdvancedHeartRateVariability()
                 : AdvancedHeartRateVariability.fromJson(json["wellness"]),
-        vitalSigns: AdvancedHeartRateVariability.fromJson(json["vitalSigns"]),
+        vitalSigns:
+            json["vitalSigns"] != null
+                ? AdvancedHeartRateVariability.fromJson(json["vitalSigns"])
+                : null,
+
         bloodlessBloodTests:
             json["bloodlessBloodTests"] == null
                 ? AdvancedHeartRateVariability()

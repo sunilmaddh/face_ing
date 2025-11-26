@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/data/models/pulse_survey_model.dart';
@@ -22,16 +21,13 @@ class PulseHealthStatus extends StatelessWidget {
         () => SizedBox(
           width: Get.width,
           child: Padding(
-            padding: AppDimensions.symmetric(horizontal: 10.w, vertical: 20.h),
+            padding: AppDimensions.symmetric(horizontal: 3.w, vertical: 10.h),
             child: Wrap(
-              alignment: WrapAlignment.center,
+              alignment: WrapAlignment.spaceEvenly,
               spacing: 20,
               runSpacing: 10,
               children:
                   pulseSurveyADay.map((value) {
-                    final image = PulseHelper().getImage(
-                      value.status.toString(),
-                    );
                     return Column(
                       children: [
                         CommonText.text(
@@ -41,7 +37,16 @@ class PulseHealthStatus extends StatelessWidget {
                           color: Color(0xff616161),
                         ),
                         8.verticalSpace,
-                        SvgPicture.asset(image),
+
+                        CommonText.text(
+                          value.status.toString(),
+                          fontSize: AppDimensions.font(13),
+                          fontWeight: FontWeight.w700,
+                          color: PulseHelper().getColor(
+                            value.status.toString(),
+                          ),
+                        ),
+                        SizedBox(height: 30),
                       ],
                     );
                   }).toList(),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/data/models/pulse_survey_question_list_model.dart';
 import 'package:ntt_data/modules/views/landing/landing_controller.dart';
 import 'package:ntt_data/modules/views/pulse/controller/pulse_survey_controller.dart';
+import 'package:ntt_data/modules/views/pulse/views/pulse_survey_sucess_screen.dart';
 import 'package:ntt_data/modules/views/pulse/widget/pulse_page_data_widget.dart';
 import 'package:ntt_data/widgets/button/pulse_rounded_button.dart';
 import 'package:ntt_data/widgets/face_progress_indicator.dart';
@@ -10,8 +11,9 @@ import 'package:ntt_data/widgets/face_progress_indicator.dart';
 // ignore: must_be_immutable
 class PulseSurveyPageViewBuilder extends StatelessWidget {
   final PageController _pageController = PageController();
-  final landingController = Get.find<LandingController>();
   final ValueNotifier<int> _currentIndex = ValueNotifier<int>(0);
+
+  final landingController = Get.find<LandingController>();
   RxList<Question> pages;
   final PulseSurveyController pulseSurveyController;
 
@@ -20,8 +22,12 @@ class PulseSurveyPageViewBuilder extends StatelessWidget {
     required this.pages,
     required this.pulseSurveyController,
   });
+
   @override
   Widget build(BuildContext context) {
+    /// 🔥 FIX: VERY IMPORTANT LINE
+    pulseSurveyController.setPageController(_pageController);
+
     return Scaffold(
       body: Column(
         children: [
@@ -30,15 +36,15 @@ class PulseSurveyPageViewBuilder extends StatelessWidget {
             valueCurrentIndex: _currentIndex,
             isLarge: true,
           ),
+
           Expanded(
             child: Obx(() {
               final questions = pulseSurveyController.pulseQuestionList;
               return PageView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _pageController,
                 itemCount: questions.length,
-                onPageChanged: (index) {
-                  _currentIndex.value = index;
-                },
+                onPageChanged: (index) => _currentIndex.value = index,
                 itemBuilder: (context, index) {
                   final q = questions[index];
                   return PulsePageDataWidget(
@@ -53,33 +59,55 @@ class PulseSurveyPageViewBuilder extends StatelessWidget {
             }),
           ),
 
-          SizedBox(height: 20),
-          Align(
-            alignment: Alignment.bottomRight,
+          const SizedBox(height: 20),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ValueListenableBuilder<int>(
               valueListenable: _currentIndex,
-              builder: (context, currentIndex, child) {
-                return Obx(
-                  () => PulseRoundedButton(
-                    isEnable: pulseSurveyController.isEnable.value,
-                    onPressed: () {
-                      if (currentIndex == pages.length - 1) {
-                        pulseSurveyController.storePulseQuetionList();
-                        landingController.onTabTapped(3);
-                      } else {
-                        _pageController.nextPage(
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.ease,
-                        );
-                        pulseSurveyController.isEnable.value = false;
-                      }
-                    },
-                    isSubmit: currentIndex == pages.length - 1,
-                  ),
+              builder: (context, index, child) {
+                final bool isLast = index == pages.length - 1;
+                final bool isFirst = index == 0;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    /// 🔹 PREVIOUS
+                    if (!isFirst)
+                      PulseRoundedButton(
+                        isPrevious: true,
+                        onPressed: () {
+                          _pageController.previousPage(
+                            duration: const Duration(milliseconds: 450),
+                            curve: Curves.ease,
+                          );
+                          pulseSurveyController.isEnable.value = true;
+                        },
+                      )
+                    else
+                      const SizedBox(width: 50),
+
+                    /// 🔹 SAVE ONLY ON LAST INDEX
+                    if (isLast)
+                      Obx(
+                        () => PulseRoundedButton(
+                          isEnable: pulseSurveyController.isEnable.value,
+                          isSubmit: true,
+                          onPressed: () {
+                            pulseSurveyController.storePulseQuetionList();
+                            Get.off(() => const PulseSurveySuccessScreen());
+                          },
+                        ),
+                      )
+                    else
+                      const SizedBox(width: 50),
+                  ],
                 );
               },
             ),
           ),
+
+          const SizedBox(height: 20),
         ],
       ),
     );

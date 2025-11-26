@@ -24,6 +24,7 @@ import 'package:ntt_data/modules/views/pulse/views/pulse_screen.dart';
 import 'package:ntt_data/modules/views/pulse/views/pulse_survey_analyzing_screen.dart';
 import 'package:ntt_data/modules/views/pulse/views/pulse_survey_progress_widget.dart';
 import 'package:ntt_data/modules/views/pulse/views/pulse_survey_screen.dart';
+import 'package:ntt_data/modules/views/pulse/views/pulse_survey_sucess_screen.dart';
 import 'package:ntt_data/modules/views/vital_graph/vital_graph_history.dart';
 import 'package:ntt_data/modules/views/voice/view/voice_screen.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -81,8 +82,25 @@ class AppPages {
       name: AppRoutes.pulseSurveyAnalyzingScreen,
       page: () => PulseSurveyAnalyzingScreen(),
     ),
-    GetPage(name: AppRoutes.pulseSurveyScreen, page: () => PulseSurveyScreen()),
-    GetPage(name: AppRoutes.pulseScreen, page: () => PulseScreen()),
+    GetPage(
+      name: AppRoutes.pulseSurveyScreen,
+      page: () {
+        final args = Get.arguments ?? {};
+        return PulseSurveyScreen(fromBottomNav: args["fromBottomNav"] ?? true);
+      },
+    ),
+
+    GetPage(
+      name: AppRoutes.pulseScreen,
+      page: () {
+        final args = Get.arguments ?? {};
+        return PulseScreen(fromHome: args["fromHome"] ?? false);
+      },
+    ),
     GetPage(name: AppRoutes.voiceScreen, page: () => VoiceScreen()),
+    GetPage(
+      name: AppRoutes.pulseSuccess,
+      page: () => PulseSurveySuccessScreen(),
+    ),
   ];
 }

@@ -8,4 +8,5 @@ class VitalGraphServices extends BaseApiService {
   }) async {
     return postRequest(apiEndpoints.graphData, data: data);
   }
+  
 }

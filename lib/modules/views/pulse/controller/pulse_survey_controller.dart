@@ -5,8 +5,6 @@ import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/pulse_survey_model.dart';
 import 'package:ntt_data/data/models/pulse_survey_question_list_model.dart';
 import 'package:ntt_data/data/repository/services/pulse_services.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 
 class PulseSurveyController extends GetxController {
   final _pulseSevices = PulseServices();
@@ -19,6 +17,8 @@ class PulseSurveyController extends GetxController {
   RxBool isPulseSurveryLoading = false.obs;
   RxBool isPulseQuestionListLoading = false.obs;
   RxBool isEnable = false.obs;
+
+  bool isNavigating = false;
 
   // List<Map<String, dynamic>> pulseList = [];
 
@@ -67,12 +67,12 @@ class PulseSurveyController extends GetxController {
         throw Exception("Missing statusCode in response");
       }
       if (statusCode == 200) {
-        AppSnackbar.show(title: "Success", message: "Save Successfull");
+        // AppSnackbar.show(title: "Success", message: "Save Successfull");
         final result = responseData[AppConstents.response];
         // AppNavigation.off(AppRoutes.landingSceen);
         isEnable.value = false;
 
-        AppNavigation.off(AppRoutes.landingSceen);
+        // AppNavigation.off(AppRoutes.landingSceen);
         await fetchPulseSurvey();
         debugPrint("Wellness Score Result: $result");
         pulseList.clear();
@@ -101,10 +101,12 @@ class PulseSurveyController extends GetxController {
       }
       if (statusCode == 200) {
         final result = responseData[AppConstents.response];
-        pulseSevryModel.value = PulseSurveyModel.fromJson(result);
-        pulseSurveyADayList.value = pulseSevryModel.value.pulseSurveyADayList!;
-        debugPrint("Wellness Score Result: $result");
-        isPulseSurveryLoading(false);
+        if (!isNavigating) {
+          pulseSevryModel.value = PulseSurveyModel.fromJson(result);
+          pulseSurveyADayList.value =
+              pulseSevryModel.value.pulseSurveyADayList!;
+          isPulseSurveryLoading(false);
+        }
       } else {
         AppSnackbar.show(
           title: "Error",
@@ -141,5 +143,36 @@ class PulseSurveyController extends GetxController {
       });
     }
     debugPrint("pulseList : $pulseList");
+  }
+
+  PageController? pageController;
+
+  void setPageController(PageController controller) {
+    pageController = controller;
+  }
+
+  void moveToNextPage() {
+    if (pageController == null) return;
+
+    final currentPage = pageController!.page?.round() ?? 0;
+
+    if (currentPage < pulseQuestionList.length - 1) {
+      pageController!.nextPage(
+        duration: const Duration(milliseconds: 450),
+        curve: Curves.ease,
+      );
+      isEnable.value = false;
+    }
+  }
+
+  int getSelectedIndex(String questionId, List<dynamic> options) {
+    final index = pulseList.indexWhere(
+      (element) => element["questionId"] == questionId,
+    );
+
+    if (index == -1) return -1; // Not answered yet
+
+    final selected = pulseList[index]["answer"];
+    return options.indexOf(selected);
   }
 }

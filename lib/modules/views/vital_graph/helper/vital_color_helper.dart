@@ -141,6 +141,66 @@ class VitalColorHelper {
         return Colors.white;
     }
   }
+
+  /// Returns color based on vitalStatus and internal flagss
+  Color getBoderColor() {
+    switch (vitalStatus.toLowerCase()) {
+      case 'low':
+        return isBreathing
+            ? const Color(0xFFEEC000)
+            : isWellnessScore
+            ? const Color(0xFFFA704E)
+            : isBlood
+            ? const Color(0xFFEEC000)
+            : isDBlood
+            ? const Color(0xffED9A33)
+            : isLowGood
+            ? const Color(0xFF1BC76D)
+            : const Color(0xFFFA704E);
+
+      case 'normal':
+        return isBreathing
+            ? Color(0xFF1BC76D)
+            : isBlood
+            ? Color(0xFF1BC76D)
+            : isStress
+            ? Color(0xff9ED042)
+            : isLowGood
+            ? Color(0xFFEEC000)
+            : Color(0xFF1BC76D);
+
+      case 'medium':
+      case 'mild':
+        return const Color(0xFFEEC000);
+
+      case 'high':
+        return isBreathing
+            ? const Color(0xFFEEC000)
+            : isBlood
+            ? const Color(0xFFFA704E)
+            : isDBlood
+            ? const Color(0xffED9A33)
+            : isStress
+            ? Color(0xffED9A33)
+            : isHighLow
+            ? Color(0xFFFA704E)
+            : isLowGood
+            ? const Color(0xFF1BC76D)
+            : const Color(0xFFFA704E);
+
+      case 'very high':
+        return isLowGood ? const Color(0xFFFA704E) : const Color(0xFF1BC76D);
+      case 'prediabetes risk':
+      case 'prediabetes':
+        return const Color(0xFFEEC000);
+      case 'diabetes risk':
+      case 'diabetes':
+        return const Color(0xFFFA704E);
+
+      default:
+        return Colors.blue;
+    }
+  }
 }
 
 Color getStatusAndIsTypical(

@@ -16,6 +16,7 @@ class UserHistoryData extends StatelessWidget {
   UserHistoryData({super.key});
 
   final _profileController = Get.find<ProfileController>();
+
   final _vitalGraphController = Get.find<VitalGraphController>();
 
   @override
@@ -31,7 +32,6 @@ class UserHistoryData extends StatelessWidget {
           InkWell(
             onTap: () {
               _vitalGraphController.selectedIndex.value = 0;
-
               AppNavigation.to(
                 AppRoutes.vitalGraphHistory,
                 arguments: {"guestId": ""},

@@ -6,6 +6,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
+import 'package:ntt_data/modules/views/vital_graph/empty_graph_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/first_line_vital_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
 import 'package:ntt_data/modules/views/vital_graph/vital_graph_first_card.dart';
@@ -56,8 +57,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               // ✅ Center
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // ✅ Center horizontally
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: List.generate(filterType.length, (index) {
                 return Obx(
                   () => InkWell(
@@ -125,8 +125,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 // ✅ Center vertically
-                crossAxisAlignment:
-                    CrossAxisAlignment.center, // ✅ Center horizontally
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: List.generate(filterType.length, (index) {
                   return Container(
                     margin: AppDimensions.symmetric(horizontal: 3.0),
@@ -179,6 +178,24 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                     if (_vitalGraphController.isLoading.isTrue) {
                       return Expanded(
                         child: Center(child: CircularProgressIndicator()),
+                      );
+                    } else if (_vitalGraphController
+                            .vitalGraphResponse
+                            .value
+                            .success ==
+                        'false') {
+                      return Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              PulseGraph(xLabels: [], yValues: []),
+                              CommonText.text(
+                                "No Measurement Taken Period Selection",
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     } else if (_vitalGraphController
                             .vitalGraphResponse

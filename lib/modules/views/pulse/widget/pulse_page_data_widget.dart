@@ -17,7 +17,9 @@ class PulsePageDataWidget extends StatelessWidget {
 
   final String text;
   final List<dynamic> list;
-  final RxInt selectedIndex = (-1).obs; // Track single selection
+  late final RxInt selectedIndex =
+      pulseController.getSelectedIndex(id, list).obs;
+
   final String id;
   final String question;
   final PulseSurveyController pulseController;
@@ -58,7 +60,20 @@ class PulsePageDataWidget extends StatelessWidget {
                       list[index],
                     );
                     pulseController.isEnable.value = true;
+
+                    /// 🔥 Auto move next except last question
+                    final currentIndex =
+                        pulseController.pageController!.page!.round();
+                    final lastIndex =
+                        pulseController.pulseQuestionList.length - 1;
+
+                    if (currentIndex != lastIndex) {
+                      Future.delayed(const Duration(milliseconds: 250), () {
+                        pulseController.moveToNextPage();
+                      });
+                    }
                   },
+
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     decoration: BoxDecoration(

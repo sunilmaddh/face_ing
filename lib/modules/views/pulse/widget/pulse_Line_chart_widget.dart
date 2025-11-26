@@ -7,11 +7,11 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/data/models/pulse_survey_model.dart';
 import 'package:ntt_data/modules/views/pulse/helper/pulse_helper.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/line_chart/custom_line_chart_widget.dart';
 
 class PulseLineChartWidget extends StatefulWidget {
   const PulseLineChartWidget({
     super.key,
-
     required this.bottomTitles,
     required this.vitalValues,
   });
@@ -26,23 +26,32 @@ class PulseLineChartWidget extends StatefulWidget {
 class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
   int? touchedIndex;
 
-  /// ✅ Generate FlSpots for only valid (scanned) days
+  /// ============================================================
+  ///  SHOW LINE FOR ALL DATES → Even if measurement is missing
+  /// ============================================================
   List<FlSpot> getSpots() {
     final List<FlSpot> spots = [];
+
+    double lastValue = 0; // If you prefer last-known-value → use this
 
     for (int i = 0; i < widget.vitalValues.length; i++) {
       final value = widget.vitalValues[i].value;
 
-      // Skip invalid or empty entries
-      if (value == null || value.trim().isEmpty) continue;
+      double y;
 
-      final parsedValue = double.tryParse(value);
+      if (value == null || value.trim().isEmpty) {
+        // OPTION A: missing → show 0
+        y = 0;
 
-      // Skip non-numeric entries
-      if (parsedValue == null) continue;
+        // OPTION B: missing → repeat last known value
+        // y = lastValue;
+      } else {
+        final parsed = double.tryParse(value);
+        y = parsed ?? 0;
+        lastValue = y;
+      }
 
-      // Use index as X value (sequential days)
-      spots.add(FlSpot(i.toDouble(), parsedValue));
+      spots.add(FlSpot(i.toDouble(), y));
     }
 
     return spots;
@@ -50,8 +59,7 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
 
   double getMinY(List<FlSpot> spots) {
     if (spots.isEmpty) return 0;
-    double minY = spots.map((s) => s.y).reduce((a, b) => a < b ? a : b);
-    return minY > 0 ? 0 : minY;
+    return spots.map((s) => s.y).reduce((a, b) => a < b ? a : b);
   }
 
   double getMaxY(List<FlSpot> spots) {
@@ -66,10 +74,8 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
       return const SizedBox.shrink();
     }
 
-    String label = widget.bottomTitles[index];
-
     return Text(
-      label,
+      widget.bottomTitles[index],
       style: const TextStyle(fontSize: 12, color: AppColors.searchColor),
     );
   }
@@ -88,25 +94,22 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
 
     double minY = getMinY(spots);
     double maxY = getMaxY(spots);
-    if (minY == maxY) maxY = minY + 1;
+    if (minY == maxY) maxY = minY + 3;
 
     return SizedBox(
       width: double.infinity,
       height: AppDimensions.height(120.h),
       child: Padding(
-        padding: AppDimensions.symmetric(horizontal: 15.w, vertical: 0.h),
+        padding: AppDimensions.symmetric(horizontal: 15.w),
         child: LineChart(
-          curve: Curves.easeInCirc,
-          duration: const Duration(milliseconds: 1200),
           LineChartData(
             minY: minY,
-            minX: 0,
             maxY: maxY,
+            minX: 0,
             maxX: (widget.bottomTitles.length - 1).toDouble(),
             gridData: FlGridData(show: false),
             borderData: FlBorderData(show: false),
             titlesData: FlTitlesData(
-              show: true,
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
@@ -114,39 +117,20 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
                   getTitlesWidget: _buildBottomTitle,
                 ),
               ),
-              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
               rightTitles: AxisTitles(
                 sideTitles: SideTitles(showTitles: false),
               ),
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: false,
-                  interval: 1,
-                  reservedSize: 30,
-                ),
-              ),
+              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             ),
+
+            /// ================= LINE GRAPH ====================
             lineBarsData: [
               LineChartBarData(
                 spots: spots,
-                isCurved: true,
+                isCurved: false,
                 color: AppColors.primary,
                 barWidth: 2,
-                dotData: FlDotData(
-                  show: true,
-                  getDotPainter: (spot, percent, barData, index) {
-                    final item = widget.vitalValues[spot.x.toInt()];
-                    final color = PulseHelper().getColor(item.status ?? "Good");
-                    if (touchedIndex == spot.x.toInt()) {
-                      return FlDotCirclePainter(
-                        radius: 1,
-                        color: color,
-                        strokeWidth: 1,
-                      );
-                    }
-                    return _ValueDotPainter(spot, textColor: color);
-                  },
-                ),
                 belowBarData: BarAreaData(
                   show: true,
                   gradient: LinearGradient(
@@ -158,10 +142,30 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
                     ],
                   ),
                 ),
+                dotData: FlDotData(
+                  show: true,
+                  getDotPainter: (spot, percent, barData, index) {
+                    final item = widget.vitalValues[spot.x.toInt()];
+                    final hasValue =
+                        item.value != null && item.value!.trim().isNotEmpty;
+
+                    final dotColor =
+                        hasValue
+                            ? PulseHelper().getColor(item.status ?? "Good")
+                            : Colors.grey; // Missing days → grey dot
+
+                    return _ValueDotPainter(
+                      spot,
+                      textColor: dotColor,
+                      showText: hasValue, // Text only for measured values
+                    );
+                  },
+                ),
               ),
             ],
+
+            /// ================= TOUCH HANDLING ====================
             lineTouchData: LineTouchData(
-              handleBuiltInTouches: true,
               touchCallback: (event, response) {
                 if (!event.isInterestedForInteractions ||
                     response == null ||
@@ -170,23 +174,20 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
                   return;
                 }
                 setState(() {
-                  for (var data in response.lineBarSpots!) {
-                    touchedIndex = data.x.toInt();
-                    return;
-                  }
+                  touchedIndex = response.lineBarSpots!.first.x.toInt();
                 });
               },
               getTouchedSpotIndicator: (barData, indicators) {
                 return indicators.map((index) {
+                  final spot = barData.spots[index];
+                  final item = widget.vitalValues[spot.x.toInt()];
+                  final color = PulseHelper().getColor(item.status ?? "Good");
+
                   return TouchedSpotIndicatorData(
                     FlLine(color: AppColors.primary, strokeWidth: 2),
                     FlDotData(
                       show: true,
-                      getDotPainter: (spot, percent, barData, index) {
-                        final item = widget.vitalValues[spot.x.toInt()];
-                        final color = PulseHelper().getColor(
-                          item.status ?? "Good",
-                        );
+                      getDotPainter: (s, p, d, i) {
                         return FlDotCirclePainter(
                           radius: 6,
                           color: color,
@@ -199,18 +200,18 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
                 }).toList();
               },
               touchTooltipData: LineTouchTooltipData(
-                getTooltipItems: (touchedSpots) {
-                  return touchedSpots.map((spot) {
-                    final item = widget.vitalValues[spot.x.toInt()];
-                    final color = PulseHelper().getColor(item.status ?? "Good");
-
+                getTooltipItems: (spots) {
+                  return spots.map((spot) {
                     return LineTooltipItem(
                       formatDouble(spot.y).toString(),
-                      TextStyle(color: color, fontWeight: FontWeight.bold),
+                      TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     );
                   }).toList();
                 },
-                getTooltipColor: (touchedSpot) => Colors.transparent,
+                getTooltipColor: (s) => Colors.transparent,
               ),
             ),
           ),
@@ -220,27 +221,29 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
   }
 }
 
-/// Permanent dot + value painter
+/// ============================================================
+/// DOT + VALUE PAINTER
+/// ============================================================
 class _ValueDotPainter extends FlDotPainter {
   final FlSpot spot;
   final Color textColor;
   final double radius;
-  final EdgeInsets padding;
+  final bool showText;
 
   _ValueDotPainter(
     this.spot, {
     required this.textColor,
     this.radius = 4,
-    this.padding = const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+    this.showText = true,
   });
 
   @override
   void draw(Canvas canvas, FlSpot spot, Offset offsetInCanvas) {
-    // Draw circle
     final paint = Paint()..color = textColor;
     canvas.drawCircle(offsetInCanvas, radius, paint);
 
-    // Draw value above dot
+    if (!showText) return;
+
     final textPainter = TextPainter(
       text: TextSpan(
         text: formatDouble(spot.y).toString(),
@@ -254,12 +257,12 @@ class _ValueDotPainter extends FlDotPainter {
       textDirection: TextDirection.ltr,
     )..layout();
 
-    final textOffset = Offset(
+    final offset = Offset(
       offsetInCanvas.dx - textPainter.width / 2,
       offsetInCanvas.dy - textPainter.height - 4,
     );
 
-    textPainter.paint(canvas, textOffset);
+    textPainter.paint(canvas, offset);
   }
 
   @override
@@ -269,13 +272,9 @@ class _ValueDotPainter extends FlDotPainter {
   Color get mainColor => textColor;
 
   @override
-  List<Object?> get props => [spot, textColor];
+  FlDotPainter lerp(a, b, t) => this;
 
+  /// REQUIRED for new FLChart versions
   @override
-  FlDotPainter lerp(FlDotPainter a, FlDotPainter b, double t) => this;
-}
-
-dynamic formatDouble(double value) {
-  if (value % 1 == 0) return value.toInt();
-  return value;
+  List<Object?> get props => [spot.x, spot.y, textColor, radius, showText];
 }

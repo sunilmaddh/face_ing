@@ -27,11 +27,13 @@ class PulseHelper {
       case "excellent":
         return Color(0xff00C648);
       case "good":
-        return Color(0xff1BC76D);
+        return Colors.amber;
       case "not good":
-        return Color(0xffEEC000);
+        return Color(0xFFFF7700);
       case "tough":
-        return Color(0xffFA704E);
+        return Color(0xFFD92A2A);
+      case "normal":
+        return Color(0xFF0072BC);
       default:
         return Colors.white;
     }

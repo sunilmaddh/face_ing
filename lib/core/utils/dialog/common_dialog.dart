@@ -672,8 +672,12 @@ class CommonDialog {
       {"monthName": "November", "value": "11"},
       {"monthName": "December", "value": "12"},
     ];
+
     int selectedYear = DateTime.now().year;
     int selectedMonthIndex = DateTime.now().month - 1;
+
+    final int currentYear = DateTime.now().year;
+    final int currentMonth = DateTime.now().month;
 
     return showDialog<Map<String, dynamic>>(
       context: context,
@@ -683,115 +687,140 @@ class CommonDialog {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
-          child: SizedBox(
-            height: 400,
-            child: Column(
-              children: [
-                // 🔹 Header
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(30),
-                    ),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Select Month & Year",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-
-                // 🔹 Year Selector
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_left),
-                        onPressed: () {
-                          selectedYear--;
-                          (context as Element).markNeedsBuild();
-                        },
-                      ),
-                      Text(
-                        "$selectedYear",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return SizedBox(
+                height: 400,
+                child: Column(
+                  children: [
+                    // 🔹 Header
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(30),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_right),
-                        onPressed: () {
-                          selectedYear++;
-                          (context as Element).markNeedsBuild();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-
-                // 🔹 Months Grid
-                Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.all(12),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 2,
-                        ),
-                    itemCount: months.length,
-                    itemBuilder: (context, index) {
-                      bool isSelected = index == selectedMonthIndex;
-                      return GestureDetector(
-                        onTap: () {
-                          onTop(
-                            months[index]["value"]!,
-                            selectedYear.toString(),
-                          );
-                          Get.back();
-                        },
-                        // () {
-                        //   // Navigator.of(context).pop({
-                        //   //   "month": months[index],
-                        //   //   "monthIndex": index + 1,
-                        //   //   "year": selectedYear,
-                        //   // });
-                        // },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color:
-                                isSelected
-                                    ? AppColors.primary
-                                    : Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(8),
+                      child: const Center(
+                        child: Text(
+                          "Select Month & Year",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            months[index]["monthName"].toString(),
-                            style: TextStyle(
-                              fontSize: 14,
+                        ),
+                      ),
+                    ),
+
+                    // 🔹 Year Selector
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_left),
+                            onPressed: () {
+                              setState(() {
+                                selectedYear--;
+                              });
+                            },
+                          ),
+
+                          Text(
+                            "$selectedYear",
+                            style: const TextStyle(
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: isSelected ? Colors.white : Colors.black,
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+
+                          // 🚫 Disable NEXT button if user is on current year
+                          IconButton(
+                            icon: const Icon(Icons.arrow_right),
+                            onPressed:
+                                (selectedYear >= currentYear)
+                                    ? null // DISABLED
+                                    : () {
+                                      setState(() {
+                                        selectedYear++;
+                                      });
+                                    },
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // 🔹 Months Grid
+                    Expanded(
+                      child: GridView.builder(
+                        padding: const EdgeInsets.all(12),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              childAspectRatio: 2,
+                            ),
+                        itemCount: months.length,
+                        itemBuilder: (context, index) {
+                          bool isSelected = index == selectedMonthIndex;
+
+                          // 🚫 Disable future months when current year is selected
+                          bool isFutureMonth =
+                              (selectedYear == currentYear &&
+                                  index + 1 > currentMonth);
+
+                          return GestureDetector(
+                            onTap:
+                                isFutureMonth
+                                    ? null // DISABLE TAP
+                                    : () {
+                                      onTop(
+                                        months[index]["value"]!,
+                                        selectedYear.toString(),
+                                      );
+                                      Get.back();
+                                    },
+
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color:
+                                    isFutureMonth
+                                        ? Colors
+                                            .grey
+                                            .shade300 // Disabled color
+                                        : (isSelected
+                                            ? AppColors.primary
+                                            : Colors.grey.shade200),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                months[index]["monthName"].toString(),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      isFutureMonth
+                                          ? Colors
+                                              .grey // Disabled text
+                                          : (isSelected
+                                              ? Colors.white
+                                              : Colors.black),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         );
       },

@@ -8,19 +8,14 @@ import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
-// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
-// ignore: must_be_immutable
 class FirstLineVitalWidget extends StatelessWidget {
-  FirstLineVitalWidget({super.key, t, required this.guestId});
+  FirstLineVitalWidget({super.key, required this.guestId});
 
   final String guestId;
-
-  DateTime firstDate = DateTime(2025);
-  DateTime lastDate = DateTime.now();
-
   final _vitalGraphController = Get.find<VitalGraphController>();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -31,79 +26,102 @@ class FirstLineVitalWidget extends StatelessWidget {
           CommonText.text("Select Vital", fontWeight: FontWeight.w400),
           Row(
             children: [
-              Obx(
-                () => CommonText.text(
-                  _vitalGraphController.vitalGraphResponse.value.dateRange !=
-                          null
-                      ? VitalGraphHelper.cleanRange(
-                        _vitalGraphController.vitalGraphResponse.value.dateRange
-                            .toString(),
-                      )
-                      : "",
+              Obx(() {
+                String displayText = "";
+                if (_vitalGraphController.selectedDate.value.isNotEmpty) {
+                  try {
+                    DateTime parsed;
+                    if (_vitalGraphController.isGraphFilterType.value ==
+                        "Monthly") {
+                      parsed = DateFormat(
+                        "yyyy/MM",
+                      ).parse(_vitalGraphController.selectedDate.value);
+                    } else {
+                      parsed = DateFormat(
+                        "yyyy/MM/dd",
+                      ).parse(_vitalGraphController.selectedDate.value);
+                    }
+                    displayText = DateFormat("yyyy-MMM").format(parsed);
+                  } catch (_) {}
+                }
+                if (displayText.isEmpty &&
+                    _vitalGraphController.vitalGraphResponse.value.dateRange !=
+                        null) {
+                  try {
+                    DateTime parsedFallback = DateFormat("yyyy/MM").parse(
+                      _vitalGraphController.vitalGraphResponse.value.dateRange
+                          .toString(),
+                    );
+                    displayText = DateFormat("yyyy-MMM").format(parsedFallback);
+                  } catch (_) {}
+                }
+                if (displayText.isEmpty) {
+                  DateTime now = DateTime.now();
+                  displayText = DateFormat("yyyy-MMM").format(now);
+                }
+                return CommonText.text(
+                  displayText,
                   fontWeight: FontWeight.bold,
                   fontSize: AppDimensions.font(21),
-                ),
-              ),
+                );
+              }),
+
               15.horizontalSpace,
               InkWell(
-                onTap: () {
-                  // if (_vitalGraphController.isGraphFilterType.value ==
-                  //     "Today") {
-                  //   showCommonDatePicker(
-                  //     context: context,
-                  //     firstDate: DateTime(2025),
-                  //     lastDate: DateTime.now(),
-                  //     onDateSelected: (DateTime selectedDate) {
-                  //       String formattedDate = DateFormat(
-                  //         'yyyy/MM/dd',
-                  //       ).format(selectedDate);
-
-                  //       if (guestId.isNotEmpty) {
-                  //         VitalGraphHelper().callForGuestWithDateRange(
-                  //           "1D",
-                  //           formattedDate,
-                  //           guestId,
-                  //           true,
-                  //         );
-                  //       } else {
-                  //         VitalGraphHelper().callForUserWithDateRange(
-                  //           "1D",
-                  //           formattedDate,
-                  //         );
-                  //       }
-                  //     },
-                  //   );
-                  // } else
-
+                onTap: () async {
                   if (_vitalGraphController.isGraphFilterType.value ==
                       "Monthly") {
                     CommonDialog().showMonthYearPickerDialog(
                       context,
+
+                      /// 🚫 Block future year & month
                       onTop: (String month, String year) {
+                        final formatted = "$year/$month";
+                        _vitalGraphController.selectedDate.value = formatted;
+
                         if (guestId.isNotEmpty) {
                           VitalGraphHelper().callForGuestWithDateRange(
                             "4W",
-                            "$year/$month",
+                            formatted,
                             guestId,
                             true,
                           );
                         } else {
                           VitalGraphHelper().callForUserWithDateRange(
                             "4W",
-                            "$year/$month",
+                            formatted,
                           );
                         }
                       },
                     );
                   } else {
+                    String calDate = '';
+                    calDate = DateFormat(
+                      'yyyy/MM',
+                    ).format(_vitalGraphController.calenderDate.value);
+                    await VitalGraphHelper().callForCalenderWithDateRange(
+                      "4W",
+                      calDate,
+                      null,
+                    );
                     showCommonDatePicker(
                       context: context,
+                      onMonthChanged: (date, updateState) {
+                        _vitalGraphController.onMonthChangeInCalender(
+                          date,
+                          updateState,
+                        );
+                      },
                       firstDate: DateTime(2025),
                       lastDate: DateTime.now(),
+                      initialDate: DateTime.now(),
                       onDateSelected: (DateTime selectedDate) {
                         String formattedDate = DateFormat(
                           'yyyy/MM/dd',
                         ).format(selectedDate);
+
+                        _vitalGraphController.selectedDate.value =
+                            formattedDate;
 
                         if (guestId.isNotEmpty) {
                           VitalGraphHelper().callForGuestWithDateRange(
@@ -119,6 +137,7 @@ class FirstLineVitalWidget extends StatelessWidget {
                           );
                         }
                       },
+                      eventMap: _vitalGraphController.eventMap,
                     );
                   }
                 },
@@ -128,7 +147,7 @@ class FirstLineVitalWidget extends StatelessWidget {
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.calendar_month_outlined,
                     color: Colors.white,
                   ),
