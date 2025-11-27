@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/dialog/common_date_picker.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -85,7 +86,7 @@ class _TableCalendarExampleState extends State<TableCalendarExample> {
 
       calendarStyle: CalendarStyle(
         selectedDecoration: BoxDecoration(
-          color: Colors.black,
+          color: AppColors.primary,
           shape: BoxShape.circle,
         ),
         todayDecoration: BoxDecoration(
@@ -100,7 +101,12 @@ class _TableCalendarExampleState extends State<TableCalendarExample> {
       headerStyle: const HeaderStyle(
         formatButtonVisible: false,
         titleCentered: true,
-        titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        titleTextStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: AppColors.primary,
+        ),
+        formatButtonTextStyle: TextStyle(color: AppColors.primary),
       ),
     );
   }
