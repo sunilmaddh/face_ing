@@ -8,8 +8,6 @@ import 'package:ntt_data/modules/views/home/controllers/home_controller.dart';
 import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
 import 'package:ntt_data/modules/views/home/widgets/menu_card.dart';
 import 'package:ntt_data/modules/views/pulse/views/pulse_screen.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 

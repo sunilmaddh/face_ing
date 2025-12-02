@@ -7,8 +7,8 @@ import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_color_helper.dart';
 
-class VitalGraphWidgetString extends StatefulWidget {
-  const VitalGraphWidgetString({
+class VitalGraphEmptyWidget extends StatefulWidget {
+  const VitalGraphEmptyWidget({
     super.key,
     required this.leftTitle,
     required this.bottomTitles,
@@ -24,10 +24,10 @@ class VitalGraphWidgetString extends StatefulWidget {
   final String vitalName;
 
   @override
-  State<VitalGraphWidgetString> createState() => _VitalGraphWidgetStringState();
+  State<VitalGraphEmptyWidget> createState() => _VitalGraphWidgetStringState();
 }
 
-class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
+class _VitalGraphWidgetStringState extends State<VitalGraphEmptyWidget> {
   final double width = 10;
 
   late List<BarChartGroupData> showingBarGroups;

@@ -31,7 +31,10 @@ class CommonGraphCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusListWith = VitalGraphStatus().statusListWithColor[vitalName];
     var val = avg.isNotEmpty ? avg : vitalValue;
-    Color color = getStatusAndIsTypical(vitalName, val, healthList);
+    Color color =
+        healthList.isNotEmpty
+            ? getStatusAndIsTypical(vitalName, val, healthList)
+            : Colors.black12;
     return CommonCard(
       isBorder: true,
       radius: 12.0,

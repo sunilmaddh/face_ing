@@ -51,7 +51,7 @@ class _PulseScreenState extends State<PulseScreen> {
             onTap:
                 () => {
                   landingController.onTabTapped(0),
-                  Get.offAll(() => const LandingScreen()),
+                  Get.off(() => const LandingScreen()),
                 },
             child: Container(
               height: 40,

@@ -99,6 +99,19 @@ class PulseSurveyPageViewBuilder extends StatelessWidget {
                           },
                         ),
                       )
+                    else if (isFirst)
+                      Obx(
+                        () => PulseRoundedButton(
+                          isEnable: pulseSurveyController.isEnable.value,
+                          isPrevious: false,
+                          onPressed: () {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 450),
+                              curve: Curves.ease,
+                            );
+                          },
+                        ),
+                      )
                     else
                       const SizedBox(width: 50),
                   ],

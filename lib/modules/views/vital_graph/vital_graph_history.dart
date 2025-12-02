@@ -179,25 +179,27 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                       return Expanded(
                         child: Center(child: CircularProgressIndicator()),
                       );
-                    } else if (_vitalGraphController
-                            .vitalGraphResponse
-                            .value
-                            .success ==
-                        'false') {
-                      return Expanded(
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              PulseGraph(xLabels: [], yValues: []),
-                              CommonText.text(
-                                "No Measurement Taken Period Selection",
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    } else if (_vitalGraphController
+                    }
+                    //  else if (_vitalGraphController
+                    //         .vitalGraphResponse
+                    //         .value
+                    //         .success ==
+                    //     'false') {
+                    //   return Expanded(
+                    //     child: Center(
+                    //       child: Column(
+                    //         mainAxisSize: MainAxisSize.min,
+                    //         children: [
+                    //           PulseGraph(xLabels: [], yValues: []),
+                    //           CommonText.text(
+                    //             "No Measurement Taken Period Selection",
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   );
+                    // } else
+                    if (_vitalGraphController
                             .vitalGraphResponse
                             .value
                             .wellness !=

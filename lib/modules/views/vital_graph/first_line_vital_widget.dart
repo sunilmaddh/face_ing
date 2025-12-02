@@ -26,46 +26,54 @@ class FirstLineVitalWidget extends StatelessWidget {
           CommonText.text("Select Vital", fontWeight: FontWeight.w400),
           Row(
             children: [
-              Obx(() {
-                String displayText = "";
-                if (_vitalGraphController.selectedDate.value.isNotEmpty) {
-                  try {
-                    DateTime parsed;
-                    if (_vitalGraphController.isGraphFilterType.value ==
-                        "Monthly") {
-                      parsed = DateFormat(
-                        "yyyy/MM",
-                      ).parse(_vitalGraphController.selectedDate.value);
-                    } else {
-                      parsed = DateFormat(
-                        "yyyy/MM/dd",
-                      ).parse(_vitalGraphController.selectedDate.value);
-                    }
-                    displayText = DateFormat("yyyy-MMM").format(parsed);
-                  } catch (_) {}
-                }
-                if (displayText.isEmpty &&
-                    _vitalGraphController.vitalGraphResponse.value.dateRange !=
-                        null) {
-                  try {
-                    DateTime parsedFallback = DateFormat("yyyy/MM").parse(
-                      _vitalGraphController.vitalGraphResponse.value.dateRange
-                          .toString(),
-                    );
-                    displayText = DateFormat("yyyy-MMM").format(parsedFallback);
-                  } catch (_) {}
-                }
-                if (displayText.isEmpty) {
-                  DateTime now = DateTime.now();
-                  displayText = DateFormat("yyyy-MMM").format(now);
-                }
-                return CommonText.text(
-                  displayText,
+              Obx(
+                () => CommonText.text(
+                  _vitalGraphController.vitalGraphResponse.value.dateRange ??
+                      '',
                   fontWeight: FontWeight.bold,
                   fontSize: AppDimensions.font(21),
-                );
-              }),
+                ),
+              ),
 
+              // Obx(() {
+              //   String displayText = "";
+              //   if (_vitalGraphController.selectedDate.value.isNotEmpty) {
+              //     try {
+              //       DateTime parsed;
+              //       if (_vitalGraphController.isGraphFilterType.value ==
+              //           "Monthly") {
+              //         parsed = DateFormat(
+              //           "yyyy/MM",
+              //         ).parse(_vitalGraphController.selectedDate.value);
+              //       } else {
+              //         parsed = DateFormat(
+              //           "yyyy/MM/dd",
+              //         ).parse(_vitalGraphController.selectedDate.value);
+              //       }
+              //       displayText = DateFormat("yyyy-MMM").format(parsed);
+              //     } catch (_) {}
+              //   }
+              //   if (displayText.isEmpty &&
+              //       _vitalGraphController.vitalGraphResponse.value.dateRange !=
+              //           null) {
+              //     try {
+              //       DateTime parsedFallback = DateFormat("yyyy/MM").parse(
+              //         _vitalGraphController.vitalGraphResponse.value.dateRange
+              //             .toString(),
+              //       );
+              //       displayText = DateFormat("yyyy-MMM").format(parsedFallback);
+              //     } catch (_) {}
+              //   }
+              //   if (displayText.isEmpty) {
+              //     DateTime now = DateTime.now();
+              //     displayText = DateFormat("yyyy-MMM").format(now);
+              //   }
+              //   return CommonText.text(
+              //     displayText,
+              //     fontWeight: FontWeight.bold,
+              //     fontSize: AppDimensions.font(21),
+              //   );
+              // }),
               15.horizontalSpace,
               InkWell(
                 onTap: () async {
@@ -112,7 +120,7 @@ class FirstLineVitalWidget extends StatelessWidget {
                           updateState,
                         );
                       },
-                      firstDate: DateTime(2025),
+                      firstDate: DateTime(2020),
                       lastDate: DateTime.now(),
                       initialDate: DateTime.now(),
                       onDateSelected: (DateTime selectedDate) {

@@ -5,6 +5,7 @@ import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/bottomsheet_helper.dart';
 import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
+import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_empty_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_widget_string.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
@@ -15,6 +16,8 @@ import 'package:ntt_data/modules/views/vital_graph/widgets/line_chart/custom_lin
 import 'package:ntt_data/modules/views/vital_graph/widgets/line_chart/custom_line_chart_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/gauge/vital_guage.dart';
 import 'package:ntt_data/widgets/bar/graph_tab_bar_widget.dart';
+
+import '../../../widgets/fields/common_text.dart';
 
 // ignore: must_be_immutable
 class VitalGraphFirstCard extends StatefulWidget {
@@ -113,7 +116,39 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                     padding: AppDimensions.only(bottom: 10),
                     child: CommonGraphCard(
                       widget:
-                          !AppMethods.isNumeric(
+                          result[index].healthList!.isEmpty
+                              ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    VitalGraphEmptyWidget(
+                                      leftTitle: result[index].yValues!,
+                                      bottomTitles: result[index].xValues!,
+                                      vitalValue: healthList,
+                                      vitalName: result[index].vitalName!,
+                                    ),
+                                    // AppMethods.isNumeric(
+                                    //       result[index].yValues![index],
+                                    //     )
+                                    //     ? VitalGraphWidget(
+                                    //       leftTitle: result[index].yValues!,
+                                    //       bottomTitles: result[index].xValues!,
+                                    //       vitalValue: healthList,
+                                    //       vitalName: result[index].vitalName!,
+                                    //     )
+                                    //     : VitalGraphWidgetString(
+                                    //       leftTitle: result[index].yValues!,
+                                    //       bottomTitles: result[index].xValues!,
+                                    //       vitalValue: healthList,
+                                    //       vitalName: result[index].vitalName!,
+                                    //     ),
+                                    CommonText.text(
+                                      "No Measurement Taken Period Selection",
+                                    ),
+                                  ],
+                                ),
+                              )
+                              : !AppMethods.isNumeric(
                                 result[index].healthList!.first.value!,
                               )
                               ? VitalGraphWidgetString(
@@ -202,7 +237,49 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                     );
 
                     debugPrint(healthList.toList().toString());
-                    return !AppMethods.isNumeric(
+                    debugPrint(
+                      "Health Sunil${healthList.toList().toString()} ${result[index].healthList}",
+                    );
+                    return result[index].healthList!.isEmpty
+                        ? Padding(
+                          padding: AppDimensions.only(bottom: 10),
+                          child: CommonGraphCard(
+                            widget: Padding(
+                              padding:
+                                  result[index].vitalName == "PNS Index" ||
+                                          result[index].vitalName == "SNS Index"
+                                      ? AppDimensions.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 60,
+                                      )
+                                      : AppDimensions.symmetric(
+                                        horizontal: 10,
+                                        vertical: 20,
+                                      ),
+                              child: Column(
+                                children: [
+                                  CustomLineChartWidget(
+                                    leftTitles: result[index].yValues!,
+                                    bottomTitles: result[index].xValues!,
+                                    vitalValues: healthList,
+                                    vitalName: result[index].vitalName!,
+                                  ),
+                                  CommonText.text(
+                                    "No Measurement Taken Period Selection",
+                                  ),
+                                ],
+                              ),
+                            ),
+                            vitalName: result[index].vitalName.toString(),
+                            avg: result[index].vitalAvgValue.toString(),
+                            unit: result[index].vitalUnit.toString(),
+                            statusList: result[index].vitalStatusList!,
+                            healthList: healthList,
+                          ),
+                        )
+                        : !AppMethods.isNumeric(
                           result[index].healthList!.first.value!,
                         )
                         ? Padding(

@@ -18,6 +18,7 @@ class PulseSurveyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.historyCardColor,
       appBar: CustomAppBar(
         isCenterTitle: false,
         title: "Pulse Survey",
