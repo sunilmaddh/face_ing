@@ -47,7 +47,13 @@ class VitalGraphController extends GetxController {
   RxDouble fontSize = 0.0.obs;
   RxDouble radius = 0.0.obs;
   RxString selectedDate = "".obs;
+  RxString selectedMonthDate = "".obs;
+  RxString monthIndex = "".obs;
+  RxString yearIndex = "".obs;
+  RxString monthYearDate = "".obs;
   RxString isGraphFilterType = "".obs;
+  RxInt selectedYear = RxInt(DateTime.now().year);
+  RxInt selectedMonthIndex = RxInt(DateTime.now().month - 1);
 
   onMonthChangeInCalender(DateTime date, StateSetter updateState) {
     calenderDate.value = date;

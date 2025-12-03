@@ -3,18 +3,15 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/bottomsheet_helper.dart';
-import 'package:ntt_data/core/utils/extentions.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_empty_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/bar_chart/vital_graph_widget_string.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/gauge/caterigical_guage.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/common_graph_card.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/line_chart/custom_line_bar_chart_string.dart';
 import 'package:ntt_data/modules/views/vital_graph/widgets/line_chart/custom_line_chart_widget.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/gauge/vital_guage.dart';
 import 'package:ntt_data/widgets/bar/graph_tab_bar_widget.dart';
 
 import '../../../widgets/fields/common_text.dart';
@@ -112,12 +109,16 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                     result[index].xValues!,
                     result[index].healthList!,
                   );
+                  debugPrint(healthList.toList().toString());
+                  debugPrint(
+                    "Health Sunil${healthList.toList().toString()} ${result[index].healthList} $result",
+                  );
                   return Padding(
                     padding: AppDimensions.only(bottom: 10),
-                    child: CommonGraphCard(
-                      widget:
-                          result[index].healthList!.isEmpty
-                              ? Padding(
+                    child:
+                        result[index].healthList!.isEmpty
+                            ? CommonGraphCard(
+                              widget: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   children: [
@@ -127,102 +128,50 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                                       vitalValue: healthList,
                                       vitalName: result[index].vitalName!,
                                     ),
-                                    // AppMethods.isNumeric(
-                                    //       result[index].yValues![index],
-                                    //     )
-                                    //     ? VitalGraphWidget(
-                                    //       leftTitle: result[index].yValues!,
-                                    //       bottomTitles: result[index].xValues!,
-                                    //       vitalValue: healthList,
-                                    //       vitalName: result[index].vitalName!,
-                                    //     )
-                                    //     : VitalGraphWidgetString(
-                                    //       leftTitle: result[index].yValues!,
-                                    //       bottomTitles: result[index].xValues!,
-                                    //       vitalValue: healthList,
-                                    //       vitalName: result[index].vitalName!,
-                                    //     ),
+
                                     CommonText.text(
                                       "No Measurement Taken Period Selection",
                                     ),
                                   ],
                                 ),
-                              )
-                              : !AppMethods.isNumeric(
-                                result[index].healthList!.first.value!,
-                              )
-                              ? VitalGraphWidgetString(
-                                leftTitle: result[index].yValues!,
-                                bottomTitles: result[index].xValues!,
-                                vitalValue: healthList,
-                                vitalName: result[index].vitalName!,
-                              )
-                              : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: VitalGraphWidget(
-                                  leftTitle: result[index].yValues!,
-                                  bottomTitles: result[index].xValues!,
-                                  vitalValue: healthList,
-                                  vitalName: result[index].vitalName!,
-                                ),
                               ),
-                      vitalName: result[index].vitalName!,
-                      avg: result[index].vitalAvgValue!,
-                      unit: result[index].vitalUnit!,
-                      statusList: result[index].vitalStatusList!,
-                      healthList: result[index].healthList!,
-                    ),
+                              vitalName: result[index].vitalName!,
+                              avg: "",
+                              unit: "",
+                              statusList: result[index].vitalStatusList!,
+                              healthList: result[index].healthList!,
+                            )
+                            : CommonGraphCard(
+                              widget: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child:
+                                    !AppMethods.isNumeric(
+                                          result[index]
+                                              .healthList!
+                                              .first
+                                              .value!,
+                                        )
+                                        ? VitalGraphWidgetString(
+                                          leftTitle: result[index].yValues!,
+                                          bottomTitles: result[index].xValues!,
+                                          vitalValue: healthList,
+                                          vitalName: result[index].vitalName!,
+                                        )
+                                        : VitalGraphWidget(
+                                          leftTitle: result[index].yValues!,
+                                          bottomTitles: result[index].xValues!,
+                                          vitalValue: healthList,
+                                          vitalName: result[index].vitalName!,
+                                        ),
+                              ),
+                              vitalName: result[index].vitalName!,
+                              avg: result[index].vitalAvgValue!,
+                              unit: result[index].vitalUnit!,
+                              statusList: result[index].vitalStatusList!,
+                              healthList: result[index].healthList!,
+                            ),
                   );
                 },
-              )
-              : _vitalController.isGraphFilterType.value == "Today"
-              ? Padding(
-                padding: AppDimensions.only(bottom: 70),
-                child: GridView.builder(
-                  itemCount: result.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio: 0.67,
-                    crossAxisCount: 2,
-                  ),
-                  itemBuilder: (context, index) {
-                    var value = double.tryParse(result[index].vitalValue!);
-                    return Padding(
-                      padding: AppDimensions.only(bottom: 0),
-                      child: CommonGraphCard(
-                        vitalValue: result[index].vitalValue!.toFirstCaps(),
-                        widget: Padding(
-                          padding: AppDimensions.symmetric(
-                            vertical: 0,
-                            horizontal: 10,
-                          ),
-                          child:
-                              AppMethods.isNumeric(result[index].vitalValue!)
-                                  ? SizedBox(
-                                    height: AppDimensions.height(120),
-                                    child: VitalGauge(
-                                      vitalName: result[index].vitalName!,
-                                      value: value!,
-                                    ),
-                                  )
-                                  : SizedBox(
-                                    height: AppDimensions.height(120),
-                                    child: CategoricalGauge(
-                                      vitalName: result[index].vitalName!,
-                                      currentStatus: result[index].vitalValue!,
-                                    ),
-                                  ),
-                        ),
-                        vitalName: result[index].vitalName.toString(),
-                        avg: "",
-                        unit: result[index].vitalUnit.toString(),
-                        statusList: result[index].vitalStatusList!,
-                        healthList: result[index].healthList!,
-                      ),
-                    );
-                  },
-                ),
               )
               : Padding(
                 padding: AppDimensions.only(bottom: 70),
@@ -238,26 +187,17 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
 
                     debugPrint(healthList.toList().toString());
                     debugPrint(
-                      "Health Sunil${healthList.toList().toString()} ${result[index].healthList}",
+                      "Health Sunil${healthList.toList().toString()} ${result[index].healthList} $result",
                     );
                     return result[index].healthList!.isEmpty
                         ? Padding(
                           padding: AppDimensions.only(bottom: 10),
                           child: CommonGraphCard(
                             widget: Padding(
-                              padding:
-                                  result[index].vitalName == "PNS Index" ||
-                                          result[index].vitalName == "SNS Index"
-                                      ? AppDimensions.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 20,
-                                        bottom: 60,
-                                      )
-                                      : AppDimensions.symmetric(
-                                        horizontal: 10,
-                                        vertical: 20,
-                                      ),
+                              padding: AppDimensions.symmetric(
+                                horizontal: 10,
+                                vertical: 20,
+                              ),
                               child: Column(
                                 children: [
                                   CustomLineChartWidget(
@@ -273,8 +213,8 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                               ),
                             ),
                             vitalName: result[index].vitalName.toString(),
-                            avg: result[index].vitalAvgValue.toString(),
-                            unit: result[index].vitalUnit.toString(),
+                            avg: "",
+                            unit: "",
                             statusList: result[index].vitalStatusList!,
                             healthList: healthList,
                           ),
@@ -309,19 +249,10 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
                           padding: AppDimensions.only(bottom: 10),
                           child: CommonGraphCard(
                             widget: Padding(
-                              padding:
-                                  result[index].vitalName == "PNS Index" ||
-                                          result[index].vitalName == "SNS Index"
-                                      ? AppDimensions.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 20,
-                                        bottom: 60,
-                                      )
-                                      : AppDimensions.symmetric(
-                                        horizontal: 10,
-                                        vertical: 20,
-                                      ),
+                              padding: AppDimensions.symmetric(
+                                horizontal: 10,
+                                vertical: 20,
+                              ),
                               child: CustomLineChartWidget(
                                 leftTitles: result[index].yValues!,
                                 bottomTitles: result[index].xValues!,

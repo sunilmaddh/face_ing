@@ -121,7 +121,7 @@ class _PulseScreenState extends State<PulseScreen> {
                       children: [
                         10.verticalSpace,
                         CommonText.text(
-                          AppConstents.todayResult,
+                          AppConstents.latestResult,
                           fontSize: AppDimensions.font(14),
                           fontWeight: FontWeight.w700,
                           color: Color(0xff898989),

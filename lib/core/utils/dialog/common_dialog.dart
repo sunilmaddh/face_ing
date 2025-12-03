@@ -12,6 +12,7 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_dialog_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -657,6 +658,9 @@ class CommonDialog {
   Future<Map<String, dynamic>?> showMonthYearPickerDialog(
     BuildContext context, {
     required Function(String month, String year) onTop,
+    required String month, // "February"
+    required String year, // "2022"
+    required VitalGraphController controller,
   }) async {
     final List<Map<String, String>> months = [
       {"monthName": "January", "value": "01"},
@@ -673,17 +677,22 @@ class CommonDialog {
       {"monthName": "December", "value": "12"},
     ];
 
-    int selectedYear = DateTime.now().year;
-    int selectedMonthIndex = DateTime.now().month - 1;
+    // 🔥 Pre-select the previously selected month
+    for (int i = 0; i < months.length; i++) {
+      if (months[i]["monthName"]!.toLowerCase() == month.toLowerCase()) {
+        controller.selectedMonthIndex.value = i + 1;
+        break;
+      }
+    }
 
     final int currentYear = DateTime.now().year;
     final int currentMonth = DateTime.now().month;
 
     return showDialog<Map<String, dynamic>>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return Dialog(
-          backgroundColor: AppColors.btntext,
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -693,11 +702,10 @@ class CommonDialog {
                 height: 400,
                 child: Column(
                   children: [
-                    // 🔹 Header
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: Colors.blue,
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(30),
                         ),
@@ -714,7 +722,7 @@ class CommonDialog {
                       ),
                     ),
 
-                    // 🔹 Year Selector
+                    // YEAR ROW
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: Row(
@@ -723,37 +731,29 @@ class CommonDialog {
                           IconButton(
                             icon: const Icon(Icons.arrow_left),
                             onPressed: () {
-                              setState(() {
-                                selectedYear--;
-                              });
+                              setState(() => controller.selectedYear--);
                             },
                           ),
-
                           Text(
-                            "$selectedYear",
+                            "${controller.selectedYear}",
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-
-                          // 🚫 Disable NEXT button if user is on current year
                           IconButton(
                             icon: const Icon(Icons.arrow_right),
                             onPressed:
-                                (selectedYear >= currentYear)
-                                    ? null // DISABLED
+                                (controller.selectedYear >= currentYear)
+                                    ? null
                                     : () {
-                                      setState(() {
-                                        selectedYear++;
-                                      });
+                                      setState(() => controller.selectedYear++);
                                     },
                           ),
                         ],
                       ),
                     ),
 
-                    // 🔹 Months Grid
                     Expanded(
                       child: GridView.builder(
                         padding: const EdgeInsets.all(12),
@@ -766,47 +766,54 @@ class CommonDialog {
                             ),
                         itemCount: months.length,
                         itemBuilder: (context, index) {
-                          bool isSelected = index == selectedMonthIndex;
+                          debugPrint(
+                            "${controller.selectedMonthIndex.toString()} ${index.toString()}",
+                          );
 
-                          // 🚫 Disable future months when current year is selected
+                          bool isSelected =
+                              index == controller.selectedMonthIndex.value;
+
                           bool isFutureMonth =
-                              (selectedYear == currentYear &&
+                              (controller.selectedYear == currentYear &&
                                   index + 1 > currentMonth);
 
                           return GestureDetector(
                             onTap:
                                 isFutureMonth
-                                    ? null // DISABLE TAP
+                                    ? null
                                     : () {
+                                      setState(
+                                        () =>
+                                            controller
+                                                .selectedMonthIndex
+                                                .value = index,
+                                      );
+
                                       onTop(
                                         months[index]["value"]!,
-                                        selectedYear.toString(),
+                                        controller.selectedYear.toString(),
                                       );
-                                      Get.back();
+                                      Navigator.pop(context);
                                     },
-
                             child: Container(
                               decoration: BoxDecoration(
                                 color:
                                     isFutureMonth
-                                        ? Colors
-                                            .grey
-                                            .shade300 // Disabled color
+                                        ? Colors.grey.shade300
                                         : (isSelected
-                                            ? AppColors.primary
+                                            ? Colors.blue
                                             : Colors.grey.shade200),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                months[index]["monthName"].toString(),
+                                months[index]["monthName"]!,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color:
                                       isFutureMonth
-                                          ? Colors
-                                              .grey // Disabled text
+                                          ? Colors.grey
                                           : (isSelected
                                               ? Colors.white
                                               : Colors.black),

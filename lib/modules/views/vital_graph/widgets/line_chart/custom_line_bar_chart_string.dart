@@ -108,6 +108,8 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
     String label = xMapper.getLabel(value);
 
     return SideTitleWidget(
+      meta: meta,
+      space: 4,
       child: Text(
         label,
         style: const TextStyle(
@@ -116,8 +118,6 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
           color: AppColors.searchColor,
         ),
       ),
-      meta: meta,
-      space: 4,
     );
   }
 
@@ -155,6 +155,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(widget.vitalValues.toString());
     final spots = _generateSpots();
 
     return Padding(
@@ -322,10 +323,10 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                     if (!hasValue) {
                       // hollow grey dot at bottom
                       return FlDotCirclePainter(
-                        radius: 1,
+                        radius: 4,
                         color: Colors.white,
-                        strokeWidth: 2,
-                        strokeColor: Colors.white,
+                        strokeWidth: 1.5,
+                        strokeColor: Colors.grey.shade300,
                       );
                     }
 
@@ -343,8 +344,8 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                     return FlDotCirclePainter(
                       radius: 4,
                       color: vitalGraphColor,
-                      strokeWidth: 0,
-                      strokeColor: AppColors.backArrowColor,
+                      strokeWidth: 1.5,
+                      strokeColor: vitalGraphColor,
                     );
                   },
                 ),

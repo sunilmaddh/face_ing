@@ -49,8 +49,7 @@ class _VitalGraphWidgetStringState extends State<VitalGraphWidgetString> {
     super.initState();
     // Map strings → numbers starting from 5
     stringToIndex = {
-      for (int i = 0; i < widget.leftTitle.length; i++)
-        widget.leftTitle[i]: i + 2,
+      for (int i = 0; i < yLevels.length; i++) yLevels[i]: i + 2,
     };
     storeBarChartData();
   }

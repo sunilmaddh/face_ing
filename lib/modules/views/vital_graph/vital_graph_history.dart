@@ -6,7 +6,6 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
-import 'package:ntt_data/modules/views/vital_graph/empty_graph_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/first_line_vital_widget.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
 import 'package:ntt_data/modules/views/vital_graph/vital_graph_first_card.dart';
@@ -50,54 +49,34 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
         alignment: Alignment.bottomCenter,
         width: MediaQuery.of(context).size.width,
         height: AppDimensions.height(95),
-        // color: Colors.amber,
+
         child: Column(
           children: [
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
-              // ✅ Center
+
               crossAxisAlignment: CrossAxisAlignment.center,
               children: List.generate(filterType.length, (index) {
                 return Obx(
                   () => InkWell(
                     onTap: () {
                       _vitalGraphController.selectedIndex.value = index;
-                      if (filterType[index] == "Today") {
-                        _vitalGraphController.isGraphFilterType.value = "Today";
-                        if (gusetId.isNotEmpty) {
-                          VitalGraphHelper().callForGuestWithFilter(
-                            "1D",
-                            gusetId,
-                            true,
-                          );
-                        } else {
-                          VitalGraphHelper().callForUserWithFilter("1D", true);
-                        }
-                      } else if (filterType[index] == "Weekly") {
+
+                      if (filterType[index] == "Weekly") {
                         _vitalGraphController.isGraphFilterType.value =
                             "Weekly";
-                        if (gusetId.isNotEmpty) {
-                          VitalGraphHelper().callForGuestWithFilter(
-                            "7D",
-                            gusetId,
-                            true,
-                          );
-                        } else {
-                          VitalGraphHelper().callForUserWithFilter("7D", true);
-                        }
+                        VitalGraphHelper().callForUserWithDateRange(
+                          "7D",
+                          _vitalGraphController.selectedDate.value ?? "",
+                        );
                       } else {
                         _vitalGraphController.isGraphFilterType.value =
                             "Monthly";
-                        if (gusetId.isNotEmpty) {
-                          VitalGraphHelper().callForGuestWithFilter(
-                            "4W",
-                            gusetId,
-                            true,
-                          );
-                        } else {
-                          VitalGraphHelper().callForUserWithFilter("4W", true);
-                        }
+                        VitalGraphHelper().callForUserWithDateRange(
+                          "4W",
+                          _vitalGraphController.selectedMonthDate.value ?? "",
+                        );
                       }
                     },
                     child: Padding(
@@ -110,7 +89,6 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                         fontFamily: "Manrope",
                         fontSize: AppDimensions.font(20.0),
                         color:
-                            // ignore: unrelated_type_equality_checks
                             _vitalGraphController.selectedIndex == index
                                 ? AppColors.primary
                                 : Color(0xffE0E0E0),
@@ -124,7 +102,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
               () => Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                // ✅ Center vertically
+
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: List.generate(filterType.length, (index) {
                   return Container(
@@ -134,11 +112,9 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color:
-                          // ignore: unrelated_type_equality_checks
                           _vitalGraphController.selectedIndex == index
                               ? AppColors.primary
                               : Color(0xffE0E0E0),
-                      // borderRadius: BorderRadius.circular(10),
                     ),
                   );
                 }),
@@ -180,25 +156,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                         child: Center(child: CircularProgressIndicator()),
                       );
                     }
-                    //  else if (_vitalGraphController
-                    //         .vitalGraphResponse
-                    //         .value
-                    //         .success ==
-                    //     'false') {
-                    //   return Expanded(
-                    //     child: Center(
-                    //       child: Column(
-                    //         mainAxisSize: MainAxisSize.min,
-                    //         children: [
-                    //           PulseGraph(xLabels: [], yValues: []),
-                    //           CommonText.text(
-                    //             "No Measurement Taken Period Selection",
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   );
-                    // } else
+
                     if (_vitalGraphController
                             .vitalGraphResponse
                             .value
@@ -235,6 +193,10 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
   void dispose() {
     _vitalGraphController.isGraphFilterType.value = "";
     _vitalGraphController.selectedIndex.value = 0;
+    _vitalGraphController.selectedDate.value = "";
+    _vitalGraphController.selectedMonthDate.value = "";
+    _vitalGraphController.selectedMonthIndex.value = DateTime.now().month - 1;
+
     super.dispose();
   }
 }

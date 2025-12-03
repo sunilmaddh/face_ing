@@ -175,7 +175,12 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                         strokeWidth: 1,
                       );
                     }
-                    return _ValueDotPainter(spot, textColor: color);
+
+                    return _ValueDotPainter(
+                      spot,
+                      textColor: color,
+                      borderColor: color,
+                    );
                   },
                 ),
 
@@ -243,10 +248,9 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                             ).getBoderColor();
 
                         return FlDotCirclePainter(
-                          radius: 4, 
+                          radius: 4,
                           strokeWidth: 20,
-                          strokeColor:
-                              borderColor, 
+                          strokeColor: borderColor,
                         );
                       },
                     ),
@@ -293,19 +297,40 @@ class _ValueDotPainter extends FlDotPainter {
   final Color textColor;
   final double radius;
   final EdgeInsets padding;
+  final Color borderColor;
+  final double borderWidth;
 
   _ValueDotPainter(
     this.spot, {
     required this.textColor,
     this.radius = 4,
-    this.padding = const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+    this.padding = const EdgeInsets.symmetric(horizontal: 4, vertical: 7),
+    this.borderColor = Colors.grey,
+    this.borderWidth = 1.5,
   });
 
   @override
   void draw(Canvas canvas, FlSpot spot, Offset offsetInCanvas) {
-    final paint = Paint()..color = textColor;
-    canvas.drawCircle(offsetInCanvas, radius, paint);
+    /// --- Circle Fill ---
+    final fillPaint = Paint()..color = textColor;
 
+    /// --- Border Paint ---
+    final borderPaint =
+        Paint()
+          ..color =
+              borderColor == Colors.white
+                  ? Colors.grey.shade300
+                  : Colors.transparent
+          ..strokeWidth = textColor == Colors.white ? borderWidth : 0
+          ..style = PaintingStyle.stroke;
+
+    // Draw inner dot
+    canvas.drawCircle(offsetInCanvas, radius, fillPaint);
+
+    // Draw border around dot
+    canvas.drawCircle(offsetInCanvas, radius + borderWidth / 2, borderPaint);
+
+    /// --- Draw Value Above Dot ---
     final textPainter = TextPainter(
       text: TextSpan(
         text: formatDouble(spot.y).toString(),
@@ -330,12 +355,17 @@ class _ValueDotPainter extends FlDotPainter {
   @override
   Size getSize(FlSpot spot) => const Size(0, 0);
   @override
-  Color get mainColor => throw UnimplementedError();
+  Color get mainColor => textColor;
+
   @override
+  FlDotPainter lerp(FlDotPainter a, FlDotPainter b, double t) {
+    // TODO: implement lerp
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
-  @override
-  FlDotPainter lerp(FlDotPainter a, FlDotPainter b, double t) =>
-      throw UnimplementedError();
 }
 
 dynamic formatDouble(double value) {

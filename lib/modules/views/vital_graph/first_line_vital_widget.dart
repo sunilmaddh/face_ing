@@ -35,45 +35,6 @@ class FirstLineVitalWidget extends StatelessWidget {
                 ),
               ),
 
-              // Obx(() {
-              //   String displayText = "";
-              //   if (_vitalGraphController.selectedDate.value.isNotEmpty) {
-              //     try {
-              //       DateTime parsed;
-              //       if (_vitalGraphController.isGraphFilterType.value ==
-              //           "Monthly") {
-              //         parsed = DateFormat(
-              //           "yyyy/MM",
-              //         ).parse(_vitalGraphController.selectedDate.value);
-              //       } else {
-              //         parsed = DateFormat(
-              //           "yyyy/MM/dd",
-              //         ).parse(_vitalGraphController.selectedDate.value);
-              //       }
-              //       displayText = DateFormat("yyyy-MMM").format(parsed);
-              //     } catch (_) {}
-              //   }
-              //   if (displayText.isEmpty &&
-              //       _vitalGraphController.vitalGraphResponse.value.dateRange !=
-              //           null) {
-              //     try {
-              //       DateTime parsedFallback = DateFormat("yyyy/MM").parse(
-              //         _vitalGraphController.vitalGraphResponse.value.dateRange
-              //             .toString(),
-              //       );
-              //       displayText = DateFormat("yyyy-MMM").format(parsedFallback);
-              //     } catch (_) {}
-              //   }
-              //   if (displayText.isEmpty) {
-              //     DateTime now = DateTime.now();
-              //     displayText = DateFormat("yyyy-MMM").format(now);
-              //   }
-              //   return CommonText.text(
-              //     displayText,
-              //     fontWeight: FontWeight.bold,
-              //     fontSize: AppDimensions.font(21),
-              //   );
-              // }),
               15.horizontalSpace,
               InkWell(
                 onTap: () async {
@@ -82,10 +43,16 @@ class FirstLineVitalWidget extends StatelessWidget {
                     CommonDialog().showMonthYearPickerDialog(
                       context,
 
-                      /// 🚫 Block future year & month
                       onTop: (String month, String year) {
-                        final formatted = "$year/$month";
-                        _vitalGraphController.selectedDate.value = formatted;
+                        _vitalGraphController.monthIndex.value = month;
+                        _vitalGraphController.yearIndex.value = year;
+                        _vitalGraphController.monthYearDate.value =
+                            "$year/$month";
+                        final formatted =
+                            _vitalGraphController.monthYearDate.value;
+
+                        _vitalGraphController.selectedMonthDate.value =
+                            formatted;
 
                         if (guestId.isNotEmpty) {
                           VitalGraphHelper().callForGuestWithDateRange(
@@ -101,29 +68,57 @@ class FirstLineVitalWidget extends StatelessWidget {
                           );
                         }
                       },
+                      month: _vitalGraphController.monthIndex.value,
+                      year: _vitalGraphController.yearIndex.value,
+                      controller: _vitalGraphController,
                     );
                   } else {
-                    String calDate = '';
-                    calDate = DateFormat(
+                    late DateTime date;
+
+                    // ✅ Parse only if selectedDate has a value
+                    if (_vitalGraphController.selectedDate.value.isNotEmpty) {
+                      try {
+                        // Your selectedDate format = yyyy/MM/dd
+                        date = DateFormat(
+                          "yyyy/MM/dd",
+                        ).parse(_vitalGraphController.selectedDate.value);
+                      } catch (e) {
+                        // fallback to today if parsing fails
+                        date = DateTime.now();
+                      }
+                    } else {
+                      // First time opening calendar -> use today
+                      date = DateTime.now();
+                    }
+
+                    // Build YYYY/MM for API
+                    String calDate = DateFormat(
                       'yyyy/MM',
                     ).format(_vitalGraphController.calenderDate.value);
+
+                    // Call calendar API
                     await VitalGraphHelper().callForCalenderWithDateRange(
                       "4W",
                       calDate,
                       null,
                     );
+
+                    // Show date picker
                     showCommonDatePicker(
+                      // ignore: use_build_context_synchronously
                       context: context,
-                      onMonthChanged: (date, updateState) {
+                      onMonthChanged: (newDate, updateState) {
                         _vitalGraphController.onMonthChangeInCalender(
-                          date,
+                          newDate,
                           updateState,
                         );
                       },
                       firstDate: DateTime(2020),
                       lastDate: DateTime.now(),
-                      initialDate: DateTime.now(),
-                      onDateSelected: (DateTime selectedDate) {
+                      initialDate: date,
+                      eventMap: _vitalGraphController.eventMap,
+                      onDateSelected: (DateTime selectedDate) async {
+                        // Convert selected date to your required format: yyyy/MM/dd
                         String formattedDate = DateFormat(
                           'yyyy/MM/dd',
                         ).format(selectedDate);
@@ -132,20 +127,19 @@ class FirstLineVitalWidget extends StatelessWidget {
                             formattedDate;
 
                         if (guestId.isNotEmpty) {
-                          VitalGraphHelper().callForGuestWithDateRange(
+                          await VitalGraphHelper().callForGuestWithDateRange(
                             "7D",
                             formattedDate,
                             guestId,
                             true,
                           );
                         } else {
-                          VitalGraphHelper().callForUserWithDateRange(
+                          await VitalGraphHelper().callForUserWithDateRange(
                             "7D",
                             formattedDate,
                           );
                         }
                       },
-                      eventMap: _vitalGraphController.eventMap,
                     );
                   }
                 },

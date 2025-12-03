@@ -23,7 +23,7 @@ class AppConstents {
   upload = "Upload",
   scanId = "Scan Id",
   dateTime = "Date & Time",
-  todayResult = "Today’s Result",
+  latestResult = "Latest’s Result",
   howDoYouFeelToday = "How Do You Feel Today?",
   continueBtn = "Continue",
   analyzingYourPulseSurvey = "Analyzing your pulse survey",
