@@ -309,6 +309,8 @@ class VitalGraphHelper {
     return normalizedList;
   }
 
+  static const List<String> filterList = ["Weekly", "Monthly"];
+
   static String cleanRange(String range) {
     try {
       List<String> parts = range.split(" - ");

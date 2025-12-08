@@ -102,6 +102,7 @@ class VitalGraphController extends GetxController {
           isError: false,
         );
       } else {
+        await clearData();
         AppSnackbar.show(
           title: "Error",
           message: "Something went wrong",

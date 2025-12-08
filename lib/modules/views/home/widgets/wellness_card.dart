@@ -49,7 +49,7 @@ class WellnessCard extends StatelessWidget {
                           color: HomeHalper().getWellnessColor(status),
                           fontFamily: "League Spartan",
                         ),
-                        wellnessDiff != "null"
+                        wellnessDiff != "null" && wellnessDiff != "0"
                             ? Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [

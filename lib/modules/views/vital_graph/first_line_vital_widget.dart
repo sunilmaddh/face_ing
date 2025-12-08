@@ -22,9 +22,13 @@ class FirstLineVitalWidget extends StatelessWidget {
       padding: AppDimensions.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+
         children: [
           CommonText.text("Select Vital", fontWeight: FontWeight.w400),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Obx(
                 () => CommonText.text(

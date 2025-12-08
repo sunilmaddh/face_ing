@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
@@ -48,7 +49,7 @@ class _VitalGraphFirstCardState extends State<VitalGraphFirstCard>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: AppDimensions.height(610),
+      height: AppDimensions.height(610.h),
       child: GraphTabBarWidget(
         tabController: _tabController,
         isNotRadius: false,
@@ -97,7 +98,7 @@ class BuildVitalGridSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var result = vitalResponse.value.vitalTypeDetails ?? [];
     return Padding(
-      padding: AppDimensions.all(8.0),
+      padding: AppDimensions.symmetric(horizontal: 8.w, vertical: 5.h),
       child:
           _vitalController.isGraphFilterType.contains("Monthly")
               ? ListView.builder(

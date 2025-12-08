@@ -13,7 +13,7 @@ class ApiEndpoints {
   //Stagging singapore
   //"18.141.189.197:8085";
   //stagging
-  //  "64.227.165.247:8085";
+  //"64.227.165.247:8085";
 
   String login = '/login',
       signUp = "/signup",
