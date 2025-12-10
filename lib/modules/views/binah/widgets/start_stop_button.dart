@@ -1,5 +1,6 @@
 import 'package:biosensesignal_flutter_sdk/images/image_validity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
@@ -89,26 +90,43 @@ class PulseRate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MeasurementController>();
-    return Obx(
-      () => Container(
-        margin: EdgeInsets.zero,
-        alignment: Alignment.center,
-        height: AppDimensions.height(70),
-        width: AppDimensions.width(70),
-        decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage(AppAssets.redHeart)),
-        ),
-        child: Text(
-          controller.pulseRate.value.isNotEmpty
-              ? "${controller.pulseRate.value} "
-              : "- -",
-          style: TextStyle(
-            color: AppColors.btntext,
-            fontSize: AppDimensions.font(22),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: AppDimensions.only(bottom: 10.h),
+          child: Image.asset(
+            height: 80.h,
+            width: 80.w,
+            AppAssets.tanitaMachine,
           ),
-          textAlign: TextAlign.center,
         ),
-      ),
+        SizedBox(width: 30.w),
+        Obx(
+          () => Container(
+            margin: EdgeInsets.zero,
+            alignment: Alignment.center,
+            height: AppDimensions.height(70),
+            width: AppDimensions.width(70),
+            decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage(AppAssets.redHeart)),
+            ),
+            child: Text(
+              controller.pulseRate.value.isNotEmpty
+                  ? "${controller.pulseRate.value} "
+                  : "- -",
+              style: TextStyle(
+                color: AppColors.btntext,
+                fontSize: AppDimensions.font(22),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+        SizedBox(width: 30.w),
+        Image.asset(height: 80.h, width: 80.w, AppAssets.tanitaLogo),
+      ],
     );
   }
 }

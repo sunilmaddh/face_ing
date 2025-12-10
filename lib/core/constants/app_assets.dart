@@ -88,5 +88,8 @@ class AppAssets {
       rain2 = "$baseUrlSvg/rain-2.svg",
       allReport = "$baseUrlLottie/all_report.json",
       sunraiseLineImg = "$baseUrlLottie/sunraise_line_img.png",
+      tanitaLogo = "$baseUrlPng/tanita_logo.jpg",
+      tanitaMachine = "$baseUrlPng/tanita_machine.png",
+      dailyAdviceAssets = "$baseUrlPng/daily1.png",
       normalPluseIcon = "$baseUrlSvg/normal_pulse.svg";
 }
