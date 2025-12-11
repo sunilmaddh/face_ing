@@ -6,11 +6,13 @@ import 'package:ntt_data/modules/views/binah/controllers/measurement_controller.
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/modules/views/home/controllers/home_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
 class HomeHalper {
   final _measurementController = Get.find<MeasurementController>();
+  final _homeController = Get.find<HomeController>();
 
   void callMeasurement() {
     _startMeasurement();
@@ -39,6 +41,9 @@ class HomeHalper {
       AppNavigation.to(
         AppRoutes.mesurementScreen,
         arguments: {"scanType": "user", "userName": name},
+        action: () {
+          _homeController.getWellnessScore();
+        },
       );
     }
   }
