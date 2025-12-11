@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SafeArea(
             child: SingleChildScrollView(
-              padding: EdgeInsets.only(bottom: 200),
+              padding: EdgeInsets.only(bottom: 200.h),
               child: Column(
                 children: [
                   Padding(
@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  SizedBox(height: AppDimensions.height(10)),
+                  SizedBox(height: AppDimensions.height(10.h)),
 
                   Obx(
                     () => WellnessCard(
@@ -107,11 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  SizedBox(height: AppDimensions.height(15)),
+                  SizedBox(height: AppDimensions.height(15.h)),
                   MenuCardWidget(),
-                  SizedBox(height: AppDimensions.height(15)),
+                  SizedBox(height: AppDimensions.height(15.h)),
                   DailyAdviceCardWidget(),
-                  SizedBox(height: AppDimensions.height(15)),
+                  SizedBox(height: AppDimensions.height(15.h)),
                 ],
               ),
             ),

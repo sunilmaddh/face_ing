@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
@@ -19,7 +20,7 @@ class CircleCardWidget extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(color: Color(0xffE0E0E0).withOpacity(0.2)),
         boxShadow: [
-          BoxShadow(color: Color(0xff000000).withOpacity(0.1), blurRadius: 4),
+          BoxShadow(color: Color(0xff000000).withOpacity(0.1), blurRadius: 4.r),
         ],
       ),
       child: widget,

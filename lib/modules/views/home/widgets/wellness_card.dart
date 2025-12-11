@@ -89,7 +89,7 @@ class WellnessCard extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: CircularPercentIndicator(
-                      radius: 91.w,
+                      radius: 91.r,
                       lineWidth: 15.w,
                       percent: guageValue / 10, // dynamic value
                       animation: true,

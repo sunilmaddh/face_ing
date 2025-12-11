@@ -3,7 +3,7 @@ PODS:
     - Flutter
   - battery_plus (1.0.0):
     - Flutter
-  - biosensesignal_flutter_sdk (5.11.1):
+  - biosensesignal_flutter_sdk (5.11.4):
     - Flutter
   - camera_avfoundation (0.0.1):
     - Flutter
@@ -102,7 +102,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   audio_session: 9bb7f6c970f21241b19f5a3658097ae459681ba0
   battery_plus: b42253f6d2dde71712f8c36fef456d99121c5977
-  biosensesignal_flutter_sdk: 6fb738122a96649c9fc5c196d18fadae61f777df
+  biosensesignal_flutter_sdk: 9ffc0fed02a342f6bd1b0c3f3953ee4109af22f8
   camera_avfoundation: 5675ca25298b6f81fa0a325188e7df62cc217741
   connectivity_plus: cb623214f4e1f6ef8fe7403d580fdad517d2f7dd
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
