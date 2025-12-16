@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/home/face_drawer.dart';
 import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
 import 'package:ntt_data/modules/views/landing/landing_controller.dart';
@@ -136,32 +137,35 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                     ),
                     const SizedBox(width: 40), // Space for FAB
 
-                    Flexible(
-                      flex: 2,
-                      child: InkWell(
-                        onTap: () {
-                          _controller.onTabTapped(2);
-                        },
-                        child: Column(
-                          children: [
-                            SvgPicture.asset(
-                              AppAssets.voice,
-                              color:
-                                  _controller.selectedIndex.value == 2
-                                      ? AppColors.primary
-                                      : AppColors.bottomTextColor,
-                            ),
-                            CommonText.text(
-                              "Voice",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "Manrope",
-                              color:
-                                  _controller.selectedIndex.value == 2
-                                      ? AppColors.primary
-                                      : AppColors.bottomTextColor,
-                            ),
-                          ],
+                    Padding(
+                      padding: AppDimensions.only(left: 30),
+                      child: Flexible(
+                        flex: 2,
+                        child: InkWell(
+                          onTap: () {
+                            _controller.onTabTapped(2);
+                          },
+                          child: Column(
+                            children: [
+                              SvgPicture.asset(
+                                AppAssets.voice,
+                                color:
+                                    _controller.selectedIndex.value == 2
+                                        ? AppColors.primary
+                                        : AppColors.bottomTextColor,
+                              ),
+                              CommonText.text(
+                                "Voice",
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: "Manrope",
+                                color:
+                                    _controller.selectedIndex.value == 2
+                                        ? AppColors.primary
+                                        : AppColors.bottomTextColor,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

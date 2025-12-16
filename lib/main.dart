@@ -16,7 +16,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   AppBindings().dependencies();
   NativeCaller().setupResultListener();
-  // runApp(DevicePreview(builder: (context) => const MyApp()));
+  //runApp(DevicePreview(builder: (context) => const MyApp()));
   runApp(const MyApp());
 }
 

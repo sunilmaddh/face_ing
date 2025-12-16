@@ -38,7 +38,7 @@ abstract class BaseApiService {
           return await getRequest(endpoint);
         }
       }
-      return _processResponse(response);
+      return await _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
@@ -78,7 +78,7 @@ abstract class BaseApiService {
           return await postRequest(endpoint, data: data);
         }
       }
-      return _processResponse(response);
+      return await _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
@@ -118,7 +118,7 @@ abstract class BaseApiService {
           return await loginPostRequest(endpoint, data: data);
         }
       }
-      return _processResponse(response);
+      return await _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
@@ -159,7 +159,7 @@ abstract class BaseApiService {
           return await postRequestWithoutBody(endpoint);
         }
       }
-      return _processResponse(response);
+      return await _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
@@ -192,7 +192,7 @@ abstract class BaseApiService {
           return await putRequest(endpoint, data);
         }
       }
-      return _processResponse(response);
+      return await _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
@@ -215,17 +215,16 @@ abstract class BaseApiService {
           return await deleteRequest(endpoint);
         }
       }
-      return _processResponse(response);
+      return await _processResponse(response);
     } catch (e) {
       NetworkUtil.checkInternet(Get.context!);
       throw Exception("Error: $e");
     }
   }
 
-  Map<String, dynamic> _processResponse(http.Response response) {
+  Future<Map<String, dynamic>> _processResponse(http.Response response) async {
     final decodedBody = utf8.decode(response.bodyBytes);
     debugPrint("${response.statusCode} $decodedBody");
-    NetworkUtil.checkInternet(Get.context!);
     final responseBody = jsonDecode(decodedBody);
     switch (response.statusCode) {
       case 200:
@@ -239,11 +238,13 @@ abstract class BaseApiService {
       case 403:
       case 404:
       case 500:
+        // await NetworkUtil.checkInternet(Get.context!);
         return {
           "statusCode": response.statusCode,
           "responseBody": responseBody,
         };
       default:
+        await NetworkUtil.checkInternet(Get.context!);
         throw Exception("Unknown Error: ${response.statusCode}");
     }
   }
