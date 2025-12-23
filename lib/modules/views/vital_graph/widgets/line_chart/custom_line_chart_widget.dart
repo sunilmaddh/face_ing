@@ -31,9 +31,6 @@ class CustomLineChartWidget extends StatefulWidget {
 class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
   int? touchedIndex;
 
-  /// ***************************************
-  /// FIXED: ALWAYS RETURN SPOTS FOR ALL DATES
-  /// ***************************************
   List<FlSpot> getSpots() {
     List<FlSpot> spots = [];
 
@@ -230,14 +227,7 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
                               spot.x.toInt(),
                               widget.vitalValues.length - 1,
                             )];
-                        final color =
-                            VitalColorHelper(
-                              vitalName: widget.vitalName,
-                              vitalStatus: item.status.toString(),
-                              isLowGood: AppMethods.stringToBool(
-                                item.isTypeVital.toString(),
-                              ),
-                            ).getColor();
+
                         final borderColor =
                             VitalColorHelper(
                               vitalName: widget.vitalName,
@@ -291,7 +281,6 @@ class _CustomLineChartWidgetState extends State<CustomLineChartWidget> {
   }
 }
 
-/// YOUR DOT PAINTER (unchanged)
 class _ValueDotPainter extends FlDotPainter {
   final FlSpot spot;
   final Color textColor;
@@ -311,10 +300,8 @@ class _ValueDotPainter extends FlDotPainter {
 
   @override
   void draw(Canvas canvas, FlSpot spot, Offset offsetInCanvas) {
-    /// --- Circle Fill ---
     final fillPaint = Paint()..color = textColor;
 
-    /// --- Border Paint ---
     final borderPaint =
         Paint()
           ..color =
@@ -324,13 +311,10 @@ class _ValueDotPainter extends FlDotPainter {
           ..strokeWidth = textColor == Colors.white ? borderWidth : 0
           ..style = PaintingStyle.stroke;
 
-    // Draw inner dot
     canvas.drawCircle(offsetInCanvas, radius, fillPaint);
 
-    // Draw border around dot
     canvas.drawCircle(offsetInCanvas, radius + borderWidth / 2, borderPaint);
 
-    /// --- Draw Value Above Dot ---
     final textPainter = TextPainter(
       text: TextSpan(
         text: formatDouble(spot.y).toString(),
@@ -359,12 +343,10 @@ class _ValueDotPainter extends FlDotPainter {
 
   @override
   FlDotPainter lerp(FlDotPainter a, FlDotPainter b, double t) {
-    // TODO: implement lerp
     throw UnimplementedError();
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 

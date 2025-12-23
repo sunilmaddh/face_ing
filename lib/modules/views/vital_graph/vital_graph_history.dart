@@ -45,11 +45,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.btntext,
-
-      // ---------------- APP BAR ----------------
       appBar: CustomAppBar(onTop: () => AppNavigation.back(), title: "History"),
-
-      // ---------------- BOTTOM FILTER BAR ----------------
       bottomNavigationBar: Container(
         alignment: Alignment.bottomCenter,
         width: double.infinity,
@@ -71,14 +67,14 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                             "Weekly";
                         VitalGraphHelper().callForUserWithDateRange(
                           "7D",
-                          _vitalGraphController.selectedDate.value ?? "",
+                          _vitalGraphController.selectedDate.value,
                         );
                       } else {
                         _vitalGraphController.isGraphFilterType.value =
                             "Monthly";
                         VitalGraphHelper().callForUserWithDateRange(
                           "4W",
-                          _vitalGraphController.selectedMonthDate.value ?? "",
+                          _vitalGraphController.selectedMonthDate.value,
                         );
                       }
                     },
@@ -125,11 +121,9 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
         ),
       ),
 
-      // ---------------- BODY SCROLL AREA ----------------
       body: CustomScrollView(
         physics: NeverScrollableScrollPhysics(),
         slivers: [
-          // ------------ FirstLineVitalWidget ------------
           SliverToBoxAdapter(
             child: Container(
               padding: AppDimensions.only(bottom: 20),
@@ -138,7 +132,6 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
             ),
           ),
 
-          // ------------ Graph Section ------------
           Obx(() {
             if (_vitalGraphController.isLoading.isTrue) {
               return SliverFillRemaining(

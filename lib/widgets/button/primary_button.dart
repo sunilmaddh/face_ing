@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
+// ignore: must_be_immutable
 class PrimaryButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
