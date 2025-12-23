@@ -26,9 +26,6 @@ class PulseLineChartWidget extends StatefulWidget {
 class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
   int? touchedIndex;
 
-  /// ============================================================
-  ///  SHOW LINE FOR ALL DATES → Even if measurement is missing
-  /// ============================================================
   List<FlSpot> getSpots() {
     final List<FlSpot> spots = [];
 

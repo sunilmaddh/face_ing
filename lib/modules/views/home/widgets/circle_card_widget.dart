@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
+// ignore: must_be_immutable
 class CircleCardWidget extends StatelessWidget {
   CircleCardWidget({super.key, required this.widget, this.size = 205});
 
