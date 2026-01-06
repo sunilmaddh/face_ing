@@ -45,23 +45,23 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
         ),
         BuildCardWidget(
           healthDetailsList: _controller.bloodlessBloodTests,
-          isBasicVital: false.obs,
+          isBasicVital: true.obs,
         ),
         BuildCardWidget(
           healthDetailsList: _controller.risks,
-          isBasicVital: false.obs,
+          isBasicVital: true.obs,
         ),
         BuildCardWidget(
           healthDetailsList: _controller.stress,
-          isBasicVital: false.obs,
+          isBasicVital: true.obs,
         ),
         BuildCardWidget(
           healthDetailsList: _controller.heartRateVariability,
-          isBasicVital: false.obs,
+          isBasicVital: true.obs,
         ),
         BuildCardWidget(
           healthDetailsList: _controller.advancedHeartRateVariability,
-          isBasicVital: false.obs,
+          isBasicVital: true.obs,
         ),
       ];
     }
@@ -95,12 +95,12 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
                     tabWidgets: AppMethods.tabGuestWidget,
                     tabBarWidgets: _controller.tabWidget,
                     onTabChanged: (value) {
-                      if (value > 0) {
-                        BottomsheetHelper.showBottomSheetAlert(
-                          context,
-                          _tabController,
-                        );
-                      }
+                      // if (value > 0) {
+                      //   BottomsheetHelper.showBottomSheetAlert(
+                      //     context,
+                      //     _tabController,
+                      //   );
+                      // }
                     },
                   )
                   : Padding(
