@@ -8,9 +8,16 @@ import 'package:ntt_data/modules/views/pulse/widget/pulse_Line_chart_widget.dart
 import 'package:ntt_data/widgets/cards/common_card.dart';
 
 class PulseLineChart extends StatelessWidget {
-  const PulseLineChart({super.key, required this.pulseServeyModel});
+  const PulseLineChart({
+    super.key,
+    required this.pulseServeyModel,
+    this.isShowHome = false,
+    this.height = 120.0,
+  });
 
   final PulseSurveyModel pulseServeyModel;
+  final bool isShowHome;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -28,50 +35,53 @@ class PulseLineChart extends StatelessWidget {
           child: Column(
             children: [
               PulseLineChartWidget(
+                height: height,
                 bottomTitles: pulseServeyModel.xAxis!,
                 vitalValues: pulsList,
               ),
               10.verticalSpace,
-              Wrap(
-                alignment: WrapAlignment.start,
-                direction: Axis.horizontal,
-                spacing: 10,
-                runSpacing: 3,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                runAlignment: WrapAlignment.center,
-                children:
-                    pulseServeyModel.statusList != null
-                        ? pulseServeyModel.statusList!.map((v) {
-                          final color = PulseHelper().getColor(v);
-                          return SizedBox(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CircleAvatar(
-                                  radius: 5.5,
-                                  backgroundColor: color,
-                                ),
-                                4.horizontalSpace,
+              isShowHome == false
+                  ? Wrap(
+                    alignment: WrapAlignment.start,
+                    direction: Axis.horizontal,
+                    spacing: 10,
+                    runSpacing: 3,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    runAlignment: WrapAlignment.center,
+                    children:
+                        pulseServeyModel.statusList != null
+                            ? pulseServeyModel.statusList!.map((v) {
+                              final color = PulseHelper().getColor(v);
+                              return SizedBox(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 5.5,
+                                      backgroundColor: color,
+                                    ),
+                                    4.horizontalSpace,
 
-                                Text(
-                                  v,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: color,
-                                    fontFamily: "Mulish",
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                    Text(
+                                      v,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: color,
+                                        fontFamily: "Mulish",
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          );
-                        }).toList()
-                        : [],
-              ),
+                              );
+                            }).toList()
+                            : [],
+                  )
+                  : SizedBox.shrink(),
             ],
           ),
         ),

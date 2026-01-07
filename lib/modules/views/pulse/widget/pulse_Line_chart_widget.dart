@@ -14,10 +14,12 @@ class PulseLineChartWidget extends StatefulWidget {
     super.key,
     required this.bottomTitles,
     required this.vitalValues,
+    required this.height,
   });
 
   final List<String> bottomTitles;
   final List<PulseSurveyList> vitalValues;
+  final double height;
 
   @override
   State<PulseLineChartWidget> createState() => _PulseLineChartWidgetState();
@@ -95,7 +97,7 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
 
     return SizedBox(
       width: double.infinity,
-      height: AppDimensions.height(120.h),
+      height: AppDimensions.height(widget.height),
       child: Padding(
         padding: AppDimensions.symmetric(horizontal: 15.w),
         child: LineChart(

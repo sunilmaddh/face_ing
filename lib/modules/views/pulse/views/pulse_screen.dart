@@ -19,29 +19,25 @@ import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
-class PulseScreen extends StatefulWidget {
+class PulseScreen extends StatelessWidget {
   final bool fromHome;
-  const PulseScreen({super.key, this.fromHome = false});
-
-  @override
-  State<PulseScreen> createState() => _PulseScreenState();
-}
-
-class _PulseScreenState extends State<PulseScreen> {
+  PulseScreen({super.key, this.fromHome = false});
   final _controller = Get.find<PulseSurveyController>();
   final landingController = Get.find<LandingController>();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.fetchPulseSurvey();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: AppDimensions.only(bottom: 40),
+        child: PrimaryButton(
+          width: AppDimensions.width(243),
+          text: "Start Pulse Survey",
+          onPressed: () {
+            AppNavigation.to(AppRoutes.pulseProgressWidget);
+          },
+        ),
+      ),
       backgroundColor: Color(0xffF5F5F5),
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -100,7 +96,14 @@ class _PulseScreenState extends State<PulseScreen> {
                       repeat: true,
                     ),
                   ),
-                  CommonText.text("No data available", fontSize: 24.sp),
+                  Padding(
+                    padding: AppDimensions.symmetric(horizontal: 20.w),
+                    child: CommonText.text(
+                      "Pulse survey not completed yet",
+                      fontSize: 17.sp,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               )
               : Column(
@@ -186,14 +189,6 @@ class _PulseScreenState extends State<PulseScreen> {
                         ),
 
                         SizedBox(height: 50),
-                        if (widget.fromHome)
-                          PrimaryButton(
-                            width: AppDimensions.width(243),
-                            text: "Start Pulse Survey",
-                            onPressed: () {
-                              AppNavigation.to(AppRoutes.pulseProgressWidget);
-                            },
-                          ),
                       ],
                     ),
                   ),

@@ -21,6 +21,13 @@ class PulseHelper {
     }
   }
 
+  List<String> formatXAxis(List<String> list) {
+    return list.map((e) {
+      final value = int.tryParse(e);
+      return value != null ? value.toString() : e;
+    }).toList();
+  }
+
   Color getColor(String statusName) {
     final status = statusName.toLowerCase();
     switch (status) {

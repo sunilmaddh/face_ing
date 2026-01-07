@@ -18,8 +18,8 @@ class MenuCard extends StatelessWidget {
       color: AppColors.homeCardColor,
       widget: InkWell(
         child: SizedBox(
-          height: AppDimensions.height(133),
-          width: AppDimensions.width(148),
+          height: AppDimensions.height(149),
+
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
