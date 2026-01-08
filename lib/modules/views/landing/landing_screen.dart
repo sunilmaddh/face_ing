@@ -9,13 +9,20 @@ class LandingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomBottomNavigationBar(
-      pageList: [
-        HomeScreen(),
-        const MaintenceScreen(),
-        const MaintenceScreen(),
-        PulseSurveyScreen(fromBottomNav: false),
-      ],
+    return WillPopScope(
+      onWillPop: () async {
+        // return true = allow back
+        // return false = block back
+        return false;
+      },
+      child: CustomBottomNavigationBar(
+        pageList: [
+          HomeScreen(),
+          const MaintenceScreen(),
+          const MaintenceScreen(),
+          PulseSurveyScreen(fromBottomNav: false),
+        ],
+      ),
     );
   }
 }
