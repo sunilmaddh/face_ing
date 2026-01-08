@@ -43,34 +43,13 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData>
     barWidgets = [
       if (_measurementController.scanType.value != "add-guest" &&
           _measurementController.scanType.value != "re-scan")
-        VitalCartWidget(
-          allList: HealthReportHelper().allVitalCards,
-          isBasicVital: true.obs,
-        ),
-      VitalCartWidget(
-        allList: HealthReportHelper().basicVital,
-        isBasicVital: true.obs,
-      ),
-      VitalCartWidget(
-        allList: HealthReportHelper().bloodlessVital,
-        isBasicVital: false.obs,
-      ),
-      VitalCartWidget(
-        allList: HealthReportHelper().riskList,
-        isBasicVital: false.obs,
-      ),
-      VitalCartWidget(
-        allList: HealthReportHelper().stress,
-        isBasicVital: false.obs,
-      ),
-      VitalCartWidget(
-        allList: HealthReportHelper().hrvsddnList,
-        isBasicVital: false.obs,
-      ),
-      VitalCartWidget(
-        allList: HealthReportHelper().adhrvsddnList,
-        isBasicVital: false.obs,
-      ),
+        VitalCartWidget(allList: HealthReportHelper().allVitalCards),
+      VitalCartWidget(allList: HealthReportHelper().basicVital),
+      VitalCartWidget(allList: HealthReportHelper().bloodlessVital),
+      VitalCartWidget(allList: HealthReportHelper().riskList),
+      VitalCartWidget(allList: HealthReportHelper().stress),
+      VitalCartWidget(allList: HealthReportHelper().hrvsddnList),
+      VitalCartWidget(allList: HealthReportHelper().adhrvsddnList),
     ];
     return Scaffold(
       backgroundColor: AppColors.btntext,
@@ -97,12 +76,12 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData>
           tabBarWidgets: barWidgets,
           tabController: _tabController,
           onTabChanged: (index) {
-            if (_measurementController.scanType.value == "add-guest" ||
-                _measurementController.scanType.value == "re-scan") {
-              if (index > 0) {
-                BottomsheetHelper.showBottomSheetAlert(context, _tabController);
-              }
-            }
+            // if (_measurementController.scanType.value == "add-guest" ||
+            //     _measurementController.scanType.value == "re-scan") {
+            //   if (index > 0) {
+            //     BottomsheetHelper.showBottomSheetAlert(context, _tabController);
+            //   }
+            // }
           },
         ),
       ),

@@ -41,7 +41,6 @@ class _AllReportScreenState extends State<AllReportScreen>
           padding: AppDimensions.symmetric(horizontal: 8.0, vertical: 8.0),
           child: VitalCartWidget(
             allList: HealthReportHelper().minimunVitalCards,
-            isBasicVital: true.obs,
           ),
         ),
       ),
