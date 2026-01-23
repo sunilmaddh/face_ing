@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/modules/views/ai/view/ai_advice_screen.dart';
 import 'package:ntt_data/modules/views/auth/maintence_screen.dart';
 import 'package:ntt_data/modules/views/home/home_screen.dart';
 import 'package:ntt_data/modules/views/pulse/views/pulse_survey_screen.dart';
@@ -18,7 +19,7 @@ class LandingScreen extends StatelessWidget {
       child: CustomBottomNavigationBar(
         pageList: [
           HomeScreen(),
-          const MaintenceScreen(),
+          AiAdviceScreen(),
           const MaintenceScreen(),
           PulseSurveyScreen(fromBottomNav: false),
         ],
