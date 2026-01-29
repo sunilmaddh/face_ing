@@ -142,6 +142,15 @@ class AddNewGuestScreen extends StatelessWidget {
                               controller: _geustController.heightTextController,
                             ),
                             SizedBox(height: 15),
+                            CustomFormField(
+                              // validator: (name) {
+                              //   return AppMethods.validateName(name);
+                              // },
+                              label: "Email Id",
+                              hint: "Enter your email id",
+                              controller: _geustController.emailTextController,
+                            ),
+                            SizedBox(height: 15),
                             RadioWidget(
                               selectionType: controller.selectionType,
                               level: 'Smoker type',

@@ -111,6 +111,7 @@ class GuestHalper {
     required String dob,
     required String weight,
     required String height,
+    required String email,
     required String guestImage,
     required VitalSignsResults vitalSignResult,
   }) async {
@@ -123,6 +124,7 @@ class GuestHalper {
         "dob": newDob,
         "weight": weight,
         "height": height,
+        "emailId": email,
         "smokerType": controller.selectionType.value,
         "guestImage": guestImage,
       },

@@ -277,6 +277,9 @@ class MeasurmentProgress extends StatelessWidget {
                   var helper = MeasurementHelper(
                     scanMessageList: controller.scanMessageList,
                   );
+                  if (controller.scanMessageList.isEmpty) {
+                    return SizedBox.shrink();
+                  }
 
                   return Padding(
                     padding: AppDimensions.only(left: 20, right: 20, top: 10),

@@ -27,6 +27,7 @@ class GeustController extends GetxController
         CommonMixin,
         ProgressHandlerMixin {
   final nameTextController = TextEditingController();
+  final emailTextController = TextEditingController();
   final weightTextController = TextEditingController();
   final heightTextController = TextEditingController();
   final dobTextController = TextEditingController();
@@ -161,6 +162,7 @@ class GeustController extends GetxController
       height: heightTextController.text,
       guestImage: userImage.value,
       vitalSignResult: vitalSignResult,
+      email: emailTextController.text,
     );
     debugPrint(data.toString());
     Map<String, dynamic> resposneData = await GeustServices().addGeustService(
