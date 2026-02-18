@@ -9,11 +9,11 @@ class ApiEndpoints {
 
   static const String baseUrl =
       //dev
-      ///  "146.190.11.132:8085";
-      //Stagging singapore
-      //"18.141.189.197:8085";
-      //stagging
-      "165.22.208.159:8085";
+      "146.190.11.132:8085";
+  //Stagging singapore
+  //"18.141.189.197:8085";
+  //stagging
+  // "165.22.208.159:8085";
   // "64.227.165.247:8085";
   //local
   // "192.168.0.121:8085";
