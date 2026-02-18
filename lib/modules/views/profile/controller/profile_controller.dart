@@ -28,6 +28,8 @@ class ProfileController extends GetxController
   TextEditingController nameController = TextEditingController();
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
+
+  TextEditingController emailController = TextEditingController();
   TextEditingController dobController = TextEditingController();
   RxBool isFullStory = false.obs;
   Rx<VitalDescriptionsModel> vitalDescriptionModel =
@@ -138,6 +140,7 @@ class ProfileController extends GetxController
       var data = UpdateDetailsResponseModel.fromJson(
         responseData["responseBody"],
       );
+      Get.back();
 
       if (userFlag == "true") {
         var isFullStory = await IndoSharedPreference.instance.getHistoryType();
@@ -161,7 +164,6 @@ class ProfileController extends GetxController
         message: "Update details successfully",
       );
       clearProfileData();
-      Get.back();
     } else {
       AppSnackbar.show(title: "Error", message: "Something went wrong");
     }

@@ -42,6 +42,10 @@ class AppMethods {
     healthMenuData.value = dataList;
   }
 
+  static bool isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
+
   late AnimationController animationController;
   AnimationController storeController() {
     return animationController;
@@ -231,6 +235,15 @@ class AppMethods {
     {"name": "Update Profile Photo", "isOptionType": "Photo"},
     {"name": "Update Profile Details", "isOptionType": "Details"},
   ];
+  static String? validateEmail(String? email) {
+    if (email == null || email.trim().isEmpty) {
+      return null;
+    }
+    if (!GetUtils.isEmail(email.trim())) {
+      return 'Enter a valid email';
+    }
+    return null;
+  }
 
   Future<void> editProfilePicture(
     CommonMixin commonController,

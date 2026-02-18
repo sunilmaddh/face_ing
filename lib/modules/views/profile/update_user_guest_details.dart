@@ -65,6 +65,20 @@ class UpdateUserGuestDetails extends StatelessWidget {
                                 hint: "Enter your name",
                                 controller: _profileController.nameController,
                               ),
+                              guestId.isNotEmpty
+                                  ? SizedBox(height: 15)
+                                  : SizedBox.shrink(),
+                              guestId.isNotEmpty
+                                  ? CustomFormField(
+                                    validator: (email) {
+                                      return AppMethods.validateEmail(email);
+                                    },
+                                    label: "Email Id",
+                                    hint: "Enter your email",
+                                    controller:
+                                        _profileController.emailController,
+                                  )
+                                  : SizedBox.shrink(),
                               SizedBox(height: 15),
                               RadioWidget(
                                 selectionType: _profileController.genderType,
@@ -190,6 +204,9 @@ class UpdateUserGuestDetails extends StatelessWidget {
                                   _profileController.weightController.text;
                               var height =
                                   _profileController.heightController.text;
+                              var email =
+                                  _profileController.emailController.text;
+
                               var userId =
                                   await IndoSharedPreference.instance
                                       .getUserId();
@@ -203,6 +220,7 @@ class UpdateUserGuestDetails extends StatelessWidget {
                                 smokerType: smokerType,
                                 weight: weight,
                                 height: height,
+                                email: email,
                               );
                             }
                           }

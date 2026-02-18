@@ -24,6 +24,7 @@ class ProfileHelper {
     required String smokerType,
     required String weight,
     required String height,
+    required String email,
   }) async {
     return {
       "userId": userId,
@@ -33,6 +34,7 @@ class ProfileHelper {
       "gender": gender,
       "dob": dob,
       "smokerType": smokerType,
+      "emailId": email,
       "weight": weight,
       "height": height,
     };
@@ -49,6 +51,7 @@ class ProfileHelper {
     required String smokerType,
     required String weight,
     required String height,
+    required String email,
   }) async {
     var newDob = await AppMethods().convertDateFormatToYY(dob);
     final data = await _updateDetailsMap(
@@ -61,6 +64,7 @@ class ProfileHelper {
       smokerType: smokerType,
       weight: weight,
       height: height,
+      email: email,
     );
     _callUpdateUGDetails(data: data, userFlag: userFlag);
   }
@@ -81,6 +85,7 @@ class ProfileHelper {
     required String dob,
     required String smokerType,
     required String guestId,
+    required String emailId,
     required String userFlag,
     required String levelName,
   }) async {
@@ -91,6 +96,7 @@ class ProfileHelper {
     _profileController.weightController.text = weight;
     _profileController.heightController.text = height;
     _profileController.smokerType.value = smokerType;
+    _profileController.emailController.text = emailId;
 
     Get.toNamed(
       AppRoutes.updateUserGuestDetails,
@@ -116,6 +122,7 @@ class ProfileHelper {
       guestId: "",
       userFlag: "true",
       levelName: "Name",
+      emailId: '',
     );
   }
 

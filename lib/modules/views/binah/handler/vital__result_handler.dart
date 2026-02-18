@@ -100,7 +100,7 @@ class VitalResultsHandler {
             _guestController.getGeustHistory();
             Get.back();
           },
-          isFullStory: isFullStory,
+          isFullStory: false,
         );
       });
     } else {
@@ -111,12 +111,21 @@ class VitalResultsHandler {
             isUser: scanType.value == "re-scan" ? 'false' : 'true',
           )
           .whenComplete(() {
-            _navigation.goToReport(
-              isFullStory: isFullStory,
-              action: () {
-                isScanningDone(false);
-              },
-            );
+            if (scanType.value == "re-scan") {
+              _navigation.goToReport(
+                isFullStory: false,
+                action: () {
+                  isScanningDone(false);
+                },
+              );
+            } else {
+              _navigation.goToReport(
+                isFullStory: isFullStory,
+                action: () {
+                  isScanningDone(false);
+                },
+              );
+            }
           });
     }
   }

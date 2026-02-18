@@ -52,7 +52,9 @@ class GlobleHalper {
       } else if (normalizedCategories["Bloodless Blood Tests"]!.contains(
         name,
       )) {
-        controller.bloodlessBloodTests.add(result);
+        isUserType == "guest"
+            ? controller.basicVitalSigns.add(result)
+            : controller.bloodlessBloodTests.add(result);
       } else if (normalizedCategories["Risks"]!.contains(name)) {
         controller.risks.add(result);
       } else if (normalizedCategories["Stress"]!.contains(name)) {

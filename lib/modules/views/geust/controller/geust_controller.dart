@@ -48,6 +48,7 @@ class GeustController extends GetxController
   RxString geustDob = ''.obs;
   RxString guestId = "".obs;
   RxBool isTermAccepted = false.obs;
+  RxString guestImage = "".obs;
   RxList<HealthDetailList> healthDetailsList = <HealthDetailList>[].obs;
   RxList<GuestList> filteredItems = <GuestList>[].obs;
   RxBool isFullStory = false.obs;
@@ -160,7 +161,7 @@ class GeustController extends GetxController
       dob: dobTextController.text,
       weight: weightTextController.text,
       height: heightTextController.text,
-      guestImage: userImage.value,
+      guestImage: guestImage.value,
       vitalSignResult: vitalSignResult,
       email: emailTextController.text,
     );
@@ -170,6 +171,7 @@ class GeustController extends GetxController
     );
     int statusCode = resposneData[AppConstents.statusCode];
     if (statusCode == 200) {
+      guestImage.value = "";
     } else if (statusCode == 500) {
       AppSnackbar.show(
         title: "Error",

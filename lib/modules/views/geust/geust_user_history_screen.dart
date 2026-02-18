@@ -143,6 +143,7 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                                     guestId: result.guestId.toString(),
                                     userFlag: "false",
                                     levelName: "Patient ID",
+                                    emailId: result.email.toString(),
                                   );
                                 }
                               },

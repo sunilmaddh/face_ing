@@ -86,35 +86,32 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
           color: AppColors.historyCardColor,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Obx(
-          () =>
-              _controller.isFullStory.isTrue
-                  ? CustomTabBarView(
-                    tabController: _tabController,
-                    isNotRadius: false,
-                    tabWidgets: AppMethods.tabGuestWidget,
-                    tabBarWidgets: _controller.tabWidget,
-                    onTabChanged: (value) {
-                      // if (value > 0) {
-                      //   BottomsheetHelper.showBottomSheetAlert(
-                      //     context,
-                      //     _tabController,
-                      //   );
-                      // }
-                    },
-                  )
-                  : Padding(
-                    padding: AppDimensions.symmetric(
-                      horizontal: 10.0,
-                      vertical: 10.0,
-                    ),
-                    child: BuildCardWidget(
-                      healthDetailsList: _controller.basicVitalSigns,
-                      isBasicVital: true.obs,
-                    ),
-                  ),
+        child:
+        // _controller.isFullStory.isTrue
+        //     ? CustomTabBarView(
+        //       tabController: _tabController,
+        //       isNotRadius: false,
+        //       tabWidgets: AppMethods.tabGuestWidget,
+        //       tabBarWidgets: _controller.tabWidget,
+        //       onTabChanged: (value) {
+        //         // if (value > 0) {
+        //         //   BottomsheetHelper.showBottomSheetAlert(
+        //         //     context,
+        //         //     _tabController,
+        //         //   );
+        //         // }
+        //       },
+        //     )
+        //   :
+        Padding(
+          padding: AppDimensions.symmetric(horizontal: 10.0, vertical: 10.0),
+          child: BuildCardWidget(
+            healthDetailsList: _controller.basicVitalSigns,
+            isBasicVital: true.obs,
+          ),
         ),
       ),
+      //  ),
     );
   }
 }

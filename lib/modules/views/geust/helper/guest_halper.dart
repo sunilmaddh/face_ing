@@ -317,6 +317,8 @@ class GuestHalper {
     controller.smokerTypeController.clear();
     controller.selectionType.value = "";
     _guestController.selectionType.value = "";
+    _guestController.emailTextController.clear();
+    _guestController.guestImage.value = "";
   }
 
   clearLoading() {

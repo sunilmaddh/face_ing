@@ -13,6 +13,7 @@ import 'package:ntt_data/data/repository/services/auth_services.dart';
 import 'package:ntt_data/data/repository/services/profile_services.dart';
 import 'package:ntt_data/data/repository/services/profile_upload_services.dart';
 import 'package:image/image.dart' as img;
+import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 
 mixin CommonMixin on GetxController {
   Rx<File> profileUrl = File("").obs;
@@ -41,6 +42,7 @@ mixin CommonMixin on GetxController {
     String guestId,
     String isGuest,
   ) async {
+    debugPrint("gust $isGuest ");
     var imageUrl = await profileUploadService.pickImageFromGallery();
     if (imageUrl != null) {
       isProfile.value = true;
@@ -65,8 +67,12 @@ mixin CommonMixin on GetxController {
         }
         var result = responseData["response"];
         uploadImageResponseModel.value = result;
-
-        if (isGuest != "true") {
+        if (stringToBool(isGuest)) {
+          debugPrint("$isGuest gust");
+          Get.find<GeustController>().guestImage.value =
+              uploadImageResponseModel.value.imagePath!;
+        } else {
+          debugPrint("$isGuest user");
           userImage.value = uploadImageResponseModel.value.imagePath!;
           await IndoSharedPreference.instance.saveUserImage(
             uploadImageResponseModel.value.imagePath!,
@@ -123,7 +129,11 @@ mixin CommonMixin on GetxController {
         var result = responseData["response"];
         debugPrint("uploadImageResponseModel $result");
         uploadImageResponseModel.value = result;
-        if (isGuest != "true") {
+        if (stringToBool(isGuest)) {
+          debugPrint("$isGuest gust");
+          Get.find<GeustController>().guestImage.value =
+              uploadImageResponseModel.value.imagePath!;
+        } else {
           userImage.value = uploadImageResponseModel.value.imagePath!;
           await IndoSharedPreference.instance.saveUserImage(
             uploadImageResponseModel.value.imagePath!,
@@ -166,5 +176,11 @@ mixin CommonMixin on GetxController {
     stress.clear();
     heartRateVariability.clear();
     advancedHeartRateVariability.clear();
+  }
+
+  bool stringToBool(String? value) {
+    if (value == null) return false;
+
+    return value.toLowerCase().trim() == 'true';
   }
 }

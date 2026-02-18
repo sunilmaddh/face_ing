@@ -42,6 +42,7 @@ class GuestList {
   String? height;
   String? userId;
   String? guestId;
+  String? emailId;
   String? dob;
   String? guestImage;
   String? smokerType;
@@ -55,13 +56,14 @@ class GuestList {
     this.height,
     this.userId,
     this.guestId,
+    this.emailId,
     this.dob,
     this.guestImage,
     this.smokerType,
   });
 
   factory GuestList.fromJson(Map<String, dynamic> json) => GuestList(
-    email: json["email"] ?? "",
+    email: json["emailId"] ?? "",
     name: json["name"] ?? "",
     date: json["scannedDate"] ?? "",
     gender: json["gender"] ?? "",

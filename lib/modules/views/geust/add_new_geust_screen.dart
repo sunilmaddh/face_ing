@@ -143,10 +143,10 @@ class AddNewGuestScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 15),
                             CustomFormField(
-                              // validator: (name) {
-                              //   return AppMethods.validateName(name);
-                              // },
-                              label: "Email Id",
+                              validator: (email) {
+                                return AppMethods.validateEmail(email);
+                              },
+                              label: "Email Id(Optional)",
                               hint: "Enter your email id",
                               controller: _geustController.emailTextController,
                             ),
@@ -196,16 +196,16 @@ class AddNewGuestScreen extends StatelessWidget {
                               },
                               onGalleryTap: () async {
                                 await _geustController.uploadProfileFromGallery(
+                                  "",
+                                  "",
                                   "true",
-                                  "",
-                                  "",
                                 );
                               },
                               onCameraTap: () async {
                                 _geustController.uploadProfileFromCamera(
+                                  "",
+                                  "",
                                   "true",
-                                  "",
-                                  "",
                                 );
                               },
                             ),
