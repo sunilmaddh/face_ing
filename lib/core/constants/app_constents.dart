@@ -82,7 +82,7 @@ class AppConstents {
   static const String sd2 = 'SD2';
   static const String lfHf = 'LF/HF';
   static const String rriData = 'RRi Data';
-  static Size deviceSize = Size(375, 812);
+  static Size   deviceSize = Size(375, 812);
 }
 
 class WellnessMetricHeading {
