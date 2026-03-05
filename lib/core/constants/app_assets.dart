@@ -90,6 +90,7 @@ class AppAssets {
       sunraiseLineImg = "$baseUrlLottie/sunraise_line_img.png",
       tanitaLogo = "$baseUrlPng/tanita_logo.jpg",
       tanitaMachine = "$baseUrlPng/tanita_machine.png",
+      voicerecording = "$baseUrlPng/voicerecording.png",
       dailyAdviceAssets = "$baseUrlPng/daily1.png",
       normalPluseIcon = "$baseUrlSvg/normal_pulse.svg";
 }

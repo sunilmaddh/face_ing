@@ -21,7 +21,7 @@ class PhqTwoQuestionsScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Get.back(),
+          onPressed: () => Get.until((route) => route.isFirst),
         ),
         title: const Text(
           'PHQ-2',
@@ -29,7 +29,7 @@ class PhqTwoQuestionsScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Get.back(),
+            onPressed: () => Get.until((route) => route.isFirst),
             child: const Text(
               'Skip',
               style: TextStyle(color: Colors.grey, fontSize: 16),
