@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/health_data/helper/health_report_helper.dart';
