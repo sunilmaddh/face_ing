@@ -92,5 +92,6 @@ class AppAssets {
       tanitaMachine = "$baseUrlPng/tanita_machine.png",
       voicerecording = "$baseUrlPng/voicerecording.png",
       dailyAdviceAssets = "$baseUrlPng/daily1.png",
-      normalPluseIcon = "$baseUrlSvg/normal_pulse.svg";
+      normalPluseIcon = "$baseUrlSvg/normal_pulse.svg",
+      voiceagentimage = "$baseUrlPng/voiceagentimage.png";
 }

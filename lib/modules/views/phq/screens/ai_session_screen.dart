@@ -71,6 +71,8 @@ class _AiSessionScreenState extends State<AiSessionScreen>
         child: Stack(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
                 QuestionCard(
@@ -195,11 +197,14 @@ class _AiSessionScreenState extends State<AiSessionScreen>
                                             width: 4,
                                           ),
                                         ),
-                                        child: const Icon(
-                                          Icons.person,
-                                          size: 60,
-                                          color: Colors.white,
+                                        child: Image.asset(
+                                          AppAssets.voiceagentimage,
                                         ),
+                                        // child: const Icon(
+                                        //   Icons.person,
+                                        //   size: 60,
+                                        //   color: Colors.white,
+                                        // ),
                                       ),
 
                                       Positioned(
@@ -239,15 +244,29 @@ class _AiSessionScreenState extends State<AiSessionScreen>
                     ),
                   ],
                 ),
-                Obx(
-                  () => Text(
-                    controller.sessionTime.value,
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(
+                      () => Text(
+                        controller.sessionTime.value,
+                        style: const TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.bottomTextColor,
+                        ),
+                      ),
                     ),
-                  ),
+                    Text(
+                      "Listening...",
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.infoIconColor,
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
