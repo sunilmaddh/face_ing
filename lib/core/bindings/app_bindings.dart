@@ -9,6 +9,8 @@ import 'package:ntt_data/modules/views/profile/controller/profile_controller.dar
 import 'package:ntt_data/modules/views/pulse/controller/pulse_survey_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/voice_controller.dart';
 
 class AppBindings extends Bindings {
   @override

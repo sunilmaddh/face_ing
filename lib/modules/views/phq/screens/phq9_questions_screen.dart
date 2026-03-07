@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
 import '../controllers/phq9_controller.dart';
 import '../controllers/assessment_controller.dart';
 import '../widgets/phq_question_card.dart';
@@ -41,7 +42,10 @@ class Phq9QuestionsScreen extends StatelessWidget {
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -56,7 +60,8 @@ class Phq9QuestionsScreen extends StatelessWidget {
                         Expanded(
                           child: Obx(
                             () => LinearProgressIndicator(
-                              value: controller.selectedAnswers.length /
+                              value:
+                                  controller.selectedAnswers.length /
                                   controller.assessment.questions.length,
                               backgroundColor: Colors.grey[200],
                               color: const Color(0xFF2196F3),
@@ -111,19 +116,23 @@ class Phq9QuestionsScreen extends StatelessWidget {
             right: 16,
             child: Obx(
               () => GestureDetector(
-                onTap: controller.allQuestionsAnswered
-                    ? () {
-                        assessmentController.setPhq9Answers(controller.selectedAnswers);
-                        Get.to(() => const Gad7QuestionsScreen());
-                      }
-                    : null,
+                onTap:
+                    controller.allQuestionsAnswered
+                        ? () {
+                          assessmentController.setPhq9Answers(
+                            controller.selectedAnswers,
+                          );
+                          Get.to(() => const Gad7QuestionsScreen());
+                        }
+                        : null,
                 child: Container(
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: controller.allQuestionsAnswered
-                        ? const Color(0xFF2196F3)
-                        : Colors.grey,
+                    color:
+                        controller.allQuestionsAnswered
+                            ? AppColors.primary
+                            : Colors.grey,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(

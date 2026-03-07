@@ -1,14 +1,47 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/voice_controller.dart';
 import 'phq_two_questions_screen.dart';
 import '../widgets/action_button.dart';
 import '../widgets/question_card.dart';
 
 class AiSessionController extends GetxController {
   final isTalking = false.obs;
-  final sessionTime = '04:12'.obs;
+  final sessionTime = '00:00'.obs;
+
+  final stopwatch = Stopwatch();
+  Timer? timer;
+
+  var time = "00:00".obs;
+
+  void start() {
+    stopwatch.start();
+
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      final minutes = stopwatch.elapsed.inMinutes.toString().padLeft(2, '0');
+      final seconds = (stopwatch.elapsed.inSeconds % 60).toString().padLeft(
+        2,
+        '0',
+      );
+
+      sessionTime.value = "$minutes:$seconds";
+    });
+  }
+
+  void stop() {
+    stopwatch.stop();
+    timer?.cancel();
+  }
+
+  void reset() {
+    stopwatch.reset();
+    time.value = "00:00";
+  }
 }
 
 class AiSessionScreen extends StatefulWidget {
@@ -22,6 +55,9 @@ class _AiSessionScreenState extends State<AiSessionScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   final controller = Get.put(AiSessionController());
+  // final socketController = Get.find<SocketController>();
+  final voiceController = Get.put(VoiceCallController());
+  final socketController = Get.put(SocketController());
 
   @override
   void initState() {
@@ -30,11 +66,14 @@ class _AiSessionScreenState extends State<AiSessionScreen>
       vsync: this,
       duration: const Duration(milliseconds: 800),
     )..repeat(reverse: true);
+    voiceController.getCredentials();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    controller.stop();
+    socketController.disconnect();
     super.dispose();
   }
 
@@ -43,13 +82,15 @@ class _AiSessionScreenState extends State<AiSessionScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Get.back(),
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () => Get.back(),
+        // ),
         title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
               'AI Session in Progress',
@@ -59,9 +100,23 @@ class _AiSessionScreenState extends State<AiSessionScreen>
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const Text(
-              '1 Secure Connection',
-              style: TextStyle(color: Colors.grey, fontSize: 12),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  height: 5,
+                  width: 5,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.green,
+                  ),
+                ),
+                const Text(
+                  ' Secure Connection',
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ],
             ),
           ],
         ),
@@ -75,10 +130,11 @@ class _AiSessionScreenState extends State<AiSessionScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
-                QuestionCard(
-                  question:
-                      '"How have you been\nmanaging your stress levels\nthis week?"',
-                  speaker: 'Dr. Sarah Speaking',
+                Obx(
+                  () => QuestionCard(
+                    question: '"${Get.find<VoiceCallController>().messageC}"',
+                    speaker: 'Dr. Sarah Speaking',
+                  ),
                 ),
                 Stack(
                   children: [
@@ -159,14 +215,18 @@ class _AiSessionScreenState extends State<AiSessionScreen>
                                           controller.isTalking.value;
                                       return Container(
                                         width:
-                                            isTalking
+                                            Get.find<VoiceCallController>()
+                                                    .messageC
+                                                    .isNotEmpty
                                                 ? 160 +
                                                     (_animationController
                                                             .value *
                                                         40)
                                                 : 160,
                                         height:
-                                            isTalking
+                                            Get.find<VoiceCallController>()
+                                                    .messageC
+                                                    .isNotEmpty
                                                 ? 160 +
                                                     (_animationController
                                                             .value *
@@ -296,14 +356,17 @@ class _AiSessionScreenState extends State<AiSessionScreen>
                             () => GestureDetector(
                               onTap:
                                   () =>
-                                      controller.isTalking.value =
-                                          !controller.isTalking.value,
+                                      Get.find<VoiceCallController>()
+                                          .messageC
+                                          .isNotEmpty,
                               child: Container(
                                 width: 56,
                                 height: 56,
                                 decoration: BoxDecoration(
                                   color:
-                                      controller.isTalking.value
+                                      Get.find<VoiceCallController>()
+                                              .messageC
+                                              .isNotEmpty
                                           ? const Color(0xFFEF5350)
                                           : Colors.grey.withAlpha(40),
                                   shape: BoxShape.circle,
@@ -322,9 +385,13 @@ class _AiSessionScreenState extends State<AiSessionScreen>
                           ActionButton(
                             icon: Icons.call_end,
                             color: Colors.red,
-                            onTap:
-                                () =>
-                                    Get.to(() => const PhqTwoQuestionsScreen()),
+                            onTap: () {
+                              socketController.disconnect();
+
+                              Get.to(() => const PhqTwoQuestionsScreen());
+                              controller.sessionTime.value = "00:00";
+                              controller.stop();
+                            },
                           ),
                         ],
                       ),

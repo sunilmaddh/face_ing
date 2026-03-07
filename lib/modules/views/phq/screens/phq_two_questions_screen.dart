@@ -64,7 +64,7 @@ class PhqTwoQuestionsScreen extends StatelessWidget {
                                   controller.selectedAnswers.length /
                                   controller.assessment.questions.length,
                               backgroundColor: Colors.grey[200],
-                              color: const Color(0xFF2196F3),
+                              color: AppColors.primary,
                               minHeight: 6,
                             ),
                           ),
@@ -116,19 +116,23 @@ class PhqTwoQuestionsScreen extends StatelessWidget {
             right: 16,
             child: Obx(
               () => GestureDetector(
-                onTap: controller.allQuestionsAnswered
-                    ? () {
-                        assessmentController.setPhq2Answers(controller.selectedAnswers);
-                        Get.to(() => const Phq9QuestionsScreen());
-                      }
-                    : null,
+                onTap:
+                    controller.allQuestionsAnswered
+                        ? () {
+                          assessmentController.setPhq2Answers(
+                            controller.selectedAnswers,
+                          );
+                          Get.to(() => const Phq9QuestionsScreen());
+                        }
+                        : null,
                 child: Container(
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: controller.allQuestionsAnswered
-                        ? AppColors.primary
-                        : Colors.grey,
+                    color:
+                        controller.allQuestionsAnswered
+                            ? AppColors.primary
+                            : Colors.grey,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
