@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/modules/views/phq/controllers/phq_controller.dart';
+import 'package:ntt_data/modules/views/phq/screens/phq_result_screen.dart';
 import '../controllers/phq9_controller.dart';
 import '../controllers/assessment_controller.dart';
 import '../widgets/phq_question_card.dart';
@@ -11,8 +13,8 @@ class Phq9QuestionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(Phq9Controller());
-    final assessmentController = Get.put(AssessmentController());
+    final controller = Get.find<PhqController>();
+    final assessmentController = Get.find<AssessmentController>();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -25,11 +27,16 @@ class Phq9QuestionsScreen extends StatelessWidget {
         ),
         title: const Text(
           'PHQ-9',
-          style: TextStyle(color: Color(0xFF2196F3), fontSize: 18),
+          style: TextStyle(color: AppColors.primary, fontSize: 18),
         ),
         actions: [
           TextButton(
-            onPressed: () => Get.back(),
+            onPressed: () async {
+              final result = await assessmentController.getResult();
+              if (result != null) {
+                Get.to(() => PhqResultScreen(result: result));
+              }
+            },
             child: const Text(
               'Skip',
               style: TextStyle(color: Colors.grey, fontSize: 16),
@@ -61,8 +68,8 @@ class Phq9QuestionsScreen extends StatelessWidget {
                           child: Obx(
                             () => LinearProgressIndicator(
                               value:
-                                  controller.selectedAnswers.length /
-                                  controller.assessment.questions.length,
+                                  controller.selectedPh9Answers.length /
+                                  controller.phq9Question.length,
                               backgroundColor: Colors.grey[200],
                               color: const Color(0xFF2196F3),
                               minHeight: 6,
@@ -72,7 +79,7 @@ class Phq9QuestionsScreen extends StatelessWidget {
                         const SizedBox(width: 8),
                         Obx(
                           () => Text(
-                            '${controller.selectedAnswers.length} of ${controller.assessment.questions.length} questions',
+                            '${controller.selectedPh9Answers.length} of ${controller.phq9Question.length} questions',
                             style: const TextStyle(
                               fontSize: 12,
                               color: Color(0xFF2196F3),
@@ -91,16 +98,18 @@ class Phq9QuestionsScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
                   child: Column(
                     children: List.generate(
-                      controller.assessment.questions.length,
+                      controller.phq9Question.length,
                       (index) => Padding(
                         padding: const EdgeInsets.only(bottom: 24),
                         child: Obx(
                           () => PhqQuestionCard(
                             questionNumber: index + 1,
-                            question: controller.assessment.questions[index],
-                            selectedValue: controller.getSelectedAnswer(index),
+                            question: controller.phq9Question[index],
+                            selectedValue: controller.getPh9SelectedAnswer(
+                              index,
+                            ),
                             onOptionSelected: (value) {
-                              controller.selectAnswer(index, value);
+                              controller.selectPh9Answer(index, value);
                             },
                           ),
                         ),
@@ -117,10 +126,10 @@ class Phq9QuestionsScreen extends StatelessWidget {
             child: Obx(
               () => GestureDetector(
                 onTap:
-                    controller.allQuestionsAnswered
+                    controller.allPh9QuestionsAnswered
                         ? () {
                           assessmentController.setPhq9Answers(
-                            controller.selectedAnswers,
+                            controller.selectedPh9Answers,
                           );
                           Get.to(() => const Gad7QuestionsScreen());
                         }
@@ -130,7 +139,7 @@ class Phq9QuestionsScreen extends StatelessWidget {
                   height: 56,
                   decoration: BoxDecoration(
                     color:
-                        controller.allQuestionsAnswered
+                        controller.allPh9QuestionsAnswered
                             ? AppColors.primary
                             : Colors.grey,
                     shape: BoxShape.circle,

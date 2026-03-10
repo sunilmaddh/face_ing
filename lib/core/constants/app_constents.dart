@@ -15,6 +15,8 @@ class AppConstents {
   confPassHint = "Please re-enter password",
   forgotPassword = "Forgot password?",
   donThaveAccoount = "Don’t have account?",
+  voiceAgentEndMessage =
+      "Our time for today’s session is coming to an end. Thank you for sharing with me. Please take care of yourself, and remember you can always come back if you’d like to talk again. Goodbye for now.",
   signUp = "Sigup",
   gilroyBold = "Gilroy-Bold",
   gilroyMedium = "Gilroy-Medium",
@@ -82,7 +84,7 @@ class AppConstents {
   static const String sd2 = 'SD2';
   static const String lfHf = 'LF/HF';
   static const String rriData = 'RRi Data';
-  static Size   deviceSize = Size(375, 812);
+  static Size deviceSize = Size(375, 812);
 }
 
 class WellnessMetricHeading {

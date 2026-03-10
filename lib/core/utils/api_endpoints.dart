@@ -7,6 +7,9 @@ class ApiEndpoints {
 
   ApiEndpoints._internal();
 
+  static const String voiceBaseUrl = "dev.sourcebytes.ai";
+  String initiateWebhook = "/api/v1/voice_agent/web/voice/webhook";
+
   static const String baseUrl =
       //"192.168.0.120:8085";
       //dev
@@ -45,5 +48,7 @@ class ApiEndpoints {
       saveUserPulseSurvey = "/saveUserPulseSurvey",
       pulseSurveyHome = "/pulseSurveyHome",
       voiceAgent = "/voiceAgent",
+      kintsugiInitiate = "/kintsugi/initiate",
+      kintsugiQuestionnaires = "/kintsugi/questionnaires",
       refreshToken = '/getTokenByRefreshToken';
 }

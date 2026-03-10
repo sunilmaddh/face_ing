@@ -5,12 +5,14 @@ import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/views/home/controllers/home_controller.dart';
 import 'package:ntt_data/modules/views/landing/landing_controller.dart';
 import 'package:ntt_data/modules/views/onboard/controllers/onboard_controller.dart';
+import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
+import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
 import 'package:ntt_data/modules/views/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/views/pulse/controller/pulse_survey_controller.dart';
 import 'package:ntt_data/modules/views/vital_graph/controller/vital_graph_controller.dart';
 import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
-import 'package:ntt_data/modules/views/voice_agent/voice_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/voice_call_controller.dart';
 
 class AppBindings extends Bindings {
   @override
@@ -26,5 +28,7 @@ class AppBindings extends Bindings {
     Get.put(VitalGraphController());
     Get.put(PulseSurveyController());
     Get.put(VoiceController());
+    Get.put(AiSessionController());
+    Get.put(AssessmentController());
   }
 }

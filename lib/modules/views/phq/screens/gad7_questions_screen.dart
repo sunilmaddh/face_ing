@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/modules/views/phq/controllers/phq_controller.dart';
 import '../controllers/gad7_controller.dart';
 import '../controllers/assessment_controller.dart';
 import '../widgets/phq_question_card.dart';
@@ -10,8 +12,8 @@ class Gad7QuestionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(Gad7Controller());
-    final assessmentController = Get.put(AssessmentController());
+    final controller = Get.find<PhqController>();
+    final assessmentController = Get.find<AssessmentController>();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -24,11 +26,16 @@ class Gad7QuestionsScreen extends StatelessWidget {
         ),
         title: const Text(
           'GAD-7',
-          style: TextStyle(color: Color(0xFF2196F3), fontSize: 18),
+          style: TextStyle(color: AppColors.primary, fontSize: 18),
         ),
         actions: [
           TextButton(
-            onPressed: () => Get.back(),
+            onPressed: () async {
+              final result = await assessmentController.getResult();
+              if (result != null) {
+                Get.to(() => PhqResultScreen(result: result));
+              }
+            },
             child: const Text(
               'Skip',
               style: TextStyle(color: Colors.grey, fontSize: 16),
@@ -60,8 +67,8 @@ class Gad7QuestionsScreen extends StatelessWidget {
                           child: Obx(
                             () => LinearProgressIndicator(
                               value:
-                                  controller.selectedAnswers.length /
-                                  controller.assessment.questions.length,
+                                  controller.selectedG7Answers.length /
+                                  controller.gad7Question.length,
                               backgroundColor: Colors.grey[200],
                               color: const Color(0xFF2196F3),
                               minHeight: 6,
@@ -71,7 +78,7 @@ class Gad7QuestionsScreen extends StatelessWidget {
                         const SizedBox(width: 8),
                         Obx(
                           () => Text(
-                            '${controller.selectedAnswers.length} of ${controller.assessment.questions.length} questions',
+                            '${controller.selectedG7Answers.length} of ${controller.gad7Question.length} questions',
                             style: const TextStyle(
                               fontSize: 12,
                               color: Color(0xFF2196F3),
@@ -90,16 +97,18 @@ class Gad7QuestionsScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
                   child: Column(
                     children: List.generate(
-                      controller.assessment.questions.length,
+                      controller.gad7Question.length,
                       (index) => Padding(
                         padding: const EdgeInsets.only(bottom: 24),
                         child: Obx(
                           () => PhqQuestionCard(
                             questionNumber: index + 1,
-                            question: controller.assessment.questions[index],
-                            selectedValue: controller.getSelectedAnswer(index),
+                            question: controller.gad7Question[index],
+                            selectedValue: controller.getPh7SelectedAnswer(
+                              index,
+                            ),
                             onOptionSelected: (value) {
-                              controller.selectAnswer(index, value);
+                              controller.selectPh7Answer(index, value);
                             },
                           ),
                         ),
@@ -116,19 +125,17 @@ class Gad7QuestionsScreen extends StatelessWidget {
             child: Obx(
               () => GestureDetector(
                 onTap:
-                    controller.allQuestionsAnswered
+                    controller.allG7QuestionsAnswered
                         ? () async {
                           assessmentController.setGad7Answers(
-                            controller.selectedAnswers,
+                            controller.selectedG7Answers,
                           );
-                          final success =
-                              await assessmentController.submitAssessment();
-                          if (success) {
-                            final result = await assessmentController.getResult();
-                            if (result != null) {
-                              Get.to(() => PhqResultScreen(result: result));
-                            }
-                          }
+                          await assessmentController.submitAssessment(
+                            sessionID:
+                                Get.find<AssessmentController>()
+                                    .sessionId
+                                    .value,
+                          );
                         }
                         : null,
                 child: Container(
@@ -136,7 +143,7 @@ class Gad7QuestionsScreen extends StatelessWidget {
                   height: 56,
                   decoration: BoxDecoration(
                     color:
-                        controller.allQuestionsAnswered
+                        controller.allG7QuestionsAnswered
                             ? const Color(0xFF2196F3)
                             : Colors.grey,
                     shape: BoxShape.circle,

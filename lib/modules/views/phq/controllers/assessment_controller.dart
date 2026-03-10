@@ -1,8 +1,14 @@
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/data/models/kintsugi_result_response.dart';
+import 'package:ntt_data/modules/views/phq/screens/phq_result_screen.dart';
 import '../../../../data/repository/services/phq_services.dart';
 
 class AssessmentController extends GetxController {
   static AssessmentController get instance => Get.find();
+
+  Rx<KintsigiRusltResponse> resultResponse = KintsigiRusltResponse().obs;
 
   final phq2Answers = <int>[].obs;
   final phq9Answers = <int>[].obs;
@@ -33,17 +39,21 @@ class AssessmentController extends GetxController {
     );
   }
 
-  Future<bool> submitAssessment() async {
+  Future<bool> submitAssessment({required String sessionID}) async {
     try {
       isLoading.value = true;
       final response = await _phqServices.submitAssessment(
         phq2: phq2Answers,
         phq9: phq9Answers,
         gad7: gad7Answers,
-        sessionId: "f82ba129-bb2d-48c6-8bdd-f2026bbc4421",
+        sessionId: sessionID,
       );
       if (response['statusCode'] == 200 || response['statusCode'] == 201) {
-        sessionId.value = response['responseBody']['sessionId'] ?? '';
+        final result = await getResult();
+        if (result != null) {
+          Get.to(() => PhqResultScreen(result: result));
+        }
+
         return true;
       }
       return false;
@@ -59,6 +69,9 @@ class AssessmentController extends GetxController {
     try {
       final response = await _phqServices.getResult(sessionId.value);
       if (response['statusCode'] == 200) {
+        var result = kintsigiRusltResponseFromJson(
+          response[AppConstents.response],
+        );
         return response['responseBody'];
       }
       return null;

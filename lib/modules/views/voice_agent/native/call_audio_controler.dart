@@ -24,10 +24,15 @@ class CallAudioController {
     return now < _startupMuteEndsAtMs || now < _agentAudioEndsAtMs;
   }
 
+  int get remainingAgentAudioMs {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final remaining = _agentAudioEndsAtMs - now;
+    return remaining > 0 ? remaining : 0;
+  }
+
   Future<void> start() async {
     final now = DateTime.now().millisecondsSinceEpoch;
 
-    // startup mute window
     _startupMuteEndsAtMs = now + 2000;
 
     nativeMicSender = NativeMicSender(
@@ -41,7 +46,6 @@ class CallAudioController {
       print("✅ Native mic sender created");
     }
 
-    // subscribe now, but don't start capture yet
     await nativeMicSender!.prepare();
 
     if (debug) {
@@ -60,6 +64,15 @@ class CallAudioController {
     }
   }
 
+  Future<void> stopMicCaptureIfRunning() async {
+    if (!_micCaptureStarted) return;
+    _micCaptureStarted = false;
+
+    try {
+      await stop();
+    } catch (_) {}
+  }
+
   Future<void> stop() async {
     _agentAudioEndsAtMs = 0;
     _startupMuteEndsAtMs = 0;
@@ -68,28 +81,17 @@ class CallAudioController {
     await nativeMicSender?.stop();
   }
 
-  /// Call this whenever an agent audio chunk is queued for playback.
-  /// sampleRate should be the playback sample rate from backend.
   void onAgentAudioQueued({
     required String base64Audio,
     required int sampleRate,
   }) {
     final now = DateTime.now().millisecondsSinceEpoch;
 
-    // Approx base64 -> bytes
     final int bytes = (base64Audio.length * 3) ~/ 4;
-
-    // PCM16 mono => 2 bytes per sample
     final int frames = bytes ~/ 2;
-
-    // chunk duration
     final int chunkMs = ((frames * 1000) / sampleRate).round();
-
-    // Queue-based extension:
-    // if audio already buffered, extend from existing end; otherwise extend from now
     final int base = _agentAudioEndsAtMs > now ? _agentAudioEndsAtMs : now;
 
-    // safety tail: keep mic closed a bit after queued playback finishes
     const int safetyTailMs = 1;
 
     _agentAudioEndsAtMs = base + chunkMs + safetyTailMs;

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/data/models/kintsungi_questionaries_response.dart';
 import '../models/phq_model.dart';
 import 'phq_radio_option.dart';
 
 class PhqQuestionCard extends StatelessWidget {
   final int questionNumber;
-  final PhqQuestion question;
+  final QuestionOfKintsugi question;
   final int? selectedValue;
   final Function(int) onOptionSelected;
 
@@ -30,11 +31,13 @@ class PhqQuestionCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        ...question.options.map((option) => PhqRadioOption(
-              text: option.response,
-              isSelected: selectedValue == option.value,
-              onTap: () => onOptionSelected(option.value),
-            )),
+        ...question.options!.map(
+          (option) => PhqRadioOption(
+            text: option.response!,
+            isSelected: selectedValue == option.value,
+            onTap: () => onOptionSelected(option.value!),
+          ),
+        ),
       ],
     );
   }

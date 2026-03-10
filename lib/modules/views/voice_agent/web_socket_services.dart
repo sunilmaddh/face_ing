@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketService {
@@ -7,11 +6,11 @@ class WebSocketService {
 
   Stream? get stream => channel?.stream;
 
-  void connect(String url) {
+  Future<void> connect(String url) async {
     channel = WebSocketChannel.connect(Uri.parse(url));
   }
 
-  void send(Map<String, dynamic> message) {
+  Future<void> send(Map<String, dynamic> message) async {
     final encoded = jsonEncode(message);
     channel?.sink.add(encoded);
   }

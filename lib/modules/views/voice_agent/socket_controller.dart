@@ -3,13 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
 import 'package:ntt_data/modules/views/phq/screens/phq_two_questions_screen.dart';
+import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
 import 'package:ntt_data/modules/views/voice_agent/audio_session_helper.dart';
 import 'package:ntt_data/modules/views/voice_agent/native/start_native_call.dart';
 import 'package:ntt_data/modules/views/voice_agent/pcm_player.dart';
-import 'package:ntt_data/modules/views/voice_agent/voice_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/voice_call_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/web_socket_services.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class SocketController extends GetxController {
   final WebSocketService _service = WebSocketService();
@@ -18,34 +19,18 @@ class SocketController extends GetxController {
 
   var messages = <String>[].obs;
   var isConnected = false.obs;
+  var isLastEndCall = false.obs;
+  var isMicMute = false.obs;
 
   final Pcm16StreamPlayer player = Pcm16StreamPlayer();
 
-  // ✅ prebuffer state
   final List<String> _pendingAgentChunks = [];
   bool _playerStartedForCall = false;
   Timer? _prebufferFlushTimer;
+  bool isSessionEnding = false;
 
-  @override
-  void onInit() {
-    requestMicPermission();
-    super.onInit();
-  }
-
-  Future<bool> requestMicPermission() async {
-    var status = await Permission.microphone.status;
-
-    if (status.isGranted) return true;
-
-    status = await Permission.microphone.request();
-
-    if (status.isGranted) return true;
-
-    if (status.isPermanentlyDenied) {
-      await openAppSettings();
-    }
-
-    return false;
+  void markSessionEnding() {
+    isSessionEnding = true;
   }
 
   Future<void> _flushPrebufferIfNeeded() async {
@@ -54,7 +39,7 @@ class SocketController extends GetxController {
 
     await player.start();
     _playerStartedForCall = true;
-
+    Get.find<AiSessionController>().start();
     for (final chunk in _pendingAgentChunks) {
       await player.feedBase64Pcm16(chunk);
     }
@@ -63,26 +48,27 @@ class SocketController extends GetxController {
     debugPrint("✅ Player started after prebuffer flush");
   }
 
-  void connectSocket({
+  Future<void> connectSocket({
     required String tenantId,
     required String botId,
     required String streamId,
   }) async {
+    isSessionEnding = false;
+    isWebSocketConnected = false;
+
     print("🎧 starting call audio session");
     await configureAudioSession();
     print("✅ call audio session active");
 
     await player.init();
-
     _playerStartedForCall = false;
     _pendingAgentChunks.clear();
     _prebufferFlushTimer?.cancel();
     _prebufferFlushTimer = null;
 
-    isWebSocketConnected = false;
-
-    _service.connect(
-      "wss://dev.sourcebytes.ai/ws/v1/web/voice_agent/$tenantId/$botId/",
+    await _service.connect(
+      //"wss://0945-2406-7400-111-b2f7-344f-b2ae-737e-7b40.ngrok-free.app/ws/v1/web/voice_agent/$tenantId/$botId/$streamId",
+      "wss://dev.sourcebytes.ai/ws/v1/web/voice_agent/$tenantId/$botId/$streamId/",
     );
     isConnected.value = true;
 
@@ -93,21 +79,29 @@ class SocketController extends GetxController {
         final datas = jsonDecode(data);
 
         if (datas['type'] == 'agent_audio') {
+          if (isSessionEnding) return;
+
           final payload = datas['audio'] as String;
           final sr = (datas['sample_rate'] ?? 48000) as int;
 
           if (isWebSocketConnected == false) {
             isWebSocketConnected = true;
             await startCall(websocket: _service, streamId: streamId);
+            debugPrint(
+              "callAudioController created? ${callAudioController != null}",
+            );
           }
 
-          // ✅ tell gate about actual queued playback duration
-          callAudioController.onAgentAudioQueued(
+          if (callAudioController == null) {
+            debugPrint("❌ callAudioController is null");
+            return;
+          }
+
+          callAudioController!.onAgentAudioQueued(
             base64Audio: payload,
             sampleRate: sr,
           );
 
-          // ✅ prebuffer first response before starting player
           if (!_playerStartedForCall) {
             _pendingAgentChunks.add(payload);
 
@@ -128,17 +122,20 @@ class SocketController extends GetxController {
             await player.feedBase64Pcm16(payload);
           }
 
-          // ✅ after first bot utterance is queued, start mic capture once
-          await callAudioController.startMicCaptureIfNeeded();
+          await callAudioController!.startMicCaptureIfNeeded();
         }
+
         if (datas["event"] == "agent_message") {
           if (datas['message'] != null) {
+            debugPrint("Agent message ${datas['message']}");
             Get.find<VoiceCallController>().messageC.value = datas['message'];
           }
         }
+
         if (datas["event"] == "call_ended") {
-          disconnect();
-          Get.to(() => const PhqTwoQuestionsScreen());
+          // disconnect();
+          // Get.to(() => PhqTwoQuestionsScreen());
+          await Get.find<AiSessionController>().endSessionGracefully();
         }
 
         if (datas['event'] == 'stop') {
@@ -147,28 +144,44 @@ class SocketController extends GetxController {
       },
       onError: (error) {
         isConnected.value = false;
+        isSessionEnding = false;
         debugPrint(error.toString());
       },
       onDone: () {
         isConnected.value = false;
+        isLastEndCall.value = true;
+        isSessionEnding = false;
       },
     );
   }
 
-  void sendMessage(Map<String, dynamic> message) {
-    _service.send(message);
+  Future<void> sendMessage(Map<String, dynamic> message) async {
+    await _service.send(message);
   }
 
-  void disconnect() {
-    _service.disconnect();
+  Future<void> closeWebsocket() async {
+    isSessionEnding = false;
     isConnected.value = false;
+    _service.disconnect();
     stopCall();
     player.dispose();
     _playerStartedForCall = false;
     _pendingAgentChunks.clear();
     _prebufferFlushTimer?.cancel();
     _prebufferFlushTimer = null;
-    Get.find<VoiceCallController>().messageC.value = "";
+  }
+
+  Future<void> disconnect() async {
+    isSessionEnding = false;
+    isConnected.value = false;
+    _service.disconnect();
+    stopCall();
+    player.dispose();
+    _playerStartedForCall = false;
+    _pendingAgentChunks.clear();
+    _prebufferFlushTimer?.cancel();
+    _prebufferFlushTimer = null;
+    // Get.find<VoiceCallController>().messageC.value = "";
   }
 
   @override

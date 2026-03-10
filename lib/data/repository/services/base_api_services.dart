@@ -10,6 +10,7 @@ import 'package:ntt_data/core/utils/network_utils.dart';
 
 abstract class BaseApiService {
   final String baseUrl = ApiEndpoints.baseUrl;
+  final String voiceBaseUrl = ApiEndpoints.voiceBaseUrl;
   final String api = "/api";
   final isHttps = false;
 
@@ -56,6 +57,46 @@ abstract class BaseApiService {
       uri = Uri.https(baseUrl, api + endpoint);
     } else {
       uri = Uri.http(baseUrl, endpoint);
+    }
+
+    debugPrint(uri.toString());
+    debugPrint("Access token $accessToken");
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $accessToken",
+        },
+        body: jsonEncode(data),
+      );
+      debugPrint("Access toke $accessToken");
+      debugPrint(response.body.toString());
+      debugPrint(response.headers.toString());
+      if (response.statusCode == 401) {
+        String? isAccessToken = await refreshToken();
+        if (isAccessToken != null && isAccessToken.isNotEmpty) {
+          return await postRequest(endpoint, data: data);
+        }
+      }
+      return await _processResponse(response);
+    } catch (e) {
+      NetworkUtil.checkInternet(Get.context!);
+      throw Exception("Error: $e");
+    }
+  }
+
+  Future<Map<String, dynamic>> postVoiceRequest(
+    String endpoint, {
+    required dynamic data,
+  }) async {
+    var accessToken = await IndoSharedPreference.instance.getAccessToken();
+    debugPrint("Access toke $accessToken");
+    Uri uri;
+    if (!isHttps) {
+      uri = Uri.https(voiceBaseUrl, api + endpoint);
+    } else {
+      uri = Uri.http(voiceBaseUrl, endpoint);
     }
 
     debugPrint(uri.toString());

@@ -16,12 +16,16 @@ class WebhookResponse {
   String? message;
   String? tenant;
   String? agent;
+  String? agentName;
+  String? agentImage;
   WebhookResponse({
     this.status,
     this.streamSid,
     this.tenant,
     this.agent,
     this.message,
+    this.agentName,
+    this.agentImage,
   });
   factory WebhookResponse.fromJson(Map<String, dynamic> json) =>
       WebhookResponse(
@@ -30,6 +34,8 @@ class WebhookResponse {
         tenant: json["tenant"] ?? "",
         agent: json["agent"] ?? "",
         message: json["message"] ?? "",
+        agentName: json["agent_name"] ?? "",
+        agentImage: json["agent_avtar"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

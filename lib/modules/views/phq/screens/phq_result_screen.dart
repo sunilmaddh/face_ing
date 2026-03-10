@@ -6,9 +6,7 @@ import '../widgets/result_card.dart';
 
 class PhqResultScreen extends StatelessWidget {
   final Map<String, dynamic> result;
-
   const PhqResultScreen({super.key, required this.result});
-
   @override
   Widget build(BuildContext context) {
     final resultData = result['result'];

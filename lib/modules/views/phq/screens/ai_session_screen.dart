@@ -1,80 +1,44 @@
-import 'dart:async';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
+import 'package:ntt_data/modules/views/phq/screens/phq_two_questions_screen.dart';
+import 'package:ntt_data/modules/views/phq/widgets/question_card.dart';
+import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
 import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
-import 'package:ntt_data/modules/views/voice_agent/voice_controller.dart';
-import 'phq_two_questions_screen.dart';
-import '../widgets/action_button.dart';
-import '../widgets/question_card.dart';
-
-class AiSessionController extends GetxController {
-  final isTalking = false.obs;
-  final sessionTime = '00:00'.obs;
-
-  final stopwatch = Stopwatch();
-  Timer? timer;
-
-  var time = "00:00".obs;
-
-  void start() {
-    stopwatch.start();
-
-    timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      final minutes = stopwatch.elapsed.inMinutes.toString().padLeft(2, '0');
-      final seconds = (stopwatch.elapsed.inSeconds % 60).toString().padLeft(
-        2,
-        '0',
-      );
-
-      sessionTime.value = "$minutes:$seconds";
-    });
-  }
-
-  void stop() {
-    stopwatch.stop();
-    timer?.cancel();
-  }
-
-  void reset() {
-    stopwatch.reset();
-    time.value = "00:00";
-  }
-}
+import 'package:ntt_data/modules/views/voice_agent/voice_call_controller.dart';
+import 'package:ntt_data/widgets/button/primary_button.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class AiSessionScreen extends StatefulWidget {
-  const AiSessionScreen({super.key});
+  AiSessionScreen({super.key});
 
   @override
   State<AiSessionScreen> createState() => _AiSessionScreenState();
 }
 
-class _AiSessionScreenState extends State<AiSessionScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  final controller = Get.put(AiSessionController());
-  // final socketController = Get.find<SocketController>();
-  final voiceController = Get.put(VoiceCallController());
-  final socketController = Get.put(SocketController());
+class _AiSessionScreenState extends State<AiSessionScreen> {
+  final controller = Get.find<AiSessionController>();
+  final voiceCallCOntroller = Get.find<VoiceCallController>();
+  final voiceCOntroller = Get.find<VoiceController>();
 
   @override
   void initState() {
+    callMethod();
+    // TODO: implement initState
+
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    )..repeat(reverse: true);
-    voiceController.getCredentials();
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    controller.stop();
-    socketController.disconnect();
-    super.dispose();
+  void callMethod() async {
+    controller.isFirstTimeToConnect(true);
+    await controller.callkintisugiIntiateApi();
+    await initPlayer();
   }
 
   @override
@@ -95,7 +59,7 @@ class _AiSessionScreenState extends State<AiSessionScreen>
             const Text(
               'AI Session in Progress',
               style: TextStyle(
-                color: Color(0xFF2196F3),
+                color: AppColors.primary,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -122,287 +86,295 @@ class _AiSessionScreenState extends State<AiSessionScreen>
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 20),
-                Obx(
-                  () => QuestionCard(
-                    question: '"${Get.find<VoiceCallController>().messageC}"',
-                    speaker: 'Dr. Sarah Speaking',
-                  ),
-                ),
-                Stack(
+      body: Obx(
+        () =>
+            voiceCOntroller.isInitiating.isTrue
+                ? Center(child: CircularProgressIndicator())
+                : Stack(
                   children: [
-                    SizedBox(
-                      height: 360,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 20),
+                        QuestionCard(
+                          widget: CommonText.text(
+                            textAlign: TextAlign.center,
+                            voiceCallCOntroller.agentName.value,
+                          ),
+                        ),
+                        Stack(
                           children: [
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                AnimatedBuilder(
-                                  animation: _animationController,
-                                  builder: (context, child) {
-                                    final isTalking =
-                                        controller.isTalking.value;
-                                    return Container(
-                                      width:
-                                          isTalking
-                                              ? 280 +
-                                                  (_animationController.value *
-                                                      40)
-                                              : 280,
-                                      height:
-                                          isTalking
-                                              ? 280 +
-                                                  (_animationController.value *
-                                                      40)
-                                              : 280,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: const Color(
-                                          0xFF2196F3,
-                                        ).withOpacity(0.15),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                Positioned(
-                                  top: 10,
-                                  child: AnimatedBuilder(
-                                    animation: _animationController,
-                                    builder: (context, child) {
-                                      final isTalking =
-                                          controller.isTalking.value;
-                                      return Container(
-                                        width:
-                                            isTalking
-                                                ? 200 +
-                                                    (_animationController
-                                                            .value *
-                                                        40)
-                                                : 200,
-                                        height:
-                                            isTalking
-                                                ? 200 +
-                                                    (_animationController
-                                                            .value *
-                                                        40)
-                                                : 200,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: const Color(
-                                            0xFF2196F3,
-                                          ).withOpacity(0.15),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 14,
-                                  child: AnimatedBuilder(
-                                    animation: _animationController,
-                                    builder: (context, child) {
-                                      final isTalking =
-                                          controller.isTalking.value;
-                                      return Container(
-                                        width:
-                                            Get.find<VoiceCallController>()
-                                                    .messageC
-                                                    .isNotEmpty
-                                                ? 160 +
-                                                    (_animationController
-                                                            .value *
-                                                        40)
-                                                : 160,
-                                        height:
-                                            Get.find<VoiceCallController>()
-                                                    .messageC
-                                                    .isNotEmpty
-                                                ? 160 +
-                                                    (_animationController
-                                                            .value *
-                                                        40)
-                                                : 160,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: const Color(
-                                            0xFF2196F3,
-                                          ).withOpacity(0.25),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 15,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        width: 140,
-                                        height: 140,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.grey[300],
-                                          border: Border.all(
-                                            color: Colors.white,
-                                            width: 4,
+                            SizedBox(
+                              height: 360,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          width: AppDimensions.width(290),
+                                          height: AppDimensions.height(290),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: const Color(
+                                              0xff137FEC,
+                                            ).withOpacity(0.10),
                                           ),
                                         ),
-                                        child: Image.asset(
-                                          AppAssets.voiceagentimage,
-                                        ),
-                                        // child: const Icon(
-                                        //   Icons.person,
-                                        //   size: 60,
-                                        //   color: Colors.white,
-                                        // ),
-                                      ),
 
-                                      Positioned(
-                                        bottom: 0,
-                                        right: 0,
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              width: 40,
-                                              height: 40,
-                                              padding: const EdgeInsets.all(6),
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xFF2196F3),
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: Colors.white,
-                                                  width: 2,
+                                        Positioned(
+                                          // top: 10,
+                                          child: Container(
+                                            width: AppDimensions.width(220),
+                                            height: AppDimensions.height(220),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: const Color(
+                                                0xff137FEC,
+                                              ).withOpacity(0.10),
+                                            ),
+                                          ),
+                                        ),
+
+                                        Positioned(
+                                          // top: 14,
+                                          child: Container(
+                                            width: AppDimensions.width(160),
+                                            height: AppDimensions.height(160),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: const Color(
+                                                0xff137FEC,
+                                              ).withOpacity(0.20),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          // top: 15,
+                                          child: Stack(
+                                            children: [
+                                              Container(
+                                                width: 140,
+                                                height: 140,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.grey[300],
+                                                  border: Border.all(
+                                                    color: Colors.white,
+                                                    width: 4,
+                                                  ),
+                                                ),
+                                                child: Obx(
+                                                  () => ClipOval(
+                                                    child: CachedNetworkImage(
+                                                      fit: BoxFit.cover,
+                                                      imageUrl:
+                                                          voiceCallCOntroller
+                                                              .agentImage
+                                                              .value,
+                                                      //  "https://dev.sourcebytes.ai${voiceCallCOntroller.agentImage.value}",
+                                                      placeholder: (
+                                                        context,
+                                                        url,
+                                                      ) {
+                                                        return CircularProgressIndicator();
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                                // child: const Icon(
+                                                //   Icons.person,
+                                                //   size: 60,
+                                                //   color: Colors.white,
+                                                // ),
+                                              ),
+
+                                              Positioned(
+                                                bottom: 0,
+                                                right: 0,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      width: 40,
+                                                      height: 40,
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            6,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: const Color(
+                                                          0xFF2196F3,
+                                                        ),
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                          color: Colors.white,
+                                                          width: 2,
+                                                        ),
+                                                      ),
+                                                      child: const Icon(
+                                                        Icons.graphic_eq,
+                                                        color: Colors.white,
+                                                        size: 20,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              child: const Icon(
-                                                Icons.graphic_eq,
-                                                color: Colors.white,
-                                                size: 20,
-                                              ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Obx(
-                      () => Text(
-                        controller.sessionTime.value,
-                        style: const TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.bottomTextColor,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "Listening...",
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.infoIconColor,
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 70,
-                    vertical: 10,
-                  ),
-                  child: Container(
-                    height: 80,
-                    // width: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 10,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Obx(
-                            () => GestureDetector(
-                              onTap:
-                                  () =>
-                                      Get.find<VoiceCallController>()
-                                          .messageC
-                                          .isNotEmpty,
-                              child: Container(
-                                width: 56,
-                                height: 56,
-                                decoration: BoxDecoration(
-                                  color:
-                                      Get.find<VoiceCallController>()
-                                              .messageC
-                                              .isNotEmpty
-                                          ? const Color(0xFFEF5350)
-                                          : Colors.grey.withAlpha(40),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  controller.isTalking.value
-                                      ? Icons.stop
-                                      : Icons.mic_outlined,
-                                  color: Colors.grey,
-                                  size: 34,
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: 50),
-                          ActionButton(
-                            icon: Icons.call_end,
-                            color: Colors.red,
-                            onTap: () {
-                              socketController.disconnect();
+                          ],
+                        ),
 
-                              Get.to(() => const PhqTwoQuestionsScreen());
-                              controller.sessionTime.value = "00:00";
-                              controller.stop();
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.center,
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Obx(
+                        //       () => Text(
+                        //         controller.sessionTime.value,
+                        //         style: const TextStyle(
+                        //           fontSize: 32,
+                        //           fontWeight: FontWeight.bold,
+                        //           color: AppColors.bottomTextColor,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     Text(
+                        //       "Listening...",
+                        //       style: const TextStyle(
+                        //         fontSize: 15,
+                        //         fontWeight: FontWeight.bold,
+                        //         color: AppColors.infoIconColor,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //     horizontal: 70,
+                        //     vertical: 10,
+                        //   ),
+                        //   child: Container(
+                        //     height: 80,
+                        //     // width: 200,
+                        //     decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(50),
+                        //       color: Colors.white,
+                        //       boxShadow: [
+                        //         BoxShadow(
+                        //           color: Colors.black26,
+                        //           blurRadius: 10,
+                        //           offset: Offset(0, 4),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.all(10),
+                        //       child: Row(
+                        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //         children: [
+                        //           Obx(
+                        //             () => GestureDetector(
+                        //               onTap:
+                        //                   () =>
+                        //                       Get.find<VoiceCallController>()
+                        //                           .messageC
+                        //                           .isNotEmpty,
+                        //               child: Container(
+                        //                 width: 56,
+                        //                 height: 56,
+                        //                 decoration: BoxDecoration(
+                        //                   color:
+                        //                       Get.find<VoiceCallController>()
+                        //                               .messageC
+                        //                               .isNotEmpty
+                        //                           ? const Color(0xFFEF5350)
+                        //                           : Colors.grey.withAlpha(40),
+                        //                   shape: BoxShape.circle,
+                        //                 ),
+                        //                 child: Icon(
+                        //                   controller.isTalking.value
+                        //                       ? Icons.stop
+                        //                       : Icons.mic_outlined,
+                        //                   color: Colors.grey,
+                        //                   size: 34,
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        // ),
+                        //  ),
+                        SizedBox(height: AppDimensions.height(80)),
+                        SizedBox(
+                          height: AppDimensions.height(48),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              // await Get.find<SocketController>().disconnect();
+                              if (controller.isFirstTimeToConnect.isFalse) {
+                                await controller.callkintisugiIntiateApi();
+                              }
+                              controller.isFirstTimeToConnect(false);
+                              await voiceCallCOntroller.initializeAndStartCall(
+                                tenantIds: voiceCallCOntroller.tenant.value,
+                                agentIds: voiceCallCOntroller.agentId.value,
+                                streamIds: voiceCallCOntroller.streamId.value,
+                              );
+                              // Get.find<VoiceCallController>().messageC.value =
+                              //     "";
+                              Get.to(() => AiSessionCallScreen());
                             },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              // padding: EdgeInsets.symmetric(
+                              //   vertical: padding,
+                              //   horizontal: padding * 2,
+                              // ),
+                              shadowColor: Colors.black26,
+                              elevation: 4,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.phone_outlined,
+                                    color: AppColors.btntext,
+                                  ),
+                                  CommonText.text(
+                                    "Start Now",
+                                    color: AppColors.btntext,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "Manrope",
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: AppDimensions.height(80)),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
-                SizedBox(height: 150),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }

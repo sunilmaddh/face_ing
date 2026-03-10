@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'voice_bridge.dart';
 
@@ -36,15 +38,17 @@ class NativeMicSender {
 
         final b64 = base64Encode(pcmBytes);
 
-        final msg = {
-          "type": "mic_chunk",
-          "track": "user_voice",
-          "stream_sid": streamId,
-          "audio": b64,
-          "sample_rate": 24000,
-        };
+        if (Get.find<SocketController>().isMicMute.isFalse) {
+          final msg = {
+            "type": "mic_chunk",
+            "track": "user_voice",
+            "stream_sid": streamId,
+            "audio": b64,
+            "sample_rate": 24000,
+          };
 
-        ws.sink.add(jsonEncode(msg));
+          ws.sink.add(jsonEncode(msg));
+        }
 
         if (debug) {
           print("🎤 native mic frame sent bytes=${pcmBytes.length}");
