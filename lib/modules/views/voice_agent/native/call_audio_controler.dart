@@ -31,7 +31,7 @@ class CallAudioController {
 
   // Time to keep speech activity above threshold before marking it as active (in milliseconds)
   final int _speechDetectionDuration =
-      3000; // 1 second threshold for continuous speech
+      3000; // 3 seconds threshold for continuous speech
 
   // Last time we detected speech
   int _lastSpeechDetectionTime = 0;
@@ -116,32 +116,29 @@ class CallAudioController {
 
     // If the energy exceeds the threshold and is sustained for a duration, consider it speech
     if (energy > _speechThreshold) {
-      // Only start counting as speech if we've been detecting speech for a certain duration
+      // Check if the time difference since last speech detection exceeds the threshold
+      final timeDiff =
+          DateTime.now().millisecondsSinceEpoch - _lastSpeechDetectionTime;
+
+      debugPrint("Last speech detection time: $_lastSpeechDetectionTime");
+      debugPrint("Time difference: $timeDiff");
+
       if (_lastSpeechDetectionTime == 0 ||
-          DateTime.now().millisecondsSinceEpoch - _lastSpeechDetectionTime >
-              _speechDetectionDuration) {
-        debugPrint("Last speech duration $_lastSpeechDetectionTime");
-        debugPrint("speech Detection Duration$_speechDetectionDuration");
-        debugPrint(
-          "milliseconds Since Epoch ${DateTime.now().millisecondsSinceEpoch}",
-        );
-        debugPrint(
-          "DateTime.now().millisecondsSinceEpoch - _lastSpeechDetectionTime ${DateTime.now().millisecondsSinceEpoch - _lastSpeechDetectionTime}",
-        );
+          timeDiff > _speechDetectionDuration) {
         _isUserSpeaking = true; // User is speaking
         _lastSpeechDetectionTime =
             DateTime.now().millisecondsSinceEpoch; // Reset the time
+        debugPrint("Is User Speaking true: $_isUserSpeaking");
       }
     } else {
-      // Reset the timer if we are silent for a long duration
+      // If we are silent for a long duration, reset speech detection
       if (DateTime.now().millisecondsSinceEpoch - _lastSpeechDetectionTime >
           _silenceThreshold) {
         _isUserSpeaking = false; // User is silent
         _activeSpeechDuration = 0; // Reset active speech time
       }
+      debugPrint("Is User Speaking false: $_isUserSpeaking");
     }
-
-    debugPrint("Is User Speaking: $_isUserSpeaking");
   }
 
   Future<void> startMicCaptureIfNeeded() async {
