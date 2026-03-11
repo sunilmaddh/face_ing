@@ -47,18 +47,18 @@ class AiSessionController extends GetxController {
       final seconds = (elapsedSeconds % 60).toString().padLeft(2, '0');
       sessionTime.value = "$minutes:$seconds";
 
-      if (elapsedSeconds >= 180) {
-        // final message = {
-        //   "type": "call_ended",
-        //   "stream_sid": Get.find<VoiceCallController>().streamId.value,
-        // };
-        // debugPrint("Message $message");
-        // await Get.find<SocketController>().sendMessage(message);
-        // voiceCallCOntroller.messageC.value = AppConstents.voiceAgentEndMessage;
-        await endSessionGracefully();
+      // if (elapsedSeconds >= 180) {
+      //   // final message = {
+      //   //   "type": "call_ended",
+      //   //   "stream_sid": Get.find<VoiceCallController>().streamId.value,
+      //   // };
+      //   // debugPrint("Message $message");
+      //   // await Get.find<SocketController>().sendMessage(message);
+      //   // voiceCallCOntroller.messageC.value = AppConstents.voiceAgentEndMessage;
+      //   await endSessionGracefully();
 
-        // cancelCall();
-      }
+      //   // cancelCall();
+      // }
     });
   }
 
@@ -178,6 +178,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
     controller.stop();
     controller.reset();
     socketController.disconnect();
+    disposePlayer();
     super.dispose();
   }
 

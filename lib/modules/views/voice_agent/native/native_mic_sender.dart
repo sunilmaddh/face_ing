@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:get/get.dart';
+import 'package:ntt_data/modules/views/voice_agent/native/call_audio_controler.dart';
 import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'voice_bridge.dart';
@@ -11,14 +13,18 @@ class NativeMicSender {
   final String streamId;
   final bool Function() isAgentSpeaking;
 
+  CallAudioController? callAudioController;
+
   StreamSubscription? _sub;
   bool _subscribed = false;
   bool _captureStarted = false;
+  final void Function(Uint8List pcmBytes)? onPcmFrame;
 
   NativeMicSender(
     this.streamId, {
     required this.ws,
     required this.isAgentSpeaking,
+    this.onPcmFrame,
     this.debug = true,
   });
 
@@ -36,8 +42,12 @@ class NativeMicSender {
           return;
         }
 
+        onPcmFrame?.call(pcmBytes);
+        // callAudioController?.onUserAudioStream(pcmBytes);
+        if (debug) {
+          print("🎤 native mic frame sent bytes=${pcmBytes.length}");
+        }
         final b64 = base64Encode(pcmBytes);
-
         if (Get.find<SocketController>().isMicMute.isFalse) {
           final msg = {
             "type": "mic_chunk",

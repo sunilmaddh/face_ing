@@ -50,9 +50,7 @@ class AssessmentController extends GetxController {
       );
       if (response['statusCode'] == 200 || response['statusCode'] == 201) {
         final result = await getResult();
-        if (result != null) {
-          Get.to(() => PhqResultScreen(result: result));
-        }
+        Get.to(() => PhqResultScreen(result: result!));
 
         return true;
       }
