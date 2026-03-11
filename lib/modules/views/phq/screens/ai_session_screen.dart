@@ -54,14 +54,14 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
         //   onPressed: () => Get.back(),
         // ),
         title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'AI Session in Progress',
               style: TextStyle(
                 color: AppColors.primary,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontSize: AppDimensions.font(18),
+                fontWeight: FontWeight.w700,
               ),
             ),
             Row(
@@ -76,9 +76,14 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                     color: Colors.green,
                   ),
                 ),
-                const Text(
+                Text(
                   ' Secure Connection',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(
+                    color: Color(0xff64748B),
+                    fontSize: AppDimensions.font(16),
+                    fontFamily: "Manrope",
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
@@ -325,6 +330,7 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                               // await Get.find<SocketController>().disconnect();
                               if (controller.isFirstTimeToConnect.isFalse) {
                                 await controller.callkintisugiIntiateApi();
+                                await initPlayer();
                               }
                               controller.isFirstTimeToConnect(false);
                               await voiceCallCOntroller.initializeAndStartCall(

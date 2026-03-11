@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'native_mic_sender.dart';
 
@@ -12,6 +14,10 @@ class CallAudioController {
   bool _micCaptureStarted = false;
   int _agentAudioEndsAtMs = 0;
   int _startupMuteEndsAtMs = 0;
+
+  // Track active speech duration (in milliseconds)
+  int _activeSpeechDuration = 0;
+  Timer? _speechDurationTimer;
 
   CallAudioController({
     required this.ws,
@@ -32,7 +38,6 @@ class CallAudioController {
 
   Future<void> start() async {
     final now = DateTime.now().millisecondsSinceEpoch;
-
     _startupMuteEndsAtMs = now + 2000;
 
     nativeMicSender = NativeMicSender(
@@ -51,6 +56,29 @@ class CallAudioController {
     if (debug) {
       print("✅ Native mic sender prepared (capture not started yet)");
     }
+
+    // Start tracking active speech duration
+    _startSpeechDurationTimer();
+  }
+
+  void _startSpeechDurationTimer() async {
+    // Start a timer that checks every second if the user is speaking
+    _speechDurationTimer = Timer.periodic(Duration(seconds: 1), (timer) async {
+      if (_micCaptureStarted) {
+        debugPrint("Before $_activeSpeechDuration");
+
+        // Here, we check if the user is speaking by verifying if the mic capture is running
+        _activeSpeechDuration += 1000; // Increment by 1 second
+
+        debugPrint("After $_activeSpeechDuration");
+
+        if (_activeSpeechDuration >= 60000) {
+          // End the call if speech duration exceeds 60 seconds
+          debugPrint("Ending call after 60 seconds of active speech.");
+          await stop();
+        }
+      }
+    });
   }
 
   Future<void> startMicCaptureIfNeeded() async {
@@ -77,6 +105,7 @@ class CallAudioController {
     _agentAudioEndsAtMs = 0;
     _startupMuteEndsAtMs = 0;
     _micCaptureStarted = false;
+    _speechDurationTimer?.cancel(); // Stop the timer when call ends
 
     await nativeMicSender?.stop();
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:awesome_datetime_picker/awesome_datetime_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
@@ -432,8 +433,22 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                               width: 4,
                                             ),
                                           ),
-                                          child: Image.asset(
-                                            AppAssets.voiceagentimage,
+                                          child: Obx(
+                                            () => ClipOval(
+                                              child: CachedNetworkImage(
+                                                fit: BoxFit.cover,
+                                                imageUrl:
+                                                    Get.find<
+                                                          VoiceCallController
+                                                        >()
+                                                        .agentImage
+                                                        .value,
+                                                //  "https://dev.sourcebytes.ai${voiceCallCOntroller.agentImage.value}",
+                                                placeholder: (context, url) {
+                                                  return CircularProgressIndicator();
+                                                },
+                                              ),
+                                            ),
                                           ),
                                           // child: const Icon(
                                           //   Icons.person,

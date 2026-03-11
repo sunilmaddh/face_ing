@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_dimentions.dart';
 
 class PhqRadioOption extends StatelessWidget {
   final String text;
@@ -20,9 +22,9 @@ class PhqRadioOption extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         margin: const EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
-          border: Border.all(width: 0.2),
-          color: isSelected ? const Color(0xFFE3F2FD) : Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          border: Border.all(width: 1, color: Color(0xffE2E8F0)),
+          color: isSelected ? const Color(0xFFEBF7FF) : Colors.white,
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           children: [
@@ -32,8 +34,8 @@ class PhqRadioOption extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected ? const Color(0xFF2196F3) : Colors.grey,
-                  width: 2,
+                  color: isSelected ? AppColors.primary : Color(0xffCBD5E1),
+                  width: 1,
                 ),
               ),
               child:
@@ -44,7 +46,7 @@ class PhqRadioOption extends StatelessWidget {
                           height: 10,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFF2196F3),
+                            color: AppColors.primary,
                           ),
                         ),
                       )
@@ -55,11 +57,13 @@ class PhqRadioOption extends StatelessWidget {
               child: Text(
                 text,
                 style: TextStyle(
-                  fontSize: 14,
-                  color:
-                      isSelected
-                          ? const Color(0xFF2196F3)
-                          : const Color(0xFF666666),
+                  fontSize: AppDimensions.font(16),
+                  color: Color(0xFF334155),
+                  fontFamily: "Manrope",
+                  fontWeight: FontWeight.w400,
+                  // isSelected
+                  //     ? const Color(0xFF2196F3)
+                  //     : const Color(0xFF666666),
                 ),
               ),
             ),

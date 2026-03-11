@@ -21,6 +21,7 @@ Future<void> playBeep() async {
     fromDataBuffer: data.buffer.asUint8List(),
     codec: Codec.mp3,
     whenFinished: () {
+      disposePlayer();
       Get.off(() => PhqTwoQuestionsScreen());
     },
   );
