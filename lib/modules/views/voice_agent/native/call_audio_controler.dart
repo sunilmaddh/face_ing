@@ -27,11 +27,11 @@ class CallAudioController {
 
   // Threshold for detecting speech based on signal strength (you may want to fine-tune this)
   final int _speechThreshold =
-      900; // Example threshold, you may adjust this based on testing
+      2000; // Example threshold, you may adjust this based on testing
 
   // Time to keep speech activity above threshold before marking it as active (in milliseconds)
   final int _speechDetectionDuration =
-      3000; // 3 seconds threshold for continuous speech
+      2000; // 3 seconds threshold for continuous speech
 
   // Last time we detected speech
   int _lastSpeechDetectionTime = 0;
@@ -128,7 +128,6 @@ class CallAudioController {
         _isUserSpeaking = true; // User is speaking
         _lastSpeechDetectionTime =
             DateTime.now().millisecondsSinceEpoch; // Reset the time
-        debugPrint("Is User Speaking true: $_isUserSpeaking");
       }
     } else {
       // If we are silent for a long duration, reset speech detection
@@ -137,8 +136,9 @@ class CallAudioController {
         _isUserSpeaking = false; // User is silent
         _activeSpeechDuration = 0; // Reset active speech time
       }
-      debugPrint("Is User Speaking false: $_isUserSpeaking");
     }
+
+    debugPrint("Is User Speaking: $_isUserSpeaking");
   }
 
   Future<void> startMicCaptureIfNeeded() async {
