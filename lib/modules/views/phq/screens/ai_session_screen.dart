@@ -331,8 +331,10 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                               if (controller.isFirstTimeToConnect.isFalse) {
                                 await controller.callkintisugiIntiateApi();
                                 await initPlayer();
+                              } else {
+                                controller.isFirstTimeToConnect(false);
                               }
-                              controller.isFirstTimeToConnect(false);
+
                               await voiceCallCOntroller.initializeAndStartCall(
                                 tenantIds: voiceCallCOntroller.tenant.value,
                                 agentIds: voiceCallCOntroller.agentId.value,
