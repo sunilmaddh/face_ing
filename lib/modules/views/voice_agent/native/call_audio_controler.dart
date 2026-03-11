@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide navigator;
 import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'native_mic_sender.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart'; // Import WebRTC for echo cancellation and noise suppression
 
 class CallAudioController {
   final WebSocketChannel ws;
@@ -27,17 +27,20 @@ class CallAudioController {
 
   // Threshold for detecting speech based on signal strength (you may want to fine-tune this)
   final int _speechThreshold =
-      2000; // Example threshold, you may adjust this based on testing
+      100050; // Adjusted threshold for speech detection
 
   // Time to keep speech activity above threshold before marking it as active (in milliseconds)
   final int _speechDetectionDuration =
-      2000; // 3 seconds threshold for continuous speech
+      3000; // 3 seconds threshold for continuous speech
 
   // Last time we detected speech
   int _lastSpeechDetectionTime = 0;
 
   // Time to consider silence as "inactive"
   final int _silenceThreshold = 3000; // 3 seconds of silence before resetting
+
+  // Flag to track if agent is speaking (use this to skip agent's voice)
+  bool _isAgentSpeaking = false;
 
   CallAudioController({
     required this.ws,
@@ -46,8 +49,8 @@ class CallAudioController {
   });
 
   bool get isAgentSpeaking {
-    final now = DateTime.now().millisecondsSinceEpoch;
-    return now < _startupMuteEndsAtMs || now < _agentAudioEndsAtMs;
+    // Implement the logic to detect if the agent is speaking (this can be done via timestamps or other methods)
+    return _isAgentSpeaking;
   }
 
   int get remainingAgentAudioMs {
@@ -82,6 +85,30 @@ class CallAudioController {
 
     // Start tracking active speech duration
     _startSpeechDurationTimer();
+
+    // Apply WebRTC Audio Settings for Echo Cancellation and Noise Suppression
+    await _applyWebRTCConstraints();
+  }
+
+  // Apply WebRTC Audio Constraints for echo cancellation and noise suppression
+  Future<void> _applyWebRTCConstraints() async {
+    try {
+      final mediaConstraints = {
+        'audio': {
+          'echoCancellation': true, // Enable echo cancellation
+          'noiseSuppression': true, // Enable noise suppression
+        },
+        'video': false,
+      };
+
+      final mediaStream = await navigator.mediaDevices.getUserMedia(
+        mediaConstraints,
+      );
+      // Successfully applied WebRTC audio constraints for Echo Cancellation and Noise Suppression
+      print("WebRTC media constraints applied successfully.");
+    } catch (e) {
+      print("Error applying WebRTC constraints: $e");
+    }
   }
 
   void _startSpeechDurationTimer() {
@@ -108,6 +135,47 @@ class CallAudioController {
   }
 
   // Detect speech activity and update the _isUserSpeaking flag
+  // void _detectSpeechActivity(Uint8List pcmData) {
+  //   // Calculate the volume (energy level) of the audio data
+  //   int energy = pcmData.fold(0, (prev, elem) => prev + elem.abs());
+
+  //   debugPrint("Energy: $energy");
+
+  //   // If the energy exceeds the threshold and is sustained for a duration, consider it speech
+  //   if (energy > _speechThreshold) {
+  //     final timeDiff =
+  //         DateTime.now().millisecondsSinceEpoch - _lastSpeechDetectionTime;
+
+  //     debugPrint("Last speech detection time: $_lastSpeechDetectionTime");
+  //     debugPrint("Time difference: $timeDiff");
+
+  //     // Only mark as speaking if we've been detecting speech for a certain duration
+  //     if (_lastSpeechDetectionTime == 0 ||
+  //         timeDiff > _speechDetectionDuration) {
+  //       _isUserSpeaking = true; // User is speaking
+  //       _lastSpeechDetectionTime =
+  //           DateTime.now().millisecondsSinceEpoch; // Reset the time
+  //       debugPrint(
+  //         "Speech detected, updating _lastSpeechDetectionTime: $_lastSpeechDetectionTime",
+  //       );
+  //     }
+  //   } else {
+  //     // If we are silent for a long period, reset the state
+  //     if (DateTime.now().millisecondsSinceEpoch - _lastSpeechDetectionTime >
+  //         _silenceThreshold) {
+  //       _isUserSpeaking = false; // User is silent
+  //       _activeSpeechDuration = 0; // Reset active speech time
+  //       debugPrint("No speech detected for a while, resetting to silent.");
+  //     }
+  //   }
+
+  //   // Ignore agent's voice if detected as active speech
+  //   if (_isAgentSpeaking) {
+  //     _isUserSpeaking = false;
+  //   }
+
+  //   debugPrint("Is User Speaking: $_isUserSpeaking");
+  // }
   void _detectSpeechActivity(Uint8List pcmData) {
     // Calculate the volume (energy level) of the audio data
     int energy = pcmData.fold(0, (prev, elem) => prev + elem.abs());
@@ -116,26 +184,35 @@ class CallAudioController {
 
     // If the energy exceeds the threshold and is sustained for a duration, consider it speech
     if (energy > _speechThreshold) {
-      // Check if the time difference since last speech detection exceeds the threshold
       final timeDiff =
           DateTime.now().millisecondsSinceEpoch - _lastSpeechDetectionTime;
 
       debugPrint("Last speech detection time: $_lastSpeechDetectionTime");
       debugPrint("Time difference: $timeDiff");
 
+      // Only mark as speaking if we've been detecting speech for a certain duration
       if (_lastSpeechDetectionTime == 0 ||
           timeDiff > _speechDetectionDuration) {
         _isUserSpeaking = true; // User is speaking
         _lastSpeechDetectionTime =
             DateTime.now().millisecondsSinceEpoch; // Reset the time
+        debugPrint(
+          "Speech detected, updating _lastSpeechDetectionTime: $_lastSpeechDetectionTime",
+        );
       }
     } else {
-      // If we are silent for a long duration, reset speech detection
+      // If we are silent for a long period, reset the state
       if (DateTime.now().millisecondsSinceEpoch - _lastSpeechDetectionTime >
           _silenceThreshold) {
         _isUserSpeaking = false; // User is silent
         _activeSpeechDuration = 0; // Reset active speech time
+        debugPrint("No speech detected for a while, resetting to silent.");
       }
+    }
+
+    // Ignore agent's voice if detected as active speech
+    if (_isAgentSpeaking) {
+      _isUserSpeaking = false;
     }
 
     debugPrint("Is User Speaking: $_isUserSpeaking");
