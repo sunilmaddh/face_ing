@@ -1,22 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/modules/views/phq/controllers/aisession_controller.dart';
 import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
-import 'package:ntt_data/modules/views/phq/screens/phq_two_questions_screen.dart';
 import 'package:ntt_data/modules/views/phq/widgets/question_card.dart';
 import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
-import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/voice_call_controller.dart';
-import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class AiSessionScreen extends StatefulWidget {
-  AiSessionScreen({super.key});
+  const AiSessionScreen({super.key});
 
   @override
   State<AiSessionScreen> createState() => _AiSessionScreenState();
@@ -30,8 +26,6 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
   @override
   void initState() {
     callMethod();
-    // TODO: implement initState
-
     super.initState();
   }
 
@@ -49,10 +43,6 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back, color: Colors.black),
-        //   onPressed: () => Get.back(),
-        // ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -184,7 +174,6 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                                                           voiceCallCOntroller
                                                               .agentImage
                                                               .value,
-                                                      //  "https://dev.sourcebytes.ai${voiceCallCOntroller.agentImage.value}",
                                                       placeholder: (
                                                         context,
                                                         url,
@@ -194,11 +183,6 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                                                     ),
                                                   ),
                                                 ),
-                                                // child: const Icon(
-                                                //   Icons.person,
-                                                //   size: 60,
-                                                //   color: Colors.white,
-                                                // ),
                                               ),
 
                                               Positioned(
@@ -244,88 +228,6 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                           ],
                         ),
 
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.center,
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     Obx(
-                        //       () => Text(
-                        //         controller.sessionTime.value,
-                        //         style: const TextStyle(
-                        //           fontSize: 32,
-                        //           fontWeight: FontWeight.bold,
-                        //           color: AppColors.bottomTextColor,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     Text(
-                        //       "Listening...",
-                        //       style: const TextStyle(
-                        //         fontSize: 15,
-                        //         fontWeight: FontWeight.bold,
-                        //         color: AppColors.infoIconColor,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(
-                        //     horizontal: 70,
-                        //     vertical: 10,
-                        //   ),
-                        //   child: Container(
-                        //     height: 80,
-                        //     // width: 200,
-                        //     decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.circular(50),
-                        //       color: Colors.white,
-                        //       boxShadow: [
-                        //         BoxShadow(
-                        //           color: Colors.black26,
-                        //           blurRadius: 10,
-                        //           offset: Offset(0, 4),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //     child: Padding(
-                        //       padding: const EdgeInsets.all(10),
-                        //       child: Row(
-                        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //         children: [
-                        //           Obx(
-                        //             () => GestureDetector(
-                        //               onTap:
-                        //                   () =>
-                        //                       Get.find<VoiceCallController>()
-                        //                           .messageC
-                        //                           .isNotEmpty,
-                        //               child: Container(
-                        //                 width: 56,
-                        //                 height: 56,
-                        //                 decoration: BoxDecoration(
-                        //                   color:
-                        //                       Get.find<VoiceCallController>()
-                        //                               .messageC
-                        //                               .isNotEmpty
-                        //                           ? const Color(0xFFEF5350)
-                        //                           : Colors.grey.withAlpha(40),
-                        //                   shape: BoxShape.circle,
-                        //                 ),
-                        //                 child: Icon(
-                        //                   controller.isTalking.value
-                        //                       ? Icons.stop
-                        //                       : Icons.mic_outlined,
-                        //                   color: Colors.grey,
-                        //                   size: 34,
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ),
-                        // ),
-                        //  ),
                         SizedBox(height: AppDimensions.height(80)),
                         SizedBox(
                           height: AppDimensions.height(48),
@@ -342,8 +244,7 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                                 agentIds: voiceCallCOntroller.agentId.value,
                                 streamIds: voiceCallCOntroller.streamId.value,
                               );
-                              // Get.find<VoiceCallController>().messageC.value =
-                              //     "";
+
                               Get.to(() => AiSessionCallScreen());
                             },
                             style: ElevatedButton.styleFrom(
@@ -351,10 +252,7 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              // padding: EdgeInsets.symmetric(
-                              //   vertical: padding,
-                              //   horizontal: padding * 2,
-                              // ),
+
                               shadowColor: Colors.black26,
                               elevation: 4,
                             ),

@@ -56,11 +56,6 @@ class PhqTwoQuestionsScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () async {
-              // final result = await assessmentController.getResult();
-              // if (result != null) {
-
-              // }
-
               Get.off(() => PhqResultScreen());
             },
             child: const Text(
@@ -76,26 +71,6 @@ class PhqTwoQuestionsScreen extends StatelessWidget {
         ],
       ),
 
-      //  AppBar(
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     icon: const Icon(Icons.arrow_back, color: Colors.black),
-      //     onPressed: () => Get.until((route) => route.isFirst),
-      //   ),
-      //   title: const Text(
-      //     'PHQ-2',
-      //     style: TextStyle(
-      //       color: AppColors.primary,
-      //       fontSize: 18,
-      //       fontFamily: "Manrope",
-      //       fontWeight: FontWeight.w700,
-      //     ),
-      //   ),
-      //   actions: [
-
-      //   ],
-      // ),
       body: Obx(
         () =>
             controller.isLoading.isTrue
@@ -184,39 +159,6 @@ class PhqTwoQuestionsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Positioned(
-                    //   bottom: 100,
-                    //   right: 16,
-                    //   child: Obx(
-                    //     () => GestureDetector(
-                    //       onTap:
-                    //           controller.allPhTwoQuestionsAnswered
-                    //               ? () {
-                    //                 assessmentController.setPhq2Answers(
-                    //                   controller.selectedPhTwoAnswers,
-                    //                 );
-                    //                 Get.to(() => const Phq9QuestionsScreen());
-                    //               }
-                    //               : null,
-                    //       child: Container(
-                    //         width: 56,
-                    //         height: 56,
-                    //         decoration: BoxDecoration(
-                    //           color:
-                    //               controller.allPhTwoQuestionsAnswered
-                    //                   ? AppColors.primary
-                    //                   : Colors.grey,
-                    //           shape: BoxShape.circle,
-                    //         ),
-                    //         child: const Icon(
-                    //           Icons.arrow_forward,
-                    //           color: Colors.white,
-                    //           size: 24,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
       ),

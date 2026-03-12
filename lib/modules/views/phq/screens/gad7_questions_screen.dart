@@ -82,42 +82,7 @@ class Gad7QuestionsScreen extends StatelessWidget {
           ),
         ],
       ),
-      // AppBar(
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     icon: const Icon(Icons.arrow_back, color: Colors.black),
-      //     onPressed: () => Get.back(),
-      //   ),
-      //   title: const Text(
-      //     'GAD-7',
-      //     style: TextStyle(
-      //       color: AppColors.primary,
-      //       fontSize: 18,
-      //       fontFamily: "Manrope",
-      //       fontWeight: FontWeight.w700,
-      //     ),
-      //   ),
-      //   actions: [
-      //     TextButton(
-      //       onPressed: () async {
-      //         final result = await assessmentController.getResult();
-      //         if (result != null) {
-      //           Get.to(() => PhqResultScreen(result: result));
-      //         }
-      //       },
-      //       child: const Text(
-      //         'Skip',
-      //         style: TextStyle(
-      //           color: Colors.grey,
-      //           fontSize: 16,
-      //           fontFamily: "Manrope",
-      //           fontWeight: FontWeight.w500,
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
+
       body: Stack(
         children: [
           Column(
@@ -198,44 +163,6 @@ class Gad7QuestionsScreen extends StatelessWidget {
               ),
             ],
           ),
-          // Positioned(
-          //   bottom: 16,
-          //   right: 16,
-          //   child: Obx(
-          //     () => GestureDetector(
-          //       onTap:
-          //           controller.allG7QuestionsAnswered
-          //               ? () async {
-          //                 assessmentController.setGad7Answers(
-          //                   controller.selectedG7Answers,
-          //                 );
-          //                 await assessmentController.submitAssessment(
-          //                   sessionID:
-          //                       Get.find<AssessmentController>()
-          //                           .sessionId
-          //                           .value,
-          //                 );
-          //               }
-          //               : null,
-          //       child: Container(
-          //         width: 56,
-          //         height: 56,
-          //         decoration: BoxDecoration(
-          //           color:
-          //               controller.allG7QuestionsAnswered
-          //                   ? AppColors.primary
-          //                   : Colors.grey,
-          //           shape: BoxShape.circle,
-          //         ),
-          //         child: const Icon(
-          //           Icons.arrow_forward,
-          //           color: Colors.white,
-          //           size: 24,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

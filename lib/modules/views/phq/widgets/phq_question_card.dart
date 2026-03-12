@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/data/models/kintsungi_questionaries_response.dart';
-import '../models/phq_model.dart';
 import 'phq_radio_option.dart';
 
 class PhqQuestionCard extends StatelessWidget {

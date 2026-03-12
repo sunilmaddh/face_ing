@@ -3,9 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
-import 'package:ntt_data/modules/views/phq/screens/phq_two_questions_screen.dart';
-import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
+import 'package:ntt_data/modules/views/phq/controllers/aisession_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/audio_session_helper.dart';
 import 'package:ntt_data/modules/views/voice_agent/native/start_native_call.dart';
 import 'package:ntt_data/modules/views/voice_agent/pcm_player.dart';

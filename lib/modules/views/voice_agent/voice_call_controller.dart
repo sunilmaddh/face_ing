@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
-import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
 import 'package:ntt_data/modules/views/voice_agent/base_api_service.dart';
 import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/webhook_response.dart';
@@ -36,8 +35,6 @@ class VoiceCallController extends GetxController {
     var token = await IndoSharedPreference.instance.getAccessToken();
     var data = {
       "agent_id": "2f0817e4-6585-4ebe-8a0a-29f09652ef00",
-      //  "e92c87c0-d932-455f-89c2-52d6474a4f88",
-      // "2f0817e4-6585-4ebe-8a0a-29f09652ef00",
       "user_name": userName,
       "is_user_voice": isUserVoice,
       "is_agent_voice": isAgentVoice,
@@ -63,20 +60,6 @@ class VoiceCallController extends GetxController {
       agentId.value = result.agent!;
       streamId.value = result.streamSid!;
       webhookResponse.value = result;
-      // Get.find<SocketController>().connectSocket(
-      //   tenantId: result.tenant!,
-      //   botId: result.agent!,
-      //   streamId: result.streamSid!,
-      // );
-      // await Future.delayed(Duration(milliseconds: 300));
-      // final message = {
-      //   "type": "start",
-      //   "stream_sid": result.streamSid,
-      //   "transport": "webrtc_mobile",
-      // };
-      // debugPrint("Message $message");
-      // Get.find<SocketController>().sendMessage(message);
-      // Get.find<AiSessionController>().start();
     } else if (statusCode == 500) {
     } else {}
   }
@@ -100,16 +83,6 @@ class VoiceCallController extends GetxController {
     };
     debugPrint("Message $message");
     await Get.find<SocketController>().sendMessage(message);
-
-    // await Get.find<AiSessionController>().start();
-    // if (message["message"] == "Connected") {
-    //   Get.find<AiSessionController>().start();
-    // }
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   Future<bool> requestMicPermission() async {

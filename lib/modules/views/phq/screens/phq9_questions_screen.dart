@@ -6,7 +6,6 @@ import 'package:ntt_data/modules/views/phq/controllers/phq_controller.dart';
 import 'package:ntt_data/modules/views/phq/screens/phq_result_screen.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
-import '../controllers/phq9_controller.dart';
 import '../controllers/assessment_controller.dart';
 import '../widgets/phq_question_card.dart';
 import 'gad7_questions_screen.dart';
@@ -59,10 +58,6 @@ class Phq9QuestionsScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () async {
-              // final result = await assessmentController.getResult();
-              // if (result != null) {
-              //   Get.to(() => PhqResultScreen(result: result));
-              // }
               Get.off(() => PhqResultScreen())!.whenComplete(() {
                 Get.back();
               });
@@ -79,42 +74,7 @@ class Phq9QuestionsScreen extends StatelessWidget {
           ),
         ],
       ),
-      // AppBar(
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     icon: const Icon(Icons.arrow_back, color: Colors.black),
-      //     onPressed: () => Get.back(),
-      //   ),
-      //   title: const Text(
-      //     'PHQ-9',
-      //     style: TextStyle(
-      //       color: AppColors.primary,
-      //       fontSize: 18,
-      //       fontFamily: "Manrope",
-      //       fontWeight: FontWeight.w700,
-      //     ),
-      //   ),
-      //   actions: [
-      //     TextButton(
-      //       onPressed: () async {
-      //         final result = await assessmentController.getResult();
-      //         if (result != null) {
-      //           Get.to(() => PhqResultScreen(result: result));
-      //         }
-      //       },
-      //       child: const Text(
-      //         'Skip',
-      //         style: TextStyle(
-      //           color: Colors.grey,
-      //           fontSize: 16,
-      //           fontFamily: "Manrope",
-      //           fontWeight: FontWeight.w500,
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
+
       body: Stack(
         children: [
           Column(

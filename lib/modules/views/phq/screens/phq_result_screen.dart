@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
-import 'package:ntt_data/widgets/fields/common_text.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import '../widgets/result_card.dart';
 
 class PhqResultScreen extends StatefulWidget {
@@ -19,7 +20,6 @@ class _PhqResultScreenState extends State<PhqResultScreen> {
   @override
   void initState() {
     controller.getResult();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -30,45 +30,24 @@ class _PhqResultScreenState extends State<PhqResultScreen> {
   @override
   Widget build(BuildContext context) {
     debugPrint(controller.depressionResponse.value.aiPrediction.toString());
-    // final resultData = widget.result['result'];
-    // final actualScore = resultData['actualScore'];
-    // final createdAt = resultData['createdAt'] ?? '';
-    // final formattedDate = _formatDate(createdAt);
-
-    // final depressionAI = _formatScore(resultData['predictedScoreDepression']);
-    // final anxietyAI = _formatScore(resultData['predictedScoreAnxiety']);
-
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Get.back(),
-        ),
-        title: const Text(
-          'Analysis Successful',
-          style: TextStyle(
-            color: AppColors.primary,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+      appBar: CustomAppBar(
+        onTop: () {
+          AppNavigation.back();
+        },
+        title: "Analysis Successful",
+        isCenterTitle: false,
       ),
       body: Obx(
         () =>
             controller.isGettingResult.isTrue
                 ? Center(child: CircularProgressIndicator())
-                : controller.depressionResponse == null &&
-                    controller.anxietyResponse == null
-                ? CommonText.text("NO Result found!")
                 : Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(
-                        // controller.createDate.value,
                         _formatDate(controller.createDate.value),
                         style: TextStyle(color: Colors.grey[600], fontSize: 14),
                       ),
