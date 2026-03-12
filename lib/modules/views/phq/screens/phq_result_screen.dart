@@ -2,20 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 import '../widgets/result_card.dart';
 
-class PhqResultScreen extends StatelessWidget {
-  final Map<String, dynamic> result;
-  const PhqResultScreen({super.key, required this.result});
+class PhqResultScreen extends StatefulWidget {
+  const PhqResultScreen({super.key});
+
+  @override
+  State<PhqResultScreen> createState() => _PhqResultScreenState();
+}
+
+class _PhqResultScreenState extends State<PhqResultScreen> {
+  final controller = Get.find<AssessmentController>();
+
+  @override
+  void initState() {
+    controller.getResult();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void callResult() async {
+    await controller.getResult();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final resultData = result['result'];
-    final actualScore = resultData['actualScore'];
-    final createdAt = resultData['createdAt'] ?? '';
-    final formattedDate = _formatDate(createdAt);
+    debugPrint(controller.depressionResponse.value.aiPrediction.toString());
+    // final resultData = widget.result['result'];
+    // final actualScore = resultData['actualScore'];
+    // final createdAt = resultData['createdAt'] ?? '';
+    // final formattedDate = _formatDate(createdAt);
 
-    final depressionAI = _formatScore(resultData['predictedScoreDepression']);
-    final anxietyAI = _formatScore(resultData['predictedScoreAnxiety']);
+    // final depressionAI = _formatScore(resultData['predictedScoreDepression']);
+    // final anxietyAI = _formatScore(resultData['predictedScoreAnxiety']);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -35,81 +56,201 @@ class PhqResultScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              formattedDate,
-              style: TextStyle(color: Colors.grey[600], fontSize: 14),
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  ResultCard(
-                    title: 'Depression',
-                    aiPrediction: 'AI PREDICTION',
-                    aiResult: depressionAI,
-                    clinicalData: 'CLINICAL DATA',
-                    clinicalResult:
-                        actualScore == null
-                            ? 'No Data'
-                            : _formatScore(actualScore['depression']),
-                    aiResultColor: _getColor(depressionAI),
-                    clinicalResultColor:
-                        actualScore == null
-                            ? Colors.grey
-                            : _getColor(
-                              _formatScore(actualScore['depression']),
+      body: Obx(
+        () =>
+            controller.isGettingResult.isTrue
+                ? Center(child: CircularProgressIndicator())
+                : controller.depressionResponse == null &&
+                    controller.anxietyResponse == null
+                ? CommonText.text("NO Result found!")
+                : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        // controller.createDate.value,
+                        _formatDate(controller.createDate.value),
+                        style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          children: [
+                            ResultCard(
+                              title: 'Depression',
+                              aiPrediction: 'AI PREDICTION',
+                              aiResult:
+                                  controller
+                                      .depressionResponse
+                                      .value
+                                      .aiPrediction ??
+                                  "",
+                              clinicalData: 'CLINICAL DATA',
+                              clinicalResult:
+                                  controller
+                                                  .depressionResponse
+                                                  .value
+                                                  .clinicalData ==
+                                              null ||
+                                          controller
+                                                  .depressionResponse
+                                                  .value
+                                                  .clinicalData ==
+                                              "N/A"
+                                      ? 'No Data'
+                                      : _formatScore(
+                                        controller
+                                            .depressionResponse
+                                            .value
+                                            .clinicalData,
+                                      ),
+                              aiResultColor: _getColor(
+                                controller
+                                        .depressionResponse
+                                        .value
+                                        .aiPrediction ??
+                                    "",
+                              ),
+                              clinicalResultColor:
+                                  controller
+                                                  .depressionResponse
+                                                  .value
+                                                  .clinicalData ==
+                                              null ||
+                                          controller
+                                                  .depressionResponse
+                                                  .value
+                                                  .clinicalData ==
+                                              "N/A"
+                                      ? Colors.grey
+                                      : _getColor(
+                                        _formatScore(
+                                          controller
+                                              .depressionResponse
+                                              .value
+                                              .clinicalData,
+                                        ),
+                                      ),
+                              text1:
+                                  controller
+                                              .depressionResponse
+                                              .value
+                                              .phq2Score ==
+                                          "N/A"
+                                      ? ""
+                                      : controller
+                                              .depressionResponse
+                                              .value
+                                              .phq2Score ??
+                                          "",
+                              text2:
+                                  controller
+                                              .depressionResponse
+                                              .value
+                                              .phq9Score ==
+                                          "N/A"
+                                      ? ""
+                                      : controller
+                                              .depressionResponse
+                                              .value
+                                              .phq9Score ??
+                                          "",
                             ),
-                  ),
-                  ResultCard(
-                    title: 'Anxiety',
-                    aiPrediction: 'AI PREDICTION',
-                    aiResult: anxietyAI,
-                    clinicalData: 'CLINICAL DATA',
-                    clinicalResult:
-                        actualScore == null
-                            ? 'No Data'
-                            : _formatScore(actualScore['anxiety']),
-                    aiResultColor: _getColor(anxietyAI),
-                    clinicalResultColor:
-                        actualScore == null
-                            ? Colors.grey
-                            : _getColor(_formatScore(actualScore['anxiety'])),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Get.back(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                            ResultCard(
+                              title: 'Anxiety',
+                              aiPrediction: 'AI PREDICTION',
+                              aiResult:
+                                  controller
+                                      .anxietyResponse
+                                      .value
+                                      .aiPrediction ??
+                                  "",
+                              clinicalData: 'CLINICAL DATA',
+                              clinicalResult:
+                                  controller
+                                                  .anxietyResponse
+                                                  .value
+                                                  .clinicalData ==
+                                              null ||
+                                          controller
+                                                  .anxietyResponse
+                                                  .value
+                                                  .clinicalData ==
+                                              "N/A"
+                                      ? 'No Data'
+                                      : _formatScore(
+                                        controller
+                                            .anxietyResponse
+                                            .value
+                                            .clinicalData,
+                                      ),
+                              aiResultColor: _getColor(
+                                controller.anxietyResponse.value.aiPrediction ??
+                                    "",
+                              ),
+                              clinicalResultColor:
+                                  controller
+                                                  .anxietyResponse
+                                                  .value
+                                                  .clinicalData ==
+                                              null ||
+                                          controller
+                                                  .anxietyResponse
+                                                  .value
+                                                  .clinicalData ==
+                                              "N/A"
+                                      ? Colors.grey
+                                      : _getColor(
+                                        _formatScore(
+                                          controller
+                                              .anxietyResponse
+                                              .value
+                                              .clinicalData,
+                                        ),
+                                      ),
+                              text1:
+                                  controller.anxietyResponse.value.gad7Score ==
+                                          "N/A"
+                                      ? ""
+                                      : controller
+                                              .anxietyResponse
+                                              .value
+                                              .gad7Score ??
+                                          "",
+                              text2: '',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => Get.back(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Analyze Again',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                child: const Text(
-                  'Analyze Again',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

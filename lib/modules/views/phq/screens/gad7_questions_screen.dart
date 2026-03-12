@@ -30,6 +30,10 @@ class Gad7QuestionsScreen extends StatelessWidget {
                       sessionID:
                           Get.find<AssessmentController>().sessionId.value,
                     );
+                    Get.off(() => PhqResultScreen())!.whenComplete(() {
+                      Get.back();
+                      Get.back();
+                    });
                   }
                   : null,
           child: Container(
@@ -60,10 +64,11 @@ class Gad7QuestionsScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () async {
-              final result = await assessmentController.getResult();
-              if (result != null) {
-                Get.to(() => PhqResultScreen(result: result));
-              }
+              // final result = await assessmentController.getResult();
+              Get.off(() => PhqResultScreen())!.whenComplete(() {
+                Get.back();
+                Get.back();
+              });
             },
             child: const Text(
               'Skip',

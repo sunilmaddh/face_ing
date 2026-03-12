@@ -87,13 +87,9 @@ class SocketController extends GetxController {
           if (isWebSocketConnected == false) {
             isWebSocketConnected = true;
             await startCall(websocket: _service, streamId: streamId);
-            debugPrint(
-              "callAudioController created? ${callAudioController != null}",
-            );
           }
 
           if (callAudioController == null) {
-            debugPrint("❌ callAudioController is null");
             return;
           }
 

@@ -9,6 +9,7 @@ import 'package:ntt_data/routes/app_routes.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class AppMethods {
   static var dataList = <Map<String, dynamic>>[].obs;
@@ -328,5 +329,13 @@ class AppMethods {
 
   static bool isNumeric(String value) {
     return double.tryParse(value) != null;
+  }
+
+  Future<void> toggleWakelock(bool enable) async {
+    if (enable) {
+      await WakelockPlus.enable();
+    } else {
+      await WakelockPlus.disable();
+    }
   }
 }

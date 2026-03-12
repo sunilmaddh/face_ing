@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/utils/api_endpoints.dart';
 import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
 import 'package:ntt_data/modules/views/voice_agent/base_api_service.dart';
 import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
@@ -46,6 +47,7 @@ class VoiceCallController extends GetxController {
       "is_user_agent_voice": isUserAgentVoice,
       "session_id": sessionId,
       "session_token": token,
+      "session_url": "http://${ApiEndpoints.baseUrl}/kintsugi/submit-audio",
     };
     debugPrint(data.toString());
     Map<String, dynamic> resposneData = await BaseVoiceApiService().postRequest(

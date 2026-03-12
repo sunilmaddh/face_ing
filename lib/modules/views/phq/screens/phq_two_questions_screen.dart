@@ -56,10 +56,12 @@ class PhqTwoQuestionsScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () async {
-              final result = await assessmentController.getResult();
-              if (result != null) {
-                Get.to(() => PhqResultScreen(result: result));
-              }
+              // final result = await assessmentController.getResult();
+              // if (result != null) {
+
+              // }
+
+              Get.off(() => PhqResultScreen());
             },
             child: const Text(
               'Skip',

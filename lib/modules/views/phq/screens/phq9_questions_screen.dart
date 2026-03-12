@@ -59,10 +59,13 @@ class Phq9QuestionsScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () async {
-              final result = await assessmentController.getResult();
-              if (result != null) {
-                Get.to(() => PhqResultScreen(result: result));
-              }
+              // final result = await assessmentController.getResult();
+              // if (result != null) {
+              //   Get.to(() => PhqResultScreen(result: result));
+              // }
+              Get.off(() => PhqResultScreen())!.whenComplete(() {
+                Get.back();
+              });
             },
             child: const Text(
               'Skip',

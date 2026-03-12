@@ -106,6 +106,10 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                           widget: CommonText.text(
                             textAlign: TextAlign.center,
                             voiceCallCOntroller.agentName.value,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Manrope",
+                            fontSize: AppDimensions.font(14),
+                            color: Color(0xff137FEC).withOpacity(0.6),
                           ),
                         ),
                         Stack(
@@ -331,10 +335,8 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                               if (controller.isFirstTimeToConnect.isFalse) {
                                 await controller.callkintisugiIntiateApi();
                                 await initPlayer();
-                              } else {
-                                controller.isFirstTimeToConnect(false);
                               }
-
+                              controller.isFirstTimeToConnect(false);
                               await voiceCallCOntroller.initializeAndStartCall(
                                 tenantIds: voiceCallCOntroller.tenant.value,
                                 agentIds: voiceCallCOntroller.agentId.value,

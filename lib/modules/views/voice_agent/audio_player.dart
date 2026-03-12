@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/modules/views/phq/screens/phq_two_questions_screen.dart';
 
 final FlutterSoundPlayer player = FlutterSoundPlayer();
@@ -22,6 +23,7 @@ Future<void> playBeep() async {
     codec: Codec.mp3,
     whenFinished: () {
       disposePlayer();
+      AppMethods().toggleWakelock(true);
       Get.off(() => PhqTwoQuestionsScreen());
     },
   );

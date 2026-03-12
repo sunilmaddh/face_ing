@@ -1,8 +1,7 @@
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/kintsugi_result_response.dart';
-import 'package:ntt_data/modules/views/phq/screens/phq_result_screen.dart';
 import '../../../../data/repository/services/phq_services.dart';
 
 class AssessmentController extends GetxController {
@@ -14,10 +13,14 @@ class AssessmentController extends GetxController {
   final phq9Answers = <int>[].obs;
   final gad7Answers = <int>[].obs;
 
+  RxString createDate = "".obs;
+
   final _phqServices = PhqServices();
   final isLoading = false.obs;
   final sessionId = ''.obs;
-
+  RxBool isGettingResult = false.obs;
+  Rx<Depression> depressionResponse = Depression().obs;
+  Rx<Anxiety> anxietyResponse = Anxiety().obs;
   void setPhq2Answers(Map<int, int> answers) {
     phq2Answers.value = List.generate(
       answers.length,
@@ -49,10 +52,7 @@ class AssessmentController extends GetxController {
         sessionId: sessionID,
       );
       if (response['statusCode'] == 200 || response['statusCode'] == 201) {
-        final result = await getResult();
-        if (result != null) {
-          Get.to(() => PhqResultScreen(result: result));
-        }
+        // Get.to(() => PhqResultScreen());
 
         return true;
       }
@@ -64,19 +64,25 @@ class AssessmentController extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>?> getResult() async {
-    if (sessionId.isEmpty) return null;
+  Future<void> getResult() async {
     try {
+      isGettingResult(true);
       final response = await _phqServices.getResult(sessionId.value);
       if (response['statusCode'] == 200) {
-        var result = kintsigiRusltResponseFromJson(
+        var result = KintsigiRusltResponse.fromJson(
           response[AppConstents.response],
         );
+        debugPrint(result.toString());
+        depressionResponse.value = result.result!.depression!;
+        anxietyResponse.value = result.result!.anxiety!;
+        createDate.value = result.result!.createdAt!;
+        isGettingResult(false);
         return response['responseBody'];
+      } else {
+        isGettingResult(false);
       }
-      return null;
     } catch (e) {
-      return null;
+      isGettingResult(false);
     }
   }
 

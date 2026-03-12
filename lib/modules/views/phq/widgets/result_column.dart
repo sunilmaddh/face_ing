@@ -5,6 +5,8 @@ class ResultColumn extends StatelessWidget {
   final String label;
   final String result;
   final Color resultColor;
+  final String text1;
+  final String text2;
 
   const ResultColumn({
     super.key,
@@ -12,6 +14,8 @@ class ResultColumn extends StatelessWidget {
     required this.label,
     required this.result,
     required this.resultColor,
+    required this.text1,
+    required this.text2,
   });
 
   @override
@@ -29,6 +33,22 @@ class ResultColumn extends StatelessWidget {
           result,
           style: TextStyle(
             color: resultColor,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          text1,
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          text2,
+          style: TextStyle(
+            color: Colors.grey,
             fontSize: 14,
             fontWeight: FontWeight.bold,
           ),

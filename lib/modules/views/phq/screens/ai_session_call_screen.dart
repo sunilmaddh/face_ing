@@ -8,6 +8,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
 import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
@@ -47,7 +48,7 @@ class AiSessionController extends GetxController {
       final seconds = (elapsedSeconds % 60).toString().padLeft(2, '0');
       sessionTime.value = "$minutes:$seconds";
 
-      if (elapsedSeconds >= 180) {
+      if (elapsedSeconds >= 240) {
         // final message = {
         //   "type": "call_ended",
         //   "stream_sid": Get.find<VoiceCallController>().streamId.value,
@@ -166,6 +167,8 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
       vsync: this,
       duration: const Duration(milliseconds: 800),
     )..repeat(reverse: true);
+
+    AppMethods().toggleWakelock(true);
   }
 
   String cleanText(String text) {
@@ -178,6 +181,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
     controller.stop();
     controller.reset();
     socketController.disconnect();
+    AppMethods().toggleWakelock(false);
     super.dispose();
   }
 

@@ -46,7 +46,7 @@ class Pcm16StreamPlayer {
       bufferSize: framesPerChunk,
     );
 
-    await _player.setVolume(1.0);
+    // await _player.setVolume(1.0);
     _started = true;
   }
 
@@ -55,7 +55,6 @@ class Pcm16StreamPlayer {
 
     var bytes = base64Decode(b64);
     if (bytes.isEmpty) return;
-
     if (bytes.length.isOdd) {
       final tmp = Uint8List(bytes.length + 1);
       tmp.setRange(0, bytes.length, bytes);

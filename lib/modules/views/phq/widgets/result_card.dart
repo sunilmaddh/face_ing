@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/utils/app_methods.dart';
 import 'result_column.dart';
 
 class ResultCard extends StatelessWidget {
@@ -10,6 +11,8 @@ class ResultCard extends StatelessWidget {
   final String clinicalResult;
   final Color aiResultColor;
   final Color clinicalResultColor;
+  final String text1;
+  final String text2;
 
   const ResultCard({
     super.key,
@@ -20,6 +23,8 @@ class ResultCard extends StatelessWidget {
     required this.clinicalResult,
     required this.aiResultColor,
     required this.clinicalResultColor,
+    required this.text1,
+    required this.text2,
   });
 
   @override
@@ -57,8 +62,10 @@ class ResultCard extends StatelessWidget {
                       child: ResultColumn(
                         icon: Icons.psychology_outlined,
                         label: aiPrediction,
-                        result: aiResult,
+                        result: AppMethods.capitalizeFirst(aiResult),
                         resultColor: aiResultColor,
+                        text1: '',
+                        text2: '',
                       ),
                     ),
                     Container(
@@ -72,6 +79,8 @@ class ResultCard extends StatelessWidget {
                         label: clinicalData,
                         result: clinicalResult,
                         resultColor: clinicalResultColor,
+                        text1: text1,
+                        text2: text2,
                       ),
                     ),
                   ],

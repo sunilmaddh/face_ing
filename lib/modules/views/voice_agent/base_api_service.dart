@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 
 class BaseVoiceApiService {
   Future<Map<String, dynamic>> postRequest({
     required dynamic data,
     required String userName,
   }) async {
+    var accessToken = await IndoSharedPreference.instance.getAccessToken();
     final uri = Uri.parse(
       "https://dev.sourcebytes.ai/api/v1/voice_agent/web/voice/webhook/909ea670-d488-4601-bc8a-01627516631f/",
       // "https://0945-2406-7400-111-b2f7-344f-b2ae-737e-7b40.ngrok-free.app/api/v1/voice_agent/web/voice/webhook/7ac589c3-3afc-4ae7-8cb3-97ce7fe4f79b/",
@@ -18,7 +20,10 @@ class BaseVoiceApiService {
     try {
       final response = await http.post(
         uri,
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $accessToken",
+        },
         body: jsonEncode(data),
       );
 
