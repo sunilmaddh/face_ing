@@ -115,8 +115,13 @@ class SocketController extends GetxController {
           } else {
             await player.feedBase64Pcm16(payload);
           }
-
           await callAudioController!.startMicCaptureIfNeeded();
+
+          // var garnted =
+          //     await Get.find<VoiceCallController>().requestMicPermission();
+          // if (garnted) {
+          //   await callAudioController!.startMicCaptureIfNeeded();
+          // }
         }
 
         if (datas["event"] == "agent_message") {

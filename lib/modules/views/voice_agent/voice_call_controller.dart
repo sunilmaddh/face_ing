@@ -88,6 +88,8 @@ class VoiceCallController extends GetxController {
   Future<bool> requestMicPermission() async {
     var status = await Permission.microphone.status;
 
+    debugPrint("Permission microphone $status");
+
     if (status.isGranted) return true;
 
     status = await Permission.microphone.request();
