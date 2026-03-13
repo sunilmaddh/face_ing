@@ -8,7 +8,7 @@ import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
 import 'package:ntt_data/modules/views/phq/widgets/question_card.dart';
 import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
-import 'package:ntt_data/modules/views/voice_agent/voice_call_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/controller/voice_call_controller.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class AiSessionScreen extends StatefulWidget {

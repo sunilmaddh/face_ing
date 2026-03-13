@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/modules/views/voice_agent/native/call_audio_controler.dart';
-import 'package:ntt_data/modules/views/voice_agent/web_socket_services.dart';
+import 'package:ntt_data/modules/views/voice_agent/services/web_socket_services.dart';
 
 CallAudioController? callAudioController;
 

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
-import 'package:ntt_data/modules/views/voice_agent/base_api_service.dart';
-import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
-import 'package:ntt_data/modules/views/voice_agent/webhook_response.dart';
+import 'package:ntt_data/modules/views/voice_agent/services/base_api_service.dart';
+import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/model/webhook_response.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class VoiceCallController extends GetxController {

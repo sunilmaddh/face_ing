@@ -7,8 +7,8 @@ import 'package:ntt_data/modules/views/phq/controllers/aisession_controller.dart
 import 'package:ntt_data/modules/views/voice_agent/audio_session_helper.dart';
 import 'package:ntt_data/modules/views/voice_agent/native/start_native_call.dart';
 import 'package:ntt_data/modules/views/voice_agent/pcm_player.dart';
-import 'package:ntt_data/modules/views/voice_agent/voice_call_controller.dart';
-import 'package:ntt_data/modules/views/voice_agent/web_socket_services.dart';
+import 'package:ntt_data/modules/views/voice_agent/controller/voice_call_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/services/web_socket_services.dart';
 
 class SocketController extends GetxController {
   final WebSocketService _service = WebSocketService();

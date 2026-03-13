@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'voice_bridge.dart';
 

@@ -7,8 +7,8 @@ import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dar
 import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
 import 'package:ntt_data/modules/views/voice_agent/native/start_native_call.dart';
-import 'package:ntt_data/modules/views/voice_agent/socket_controller.dart';
-import 'package:ntt_data/modules/views/voice_agent/voice_call_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.dart';
+import 'package:ntt_data/modules/views/voice_agent/controller/voice_call_controller.dart';
 
 class AiSessionController extends GetxController {
   final voiceCallCOntroller = Get.put(VoiceCallController());
