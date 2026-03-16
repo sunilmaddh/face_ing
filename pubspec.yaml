@@ -90,7 +90,7 @@ flutter:
       - assets/images/svg/
       - assets/images/png/
       - assets/images/lottie/
-      - assets/images/voice_agent_fixed.wav
+      - assets/audio/voice_agent_fixed.wav
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

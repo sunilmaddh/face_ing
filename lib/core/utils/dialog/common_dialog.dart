@@ -314,6 +314,116 @@ class CommonDialog {
     );
   }
 
+  void showCallAlertDialog({
+    required BuildContext context,
+    required VoidCallback onConfirm,
+    required VoidCallback onCancel,
+    // required VoidCallback onClose,
+    required String title,
+    required String message,
+    required String confirmText,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: AppColors.btntext,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.pop(context);
+                //     // onCancel();
+                //   },
+                //   child: Align(
+                //     alignment: Alignment.topRight,
+                //     child: SvgPicture.asset(AppAssets.cloaseDialog),
+                //   ),
+                // ),
+                CommonText.text(
+                  maxLines: 2,
+                  title,
+                  fontSize: AppDimensions.font(22),
+                  fontWeight: FontWeight.w400,
+                  fontFamily: "Gilroy-Bold",
+                  color: AppColors.blackColor,
+                ),
+
+                const SizedBox(height: 10),
+                CommonText.text(
+                  maxLines: 5,
+                  message,
+                  textAlign: TextAlign.start,
+                  fontFamily: "Gilroy-Medium",
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff5C5C5C),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: AppDimensions.height(40),
+
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            onConfirm();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                          child: CommonText.text(
+                            "Continue",
+                            color: AppColors.btntext,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: AppDimensions.width(10)),
+                    Expanded(
+                      child: SizedBox(
+                        height: AppDimensions.height(40),
+
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            onCancel();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            side: BorderSide(color: Colors.black),
+                            backgroundColor: AppColors.btntext,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                          child: CommonText.text(
+                            "Cancel",
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void showLogoutDialog({
     required BuildContext context,
     required VoidCallback onConfirm,

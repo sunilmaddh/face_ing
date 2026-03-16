@@ -19,6 +19,8 @@ class SocketController extends GetxController {
   var isConnected = false.obs;
   var isLastEndCall = false.obs;
   var isMicMute = false.obs;
+  RxDouble progress = 0.0.obs;
+  double maxDuration = 60.0;
 
   final Pcm16StreamPlayer player = Pcm16StreamPlayer();
 
@@ -29,6 +31,10 @@ class SocketController extends GetxController {
 
   void markSessionEnding() {
     isSessionEnding = true;
+  }
+
+  void updateProgress(double speechTime) {
+    progress.value = (speechTime / maxDuration).clamp(0.0, 1.0);
   }
 
   Future<void> _flushPrebufferIfNeeded() async {
@@ -65,7 +71,7 @@ class SocketController extends GetxController {
     _prebufferFlushTimer = null;
 
     await _service.connect(
-      //"wss://0945-2406-7400-111-b2f7-344f-b2ae-737e-7b40.ngrok-free.app/ws/v1/web/voice_agent/$tenantId/$botId/$streamId",
+      // "wss://fafb-2406-7400-111-b2f7-d58-a53-90f1-b1a9.ngrok-free.app/ws/v1/web/voice_agent/$tenantId/$botId/$streamId",
       "wss://dev.sourcebytes.ai/ws/v1/web/voice_agent/$tenantId/$botId/$streamId/",
     );
     isConnected.value = true;
@@ -122,11 +128,14 @@ class SocketController extends GetxController {
         if (datas["event"] == "agent_message") {
           if (datas['message'] != null) {
             debugPrint("Agent message ${datas['message']}");
+            debugPrint("User speak  ${datas['user_speak_duration']}");
             Get.find<VoiceCallController>().messageC.value = datas['message'];
+            updateProgress(datas['user_speak_duration']);
           }
         }
 
         if (datas["event"] == "call_ended") {
+          debugPrint("Event ${datas["event"]}");
           // disconnect();
           // Get.to(() => PhqTwoQuestionsScreen());
           await Get.find<AiSessionController>().endSessionGracefully();
@@ -175,6 +184,7 @@ class SocketController extends GetxController {
     _pendingAgentChunks.clear();
     _prebufferFlushTimer?.cancel();
     _prebufferFlushTimer = null;
+    progress.value = 0.0;
     // Get.find<VoiceCallController>().messageC.value = "";
   }
 

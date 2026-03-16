@@ -16,6 +16,7 @@ class AiSessionController extends GetxController {
   final sessionTime = '00:00'.obs;
   RxBool isTimeOver = false.obs;
   RxBool isFirstTimeToConnect = false.obs;
+  RxBool isSecondTimeToConnect = false.obs;
 
   final stopwatch = Stopwatch();
   Timer? timer;
@@ -34,9 +35,9 @@ class AiSessionController extends GetxController {
       final seconds = (elapsedSeconds % 60).toString().padLeft(2, '0');
       sessionTime.value = "$minutes:$seconds";
 
-      if (elapsedSeconds >= 240) {
-        await endSessionGracefully();
-      }
+      // if (elapsedSeconds >= 240) {
+      //   await endSessionGracefully();
+      // }
     });
   }
 

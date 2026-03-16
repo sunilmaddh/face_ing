@@ -45,6 +45,7 @@ class VoiceCallController extends GetxController {
       "session_id": sessionId,
       "session_token": token,
       "session_url": "http://${ApiEndpoints.baseUrl}/kintsugi/submit-audio",
+      "session_user_duration": 60,
     };
     debugPrint(data.toString());
     Map<String, dynamic> resposneData = await BaseVoiceApiService().postRequest(

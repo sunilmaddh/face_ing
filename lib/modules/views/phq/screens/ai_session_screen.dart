@@ -83,7 +83,8 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
       ),
       body: Obx(
         () =>
-            voiceCOntroller.isInitiating.isTrue
+            voiceCOntroller.isInitiating.isTrue &&
+                    controller.isFirstTimeToConnect.isTrue
                 ? Center(child: CircularProgressIndicator())
                 : Stack(
                   children: [
@@ -231,51 +232,75 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                         SizedBox(height: AppDimensions.height(80)),
                         SizedBox(
                           height: AppDimensions.height(48),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              // await Get.find<SocketController>().disconnect();
-                              if (controller.isFirstTimeToConnect.isFalse) {
-                                await controller.callkintisugiIntiateApi();
-                                await initPlayer();
-                              }
-                              controller.isFirstTimeToConnect(false);
-                              await voiceCallCOntroller.initializeAndStartCall(
-                                tenantIds: voiceCallCOntroller.tenant.value,
-                                agentIds: voiceCallCOntroller.agentId.value,
-                                streamIds: voiceCallCOntroller.streamId.value,
-                              );
+                          child: Obx(
+                            () =>
+                                controller.isSecondTimeToConnect.isTrue
+                                    ? CircularProgressIndicator()
+                                    : ElevatedButton(
+                                      onPressed: () async {
+                                        // await Get.find<SocketController>().disconnect();
+                                        if (controller
+                                            .isFirstTimeToConnect
+                                            .isFalse) {
+                                          controller.isSecondTimeToConnect(
+                                            true,
+                                          );
+                                          await controller
+                                              .callkintisugiIntiateApi();
+                                          await initPlayer();
+                                        }
+                                        controller.isFirstTimeToConnect(false);
+                                        await voiceCallCOntroller
+                                            .initializeAndStartCall(
+                                              tenantIds:
+                                                  voiceCallCOntroller
+                                                      .tenant
+                                                      .value,
+                                              agentIds:
+                                                  voiceCallCOntroller
+                                                      .agentId
+                                                      .value,
+                                              streamIds:
+                                                  voiceCallCOntroller
+                                                      .streamId
+                                                      .value,
+                                            );
 
-                              Get.to(() => AiSessionCallScreen());
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
+                                        Get.to(() => AiSessionCallScreen());
+                                        controller.isSecondTimeToConnect(false);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primary,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
+                                        ),
 
-                              shadowColor: Colors.black26,
-                              elevation: 4,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 30,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.phone_outlined,
-                                    color: AppColors.btntext,
-                                  ),
-                                  CommonText.text(
-                                    "Start Now",
-                                    color: AppColors.btntext,
-                                    fontWeight: FontWeight.w700,
-                                    fontFamily: "Manrope",
-                                  ),
-                                ],
-                              ),
-                            ),
+                                        shadowColor: Colors.black26,
+                                        elevation: 4,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.phone_outlined,
+                                              color: AppColors.btntext,
+                                            ),
+                                            CommonText.text(
+                                              "Start Now",
+                                              color: AppColors.btntext,
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: "Manrope",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                           ),
                         ),
                         SizedBox(height: AppDimensions.height(80)),

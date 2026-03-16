@@ -16,7 +16,7 @@ Future<void> disposePlayer() async {
 }
 
 Future<void> playBeep() async {
-  final data = await rootBundle.load('assets/images/phone_hangup.mp3');
+  final data = await rootBundle.load('assets/audio/phone_hangup.mp3');
 
   await player.startPlayer(
     fromDataBuffer: data.buffer.asUint8List(),
@@ -30,12 +30,23 @@ Future<void> playBeep() async {
 }
 
 Future<void> playVoiceAgent() async {
-  final data = await rootBundle.load('assets/images/voice_agent_fixed.wav');
+  final data = await rootBundle.load('assets/audio/voice_agent_fixed.wav');
   await player.startPlayer(
     fromDataBuffer: data.buffer.asUint8List(),
     codec: Codec.pcm16WAV,
     whenFinished: () {
       playBeep();
     },
+  );
+}
+
+Future<void> playDuringCalling() async {
+  final data = await rootBundle.load('assets/audio/calling.mp3');
+  await player.startPlayer(
+    fromDataBuffer: data.buffer.asUint8List(),
+    codec: Codec.mp3,
+    // whenFinished: () {
+    //   playBeep();
+    // },
   );
 }
