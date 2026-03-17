@@ -5,6 +5,7 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
+import 'package:ntt_data/widgets/fields/common_text.dart';
 import '../widgets/result_card.dart';
 
 class PhqResultScreen extends StatefulWidget {
@@ -37,6 +38,7 @@ class _PhqResultScreenState extends State<PhqResultScreen> {
           AppNavigation.back();
         },
         title: "Analysis Successful",
+
         isCenterTitle: false,
       ),
       body: Obx(
@@ -44,12 +46,14 @@ class _PhqResultScreenState extends State<PhqResultScreen> {
             controller.isGettingResult.isTrue
                 ? Center(child: CircularProgressIndicator())
                 : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
+                      padding: EdgeInsets.all(16),
+                      child: CommonText.text(
                         _formatDate(controller.createDate.value),
-                        style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                        color: Colors.grey.shade600,
+                        fontSize: 14,
                       ),
                     ),
                     Expanded(
@@ -62,10 +66,15 @@ class _PhqResultScreenState extends State<PhqResultScreen> {
                               aiPrediction: 'AI PREDICTION',
                               aiResult:
                                   controller
-                                      .depressionResponse
-                                      .value
-                                      .aiPrediction ??
-                                  "",
+                                              .depressionResponse
+                                              .value
+                                              .aiPrediction ==
+                                          null
+                                      ? "No result"
+                                      : controller
+                                          .depressionResponse
+                                          .value
+                                          .aiPrediction!,
                               clinicalData: 'CLINICAL DATA',
                               clinicalResult:
                                   controller
@@ -145,7 +154,7 @@ class _PhqResultScreenState extends State<PhqResultScreen> {
                                       .anxietyResponse
                                       .value
                                       .aiPrediction ??
-                                  "",
+                                  "No Result",
                               clinicalData: 'CLINICAL DATA',
                               clinicalResult:
                                   controller

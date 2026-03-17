@@ -106,7 +106,7 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                         Stack(
                           children: [
                             SizedBox(
-                              height: 360,
+                              height: AppDimensions.height(360),
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -235,7 +235,11 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                           child: Obx(
                             () =>
                                 controller.isSecondTimeToConnect.isTrue
-                                    ? CircularProgressIndicator()
+                                    ? Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.primary,
+                                      ),
+                                    )
                                     : ElevatedButton(
                                       onPressed: () async {
                                         // await Get.find<SocketController>().disconnect();
@@ -250,7 +254,7 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                                           await initPlayer();
                                         }
                                         controller.isFirstTimeToConnect(false);
-                                        await voiceCallCOntroller
+                                        voiceCallCOntroller
                                             .initializeAndStartCall(
                                               tenantIds:
                                                   voiceCallCOntroller
@@ -265,8 +269,8 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                                                       .streamId
                                                       .value,
                                             );
-
                                         Get.to(() => AiSessionCallScreen());
+                                        // await playDuringCalling();
                                         controller.isSecondTimeToConnect(false);
                                       },
                                       style: ElevatedButton.styleFrom(

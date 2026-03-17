@@ -81,10 +81,8 @@ class SocketController extends GetxController {
         messages.add(data.toString());
 
         final datas = jsonDecode(data);
-
         if (datas['type'] == 'agent_audio') {
           if (isSessionEnding) return;
-
           final payload = datas['audio'] as String;
           final sr = (datas['sample_rate'] ?? 48000) as int;
 
@@ -121,7 +119,6 @@ class SocketController extends GetxController {
           } else {
             await player.feedBase64Pcm16(payload);
           }
-
           await callAudioController!.startMicCaptureIfNeeded();
         }
 
@@ -133,7 +130,6 @@ class SocketController extends GetxController {
             updateProgress(datas['user_speak_duration']);
           }
         }
-
         if (datas["event"] == "call_ended") {
           debugPrint("Event ${datas["event"]}");
           // disconnect();

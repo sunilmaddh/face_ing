@@ -34,8 +34,8 @@ Future<void> playVoiceAgent() async {
   await player.startPlayer(
     fromDataBuffer: data.buffer.asUint8List(),
     codec: Codec.pcm16WAV,
-    whenFinished: () {
-      playBeep();
+    whenFinished: () async {
+      await playBeep();
     },
   );
 }

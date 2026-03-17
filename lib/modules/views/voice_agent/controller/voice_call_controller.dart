@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/api_endpoints.dart';
+import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
 import 'package:ntt_data/modules/views/voice_agent/services/base_api_service.dart';
 import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/model/webhook_response.dart';
@@ -76,6 +77,7 @@ class VoiceCallController extends GetxController {
       botId: agentIds,
       streamId: streamIds,
     );
+    await playDuringCalling();
     await Future.delayed(Duration(milliseconds: 300));
     final message = {
       "type": "start",

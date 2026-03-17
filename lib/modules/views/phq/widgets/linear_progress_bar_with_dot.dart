@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/core/constants/app_colors.dart';
 
 class LinearProgressWithDot extends StatelessWidget {
   final double progress; // 0.0 - 1.0
@@ -7,12 +8,12 @@ class LinearProgressWithDot extends StatelessWidget {
   final Color progressColor;
   final Color backgroundColor;
 
-  const LinearProgressWithDot({
+  LinearProgressWithDot({
     super.key,
     required this.progress,
     this.width = 300,
     this.strokeWidth = 12,
-    this.progressColor = Colors.blue,
+    this.progressColor = AppColors.primary,
     this.backgroundColor = const Color(0xFFE0E0E0),
   });
 
