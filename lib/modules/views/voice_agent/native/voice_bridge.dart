@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 class VoiceBridge {
@@ -17,10 +17,12 @@ class VoiceBridge {
     int sampleRate = 24000,
     bool debug = true,
   }) async {
+    debugPrint("Called ios native");
     await _method.invokeMethod('startCapture', {
       'sampleRate': sampleRate,
       'debug': debug,
     });
+    debugPrint("Called ios native : 3");
   }
 
   static Future<void> stopCapture() async {

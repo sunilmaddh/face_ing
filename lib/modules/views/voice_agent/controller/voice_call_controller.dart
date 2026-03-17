@@ -19,7 +19,7 @@ class VoiceCallController extends GetxController {
   Rx<WebhookResponse> webhookResponse = WebhookResponse().obs;
   @override
   void onInit() async {
-    await requestMicPermission();
+    // await requestMicPermission();
     super.onInit();
   }
 
@@ -90,6 +90,8 @@ class VoiceCallController extends GetxController {
 
   Future<bool> requestMicPermission() async {
     var status = await Permission.microphone.status;
+
+    debugPrint("Permission : $status");
 
     if (status.isGranted) return true;
 

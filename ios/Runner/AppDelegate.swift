@@ -7,8 +7,14 @@ import UIKit
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+   
     GeneratedPluginRegistrant.register(with: self)
+      if let registrar = self.registrar(forPlugin: "VoiceBridgePlugin") {
+             VoiceBridgePlugin.register(with: registrar)
+         }
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+     
   }
     open override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
             // Allow only specific actions
