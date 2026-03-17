@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marquee/marquee.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
@@ -13,7 +12,6 @@ import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.
 import 'package:ntt_data/modules/views/voice_agent/controller/voice_call_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/vertically_scroll_text.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
-import 'package:text_scroll/text_scroll.dart';
 import '../widgets/action_button.dart';
 import '../widgets/question_card.dart';
 
@@ -33,7 +31,6 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
   @override
   void initState() {
     super.initState();
-    // callPlay();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -71,12 +68,10 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  socketController.progress.value > 0.0
-                      ? LinearProgressWithDot(
-                        width: MediaQuery.of(context).size.width,
-                        progress: socketController.progress.value,
-                      )
-                      : SizedBox.shrink(),
+                  LinearProgressWithDot(
+                    width: MediaQuery.of(context).size.width,
+                    progress: socketController.progress.value,
+                  ),
 
                   SizedBox(height: AppDimensions.height(10)),
 
