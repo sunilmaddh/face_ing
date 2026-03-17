@@ -26,6 +26,8 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
         eventChannel.setStreamHandler(instance)
+
+        print("VoiceBridgePlugin: ✅ Registered")
     }
 
     // MARK: - EventChannel
@@ -45,6 +47,8 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     // MARK: - MethodChannel
 
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+
+        log("📩 Method call: \(call.method)")
 
         switch call.method {
 
@@ -66,16 +70,22 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     private func requestMicPermission(completion: @escaping (Bool) -> Void) {
         let session = AVAudioSession.sharedInstance()
 
+        log("🔐 Permission status: \(session.recordPermission.rawValue)")
+
         switch session.recordPermission {
         case .granted:
+            log("✅ Permission already granted")
             completion(true)
 
         case .denied:
+            log("❌ Permission denied")
             completion(false)
 
         case .undetermined:
+            log("⏳ Requesting permission...")
             session.requestRecordPermission { granted in
                 DispatchQueue.main.async {
+                    self.log("🔐 Permission result: \(granted)")
                     completion(granted)
                 }
             }
@@ -88,6 +98,8 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     // MARK: - Start Capture
 
     private func startCapture() {
+
+        log("🚀 startCapture called")
 
         if isCapturing {
             log("⚠️ Already capturing")
@@ -103,7 +115,7 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
             do {
                 try self.startAudioEngine()
             } catch {
-                self.log("❌ Error: \(error)")
+                self.log("❌ Engine start error: \(error)")
             }
         }
     }
@@ -114,36 +126,43 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
         let session = AVAudioSession.sharedInstance()
 
-        // ✅ BEST CONFIG (Echo cancel)
+        log("🔊 Configuring audio session...")
+
         try session.setCategory(
-            .playAndRecord,
+            .playback,
             mode: .voiceChat,
-            options: [.allowBluetooth, .allowBluetoothA2DP]
+            options: [.defaultToSpeaker,.allowBluetooth, .allowBluetoothA2DP]
         )
 
         try session.setActive(true)
 
-        // ✅ Route audio properly
+        log("✅ Audio session active")
+
+        // Routing
         routeAudio()
 
-        // ✅ Create engine
+        // Debug route
+        let route = session.currentRoute
+        for input in route.inputs {
+            log("🎤 INPUT: \(input.portType.rawValue)")
+        }
+        for output in route.outputs {
+            log("🔊 OUTPUT: \(output.portType.rawValue)")
+        }
+
+        // Engine
         audioEngine = AVAudioEngine()
         guard let engine = audioEngine else { return }
 
         let inputNode = engine.inputNode
+        let format = inputNode.outputFormat(forBus: 0)
 
-        // ✅ FORCE FORMAT (critical fix)
-        let format = AVAudioFormat(
-            commonFormat: .pcmFormatInt16,
-            sampleRate: 24000,
-            channels: 1,
-            interleaved: true
-        )!
+        log("🎧 Input format: \(format.sampleRate) Hz, channels: \(format.channelCount)")
 
         inputNode.removeTap(onBus: 0)
 
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
-            self.log("🎧 BUFFER RECEIVED")
+            self.log("🎧 BUFFER RECEIVED size: \(buffer.frameLength)")
             self.processAudioBuffer(buffer: buffer)
         }
 
@@ -151,32 +170,42 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         try engine.start()
 
         isCapturing = true
-        log("🎤 ENGINE STARTED")
+        log("🎤 ENGINE STARTED SUCCESSFULLY")
     }
 
     // MARK: - Process Audio
 
     private func processAudioBuffer(buffer: AVAudioPCMBuffer) {
 
+        guard let floatData = buffer.floatChannelData else {
+            log("❌ No float data")
+            return
+        }
+
+        let channel = floatData.pointee
         let frameLength = Int(buffer.frameLength)
 
-        if let int16Data = buffer.int16ChannelData {
+        var pcmData = Data(capacity: frameLength * 2)
 
-            let channel = int16Data.pointee
-            let data = Data(bytes: channel, count: frameLength * 2)
+        for i in 0..<frameLength {
+            let sample = channel[i]
+            let clamped = max(-1.0, min(1.0, sample))
+            var intSample = Int16(clamped * Float(Int16.max))
+            pcmData.append(Data(bytes: &intSample, count: 2))
+        }
 
-            DispatchQueue.main.async {
-                self.eventSink?(FlutterStandardTypedData(bytes: data))
-            }
+        log("📦 Sending PCM size: \(pcmData.count)")
 
-        } else {
-            log("❌ No int16 data")
+        DispatchQueue.main.async {
+            self.eventSink?(FlutterStandardTypedData(bytes: pcmData))
         }
     }
 
     // MARK: - Stop
 
     private func stopCapture() {
+
+        log("🛑 stopCapture called")
 
         if !isCapturing { return }
 
@@ -185,7 +214,8 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         audioEngine = nil
 
         isCapturing = false
-        log("🛑 Stopped")
+
+        log("🛑 Capture stopped")
     }
 
     // MARK: - Routing
@@ -202,17 +232,16 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
         do {
             if hasHeadphones {
-                log("🎧 Earphones connected")
+                log("🎧 Using earphones")
             } else {
                 try session.overrideOutputAudioPort(.speaker)
-                log("🔊 Speaker enabled")
+                log("🔊 Using speaker")
             }
 
-            // ✅ important for echo
             try session.setPreferredInput(nil)
 
         } catch {
-            log("❌ Routing error")
+            log("❌ Routing error: \(error)")
         }
     }
 
