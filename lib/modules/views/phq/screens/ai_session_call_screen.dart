@@ -7,8 +7,6 @@ import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/phq/controllers/aisession_controller.dart';
 import 'package:ntt_data/modules/views/phq/widgets/circular_progress_Painter.dart';
-import 'package:ntt_data/modules/views/phq/widgets/linear_progress_bar_with_dot.dart';
-import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
 import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/controller/voice_call_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/vertically_scroll_text.dart';
@@ -28,6 +26,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
   late AnimationController _animationController;
   final controller = Get.find<AiSessionController>();
   final socketController = Get.find<SocketController>();
+  final voiceController = Get.find<VoiceCallController>();
 
   @override
   void initState() {
@@ -224,35 +223,35 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                           Stack(
                             alignment: Alignment.center,
                             children: [
-                              AnimatedBuilder(
-                                animation: _animationController,
-                                builder: (context, asyncSnapshot) {
-                                  return SizedBox(
-                                    width:
-                                        Get.find<VoiceCallController>()
-                                                .isConverssionStarted
-                                                .isTrue
-                                            ? AppDimensions.width(270) +
-                                                (_animationController.value *
-                                                    40)
-                                            : AppDimensions.width(270),
-                                    height:
-                                        Get.find<VoiceCallController>()
-                                                .isConverssionStarted
-                                                .isTrue
-                                            ? AppDimensions.height(270) +
-                                                (_animationController.value *
-                                                    40)
-                                            : AppDimensions.height(270),
-                                    child: Obx(
-                                      () => CircularProgressWithDot(
-                                        // width: MediaQuery.of(context).size.width,
-                                        time: socketController.progress.value,
+                              Obx(() {
+                                final isStarted =
+                                    voiceController.isConverssionStarted.isTrue;
+                                final progressTime =
+                                    socketController.progress.value;
+
+                                return AnimatedBuilder(
+                                  animation: _animationController,
+                                  builder: (context, child) {
+                                    return SizedBox(
+                                      width:
+                                          isStarted
+                                              ? AppDimensions.width(270) +
+                                                  (_animationController.value *
+                                                      40)
+                                              : AppDimensions.width(270),
+                                      height:
+                                          isStarted
+                                              ? AppDimensions.height(270) +
+                                                  (_animationController.value *
+                                                      40)
+                                              : AppDimensions.height(270),
+                                      child: CircularProgressWithDot(
+                                        time: progressTime,
                                       ),
-                                    ),
-                                  );
-                                },
-                              ),
+                                    );
+                                  },
+                                );
+                              }),
                               AnimatedBuilder(
                                 animation: _animationController,
                                 builder: (context, child) {

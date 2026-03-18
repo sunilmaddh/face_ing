@@ -38,7 +38,6 @@ class NativeMicSender {
         }
 
         final b64 = base64Encode(pcmBytes);
-        debugPrint("From native $b64");
         if (Get.find<SocketController>().isMicMute.isFalse) {
           final msg = {
             "type": "mic_chunk",

@@ -39,23 +39,17 @@ class _CircularProgressWithDotState extends State<CircularProgressWithDot> {
 
   @override
   Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: oldProgress, end: newProgress),
-      duration: const Duration(milliseconds: 300),
-      builder: (context, value, child) {
-        return SizedBox(
-          height: widget.size,
-          width: widget.size,
-          child: CustomPaint(
-            painter: _CirclePainter(
-              value,
-              widget.strokeWidth,
-              widget.progressColor,
-              widget.backgroundColor,
-            ),
-          ),
-        );
-      },
+    return SizedBox(
+      height: widget.size,
+      width: widget.size,
+      child: CustomPaint(
+        painter: _CirclePainter(
+          widget.time,
+          widget.strokeWidth,
+          widget.progressColor,
+          widget.backgroundColor,
+        ),
+      ),
     );
   }
 }
