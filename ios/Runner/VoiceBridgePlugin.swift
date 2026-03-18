@@ -129,7 +129,7 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         log("🔊 Configuring audio session...")
 
         try session.setCategory(
-            .playback,
+            .playAndRecord,
             mode: .voiceChat,
             options: [.defaultToSpeaker,.allowBluetooth, .allowBluetoothA2DP]
         )
