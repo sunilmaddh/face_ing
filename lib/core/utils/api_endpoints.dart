@@ -13,7 +13,7 @@ class ApiEndpoints {
   static const String baseUrl =
       //"192.168.0.120:8085";
       //dev
-      //  "146.190.11.132:8085";
+      //"146.190.11.132:8085";
       //Stagging singapore
       // "18.141.189.197:8085";
       //stagging
@@ -50,5 +50,6 @@ class ApiEndpoints {
       voiceAgent = "/voiceAgent",
       kintsugiInitiate = "/kintsugi/initiate",
       kintsugiQuestionnaires = "/kintsugi/questionnaires",
+      kintsugiSessions = "/kintsugi/sessions",
       refreshToken = '/getTokenByRefreshToken';
 }

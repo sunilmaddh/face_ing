@@ -14,6 +14,7 @@ import 'package:ntt_data/modules/views/home/widgets/daily_advice_card_widget.dar
 import 'package:ntt_data/modules/views/home/widgets/menu_card_widget.dart';
 import 'package:ntt_data/modules/views/home/widgets/wellness_card.dart';
 import 'package:ntt_data/modules/views/landing/landing_controller.dart';
+import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
 import 'package:ntt_data/modules/views/pulse/controller/pulse_survey_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,9 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    homeController.getWellnessScore();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      homeController.getWellnessScore();
       pulseController.fetchPulseSurvey();
+      AssessmentController.instance.getSession();
     });
     authController.initializedData();
   }

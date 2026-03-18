@@ -9,6 +9,8 @@ import 'package:ntt_data/modules/views/health_data/all_report_screen.dart';
 import 'package:ntt_data/modules/views/health_data/analyzing_health_data.dart';
 import 'package:ntt_data/modules/views/home/home_screen.dart';
 import 'package:ntt_data/modules/views/landing/landing_screen.dart';
+import 'package:ntt_data/modules/views/phq/screens/ai_session_screen.dart';
+import 'package:ntt_data/modules/views/phq/screens/phq_result_screen.dart';
 import 'package:ntt_data/modules/views/profile/congratulation_screen.dart';
 import 'package:ntt_data/modules/views/profile/create_account_screen.dart';
 import 'package:ntt_data/modules/views/auth/login_screen.dart';
@@ -102,5 +104,7 @@ class AppPages {
       name: AppRoutes.pulseSuccess,
       page: () => PulseSurveySuccessScreen(),
     ),
+    GetPage(name: AppRoutes.phqResultScreen, page: () => PhqResultScreen()),
+    GetPage(name: AppRoutes.aiSessionScreen, page: () => AiSessionScreen()),
   ];
 }

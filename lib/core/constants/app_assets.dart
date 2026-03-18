@@ -93,5 +93,7 @@ class AppAssets {
       voicerecording = "$baseUrlPng/voicerecording.png",
       dailyAdviceAssets = "$baseUrlPng/daily1.png",
       normalPluseIcon = "$baseUrlSvg/normal_pulse.svg",
+      anxietyAssets = "$baseUrlSvg/anxiety.svg",
+      depressionAssets = "$baseUrlSvg/depression.svg",
       voiceagentimage = "$baseUrlPng/voiceagentimage.png";
 }

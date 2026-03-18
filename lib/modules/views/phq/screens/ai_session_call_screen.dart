@@ -1,19 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marquee/marquee.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/phq/controllers/aisession_controller.dart';
+import 'package:ntt_data/modules/views/phq/widgets/circular_progress_Painter.dart';
 import 'package:ntt_data/modules/views/phq/widgets/linear_progress_bar_with_dot.dart';
 import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
 import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/controller/voice_call_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/vertically_scroll_text.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
-import 'package:text_scroll/text_scroll.dart';
 import '../widgets/action_button.dart';
 import '../widgets/question_card.dart';
 
@@ -33,20 +32,19 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
   @override
   void initState() {
     super.initState();
-    // callPlay();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
     )..repeat(reverse: true);
-    AppMethods().toggleWakelock(true);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppMethods().toggleWakelock(true);
+      Get.find<VoiceCallController>().setConverssionFlag();
+    });
   }
 
   String cleanText(String text) {
     return text.replaceAll(RegExp(r'\n+'), '\n');
-  }
-
-  void callPlay() async {
-    await playDuringCalling();
   }
 
   @override
@@ -55,6 +53,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
     controller.stop();
     controller.reset();
     socketController.disconnect();
+    Get.find<VoiceCallController>().isConverssionStarted(false);
     AppMethods().toggleWakelock(false);
     super.dispose();
   }
@@ -71,13 +70,6 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  socketController.progress.value > 0.0
-                      ? LinearProgressWithDot(
-                        width: MediaQuery.of(context).size.width,
-                        progress: socketController.progress.value,
-                      )
-                      : SizedBox.shrink(),
-
                   SizedBox(height: AppDimensions.height(10)),
 
                   Container(
@@ -201,10 +193,10 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                               fontSize: AppDimensions.font(14),
                               color: AppColors.primary.withOpacity(0.6),
                             ),
-                            SizedBox(height: AppDimensions.height(20)),
+                            SizedBox(height: AppDimensions.height(10)),
                             SizedBox(
                               width: double.infinity,
-                              height: AppDimensions.height(100),
+                              height: AppDimensions.height(160),
                               child: VerticalAutoScroll(
                                 text:
                                     Get.find<VoiceCallController>()
@@ -216,7 +208,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                           ],
                         ),
                       )
-                      : SizedBox(height: AppDimensions.height(100)),
+                      : SizedBox(height: AppDimensions.height(160)),
             ),
             SizedBox(height: AppDimensions.height(20)),
             Stack(
@@ -224,7 +216,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: SizedBox(
-                    height: AppDimensions.height(320),
+                    height: AppDimensions.height(340),
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -234,24 +226,53 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                             children: [
                               AnimatedBuilder(
                                 animation: _animationController,
-                                builder: (context, child) {
-                                  return Container(
+                                builder: (context, asyncSnapshot) {
+                                  return SizedBox(
                                     width:
                                         Get.find<VoiceCallController>()
-                                                .messageC
-                                                .isNotEmpty
+                                                .isConverssionStarted
+                                                .isTrue
                                             ? AppDimensions.width(270) +
                                                 (_animationController.value *
                                                     40)
                                             : AppDimensions.width(270),
                                     height:
                                         Get.find<VoiceCallController>()
-                                                .messageC
-                                                .isNotEmpty
+                                                .isConverssionStarted
+                                                .isTrue
                                             ? AppDimensions.height(270) +
                                                 (_animationController.value *
                                                     40)
                                             : AppDimensions.height(270),
+                                    child: Obx(
+                                      () => CircularProgressWithDot(
+                                        // width: MediaQuery.of(context).size.width,
+                                        time: socketController.progress.value,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              AnimatedBuilder(
+                                animation: _animationController,
+                                builder: (context, child) {
+                                  return Container(
+                                    width:
+                                        Get.find<VoiceCallController>()
+                                                .isConverssionStarted
+                                                .isTrue
+                                            ? AppDimensions.width(240) +
+                                                (_animationController.value *
+                                                    40)
+                                            : AppDimensions.width(240),
+                                    height:
+                                        Get.find<VoiceCallController>()
+                                                .isConverssionStarted
+                                                .isTrue
+                                            ? AppDimensions.height(240) +
+                                                (_animationController.value *
+                                                    40)
+                                            : AppDimensions.height(240),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: const Color(
@@ -262,27 +283,27 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                 },
                               ),
                               Positioned(
-                                top: 3,
+                                top: 17,
                                 child: AnimatedBuilder(
                                   animation: _animationController,
                                   builder: (context, child) {
                                     return Container(
                                       width:
                                           Get.find<VoiceCallController>()
-                                                  .messageC
-                                                  .isNotEmpty
-                                              ? AppDimensions.width(210) +
+                                                  .isConverssionStarted
+                                                  .isTrue
+                                              ? AppDimensions.width(185) +
                                                   (_animationController.value *
                                                       40)
-                                              : AppDimensions.width(210),
+                                              : AppDimensions.width(185),
                                       height:
                                           Get.find<VoiceCallController>()
-                                                  .messageC
-                                                  .isNotEmpty
-                                              ? AppDimensions.height(210) +
+                                                  .isConverssionStarted
+                                                  .isTrue
+                                              ? AppDimensions.height(185) +
                                                   (_animationController.value *
                                                       40)
-                                              : AppDimensions.height(210),
+                                              : AppDimensions.height(185),
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: const Color(
@@ -294,27 +315,27 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                 ),
                               ),
                               Positioned(
-                                top: 5,
+                                top: 26,
                                 child: AnimatedBuilder(
                                   animation: _animationController,
                                   builder: (context, child) {
                                     return Container(
                                       width:
                                           Get.find<VoiceCallController>()
-                                                  .messageC
-                                                  .isNotEmpty
-                                              ? AppDimensions.width(170) +
+                                                  .isConverssionStarted
+                                                  .isTrue
+                                              ? AppDimensions.width(140) +
                                                   (_animationController.value *
                                                       40)
-                                              : AppDimensions.width(170),
+                                              : AppDimensions.width(140),
                                       height:
                                           Get.find<VoiceCallController>()
-                                                  .messageC
-                                                  .isNotEmpty
-                                              ? AppDimensions.height(170) +
+                                                  .isConverssionStarted
+                                                  .isTrue
+                                              ? AppDimensions.height(140) +
                                                   (_animationController.value *
                                                       40)
-                                              : AppDimensions.height(170),
+                                              : AppDimensions.height(140),
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: const Color(
@@ -326,13 +347,13 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                 ),
                               ),
                               Positioned(
-                                top: 10,
+                                top: 34,
                                 child: Stack(
                                   children: [
                                     Container(
                                       padding: EdgeInsets.all(6),
-                                      width: AppDimensions.width(152),
-                                      height: AppDimensions.height(152),
+                                      width: AppDimensions.width(122),
+                                      height: AppDimensions.height(122),
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.grey[300],
@@ -364,7 +385,6 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                     Positioned(
                                       bottom: 0,
                                       right: 25,
-
                                       child: Column(
                                         children: [
                                           Container(
@@ -403,7 +423,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
               ],
             ),
 
-            SizedBox(height: AppDimensions.height(AppDimensions.height(180))),
+            SizedBox(height: AppDimensions.height(AppDimensions.height(120))),
           ],
         ),
       ),

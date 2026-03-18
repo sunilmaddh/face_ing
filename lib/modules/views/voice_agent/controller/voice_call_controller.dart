@@ -16,11 +16,16 @@ class VoiceCallController extends GetxController {
   RxString tenant = "".obs;
   RxString agentId = "".obs;
   RxString streamId = "".obs;
+  RxBool isConverssionStarted = false.obs;
   Rx<WebhookResponse> webhookResponse = WebhookResponse().obs;
   @override
   void onInit() async {
     // await requestMicPermission();
     super.onInit();
+  }
+
+  void setConverssionFlag() {
+    isConverssionStarted(true);
   }
 
   Future<void> getCredentials({
