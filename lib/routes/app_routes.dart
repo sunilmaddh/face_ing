@@ -31,5 +31,7 @@ class AppRoutes {
       pulseScreen = "/pulse_screen",
       voiceScreen = "/voice_screen",
       analyzingHealthData = '/analyzing_health_data',
+      phqResultScreen = '/phq_result_screen',
+      aiSessionScreen = '/ai_session_screen',
       pulseSuccess = '/pulse_sucess';
 }

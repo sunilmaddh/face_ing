@@ -50,5 +50,6 @@ class ApiEndpoints {
       voiceAgent = "/voiceAgent",
       kintsugiInitiate = "/kintsugi/initiate",
       kintsugiQuestionnaires = "/kintsugi/questionnaires",
+      kintsugiSessions = "/kintsugi/sessions",
       refreshToken = '/getTokenByRefreshToken';
 }

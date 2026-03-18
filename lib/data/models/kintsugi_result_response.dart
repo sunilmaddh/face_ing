@@ -13,9 +13,7 @@ class KintsigiRusltResponse {
   String? success;
   String? msg;
   Result? result;
-
   KintsigiRusltResponse({this.success, this.msg, this.result});
-
   factory KintsigiRusltResponse.fromJson(Map<String, dynamic> json) =>
       KintsigiRusltResponse(
         success: UtilMethods.stringParser(json["success"]),

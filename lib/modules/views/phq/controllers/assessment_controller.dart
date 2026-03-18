@@ -12,9 +12,8 @@ class AssessmentController extends GetxController {
   final phq2Answers = <int>[].obs;
   final phq9Answers = <int>[].obs;
   final gad7Answers = <int>[].obs;
-
+  RxBool isFromHomeScreen = false.obs;
   RxString createDate = "".obs;
-
   final _phqServices = PhqServices();
   final isLoading = false.obs;
   final sessionId = ''.obs;
@@ -76,6 +75,31 @@ class AssessmentController extends GetxController {
         depressionResponse.value = result.result!.depression!;
         anxietyResponse.value = result.result!.anxiety!;
         createDate.value = result.result!.createdAt!;
+        isGettingResult(false);
+        return response['responseBody'];
+      } else {
+        isGettingResult(false);
+      }
+    } catch (e) {
+      isGettingResult(false);
+    }
+  }
+
+  Future<void> getSession() async {
+    try {
+      isGettingResult(true);
+      final response = await _phqServices.getSession();
+      if (response['statusCode'] == 200) {
+        var result = KintsigiRusltResponse.fromJson(
+          response[AppConstents.response],
+        );
+        debugPrint(result.toString());
+        depressionResponse.value = result.result!.depression!;
+        anxietyResponse.value = result.result!.anxiety!;
+        createDate.value = result.result!.createdAt!;
+        debugPrint(
+          "Depression ${depressionResponse.value.aiPrediction.toString()}",
+        );
         isGettingResult(false);
         return response['responseBody'];
       } else {
