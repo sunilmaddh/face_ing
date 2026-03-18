@@ -161,39 +161,39 @@ class Phq9QuestionsScreen extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
-            bottom: 16,
-            right: 16,
-            child: Obx(
-              () => GestureDetector(
-                onTap:
-                    controller.allPh9QuestionsAnswered
-                        ? () {
-                          assessmentController.setPhq9Answers(
-                            controller.selectedPh9Answers,
-                          );
-                          Get.to(() => const Gad7QuestionsScreen());
-                        }
-                        : null,
-                child: Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color:
-                        controller.allPh9QuestionsAnswered
-                            ? AppColors.primary
-                            : Colors.grey,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 16,
+          //   right: 16,
+          //   child: Obx(
+          //     () => GestureDetector(
+          //       onTap:
+          //           controller.allPh9QuestionsAnswered
+          //               ? () {
+          //                 assessmentController.setPhq9Answers(
+          //                   controller.selectedPh9Answers,
+          //                 );
+          //                 Get.to(() => const Gad7QuestionsScreen());
+          //               }
+          //               : null,
+          //       child: Container(
+          //         width: 56,
+          //         height: 56,
+          //         decoration: BoxDecoration(
+          //           color:
+          //               controller.allPh9QuestionsAnswered
+          //                   ? AppColors.primary
+          //                   : Colors.grey,
+          //           shape: BoxShape.circle,
+          //         ),
+          //         child: const Icon(
+          //           Icons.arrow_forward,
+          //           color: Colors.white,
+          //           size: 24,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
