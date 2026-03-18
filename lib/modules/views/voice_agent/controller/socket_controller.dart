@@ -18,7 +18,7 @@ class SocketController extends GetxController {
   var messages = <String>[].obs;
   var isConnected = false.obs;
   var isLastEndCall = false.obs;
-  var isMicMute = false.obs;
+  RxBool isMicMute = false.obs;
   RxDouble progress = 0.0.obs;
   double maxDuration = 60.0;
 
@@ -75,7 +75,6 @@ class SocketController extends GetxController {
       "wss://dev.sourcebytes.ai/ws/v1/web/voice_agent/$tenantId/$botId/$streamId/",
     );
     isConnected.value = true;
-
     _service.stream?.listen(
       (data) async {
         messages.add(data.toString());

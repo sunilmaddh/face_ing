@@ -95,7 +95,11 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                           /// Mic Button
                           GestureDetector(
                             onTap: () {
-                              socketController.isMicMute.toggle();
+                              if (socketController.isMicMute.isTrue) {
+                                socketController.isMicMute(false);
+                              } else {
+                                socketController.isMicMute(true);
+                              }
                             },
                             child: Container(
                               width: AppDimensions.width(48),
