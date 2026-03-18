@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -37,7 +38,7 @@ class NativeMicSender {
         }
 
         final b64 = base64Encode(pcmBytes);
-
+        debugPrint("From native $b64");
         if (Get.find<SocketController>().isMicMute.isFalse) {
           final msg = {
             "type": "mic_chunk",

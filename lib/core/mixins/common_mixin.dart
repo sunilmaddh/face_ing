@@ -35,7 +35,6 @@ mixin CommonMixin on GetxController {
   RxList<HealthDetailList> heartRateVariability = <HealthDetailList>[].obs;
   RxList<HealthDetailList> advancedHeartRateVariability =
       <HealthDetailList>[].obs;
-
   RxBool imageLoading = false.obs;
   Future<void> uploadProfileFromGallery(
     String imageType,

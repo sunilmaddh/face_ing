@@ -6,6 +6,8 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
     private var eventSink: FlutterEventSink?
     private var audioEngine: AVAudioEngine?
+    private var audioConverter: AVAudioConverter?
+    private var targetFormat: AVAudioFormat?
     private var isCapturing = false
     private var debug = true
 
@@ -48,8 +50,6 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
 
-        log("📩 Method call: \(call.method)")
-
         switch call.method {
 
         case "startCapture":
@@ -70,22 +70,16 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     private func requestMicPermission(completion: @escaping (Bool) -> Void) {
         let session = AVAudioSession.sharedInstance()
 
-        log("🔐 Permission status: \(session.recordPermission.rawValue)")
-
         switch session.recordPermission {
         case .granted:
-            log("✅ Permission already granted")
             completion(true)
 
         case .denied:
-            log("❌ Permission denied")
             completion(false)
 
         case .undetermined:
-            log("⏳ Requesting permission...")
             session.requestRecordPermission { granted in
                 DispatchQueue.main.async {
-                    self.log("🔐 Permission result: \(granted)")
                     completion(granted)
                 }
             }
@@ -99,16 +93,11 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
     private func startCapture() {
 
-        log("🚀 startCapture called")
-
-        if isCapturing {
-            log("⚠️ Already capturing")
-            return
-        }
+        if isCapturing { return }
 
         requestMicPermission { granted in
             if !granted {
-                self.log("❌ Permission denied")
+                self.log("❌ Mic permission denied")
                 return
             }
 
@@ -120,49 +109,51 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         }
     }
 
-    // MARK: - Start Engine
+    // MARK: - Audio Engine Setup
 
     private func startAudioEngine() throws {
 
         let session = AVAudioSession.sharedInstance()
 
-        log("🔊 Configuring audio session...")
-
+        // 🔥 IMPORTANT: Play + Record + Speaker
         try session.setCategory(
             .playAndRecord,
             mode: .voiceChat,
-            options: [.defaultToSpeaker,.allowBluetooth, .allowBluetoothA2DP]
+            options: [.defaultToSpeaker, .allowBluetooth, .allowBluetoothA2DP]
         )
 
         try session.setActive(true)
 
-        log("✅ Audio session active")
+        try session.overrideOutputAudioPort(.speaker)
 
-        // Routing
-        routeAudio()
+        log("🔊 Audio session configured")
 
-        // Debug route
-        let route = session.currentRoute
-        for input in route.inputs {
-            log("🎤 INPUT: \(input.portType.rawValue)")
-        }
-        for output in route.outputs {
-            log("🔊 OUTPUT: \(output.portType.rawValue)")
-        }
-
-        // Engine
         audioEngine = AVAudioEngine()
         guard let engine = audioEngine else { return }
 
         let inputNode = engine.inputNode
-        let format = inputNode.outputFormat(forBus: 0)
+        let inputFormat = inputNode.outputFormat(forBus: 0)
 
-        log("🎧 Input format: \(format.sampleRate) Hz, channels: \(format.channelCount)")
+        log("🎧 Input format: \(inputFormat.sampleRate) Hz, channels: \(inputFormat.channelCount)")
+
+        // 🎯 Target format (24kHz, mono, PCM16)
+        targetFormat = AVAudioFormat(
+            commonFormat: .pcmFormatInt16,
+            sampleRate: 24000,
+            channels: 1,
+            interleaved: true
+        )
+
+        guard let targetFormat = targetFormat else {
+            log("❌ Failed to create target format")
+            return
+        }
+
+        audioConverter = AVAudioConverter(from: inputFormat, to: targetFormat)
 
         inputNode.removeTap(onBus: 0)
 
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
-            self.log("🎧 BUFFER RECEIVED size: \(buffer.frameLength)")
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: inputFormat) { buffer, _ in
             self.processAudioBuffer(buffer: buffer)
         }
 
@@ -170,34 +161,58 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         try engine.start()
 
         isCapturing = true
-        log("🎤 ENGINE STARTED SUCCESSFULLY")
+        log("🎤 Capture started")
     }
 
-    // MARK: - Process Audio
+    // MARK: - Process Buffer (🔥 MAIN FIX)
 
     private func processAudioBuffer(buffer: AVAudioPCMBuffer) {
 
-        guard let floatData = buffer.floatChannelData else {
-            log("❌ No float data")
+        guard let converter = audioConverter,
+              let targetFormat = targetFormat else {
+            log("❌ Converter not ready")
             return
         }
 
-        let channel = floatData.pointee
-        let frameLength = Int(buffer.frameLength)
+        let frameCapacity = AVAudioFrameCount(2400) // ~100ms chunk
 
-        var pcmData = Data(capacity: frameLength * 2)
-
-        for i in 0..<frameLength {
-            let sample = channel[i]
-            let clamped = max(-1.0, min(1.0, sample))
-            var intSample = Int16(clamped * Float(Int16.max))
-            pcmData.append(Data(bytes: &intSample, count: 2))
+        guard let convertedBuffer = AVAudioPCMBuffer(
+            pcmFormat: targetFormat,
+            frameCapacity: frameCapacity
+        ) else {
+            log("❌ Buffer creation failed")
+            return
         }
 
-        log("📦 Sending PCM size: \(pcmData.count)")
+        var error: NSError?
+
+        let inputBlock: AVAudioConverterInputBlock = { _, outStatus in
+            outStatus.pointee = .haveData
+            return buffer
+        }
+
+        converter.convert(to: convertedBuffer, error: &error, withInputFrom: inputBlock)
+
+        if let error = error {
+            log("❌ Conversion error: \(error)")
+            return
+        }
+
+        guard let channelData = convertedBuffer.int16ChannelData else {
+            log("❌ No Int16 data")
+            return
+        }
+
+        let channel = channelData.pointee
+        let frameLength = Int(convertedBuffer.frameLength)
+
+        let data = Data(
+            bytes: channel,
+            count: frameLength * MemoryLayout<Int16>.size
+        )
 
         DispatchQueue.main.async {
-            self.eventSink?(FlutterStandardTypedData(bytes: pcmData))
+            self.eventSink?(FlutterStandardTypedData(bytes: data))
         }
     }
 
@@ -205,44 +220,18 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
     private func stopCapture() {
 
-        log("🛑 stopCapture called")
-
         if !isCapturing { return }
 
         audioEngine?.inputNode.removeTap(onBus: 0)
         audioEngine?.stop()
         audioEngine = nil
 
+        audioConverter = nil
+        targetFormat = nil
+
         isCapturing = false
 
         log("🛑 Capture stopped")
-    }
-
-    // MARK: - Routing
-
-    private func routeAudio() {
-
-        let session = AVAudioSession.sharedInstance()
-
-        let hasHeadphones = session.currentRoute.outputs.contains {
-            $0.portType == .headphones ||
-            $0.portType == .bluetoothA2DP ||
-            $0.portType == .bluetoothHFP
-        }
-
-        do {
-            if hasHeadphones {
-                log("🎧 Using earphones")
-            } else {
-                try session.overrideOutputAudioPort(.speaker)
-                log("🔊 Using speaker")
-            }
-
-            try session.setPreferredInput(nil)
-
-        } catch {
-            log("❌ Routing error: \(error)")
-        }
     }
 
     // MARK: - Log
