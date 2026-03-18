@@ -1,8 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-class CircularProgressWithDot extends StatelessWidget {
-  final double progress; // 0.0 - 1.0
+class CircularProgressWithDot extends StatefulWidget {
+  final double time;
+  final double maxDuration;
   final double size;
   final double strokeWidth;
   final Color progressColor;
@@ -10,7 +11,8 @@ class CircularProgressWithDot extends StatelessWidget {
 
   const CircularProgressWithDot({
     super.key,
-    required this.progress,
+    required this.time,
+    this.maxDuration = 60.0,
     this.size = 200,
     this.strokeWidth = 12,
     this.progressColor = Colors.blue,
@@ -18,16 +20,34 @@ class CircularProgressWithDot extends StatelessWidget {
   });
 
   @override
+  State<CircularProgressWithDot> createState() =>
+      _CircularProgressWithDotState();
+}
+
+class _CircularProgressWithDotState extends State<CircularProgressWithDot> {
+  double oldProgress = 0.0;
+
+  double get newProgress {
+    return (widget.time / widget.maxDuration).clamp(0.0, 1.00);
+  }
+
+  @override
+  void didUpdateWidget(covariant CircularProgressWithDot oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    oldProgress = (oldWidget.time / widget.maxDuration).clamp(0.0, 1.0);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: size,
-      width: size,
+      height: widget.size,
+      width: widget.size,
       child: CustomPaint(
         painter: _CirclePainter(
-          progress,
-          strokeWidth,
-          progressColor,
-          backgroundColor,
+          widget.time,
+          widget.strokeWidth,
+          widget.progressColor,
+          widget.backgroundColor,
         ),
       ),
     );
@@ -67,24 +87,22 @@ class _CirclePainter extends CustomPainter {
 
     Rect rect = Rect.fromCircle(center: center, radius: radius);
 
-    // Background circle
+    // Background
     canvas.drawArc(rect, 0, 2 * pi, false, background);
 
-    // Progress arc
+    // Progress
     double sweepAngle = 2 * pi * progress;
     canvas.drawArc(rect, -pi / 2, sweepAngle, false, progressPaint);
 
-    // Dot position
+    // Dot
     double angle = -pi / 2 + sweepAngle;
 
     double x = center.dx + radius * cos(angle);
     double y = center.dy + radius * sin(angle);
 
-    // Outer border (same color as progress)
     Paint borderPaint = Paint()..color = progressColor;
     canvas.drawCircle(Offset(x, y), strokeWidth / 1.2, borderPaint);
 
-    // Inner white circle
     Paint innerPaint = Paint()..color = Colors.white;
     canvas.drawCircle(Offset(x, y), strokeWidth / 2, innerPaint);
   }
