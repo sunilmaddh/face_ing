@@ -15,7 +15,6 @@ import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
 class AppBindings extends Bindings {
   @override
   void dependencies() {
-    // Get.lazyPut<ApiServices>(() => ApiServices(), fenix: true);
     Get.put(LandingController());
     Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
     Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);

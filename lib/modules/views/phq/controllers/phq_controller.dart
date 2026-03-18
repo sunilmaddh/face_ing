@@ -3,7 +3,6 @@ import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/kintsungi_questionaries_response.dart';
 import 'package:ntt_data/data/repository/services/voice_service.dart';
-import '../models/phq_model.dart';
 
 class PhqController extends GetxController {
   final currentQuestionIndex = 0.obs;
@@ -38,32 +37,6 @@ class PhqController extends GetxController {
       isLoading(false);
     }
   }
-
-  final PhqAssessment assessment = PhqAssessment(
-    type: 'phq-2',
-    questions: [
-      PhqQuestion(
-        question:
-            'Over the last 2 weeks, how often have you been bothered by little interest or pleasure in doing things?',
-        options: [
-          PhqOption(value: 0, response: 'Not at all'),
-          PhqOption(value: 1, response: 'Several days'),
-          PhqOption(value: 2, response: 'More than half the days'),
-          PhqOption(value: 3, response: 'Nearly every day'),
-        ],
-      ),
-      PhqQuestion(
-        question:
-            'Over the last 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless?',
-        options: [
-          PhqOption(value: 0, response: 'Not at all'),
-          PhqOption(value: 1, response: 'Several days'),
-          PhqOption(value: 2, response: 'More than half the days'),
-          PhqOption(value: 3, response: 'Nearly every day'),
-        ],
-      ),
-    ],
-  );
 
   void selectPhTwoAnswer(int questionIndex, int value) {
     selectedPhTwoAnswers[questionIndex] = value;
@@ -107,8 +80,4 @@ class PhqController extends GetxController {
       currentQuestionIndex.value--;
     }
   }
-
-  // int getTotalScore() {
-  //   return selectedAnswers.values.fold(0, (sum, value) => sum + value);
-  // }
 }

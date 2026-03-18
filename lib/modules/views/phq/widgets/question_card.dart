@@ -19,21 +19,3 @@ class QuestionCard extends StatelessWidget {
     );
   }
 }
-// Column(
-//         children: [
-//           Text(
-//             question,
-//             textAlign: TextAlign.center,
-//             style: const TextStyle(
-//               color: Color(0xFF2196F3),
-//               fontSize: 18,
-//               fontWeight: FontWeight.w500,
-//             ),
-//           ),
-//           const SizedBox(height: 8),
-//           Text(
-//             speaker,
-//             style: const TextStyle(color: AppColors.primary, fontSize: 14),
-//           ),
-//         ],
-//       ),
