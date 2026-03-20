@@ -54,6 +54,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
     socketController.disconnect();
     Get.find<VoiceCallController>().isConverssionStarted(false);
     AppMethods().toggleWakelock(false);
+    socketController.progress.value = 0.0;
     super.dispose();
   }
 
@@ -95,7 +96,11 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                           /// Mic Button
                           GestureDetector(
                             onTap: () {
-                              socketController.isMicMute.toggle();
+                              if (socketController.isMicMute.isFalse) {
+                                socketController.isMicMute(true);
+                              } else {
+                                socketController.isMicMute(false);
+                              }
                             },
                             child: Container(
                               width: AppDimensions.width(48),

@@ -81,6 +81,7 @@ class SocketController extends GetxController {
         messages.add(data.toString());
 
         final datas = jsonDecode(data);
+        debugPrint("Event ${datas["event"]}");
         if (datas['type'] == 'agent_audio') {
           if (isSessionEnding) return;
           final payload = datas['audio'] as String;
@@ -168,6 +169,7 @@ class SocketController extends GetxController {
     _pendingAgentChunks.clear();
     _prebufferFlushTimer?.cancel();
     _prebufferFlushTimer = null;
+    progress.value = 0.0;
   }
 
   Future<void> disconnect() async {
@@ -180,7 +182,8 @@ class SocketController extends GetxController {
     _pendingAgentChunks.clear();
     _prebufferFlushTimer?.cancel();
     _prebufferFlushTimer = null;
-    progress.value = 0.0;
+    isMicMute.value = false;
+    // progress.value = 0.0;
     // Get.find<VoiceCallController>().messageC.value = "";
   }
 

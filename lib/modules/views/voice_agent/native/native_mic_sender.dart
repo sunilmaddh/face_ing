@@ -14,6 +14,7 @@ class NativeMicSender {
   StreamSubscription? _sub;
   bool _subscribed = false;
   bool _captureStarted = false;
+  String b64 = "";
 
   NativeMicSender(
     this.streamId, {
@@ -36,19 +37,18 @@ class NativeMicSender {
           return;
         }
 
-        final b64 = base64Encode(pcmBytes);
-
+        b64 = "";
         if (Get.find<SocketController>().isMicMute.isFalse) {
-          final msg = {
-            "type": "mic_chunk",
-            "track": "user_voice",
-            "stream_sid": streamId,
-            "audio": b64,
-            "sample_rate": 24000,
-          };
-
-          ws.sink.add(jsonEncode(msg));
+          b64 = base64Encode(pcmBytes);
         }
+        final msg = {
+          "type": "mic_chunk",
+          "track": "user_voice",
+          "stream_sid": streamId,
+          "audio": b64,
+          "sample_rate": 24000,
+        };
+        ws.sink.add(jsonEncode(msg));
 
         if (debug) {
           print("🎤 native mic frame sent bytes=${pcmBytes.length}");
