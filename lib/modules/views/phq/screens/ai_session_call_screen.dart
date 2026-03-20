@@ -177,106 +177,97 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
       backgroundColor: Colors.white,
 
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
             SizedBox(height: AppDimensions.height(10)),
             Obx(
               () =>
                   Get.find<VoiceCallController>().messageC.isNotEmpty
-                      ? QuestionCard(
-                        widget: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CommonText.text(
-                              Get.find<VoiceCallController>().agentName.value,
-                              fontFamily: "Manrope",
-                              fontWeight: FontWeight.w600,
-                              fontSize: AppDimensions.font(14),
-                              color: AppColors.primary.withOpacity(0.6),
-                            ),
-                            SizedBox(height: AppDimensions.height(10)),
-                            SizedBox(
-                              width: double.infinity,
-                              height: AppDimensions.height(160),
-                              child: VerticalAutoScroll(
-                                text:
-                                    Get.find<VoiceCallController>()
-                                        .messageC
-                                        .value,
+                      ? Padding(
+                        padding: AppDimensions.only(top: 30),
+                        child: QuestionCard(
+                          widget: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CommonText.text(
+                                Get.find<VoiceCallController>().agentName.value,
+                                fontFamily: "Manrope",
+                                fontWeight: FontWeight.w600,
+                                fontSize: AppDimensions.font(14),
+                                color: AppColors.primary.withOpacity(0.6),
                               ),
-                            ),
-                            SizedBox(height: 0),
-                          ],
+                              SizedBox(height: AppDimensions.height(10)),
+                              Container(
+                                width: double.infinity,
+                                constraints: BoxConstraints(
+                                  maxHeight: AppDimensions.height(140),
+                                ),
+                                child: VerticalAutoScroll(
+                                  text:
+                                      Get.find<VoiceCallController>()
+                                          .messageC
+                                          .value,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       )
-                      : SizedBox(height: AppDimensions.height(160)),
+                      : SizedBox(height: AppDimensions.height(140)),
             ),
             SizedBox(height: AppDimensions.height(20)),
-            Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    height: AppDimensions.height(340),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Obx(() {
-                                final isStarted =
-                                    voiceController.isConverssionStarted.isTrue;
-                                final progressTime =
-                                    socketController.progress.value;
+            Padding(
+              padding: AppDimensions.only(top: 90),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      height: AppDimensions.height(340),
+                      child: Center(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Obx(() {
+                              final isStarted =
+                                  voiceController.isConverssionStarted.isTrue;
+                              final progressTime =
+                                  socketController.progress.value;
 
-                                return AnimatedBuilder(
-                                  animation: _animationController,
-                                  builder: (context, child) {
-                                    return SizedBox(
-                                      width:
-                                          isStarted
-                                              ? AppDimensions.width(270) +
-                                                  (_animationController.value *
-                                                      40)
-                                              : AppDimensions.width(270),
-                                      height:
-                                          isStarted
-                                              ? AppDimensions.height(270) +
-                                                  (_animationController.value *
-                                                      40)
-                                              : AppDimensions.height(270),
-                                      child: CircularProgressWithDot(
-                                        time: progressTime,
-                                      ),
-                                    );
-                                  },
-                                );
-                              }),
-                              AnimatedBuilder(
+                              return AnimatedBuilder(
                                 animation: _animationController,
                                 builder: (context, child) {
+                                  final extra =
+                                      isStarted
+                                          ? (_animationController.value * 40)
+                                          : 0.0;
+
+                                  return SizedBox(
+                                    width: AppDimensions.width(270) + extra,
+                                    height: AppDimensions.height(270) + extra,
+                                    child: CircularProgressWithDot(
+                                      time: progressTime,
+                                    ),
+                                  );
+                                },
+                              );
+                            }),
+
+                            Obx(() {
+                              final isStarted =
+                                  voiceController.isConverssionStarted.isTrue;
+
+                              return AnimatedBuilder(
+                                animation: _animationController,
+                                builder: (context, child) {
+                                  final extra =
+                                      isStarted
+                                          ? (_animationController.value * 40)
+                                          : 0.0;
+
                                   return Container(
-                                    width:
-                                        Get.find<VoiceCallController>()
-                                                .isConverssionStarted
-                                                .isTrue
-                                            ? AppDimensions.width(240) +
-                                                (_animationController.value *
-                                                    40)
-                                            : AppDimensions.width(240),
-                                    height:
-                                        Get.find<VoiceCallController>()
-                                                .isConverssionStarted
-                                                .isTrue
-                                            ? AppDimensions.height(240) +
-                                                (_animationController.value *
-                                                    40)
-                                            : AppDimensions.height(240),
+                                    width: AppDimensions.width(240) + extra,
+                                    height: AppDimensions.height(240) + extra,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: const Color(
@@ -285,146 +276,122 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                     ),
                                   );
                                 },
-                              ),
-                              Positioned(
-                                top: 17,
-                                child: AnimatedBuilder(
-                                  animation: _animationController,
-                                  builder: (context, child) {
-                                    return Container(
-                                      width:
-                                          Get.find<VoiceCallController>()
-                                                  .isConverssionStarted
-                                                  .isTrue
-                                              ? AppDimensions.width(185) +
-                                                  (_animationController.value *
-                                                      40)
-                                              : AppDimensions.width(185),
-                                      height:
-                                          Get.find<VoiceCallController>()
-                                                  .isConverssionStarted
-                                                  .isTrue
-                                              ? AppDimensions.height(185) +
-                                                  (_animationController.value *
-                                                      40)
-                                              : AppDimensions.height(185),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: const Color(
-                                          0xFF2196F3,
-                                        ).withOpacity(0.15),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                              Positioned(
-                                top: 26,
-                                child: AnimatedBuilder(
-                                  animation: _animationController,
-                                  builder: (context, child) {
-                                    return Container(
-                                      width:
-                                          Get.find<VoiceCallController>()
-                                                  .isConverssionStarted
-                                                  .isTrue
-                                              ? AppDimensions.width(140) +
-                                                  (_animationController.value *
-                                                      40)
-                                              : AppDimensions.width(140),
-                                      height:
-                                          Get.find<VoiceCallController>()
-                                                  .isConverssionStarted
-                                                  .isTrue
-                                              ? AppDimensions.height(140) +
-                                                  (_animationController.value *
-                                                      40)
-                                              : AppDimensions.height(140),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: const Color(
-                                          0xFF2196F3,
-                                        ).withOpacity(0.25),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                              Positioned(
-                                top: 34,
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(6),
-                                      width: AppDimensions.width(122),
-                                      height: AppDimensions.height(122),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.grey[300],
-                                        border: Border.all(
-                                          color: Colors.white,
-                                          width: 5,
-                                        ),
-                                      ),
-                                      child: Obx(
-                                        () => ClipOval(
-                                          // borderRadius:
-                                          //     BorderRadiusGeometry.circular(
-                                          //       50,
-                                          //     ),
-                                          child: CachedNetworkImage(
-                                            fit: BoxFit.fill,
-                                            imageUrl:
-                                                Get.find<VoiceCallController>()
-                                                    .agentImage
-                                                    .value,
-                                            placeholder: (context, url) {
-                                              return CircularProgressIndicator();
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                              );
+                            }),
 
-                                    Positioned(
-                                      bottom: 0,
-                                      right: 25,
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: AppDimensions.width(25),
-                                            height: AppDimensions.height(25),
-                                            // padding: const EdgeInsets.all(
-                                            //   6,
-                                            // ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF2196F3),
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: Colors.white,
-                                                width: 2,
-                                              ),
-                                            ),
-                                            child: const Icon(
-                                              Icons.graphic_eq,
-                                              color: Colors.white,
-                                              size: 15,
-                                            ),
-                                          ),
-                                        ],
+                            Obx(() {
+                              final isStarted =
+                                  voiceController.isConverssionStarted.isTrue;
+
+                              return AnimatedBuilder(
+                                animation: _animationController,
+                                builder: (context, child) {
+                                  final extra =
+                                      isStarted
+                                          ? (_animationController.value * 40)
+                                          : 0.0;
+
+                                  return Container(
+                                    width: AppDimensions.width(185) + extra,
+                                    height: AppDimensions.height(185) + extra,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: const Color(
+                                        0xFF2196F3,
+                                      ).withOpacity(0.15),
+                                    ),
+                                  );
+                                },
+                              );
+                            }),
+
+                            Obx(() {
+                              final isStarted =
+                                  voiceController.isConverssionStarted.isTrue;
+
+                              return AnimatedBuilder(
+                                animation: _animationController,
+                                builder: (context, child) {
+                                  final extra =
+                                      isStarted
+                                          ? (_animationController.value * 40)
+                                          : 0.0;
+
+                                  return Container(
+                                    width: AppDimensions.width(140) + extra,
+                                    height: AppDimensions.height(140) + extra,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: const Color(
+                                        0xFF2196F3,
+                                      ).withOpacity(0.25),
+                                    ),
+                                  );
+                                },
+                              );
+                            }),
+
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(6),
+                                  width: AppDimensions.width(122),
+                                  height: AppDimensions.height(122),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.grey[300],
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 5,
+                                    ),
+                                  ),
+                                  child: Obx(
+                                    () => ClipOval(
+                                      child: CachedNetworkImage(
+                                        fit: BoxFit.fill,
+                                        imageUrl:
+                                            voiceController.agentImage.value,
+                                        placeholder: (context, url) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+
+                                Positioned(
+                                  bottom: 0,
+                                  right: 10,
+                                  child: Container(
+                                    width: AppDimensions.width(25),
+                                    height: AppDimensions.height(25),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF2196F3),
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.graphic_eq,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
 
             SizedBox(height: AppDimensions.height(AppDimensions.height(120))),
