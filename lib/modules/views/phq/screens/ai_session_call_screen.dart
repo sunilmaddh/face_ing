@@ -7,8 +7,6 @@ import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/views/phq/controllers/aisession_controller.dart';
 import 'package:ntt_data/modules/views/phq/widgets/circular_progress_Painter.dart';
-import 'package:ntt_data/modules/views/phq/widgets/linear_progress_bar_with_dot.dart';
-import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
 import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/controller/voice_call_controller.dart';
 import 'package:ntt_data/modules/views/voice_agent/vertically_scroll_text.dart';
