@@ -54,35 +54,6 @@ class AppConstents {
       "We’re having trouble connecting to the server. Please check your internet connection and try again.",
   termMeassaga =
       "Accept to the legal terms by clicking on the check box to be able to provide services";
-  static const String breathingRate = 'Breathing Rate';
-  static const String pulseRate = 'Pulse Rate (Heart Rate)';
-  static const String prq = 'PRQ';
-  static const String bloodPressure = 'Blood Pressure';
-  static const String bloodPressureSystolic = 'Blood Pressure Systolic';
-  static const String bloodPressureDiastolic = 'Blood Pressure Diastolic';
-  static const String oxygenSaturation = 'Oxygen Saturation';
-  static const String hemoglobin = 'Hemoglobin';
-  static const String hemoglobinA1C = 'Hemoglobin A1C';
-  static const String ascvdRisk = 'ASCVD Risk';
-  static const String heartAge = 'Heart Age';
-  static const String highBloodPressureRisk = 'High Blood Pressure Risk';
-  static const String highHbA1cRisk = 'High HbA1c Risk';
-  static const String highFastingGlucoseRisk = 'High Fasting Glucose Risk';
-  static const String highTotalCholesterolRisk = 'High Total Cholesterol Risk';
-  static const String lowHemoglobinRisk = 'Low Hemoglobin Risk';
-  static const String stressLevel = 'Stress Level';
-  static const String stressIndex = 'Stress Index';
-  static const String normalizedStressIndex = 'Normalized Stress Index';
-  static const String hrvSdnn = 'HRV SDNN';
-  static const String meanRRi = 'Mean RRi';
-  static const String rmssd = 'RMSSD';
-  static const String recoveryAbility = 'Recovery Ability (PNS Zone)';
-  static const String pnsIndex = 'PNS Index';
-  static const String stressResponse = 'Stress Response (SNS Zone)';
-  static const String snsIndex = 'SNS Index';
-  static const String sd1 = 'SD1';
-  static const String sd2 = 'SD2';
-  static const String lfHf = 'LF/HF';
-  static const String rriData = 'RRi Data';
+
   static Size deviceSize = Size(375, 812);
 }
