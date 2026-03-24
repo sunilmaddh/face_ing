@@ -123,29 +123,29 @@ class _GeustUserHistoryScreenState extends State<GeustUserHistoryScreen> {
                               },
                               guestOptionList: AppMethods().guestOptionList,
                               onOptionList: (value) async {
-                                if (value == "Photo") {
-                                  await AppMethods().editProfilePicture(
-                                    _controller,
-                                    result.guestId,
-                                    "true",
-                                    () {
-                                      _controller.getGeustHistory();
-                                    },
-                                  );
-                                } else {
-                                  ProfileHelper().retainedData(
-                                    name: result.name.toString(),
-                                    weight: result.weight.toString(),
-                                    height: result.height.toString(),
-                                    gender: result.gender.toString(),
-                                    dob: result.dob.toString(),
-                                    smokerType: result.smokerType.toString(),
-                                    guestId: result.guestId.toString(),
-                                    userFlag: "false",
-                                    levelName: "Patient ID",
-                                    emailId: result.email.toString(),
-                                  );
-                                }
+                                // if (value == "Photo") {
+                                //   await AppMethods().editProfilePicture(
+                                //     _controller,
+                                //     result.guestId,
+                                //     "true",
+                                //     () {
+                                //       _controller.getGeustHistory();
+                                //     },
+                                //   );
+                                // } else {
+                                //   ProfileHelper().retainedData(
+                                //     name: result.name.toString(),
+                                //     weight: result.weight.toString(),
+                                //     height: result.height.toString(),
+                                //     gender: result.gender.toString(),
+                                //     dob: result.dob.toString(),
+                                //     smokerType: result.smokerType.toString(),
+                                //     guestId: result.guestId.toString(),
+                                //     userFlag: "false",
+                                //     levelName: "Patient ID",
+                                //     emailId: result.email.toString(),
+                                //   );
+                                // }
                               },
                             ),
                           );

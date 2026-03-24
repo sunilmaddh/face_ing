@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/data/models/ai_reccamandation_response.dart';
-import 'package:ntt_data/data/repository/services/ai_services.dart';
+import 'package:ntt_data/modules/views/ai_recommendation/repositories/ai_advice_repository.dart';
 
-class AiController extends GetxController {
-  final _aiServices = Get.put(AiServices());
+class AiAdviceController extends GetxController {
+  AiAdviceController({required this.adviceRepository});
+  final AiAdviceRepository adviceRepository;
   RxBool isAlLoading = false.obs;
   Rx<AiRecamendationResponse> airesponse = AiRecamendationResponse().obs;
 
@@ -18,12 +18,10 @@ class AiController extends GetxController {
   Future<void> aIRecamendation() async {
     try {
       isAlLoading(true);
-      Map<String, dynamic> responseData = await _aiServices.aiRecamendation();
-      int statusCode = responseData["statusCode"];
+      var responseData = await adviceRepository.getAiAdvice();
+      int statusCode = responseData.statusCode;
       if (statusCode == 200) {
-        final data = AiRecamendationResponse.fromJson(
-          responseData[AppConstents.response],
-        );
+        final data = responseData.data!;
         airesponse.value = data;
       }
     } catch (e) {

@@ -1,0 +1,161 @@
+// import 'dart:io';
+// import 'package:get/get.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+
+// enum ImagePickSource { camera, gallery }
+
+// class ProfileUploadService {
+
+//   final ImagePicker _picker = ImagePicker();
+
+//   Future<File?> pickImageFromCamera() async {
+//     XFile? image = await _picker.pickImage(source: ImageSource.camera);
+//     if (image == null) return null; // User canceled
+//     return File(image.path);
+//   }
+
+//   Future<File?> pickImageFromGallery() async {
+//     XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+//     if (image == null) return null; // User canceled
+//     return File(image.path);
+//   }
+
+//   Future<void> uploadUserProfileImage({
+//     required ImagePickSource source,
+//     required String imageType,
+//   }) async {
+//     await _uploadProfileImage(
+//       source: source,
+//       imageType: imageType,
+//       guestId: '',
+//       isGuest: false,
+//       uploadRequest: ({
+//         required File file,
+//         required String userId,
+//         required String imageType,
+//         required String guestId,
+//         required bool isGuest,
+//       }) async {
+//         return await authServices.uploadDocument(
+//           file,
+//           userId,
+//           imageType,
+//           guestId,
+//           isGuest.toString(),
+//         );
+//       },
+//     );
+//   }
+
+//   Future<void> uploadGuestProfileImage({
+//     required ImagePickSource source,
+//     required String imageType,
+//     required String guestId,
+//   }) async {
+//     await _uploadProfileImage(
+//       source: source,
+//       imageType: imageType,
+//       guestId: guestId,
+//       isGuest: true,
+//       uploadRequest: ({
+//         required File file,
+//         required String userId,
+//         required String imageType,
+//         required String guestId,
+//         required bool isGuest,
+//       }) async {
+//         return await guestService.uploadDocument(
+//           file,
+//           userId,
+//           imageType,
+//           guestId,
+//           isGuest.toString(),
+//         );
+//       },
+//     );
+//   }
+
+//   Future<void> _uploadProfileImage({
+//     required ImagePickSource source,
+//     required String imageType,
+//     required String guestId,
+//     required bool isGuest,
+//     required Future<Map<String, dynamic>> Function({
+//       required File file,
+//       required String userId,
+//       required String imageType,
+//       required String guestId,
+//       required bool isGuest,
+//     })
+//     uploadRequest,
+//   }) async {
+//     try {
+//       final pickedImage =
+//           source == ImagePickSource.camera
+//               ? await pickImageFromCamera()
+//               : await pickImageFromGallery();
+
+//       if (pickedImage == null) {
+//         isProfile.value = false;
+//         Get.snackbar("Upload Failed", "Please try again");
+//         return;
+//       }
+
+//       isProfile.value = true;
+//       imageLoading.value = true;
+
+//       final file = File(pickedImage.path);
+//       profileUrl.value = await fixExifRotation(file);
+
+//       final userId = await IndoSharedPreference.instance.getUserId();
+
+//       final responseData = await uploadRequest(
+//         file: profileUrl.value,
+//         userId: userId,
+//         imageType: imageType,
+//         guestId: guestId,
+//         isGuest: isGuest,
+//       );
+
+//       final int statusCode = responseData["responseCode"] ?? 0;
+//       debugPrint("upload statusCode: $statusCode");
+
+//       if (statusCode != 200) {
+//         Get.snackbar("Upload Failed", "Please try again");
+//         return;
+//       }
+
+//       final result = responseData["response"];
+//       uploadImageResponseModel.value = result;
+
+//       final imagePath = uploadImageResponseModel.value.imagePath ?? "";
+
+//       if (isGuest) {
+//         Get.find<GuestController>().guestImage.value = imagePath;
+//         if (guestId.isNotEmpty) {
+//           profileUrl.value = File("");
+//         }
+//       } else {
+//         userImage.value = imagePath;
+//         await IndoSharedPreference.instance.saveUserImage(imagePath);
+//       }
+
+//       AppSnackbar.show(title: "Success", message: "Profile uploaded");
+//     } catch (e) {
+//       debugPrint("_uploadProfileImage error: $e");
+//       Get.snackbar("Upload Failed", "Something went wrong");
+//     } finally {
+//       imageLoading.value = false;
+//     }
+//   }
+
+//   Future<File> fixExifRotation(File file) async {
+//     final bytes = await file.readAsBytes();
+//     final image = img.decodeImage(bytes);
+//     if (image == null) return file;
+
+//     final fixed = img.bakeOrientation(image);
+//     return await file.writeAsBytes(img.encodeJpg(fixed));
+//   }
+// }

@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
-import 'package:ntt_data/modules/views/ai/controller/ai_controller.dart';
+import 'package:ntt_data/modules/views/ai_recommendation/controller/ai_controller.dart';
+import 'package:ntt_data/modules/views/ai_recommendation/repositories/ai_advice_repository.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class AiAdviceScreen extends StatelessWidget {
   AiAdviceScreen({super.key});
-  final _controller = Get.put(AiController());
+  final _controller = Get.put(
+    AiAdviceController(adviceRepository: Get.find<AiAdviceRepository>()),
+  );
 
   @override
   Widget build(BuildContext context) {

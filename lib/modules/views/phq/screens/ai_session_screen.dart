@@ -6,9 +6,9 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/views/phq/controllers/aisession_controller.dart';
 import 'package:ntt_data/modules/views/phq/screens/ai_session_call_screen.dart';
 import 'package:ntt_data/modules/views/phq/widgets/question_card.dart';
-import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
-import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
-import 'package:ntt_data/modules/views/voice_agent/controller/voice_call_controller.dart';
+import 'package:ntt_data/modules/views/landing/voice_agent/voice_controller.dart';
+import 'package:ntt_data/modules/views/landing/voice_agent/audio_player.dart';
+import 'package:ntt_data/modules/views/landing/voice_agent/controller/voice_call_controller.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class AiSessionScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class AiSessionScreen extends StatefulWidget {
 class _AiSessionScreenState extends State<AiSessionScreen> {
   final controller = Get.find<AiSessionController>();
   final voiceCallCOntroller = Get.find<VoiceCallController>();
-  final voiceCOntroller = Get.find<VoiceController>();
+  // final voiceCOntroller = Get.find<VoiceController>();
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
       ),
       body: Obx(
         () =>
-            voiceCOntroller.isInitiating.isTrue &&
+            controller.isInitiating.isTrue &&
                     controller.isFirstTimeToConnect.isTrue
                 ? Center(child: CircularProgressIndicator())
                 : Stack(

@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/kintsungi_questionaries_response.dart';
-import 'package:ntt_data/data/repository/services/voice_service.dart';
+import 'package:ntt_data/modules/views/phq/repositories/phq_repository.dart';
 
 class PhqController extends GetxController {
+  PhqController({required this.phqRepository});
+  final PhqRepository phqRepository;
   final currentQuestionIndex = 0.obs;
   final selectedPhTwoAnswers = <int, int>{}.obs;
   final selectedPh9Answers = <int, int>{}.obs;
@@ -21,13 +22,10 @@ class PhqController extends GetxController {
 
   Future<void> kintsugiQuestionApi() async {
     isLoading(true);
-    Map<String, dynamic> responseData =
-        await VoiceService().questionaryKintsugiApi();
-    int statusCode = responseData["statusCode"];
-    if (statusCode == 200) {
-      var result = KintsigiQuestionariesResponse.fromJson(
-        responseData[AppConstents.response],
-      );
+    var responseData = await phqRepository.questionaryKintsugi();
+
+    if (responseData.statusCode == 200) {
+      var result = responseData.data!;
       phqTwoQuestion.value = result.questionnaires![0].questions!;
       gad7Question.value = result.questionnaires![2].questions!;
       phq9Question.value = result.questionnaires![1].questions!;

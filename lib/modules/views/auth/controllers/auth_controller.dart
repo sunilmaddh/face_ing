@@ -10,17 +10,18 @@ import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/data/models/error_response.dart';
-import 'package:ntt_data/data/models/login_response_model.dart';
+import 'package:ntt_data/modules/views/auth/model/login_response_model.dart';
 import 'package:ntt_data/data/models/medical_question_model.dart';
-import 'package:ntt_data/data/models/user_create_response_model.dart';
+import 'package:ntt_data/modules/views/auth/model/user_create_response_model.dart';
+import 'package:ntt_data/modules/views/auth/repositories/auth_repository.dart';
 import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
-import 'package:ntt_data/data/repository/services/auth_services.dart';
 
 class AuthController extends GetxController
     with CheckboxStateMixin, RadioStateMixin, CommonMixin {
-  final _authServices = Get.put(AuthServices());
+  AuthController({required this.authRepository});
+  final AuthRepository authRepository;
   Rx<ErrorResponse> errorResponse = ErrorResponse().obs;
   Rx<LoginResponseModel> loginResponseModel = LoginResponseModel().obs;
 
@@ -57,22 +58,18 @@ class AuthController extends GetxController
     };
     debugPrint(data.toString());
     try {
-      Map<String, dynamic> response = await _authServices.userLogin(data: data);
-      debugPrint(response["responseBody"].toString());
-      int statusCode = response['statusCode'];
-      if (statusCode == 200) {
-        var header = response["header"];
-        var accessToken = header["accesstoken"] ?? "";
+      var response = await authRepository.login(data: data);
+
+      if (response.statusCode == 200) {
+        // var header = response.headers!["header"];
+        var accessToken = response.headers!["accesstoken"] ?? "";
         // var refereshToken = header["refreshtoken"];
-        debugPrint("Access token ${header["accesstoken"]}");
+        debugPrint("Access token ${response.headers!["accesstoken"]}");
         if (accessToken != null) {
           await IndoSharedPreference.instance.saveAccessToken(accessToken);
         }
-
-        // await IndoSharedPreference.instance.saveRefreshToken(refereshToken);
-        var result = LoginResponseModel.fromJson(response["responseBody"]);
-        loginResponseModel.value = result;
-
+        var result = response.data;
+        loginResponseModel.value = result!;
         await IndoSharedPreference.instance.saveUserId(
           loginResponseModel.value.userId!,
         );
@@ -121,10 +118,12 @@ class AuthController extends GetxController
             isError: true,
           );
         }
-      } else if (statusCode == 405) {
-        var result = ErrorResponse.fromJson(response["responseBody"]);
-        errorResponse.value = result;
-        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
+      } else if (response.statusCode == 405) {
+        AppSnackbar.show(
+          title: "Error",
+          message: response.message,
+          isError: true,
+        );
       } else {
         AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
       }
@@ -140,14 +139,11 @@ class AuthController extends GetxController
     var data = {"emailId": forgotEmailController.text};
     debugPrint(data.toString());
     try {
-      Map<String, dynamic> response = await _authServices.getForgotOtp(
-        data: data,
-      );
-      debugPrint(response["responseBody"].toString());
-      int statusCode = response['statusCode'];
+      var response = await authRepository.getForgotOtp(data: data);
+
+      int statusCode = response.statusCode;
       if (statusCode == 200) {
-        // startTimer();
-        var result = ErrorResponse.fromJson(response["responseBody"]);
+        var result = response.data!;
         errorResponse.value = result;
         AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
         AppNavigation.back();
@@ -156,8 +152,8 @@ class AuthController extends GetxController
           AppNavigation.to(AppRoutes.otpForgotScreen);
         }
       } else if (statusCode == 405) {
-        var result = ErrorResponse.fromJson(response["responseBody"]);
-        errorResponse.value = result;
+        var result = response.data;
+        errorResponse.value = result!;
         AppSnackbar.show(
           title: "Error",
           message: errorResponse.value.message!,
@@ -187,14 +183,12 @@ class AuthController extends GetxController
     };
     debugPrint(data.toString());
     try {
-      Map<String, dynamic> response = await _authServices.verifyForgotOtp(
-        data: data,
-      );
-      debugPrint(response["responseBody"].toString());
-      int statusCode = response['statusCode'];
+      var response = await authRepository.verifyForgotOtp(data: data);
+
+      int statusCode = response.statusCode;
       if (statusCode == 200) {
-        var result = ErrorResponse.fromJson(response["responseBody"]);
-        errorResponse.value = result;
+        var result = response.data;
+        errorResponse.value = result!;
         AppSnackbar.show(
           title: "Success",
           message: errorResponse.value.message!,
@@ -203,8 +197,8 @@ class AuthController extends GetxController
           AppNavigation.to(AppRoutes.resetPassword);
         }
       } else if (statusCode == 405) {
-        var result = ErrorResponse.fromJson(response["responseBody"]);
-        errorResponse.value = result;
+        var result = response.data;
+        errorResponse.value = result!;
         AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
       } else {
         AppSnackbar.show(title: "Error", message: "Something went wrong");
@@ -227,14 +221,12 @@ class AuthController extends GetxController
     };
     debugPrint(data.toString());
     try {
-      Map<String, dynamic> response = await _authServices.resetPassword(
-        data: data,
-      );
-      debugPrint(response["responseBody"].toString());
-      int statusCode = response['statusCode'];
+      var response = await authRepository.resetPassword(data: data);
+
+      int statusCode = response.statusCode;
       if (statusCode == 200) {
-        var result = ErrorResponse.fromJson(response["responseBody"]);
-        errorResponse.value = result;
+        var result = response.data;
+        errorResponse.value = result!;
         AppSnackbar.show(
           title: "Success",
           message: errorResponse.value.message!,
@@ -244,8 +236,8 @@ class AuthController extends GetxController
         }
         clearData();
       } else if (statusCode == 405) {
-        var result = ErrorResponse.fromJson(response["responseBody"]);
-        errorResponse.value = result;
+        var result = response.data;
+        errorResponse.value = result!;
         AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
       } else {
         AppSnackbar.show(title: "Error", message: "Something went wrong");
@@ -261,13 +253,12 @@ class AuthController extends GetxController
   Future<void> getMedicalQuestionList() async {
     isLoading(true);
     try {
-      Map<String, dynamic> response = await _authServices
-          .getMedicalQeustionList(data: "");
-      debugPrint(response["responseBody"].toString());
-      int statusCode = response['statusCode'];
+      var response = await authRepository.getMedicalQuestionList(data: "");
+
+      int statusCode = response.statusCode;
       if (statusCode == 200) {
-        var result = MedicalQuestionModels.fromJson(response["responseBody"]);
-        medicalQuestionListModel.value = result.list!;
+        var result = response.data;
+        medicalQuestionListModel.value = result!.list!;
         AppSnackbar.show(title: "Success", message: result.message!);
         if (result.isSuccess == true) {
           AppNavigation.to(AppRoutes.healthMenu);
@@ -278,9 +269,7 @@ class AuthController extends GetxController
           AppNavigation.offAll(AppRoutes.loginScreen);
         }
       } else if (statusCode == 405) {
-        var result = ErrorResponse.fromJson(response["responseBody"]);
-        errorResponse.value = result;
-        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
+        AppSnackbar.show(title: "Error", message: response.message);
       } else {
         AppSnackbar.show(title: "Error", message: "Something went wrong");
       }
@@ -316,15 +305,11 @@ class AuthController extends GetxController
       };
 
       debugPrint(data.toString());
-      Map<String, dynamic> response = await profileServices.profileCreation(
-        data: data,
-      );
-      debugPrint(response["responseBody"].toString());
-      int statusCode = response['statusCode'];
+      var response = await authRepository.createProfile(data: data);
+
+      int statusCode = response.statusCode;
       if (statusCode == 200) {
-        var results = UserCreateResponseModel.fromJson(
-          response["responseBody"],
-        );
+        var results = response.data!;
         userCreateModel.value = results;
         IndoSharedPreference.instance.saveOnBoard("true");
         userImage.value =
@@ -350,9 +335,7 @@ class AuthController extends GetxController
 
         AppNavigation.to(AppRoutes.congratulationsScreen);
       } else if (statusCode == 405) {
-        var result = ErrorResponse.fromJson(response["responseBody"]);
-        errorResponse.value = result;
-        AppSnackbar.show(title: "Error", message: errorResponse.value.message!);
+        AppSnackbar.show(title: "Error", message: response.message);
       } else {
         AppSnackbar.show(title: "Error", message: "Something went wrong");
       }
@@ -364,13 +347,13 @@ class AuthController extends GetxController
     }
   }
 
-  Future<void> callUploadProfileFromGallery() async {
-    return uploadProfileFromGallery("true", "", "false");
-  }
+  // Future<void> callUploadProfileFromGallery() async {
+  //   return uploadProfileFromGallery("true", "", "false");
+  // }
 
-  Future<void> callUploadProfileFromCamera() async {
-    return uploadProfileFromCamera("true", "", "false");
-  }
+  // Future<void> callUploadProfileFromCamera() async {
+  //   return uploadProfileFromCamera("true", "", "false");
+  // }
 
   clearData() {
     emailController.clear();

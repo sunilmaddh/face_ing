@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/dialog/common_date_picker.dart';
 import 'package:ntt_data/data/models/vital_graph_response_model.dart';
-import 'package:ntt_data/data/repository/services/vital_graph_services.dart';
 import 'package:ntt_data/modules/views/vital_graph/helper/vital_grapgh_helper.dart';
+import 'package:ntt_data/modules/views/vital_graph/repositories/vital_graph_repository.dart';
 
 class VitalGraphController extends GetxController {
+  VitalGraphController({required this.vitalGraphRepository});
+  final VitalGraphRepository vitalGraphRepository;
   RxBool isFilterTypeSelected = false.obs;
   RxInt selectedIndex = 0.obs;
   RxBool isLoading = false.obs;
   Rx<VitalGraphResponseModel> vitalGraphResponse =
       VitalGraphResponseModel().obs;
-
   Rx<VitalGraphResponseModel> vitalCalenderResponse =
       VitalGraphResponseModel().obs;
-
   Rx<AdvancedHeartRateVariability> wellnessCalenderResponse =
       AdvancedHeartRateVariability().obs;
-
   Rx<AdvancedHeartRateVariability> wellnessGraphResponse =
       AdvancedHeartRateVariability().obs;
   Rx<AdvancedHeartRateVariability> vitalSignesponse =
@@ -35,7 +33,7 @@ class VitalGraphController extends GetxController {
       AdvancedHeartRateVariability().obs;
   Rx<AdvancedHeartRateVariability> ahrvResponse =
       AdvancedHeartRateVariability().obs;
-  var services = VitalGraphServices();
+  // var services = VitalGraphServices();
 
   final RxMap<DateTime, List<EventDot>> eventMap =
       <DateTime, List<EventDot>>{}.obs;
@@ -71,15 +69,14 @@ class VitalGraphController extends GetxController {
     isLoading(true);
 
     debugPrint(data.toString());
-    Map<String, dynamic> responseData = await services
-        .callVitalGraphApiServices(data: data);
-    int statusCode = responseData["statusCode"];
+    var responseData = await vitalGraphRepository.getVitalGraphData(data: data);
+
     isLoading(false);
     try {
-      if (statusCode == 200) {
+      if (responseData.statusCode == 200) {
         await clearData();
-        var result = responseData[AppConstents.response];
-        vitalGraphResponse.value = VitalGraphResponseModel.fromJson(result);
+        var result = responseData.data;
+        vitalGraphResponse.value = result!;
         wellnessGraphResponse.value = vitalGraphResponse.value.wellness!;
         vitalSignesponse.value = vitalGraphResponse.value.vitalSigns!;
         bloodlessResponse.value = vitalGraphResponse.value.bloodlessBloodTests!;
@@ -95,7 +92,7 @@ class VitalGraphController extends GetxController {
         if (isFromHistory) {
           isFromHistory = false;
         }
-      } else if (statusCode == 403) {
+      } else if (responseData.statusCode == 403) {
         AppSnackbar.show(
           title: "Error",
           message: "Something went wrong",
@@ -122,14 +119,13 @@ class VitalGraphController extends GetxController {
     // isLoading(true);
 
     debugPrint(data.toString());
-    Map<String, dynamic> responseData = await services
-        .callVitalGraphApiServices(data: data);
-    int statusCode = responseData["statusCode"];
+    var responseData = await vitalGraphRepository.getVitalGraphData(data: data);
+
     // isLoading(false);
     try {
-      if (statusCode == 200) {
-        var result = responseData[AppConstents.response];
-        vitalCalenderResponse.value = VitalGraphResponseModel.fromJson(result);
+      if (responseData.statusCode == 200) {
+        var result = responseData.data;
+        vitalCalenderResponse.value = result!;
 
         Map<DateTime, List<EventDot>> newMap = buildEventMap(
           vitalCalenderResponse

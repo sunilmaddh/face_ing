@@ -15,8 +15,7 @@ import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
-import 'package:ntt_data/data/models/binah_scan_progress_message_response.dart';
-import 'package:ntt_data/data/repository/services/measurement_services.dart';
+import 'package:ntt_data/modules/views/binah/repositories/mesurement_repository.dart';
 import 'package:ntt_data/modules/views/geust/controller/geust_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -46,6 +45,8 @@ class MeasurementController extends GetxController
         ProgressHandlerMixin,
         RadioStateMixin
     implements SessionInfoListener, VitalSignsListener, ImageDataListener {
+  MeasurementController({required this.mesurementRepository});
+  final MesurementRepository mesurementRepository;
   final _geustController = Get.find<GeustController>();
   final licenseKey = AppConstents.licenceKey;
   final measurementDuration = 60;
@@ -344,14 +345,11 @@ class MeasurementController extends GetxController
 
   Future<void> getScanMeassage() async {
     try {
-      Map<String, dynamic> responseData =
-          await MeasurementServices().getScanMesageServices();
-      int statusCode = responseData[AppConstents.statusCode];
-      if (statusCode == 200) {
-        var result = BinahScanProgressMessageResponse.fromJson(
-          responseData[AppConstents.response],
-        );
-        scanMessageList.value = result.scannedMessage!;
+      var responseData =
+          await mesurementRepository.getMesurementProgressMessage();
+      if (responseData.statusCode == 200) {
+        var result = responseData.data;
+        scanMessageList.value = result!.scannedMessage!;
       } else {
         AppSnackbar.show(title: "Error", message: "Something went wrong");
       }

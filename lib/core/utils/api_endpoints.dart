@@ -51,5 +51,6 @@ class ApiEndpoints {
       kintsugiInitiate = "/kintsugi/initiate",
       kintsugiQuestionnaires = "/kintsugi/questionnaires",
       kintsugiSessions = "/kintsugi/sessions",
+      kintsugiResult = "/kintsugi/result",
       refreshToken = '/getTokenByRefreshToken';
 }

@@ -19,7 +19,6 @@ import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
-import 'package:ntt_data/widgets/cards/profile_upload_card.dart';
 import 'package:ntt_data/widgets/fields/common_dropdown_text_field.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:ntt_data/widgets/fields/custom_form_field.dart';
@@ -187,28 +186,28 @@ class AddNewGuestScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 10),
-                            ProfileUploadCard(
-                              isProfile: _geustController.isProfile,
-                              profileUrl: _geustController.profileUrl,
-                              onRemove: () {
-                                _geustController.isProfile.value = false;
-                                _geustController.profileUrl.value = File("");
-                              },
-                              onGalleryTap: () async {
-                                await _geustController.uploadProfileFromGallery(
-                                  "",
-                                  "",
-                                  "true",
-                                );
-                              },
-                              onCameraTap: () async {
-                                _geustController.uploadProfileFromCamera(
-                                  "",
-                                  "",
-                                  "true",
-                                );
-                              },
-                            ),
+                            // ProfileUploadCard(
+                            //   isProfile: _geustController.isProfile,
+                            //   profileUrl: _geustController.profileUrl,
+                            //   onRemove: () {
+                            //     _geustController.isProfile.value = false;
+                            //     _geustController.profileUrl.value = File("");
+                            //   },
+                            //   onGalleryTap: () async {
+                            //     await _geustController.uploadProfileFromGallery(
+                            //       "",
+                            //       "",
+                            //       "true",
+                            //     );
+                            //   },
+                            //   onCameraTap: () async {
+                            //     _geustController.uploadProfileFromCamera(
+                            //       "",
+                            //       "",
+                            //       "true",
+                            //     );
+                            //   },
+                            // ),
                           ],
                         ),
                       ),

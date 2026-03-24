@@ -6,7 +6,6 @@ import 'package:ntt_data/core/bindings/app_bindings.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/data/repository/services/native_caller_services.dart';
 import 'package:ntt_data/routes/app_pages.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
@@ -14,8 +13,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   IndoSharedPreference.instance.init();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  AppBindings().dependencies();
-  NativeCaller().setupResultListener();
+  // AppBindings().dependencies();
+  // NativeCaller().setupResultListener();
   //runApp(DevicePreview(builder: (context)> const MyApp()));
   runApp(const MyApp());
 }
@@ -29,6 +28,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       ensureScreenSize: true,
       child: GetMaterialApp(
+        initialBinding: AppBindings(),
         useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         title: 'Face.ing',

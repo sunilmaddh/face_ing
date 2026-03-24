@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/modules/views/landing/landing_controller.dart';
+import 'package:ntt_data/modules/views/landing/controller/landing_controller.dart';
 import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';

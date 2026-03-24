@@ -3,20 +3,25 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/utils/app_snackbar.dart';
+import 'package:ntt_data/modules/views/landing/voice_agent/repositories/voice_agent_repository.dart';
 import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
-import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
-import 'package:ntt_data/modules/views/voice_agent/audio_player.dart';
-import 'package:ntt_data/modules/views/voice_agent/native/start_native_call.dart';
-import 'package:ntt_data/modules/views/voice_agent/controller/socket_controller.dart';
-import 'package:ntt_data/modules/views/voice_agent/controller/voice_call_controller.dart';
+import 'package:ntt_data/modules/views/landing/voice_agent/audio_player.dart';
+import 'package:ntt_data/modules/views/landing/voice_agent/native/start_native_call.dart';
+import 'package:ntt_data/modules/views/landing/voice_agent/controller/socket_controller.dart';
+import 'package:ntt_data/modules/views/landing/voice_agent/controller/voice_call_controller.dart';
 
 class AiSessionController extends GetxController {
-  final voiceCallCOntroller = Get.put(VoiceCallController());
+  AiSessionController({required this.voiceAgentRepository});
+  final VoiceAgentRepository voiceAgentRepository;
+  final voiceCallCOntroller = Get.find<VoiceCallController>();
   final isTalking = false.obs;
   final sessionTime = '00:00'.obs;
   RxBool isTimeOver = false.obs;
   RxBool isFirstTimeToConnect = false.obs;
   RxBool isSecondTimeToConnect = false.obs;
+  RxBool isStarted = false.obs;
+  RxBool isInitiating = false.obs;
 
   final stopwatch = Stopwatch();
   Timer? timer;
@@ -100,8 +105,8 @@ class AiSessionController extends GetxController {
   }
 
   Future<void> callkintisugiIntiateApi() async {
-    Get.find<VoiceController>().isInitiating(true);
-    final response = await Get.find<VoiceController>().initiateKintisugi();
+    isInitiating(true);
+    final response = await initiateKintisugi();
     Get.find<AssessmentController>().sessionId.value = response;
     await Get.find<VoiceCallController>().getCredentials(
       sessionId: response,
@@ -112,6 +117,21 @@ class AiSessionController extends GetxController {
       isFullRecording: false,
       isUserAgentVoice: false,
     );
-    Get.find<VoiceController>().isInitiating(false);
+    isInitiating(false);
+  }
+
+  Future<String> initiateKintisugi() async {
+    var responseData = await voiceAgentRepository.initiateKintsugiApi();
+    if (responseData.statusCode == 200) {
+      var result = responseData.data;
+      return result!.sessionId!;
+    } else {
+      AppSnackbar.show(
+        title: "Error",
+        message: "Something went wrong",
+        isError: true,
+      );
+      return "";
+    }
   }
 }

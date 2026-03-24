@@ -1,11 +1,13 @@
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/data/models/kintsugi_result_response.dart';
-import '../../../../data/repository/services/phq_services.dart';
+import 'package:ntt_data/modules/views/phq/repositories/phq_repository.dart';
 
 class AssessmentController extends GetxController {
+  AssessmentController({required this.phqRepository});
   static AssessmentController get instance => Get.find();
+
+  final PhqRepository phqRepository;
 
   Rx<KintsigiRusltResponse> resultResponse = KintsigiRusltResponse().obs;
 
@@ -14,7 +16,7 @@ class AssessmentController extends GetxController {
   final gad7Answers = <int>[].obs;
   RxBool isFromHomeScreen = false.obs;
   RxString createDate = "".obs;
-  final _phqServices = PhqServices();
+  // final _phqServices = PhqServices();
   final isLoading = false.obs;
   final sessionId = ''.obs;
   RxBool isGettingResult = false.obs;
@@ -44,15 +46,13 @@ class AssessmentController extends GetxController {
   Future<bool> submitAssessment({required String sessionID}) async {
     try {
       isLoading.value = true;
-      final response = await _phqServices.submitAssessment(
+      final response = await phqRepository.submitAssessment(
         phq2: phq2Answers,
         phq9: phq9Answers,
         gad7: gad7Answers,
         sessionId: sessionID,
       );
-      if (response['statusCode'] == 200 || response['statusCode'] == 201) {
-        // Get.to(() => PhqResultScreen());
-
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       }
       return false;
@@ -66,17 +66,15 @@ class AssessmentController extends GetxController {
   Future<void> getResult() async {
     try {
       isGettingResult(true);
-      final response = await _phqServices.getResult(sessionId.value);
-      if (response['statusCode'] == 200) {
-        var result = KintsigiRusltResponse.fromJson(
-          response[AppConstents.response],
-        );
+      final response = await phqRepository.getResult(sessionId.value);
+      if (response.statusCode == 200) {
+        var result = response.data;
         debugPrint(result.toString());
-        depressionResponse.value = result.result!.depression!;
+        depressionResponse.value = result!.result!.depression!;
         anxietyResponse.value = result.result!.anxiety!;
         createDate.value = result.result!.createdAt!;
         isGettingResult(false);
-        return response['responseBody'];
+        return;
       } else {
         isGettingResult(false);
       }
@@ -88,20 +86,16 @@ class AssessmentController extends GetxController {
   Future<void> getSession() async {
     try {
       isGettingResult(true);
-      final response = await _phqServices.getSession();
-      if (response['statusCode'] == 200) {
-        var result = KintsigiRusltResponse.fromJson(
-          response[AppConstents.response],
-        );
+      final response = await phqRepository.getSession();
+      if (response.statusCode == 200) {
+        var result = response.data;
         debugPrint(result.toString());
-        depressionResponse.value = result.result!.depression!;
+        depressionResponse.value = result!.result!.depression!;
         anxietyResponse.value = result.result!.anxiety!;
         createDate.value = result.result!.createdAt!;
-        debugPrint(
-          "Depression ${depressionResponse.value.aiPrediction.toString()}",
-        );
+
         isGettingResult(false);
-        return response['responseBody'];
+        return;
       } else {
         isGettingResult(false);
       }

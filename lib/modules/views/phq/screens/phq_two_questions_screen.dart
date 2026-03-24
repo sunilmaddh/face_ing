@@ -12,7 +12,7 @@ import 'phq9_questions_screen.dart';
 
 class PhqTwoQuestionsScreen extends StatelessWidget {
   PhqTwoQuestionsScreen({super.key});
-  final controller = Get.put(PhqController());
+  final controller = Get.find<PhqController>();
   final assessmentController = Get.find<AssessmentController>();
   @override
   Widget build(BuildContext context) {

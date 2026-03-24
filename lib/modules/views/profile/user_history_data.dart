@@ -16,9 +16,7 @@ class UserHistoryData extends StatelessWidget {
   UserHistoryData({super.key});
 
   final _profileController = Get.find<ProfileController>();
-
   final _vitalGraphController = Get.find<VitalGraphController>();
-
   @override
   Widget build(BuildContext context) {
     _profileController.getUserHistory();

@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/modules/views/home/face_drawer.dart';
-import 'package:ntt_data/modules/views/home/halper/home_halper.dart';
-import 'package:ntt_data/modules/views/landing/landing_controller.dart';
+import 'package:ntt_data/modules/views/landing/view/face_drawer.dart';
+import 'package:ntt_data/modules/views/landing/helper/home_helper.dart';
+import 'package:ntt_data/modules/views/landing/controller/landing_controller.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {

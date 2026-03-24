@@ -246,29 +246,29 @@ class AppMethods {
     return null;
   }
 
-  Future<void> editProfilePicture(
-    CommonMixin commonController,
-    guestId,
-    isGuest,
-    final VoidCallback whenComplete,
-  ) async {
-    ImagePickerBottomsheet.showImagePickerBottomSheet(
-      onGalleryTap: () async {
-        await commonController
-            .uploadProfileFromGallery("false", guestId, isGuest)
-            .whenComplete(() {
-              whenComplete();
-            });
-      },
-      onCameraTap: () async {
-        await commonController
-            .uploadProfileFromCamera("false", guestId, isGuest)
-            .whenComplete(() {
-              whenComplete();
-            });
-      },
-    );
-  }
+  // Future<void> editProfilePicture(
+  //   CommonMixin commonController,
+  //   guestId,
+  //   isGuest,
+  //   final VoidCallback whenComplete,
+  // ) async {
+  //   ImagePickerBottomsheet.showImagePickerBottomSheet(
+  //     onGalleryTap: () async {
+  //       await commonController
+  //           .uploadProfileFromGallery("false", guestId, isGuest)
+  //           .whenComplete(() {
+  //             whenComplete();
+  //           });
+  //     },
+  //     onCameraTap: () async {
+  //       await commonController
+  //           .uploadProfileFromCamera("false", guestId, isGuest)
+  //           .whenComplete(() {
+  //             whenComplete();
+  //           });
+  //     },
+  //   );
+  // }
 
   static Future<void> storeUserData({
     required String name,
