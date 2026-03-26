@@ -77,16 +77,19 @@ class ProfileService {
     );
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> uploadImage({
+  Future<ApiResponse<UploadImageResponseModel>> uploadImage({
     required String filePath,
     required String imageType,
   }) async {
-    return await apiService.uploadImage(
+    return await apiService.uploadImage<UploadImageResponseModel>(
       endpoint: ApiEndpoints().profileUpload,
       filePath: filePath,
       imageType: imageType,
       guestId: "",
       isGuest: "false",
+      fromJson:
+          (Map<String, dynamic> json) =>
+              UploadImageResponseModel.fromJson(json),
     );
   }
 

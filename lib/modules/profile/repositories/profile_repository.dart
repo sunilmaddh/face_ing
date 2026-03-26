@@ -1,4 +1,5 @@
 import 'package:ntt_data/core/network/api_response.dart';
+import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/modules/profile/models/update_details_response_model.dart';
 import 'package:ntt_data/modules/profile/models/user_history_list_model.dart';
@@ -36,7 +37,7 @@ class ProfileRepository {
     return await profileService.getVitalDescriptionService(data: data);
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> uploadImage({
+  Future<ApiResponse<UploadImageResponseModel>> uploadImage({
     required String filePath,
     required String imageType,
   }) async {

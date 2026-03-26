@@ -1,4 +1,5 @@
 import 'package:ntt_data/core/network/api_response.dart';
+import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/modules/geust/models/guest_list_response_model.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/modules/profile/models/user_history_list_model.dart';
@@ -51,6 +52,16 @@ class GuestRepository {
       userId: userId,
       isUser: isUser,
       guestId: guestId,
+    );
+  }
+
+  Future<ApiResponse<UploadImageResponseModel>> uploadImage({
+    required String filePath,
+    required String imageType,
+  }) async {
+    return await guestService.uploadImage(
+      filePath: filePath,
+      imageType: imageType,
     );
   }
 }

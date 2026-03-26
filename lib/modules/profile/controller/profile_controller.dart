@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
@@ -278,42 +279,28 @@ class ProfileController extends BaseController
     await updateDetailsUG(data: data, userFlag: userFlag);
   }
 
-  Future<void> editProfilePicture(
-    CommonMixin commonController,
-    guestId,
-    isGuest,
-    final VoidCallback whenComplete,
-  ) async {
-    ImagePickerBottomsheet.showImagePickerBottomSheet(
-      onGalleryTap: () async {
-        final file = await ProfileUploadService().uploadProfileImage(
-          source: ImagePickSource.gallery,
-        );
+  // Future<void> editProfilePicture() async {
 
-        // await commonController
-        //     .uploadProfileFromGallery("false", guestId, isGuest)
-        //     .whenComplete(() {
-        //       whenComplete();
-        //     });
-      },
-      onCameraTap: () async {
-        final file = await ProfileUploadService().uploadProfileImage(
-          source: ImagePickSource.camera,
-        );
-        // await commonController
-        //     .uploadProfileFromCamera("false", guestId, isGuest)
-        //     .whenComplete(() {
-        //       whenComplete();
-        //     });
-      },
-    );
-  }
+  // }
 
   Future<void> uploadProfile({required String imagePath}) async {
-    var response = profileRepository.uploadImage(
-      filePath: imagePath,
-      imageType: "",
-    );
+    try {
+      var response = await profileRepository.uploadImage(
+        filePath: imagePath,
+        imageType: "",
+      );
+      if (response.success) {
+        final result = response.data;
+        userImage.value = result?.imagePath ?? "";
+        IndoSharedPreference.instance.saveUserImage(result?.imagePath ?? "");
+        debugPrint("Result $result ${userUpdateImage.value}");
+      } else {
+        setError("Something went wrong");
+      }
+    } catch (e) {
+      setError(e.toString());
+      debugPrint(e.toString());
+    }
   }
 
   // ==============================

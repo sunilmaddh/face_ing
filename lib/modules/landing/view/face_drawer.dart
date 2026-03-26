@@ -9,12 +9,14 @@ import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
+import 'package:ntt_data/data/services/profile_upload_services.dart';
 import 'package:ntt_data/modules/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/home/widget/custom_circular_avatar.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
+import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 import 'package:ntt_data/widgets/circular_image_with_shimmer.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import 'package:shimmer/shimmer.dart';
@@ -138,6 +140,51 @@ class FaceDrawer extends StatelessWidget {
                                       context: context,
                                       onConfirm: (value) {
                                         if (value == "Photo") {
+                                          ImagePickerBottomsheet.showImagePickerBottomSheet(
+                                            onGalleryTap: () async {
+                                              final file =
+                                                  await ProfileUploadService()
+                                                      .uploadProfileImage(
+                                                        source:
+                                                            ImagePickSource
+                                                                .gallery,
+                                                      );
+                                              if (file.path.isNotEmpty) {
+                                                await _profileController
+                                                    .uploadProfile(
+                                                      imagePath: file.path,
+                                                    );
+                                              }
+
+                                              // await commonController
+                                              //     .uploadProfileFromGallery("false", guestId, isGuest)
+                                              //     .whenComplete(() {
+                                              //       whenComplete();
+                                              //     });
+                                            },
+                                            onCameraTap: () async {
+                                              final file =
+                                                  await ProfileUploadService()
+                                                      .uploadProfileImage(
+                                                        source:
+                                                            ImagePickSource
+                                                                .camera,
+                                                      );
+                                              if (file.path.isNotEmpty) {
+                                                await _profileController
+                                                    .uploadProfile(
+                                                      imagePath: file.path,
+                                                    );
+                                              }
+                                              // await commonController
+                                              //     .uploadProfileFromCamera("false", guestId, isGuest)
+                                              //     .whenComplete(() {
+                                              //       whenComplete();
+                                              //     });
+                                            },
+                                          );
+                                          // _profileController
+                                          //     .editProfilePicture();
                                           // AppMethods().editProfilePicture(
                                           //   _authController,
                                           //   "",

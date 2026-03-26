@@ -3,110 +3,110 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 // import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:image/image.dart' as img;
 
 import 'dart:io';
 
 enum ImagePickSource { camera, gallery }
 
-// class ProfileUploadService {
+class ProfileUploadService {
+  final ImagePicker _picker = ImagePicker();
 
-final ImagePicker _picker = ImagePicker();
+  Future<File?> pickImageFromCamera() async {
+    XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    if (image == null) return null; // User canceled
+    return File(image.path);
+  }
 
-Future<File?> pickImageFromCamera() async {
-  XFile? image = await _picker.pickImage(source: ImageSource.camera);
-  if (image == null) return null; // User canceled
-  return File(image.path);
-}
+  Future<File?> pickImageFromGallery() async {
+    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image == null) return null; // User canceled
+    return File(image.path);
+  }
 
-Future<File?> pickImageFromGallery() async {
-  XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  if (image == null) return null; // User canceled
-  return File(image.path);
-}
+  //   Future<void> uploadUserProfileImage({
+  //     required ImagePickSource source,
+  //     required String imageType,
+  //   }) async {
+  //     await _uploadProfileImage(
+  //       source: source,
+  //       imageType: imageType,
+  //       guestId: '',
+  //       isGuest: false,
+  //       uploadRequest: ({
+  //         required File file,
+  //         required String userId,
+  //         required String imageType,
+  //         required String guestId,
+  //         required bool isGuest,
+  //       }) async {
+  //         return await authServices.uploadDocument(
+  //           file,
+  //           userId,
+  //           imageType,
+  //           guestId,
+  //           isGuest.toString(),
+  //         );
+  //       },
+  //     );
+  //   }
 
-//   Future<void> uploadUserProfileImage({
-//     required ImagePickSource source,
-//     required String imageType,
-//   }) async {
-//     await _uploadProfileImage(
-//       source: source,
-//       imageType: imageType,
-//       guestId: '',
-//       isGuest: false,
-//       uploadRequest: ({
-//         required File file,
-//         required String userId,
-//         required String imageType,
-//         required String guestId,
-//         required bool isGuest,
-//       }) async {
-//         return await authServices.uploadDocument(
-//           file,
-//           userId,
-//           imageType,
-//           guestId,
-//           isGuest.toString(),
-//         );
-//       },
-//     );
-//   }
+  //   Future<void> uploadGuestProfileImage({
+  //     required ImagePickSource source,
+  //     required String imageType,
+  //     required String guestId,
+  //   }) async {
+  //     await _uploadProfileImage(
+  //       source: source,
+  //       imageType: imageType,
+  //       guestId: guestId,
+  //       isGuest: true,
+  //       uploadRequest: ({
+  //         required File file,
+  //         required String userId,
+  //         required String imageType,
+  //         required String guestId,
+  //         required bool isGuest,
+  //       }) async {
+  //         return await guestService.uploadDocument(
+  //           file,
+  //           userId,
+  //           imageType,
+  //           guestId,
+  //           isGuest.toString(),
+  //         );
+  //       },
+  //     );
+  //   }
 
-//   Future<void> uploadGuestProfileImage({
-//     required ImagePickSource source,
-//     required String imageType,
-//     required String guestId,
-//   }) async {
-//     await _uploadProfileImage(
-//       source: source,
-//       imageType: imageType,
-//       guestId: guestId,
-//       isGuest: true,
-//       uploadRequest: ({
-//         required File file,
-//         required String userId,
-//         required String imageType,
-//         required String guestId,
-//         required bool isGuest,
-//       }) async {
-//         return await guestService.uploadDocument(
-//           file,
-//           userId,
-//           imageType,
-//           guestId,
-//           isGuest.toString(),
-//         );
-//       },
-//     );
-//   }
+  Future<File> uploadProfileImage({required ImagePickSource source}) async {
+    try {
+      final pickedImage =
+          source == ImagePickSource.camera
+              ? await pickImageFromCamera()
+              : await pickImageFromGallery();
 
-Future<File> uploadProfileImage({required ImagePickSource source}) async {
-  try {
-    final pickedImage =
-        source == ImagePickSource.camera
-            ? await pickImageFromCamera()
-            : await pickImageFromGallery();
+      if (pickedImage == null) {
+        return File("");
+      }
 
-    if (pickedImage == null) {
+      final file = File(pickedImage.path);
+      return await fixExifRotation(file);
+    } catch (e) {
+      debugPrint("_uploadProfileImage error: $e");
       return File("");
-    }
+    } finally {}
+  }
 
-    final file = File(pickedImage!.path);
-    return await fixExifRotation(file);
-  } catch (e) {
-    debugPrint("_uploadProfileImage error: $e");
-  } finally {}
+  Future<File> fixExifRotation(File file) async {
+    final bytes = await file.readAsBytes();
+    final image = img.decodeImage(bytes);
+    if (image == null) return file;
+
+    final fixed = img.bakeOrientation(image);
+    return await file.writeAsBytes(img.encodeJpg(fixed));
+  }
 }
-
-Future<File> fixExifRotation(File file) async {
-  final bytes = await file.readAsBytes();
-  final image = img.decodeImage(bytes);
-  if (image == null) return file;
-
-  final fixed = img.bakeOrientation(image);
-  return await file.writeAsBytes(img.encodeJpg(fixed));
-}
-
-// }
 
 //  final userId = await IndoSharedPreference.instance.getUserId();
 

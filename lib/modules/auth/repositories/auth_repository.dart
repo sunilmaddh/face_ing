@@ -80,19 +80,19 @@ class AuthRepository {
     return await authService.getMedicalQeustionList();
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> uploadUserProfile({
-    required String imagePath,
-    required String userID,
-    required String imageType,
-    required String guestId,
-    required String isGuest,
-  }) async {
-    return await authService.uploadDocument(
-      imagePath,
-      userID,
-      imageType,
-      guestId,
-      isGuest,
-    );
-  }
+  // Future<ApiResponse<Map<String, dynamic>>> uploadUserProfile({
+  //   required String imagePath,
+  //   required String userID,
+  //   required String imageType,
+  //   required String guestId,
+  //   required String isGuest,
+  // }) async {
+  //   return await authService.uploadDocument(
+  //     imagePath,
+  //     userID,
+  //     imageType,
+  //     guestId,
+  //     isGuest,
+  //   );
+  // }
 }

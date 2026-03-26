@@ -130,41 +130,41 @@ class AuthService {
     );
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> uploadDocument(
-    String imagePath,
-    String userID,
-    String imageType,
-    String guestId,
-    String isGuest,
-  ) async {
-    return await apiService.uploadImage(
-      endpoint: apiEndpoints.profileUpload,
-      filePath: imagePath,
-      imageType: imageType,
-      guestId: guestId,
-      isGuest: isGuest,
-    );
-    // Response? response = await apiService. uploadImage(
-    //   apiEndpoints.profileUpload,
-    //   imagePath!.path,
-    //   userID,
-    //   imageType,
-    //   guestId,
-    //   isGuest,
-    // );
-    // debugPrint(
-    //   "ResponseCode: ${response!.statusCode}= ResponseBody${response.body}",
-    // );
-    // Map<String, dynamic> responseData = {'responseCode': response.statusCode};
-    // if (response.statusCode == 200) {
-    //   var resjson = response.body;
-    //   responseData.putIfAbsent(
-    //     'response',
-    //     () => uploadImageResponseModelFromJson(resjson),
-    //   );
-    // } else {
-    //   // AppSnackbar.show(title: "Error", message: response.body.toString());
-    // }
-    // return responseData;
-  }
+  // Future<ApiResponse<Map<String, dynamic>>> uploadDocument(
+  //   String imagePath,
+  //   String userID,
+  //   String imageType,
+  //   String guestId,
+  //   String isGuest,
+  // ) async {
+  //   return await apiService.uploadImage(
+  //     endpoint: apiEndpoints.profileUpload,
+  //     filePath: imagePath,
+  //     imageType: imageType,
+  //     guestId: guestId,
+  //     isGuest: isGuest,
+  //   );
+  // Response? response = await apiService. uploadImage(
+  //   apiEndpoints.profileUpload,
+  //   imagePath!.path,
+  //   userID,
+  //   imageType,
+  //   guestId,
+  //   isGuest,
+  // );
+  // debugPrint(
+  //   "ResponseCode: ${response!.statusCode}= ResponseBody${response.body}",
+  // );
+  // Map<String, dynamic> responseData = {'responseCode': response.statusCode};
+  // if (response.statusCode == 200) {
+  //   var resjson = response.body;
+  //   responseData.putIfAbsent(
+  //     'response',
+  //     () => uploadImageResponseModelFromJson(resjson),
+  //   );
+  // } else {
+  //   // AppSnackbar.show(title: "Error", message: response.body.toString());
+  // }
+  // return responseData;
+  // }
 }

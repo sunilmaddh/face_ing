@@ -222,15 +222,17 @@ class ApiService {
     return true;
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> uploadImage({
+  Future<ApiResponse<T>> uploadImage<T>({
     required String endpoint,
     required String filePath,
     required String imageType,
     required String guestId,
     required String isGuest,
+    required T Function(Map<String, dynamic> json) fromJson,
   }) async {
     try {
       final accessToken = await IndoSharedPreference.instance.getAccessToken();
+
       final uri =
           isHttps ? Uri.https(baseUrl, endpoint) : Uri.http(baseUrl, endpoint);
 
@@ -239,6 +241,7 @@ class ApiService {
       request.files.add(
         await http.MultipartFile.fromPath(AppConstents.file, filePath),
       );
+
       request.fields[AppConstents.isSignup] = imageType;
       request.fields[AppConstents.isGuest] = isGuest;
       request.fields[AppConstents.guestId] = guestId;
@@ -250,12 +253,45 @@ class ApiService {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
 
-      return _parseResponse<Map<String, dynamic>>(
-        response,
-        fromJson: (json) => json,
-      );
+      return _parseResponse<T>(response, fromJson: fromJson);
     } catch (e) {
       return ApiResponse.failure(statusCode: -1, message: e.toString());
     }
   }
+  // Future<ApiResponse<Map<String, dynamic>>> uploadImage({
+  //   required String endpoint,
+  //   required String filePath,
+  //   required String imageType,
+  //   required String guestId,
+  //   required String isGuest,
+  // }) async {
+  //   try {
+  //     final accessToken = await IndoSharedPreference.instance.getAccessToken();
+  //     final uri =
+  //         isHttps ? Uri.https(baseUrl, endpoint) : Uri.http(baseUrl, endpoint);
+
+  //     final request = http.MultipartRequest(AppConstents.put, uri);
+
+  //     request.files.add(
+  //       await http.MultipartFile.fromPath(AppConstents.file, filePath),
+  //     );
+  //     request.fields[AppConstents.isSignup] = imageType;
+  //     request.fields[AppConstents.isGuest] = isGuest;
+  //     request.fields[AppConstents.guestId] = guestId;
+
+  //     request.headers.addAll({
+  //       AppConstents.autharization: "${AppConstents.bearer} $accessToken",
+  //     });
+
+  //     final streamedResponse = await request.send();
+  //     final response = await http.Response.fromStream(streamedResponse);
+
+  //     return _parseResponse<Map<String, dynamic>>(
+  //       response,
+  //       fromJson: (json) => json,
+  //     );
+  //   } catch (e) {
+  //     return ApiResponse.failure(statusCode: -1, message: e.toString());
+  //   }
+  // }
 }

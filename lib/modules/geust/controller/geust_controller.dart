@@ -318,6 +318,26 @@ class GeustController extends BaseController
     );
   }
 
+  Future<void> uploadProfile({required String imagePath}) async {
+    try {
+      var response = await guestRepository.uploadImage(
+        filePath: imagePath,
+        imageType: "",
+      );
+      if (response.success) {
+        final result = response.data;
+        // userImage.value = result?.imagePath ?? "";
+        // IndoSharedPreference.instance.saveUserImage(result?.imagePath ?? "");
+        // debugPrint("Result $result ${userUpdateImage.value}");
+      } else {
+        setError("Something went wrong");
+      }
+    } catch (e) {
+      setError(e.toString());
+      debugPrint(e.toString());
+    }
+  }
+
   void clearGuestForm() {
     nameTextController.clear();
     emailTextController.clear();
