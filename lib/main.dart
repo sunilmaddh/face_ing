@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   IndoSharedPreference.instance.init();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // AppBindings().dependencies();
+  AppBindings().dependencies();
   // NativeCaller().setupResultListener();
   //runApp(DevicePreview(builder: (context)> const MyApp()));
   runApp(const MyApp());
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       ensureScreenSize: true,
       child: GetMaterialApp(
-        initialBinding: AppBindings(),
+        // initialBinding: AppBindings(),
         useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         title: 'Face.ing',

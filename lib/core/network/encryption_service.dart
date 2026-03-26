@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:ntt_data/core/constants/app_constents.dart';
+
 class EncryptionService {
   const EncryptionService();
 
@@ -7,11 +9,11 @@ class EncryptionService {
     final jsonString = jsonEncode(body);
     final encrypted = _encrypt(jsonString);
 
-    return {"payload": encrypted};
+    return {AppConstents.payload: encrypted};
   }
 
   Map<String, dynamic> decryptResponse(Map<String, dynamic> responseBody) {
-    final payload = responseBody["payload"];
+    final payload = responseBody[AppConstents.payload];
 
     if (payload is! String || payload.isEmpty) {
       return responseBody;

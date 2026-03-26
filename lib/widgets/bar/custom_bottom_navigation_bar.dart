@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/modules/views/landing/view/face_drawer.dart';
-import 'package:ntt_data/modules/views/landing/helper/home_helper.dart';
-import 'package:ntt_data/modules/views/landing/controller/landing_controller.dart';
+import 'package:ntt_data/modules/landing/controller/landing_controller.dart';
+import 'package:ntt_data/modules/landing/view/face_drawer.dart';
+import 'package:ntt_data/modules/home/helper/home_helper.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -20,26 +20,27 @@ class CustomBottomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  final _controller = Get.find<LandingController>();
+  late final LandingController controller;
 
   @override
   void initState() {
     super.initState();
-    _controller.pageController = PageController(
-      initialPage: _controller.selectedIndex.value,
+    controller = Get.find<LandingController>();
+    controller.pageController = PageController(
+      initialPage: controller.selectedIndex.value,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _controller.scaffoldKey,
+      key: controller.scaffoldKey,
       extendBody: true,
       drawer: FaceDrawer(),
       body: PageView(
-        controller: _controller.pageController,
+        controller: controller.pageController,
         onPageChanged: (index) {
-          _controller.selectedIndex.value = index;
+          controller.selectedIndex.value = index;
         },
         children: widget.pageList,
       ),
@@ -78,14 +79,14 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                   children: [
                     InkWell(
                       onTap: () {
-                        _controller.onTabTapped(0);
+                        controller.onTabTapped(0);
                       },
                       child: Column(
                         children: [
                           SvgPicture.asset(
                             AppAssets.home,
                             color:
-                                _controller.selectedIndex.value == 0
+                                controller.selectedIndex.value == 0
                                     ? AppColors.primary
                                     : AppColors.bottomTextColor,
                           ),
@@ -96,7 +97,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                             fontWeight: FontWeight.w500,
                             fontFamily: "Manrope",
                             color:
-                                _controller.selectedIndex.value == 0
+                                controller.selectedIndex.value == 0
                                     ? AppColors.primary
                                     : AppColors.bottomTextColor,
                           ),
@@ -105,14 +106,14 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                     ),
                     InkWell(
                       onTap: () {
-                        _controller.onTabTapped(1);
+                        controller.onTabTapped(1);
                       },
                       child: Column(
                         children: [
                           SvgPicture.asset(
                             AppAssets.aiAdivice,
                             color:
-                                _controller.selectedIndex.value == 1
+                                controller.selectedIndex.value == 1
                                     ? AppColors.primary
                                     : AppColors.bottomTextColor,
                           ),
@@ -122,7 +123,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                             fontWeight: FontWeight.w500,
                             fontFamily: "Manrope",
                             color:
-                                _controller.selectedIndex.value == 1
+                                controller.selectedIndex.value == 1
                                     ? AppColors.primary
                                     : AppColors.bottomTextColor,
                           ),
@@ -135,14 +136,14 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                       padding: AppDimensions.only(left: 30),
                       child: InkWell(
                         onTap: () {
-                          _controller.onTabTapped(2);
+                          controller.onTabTapped(2);
                         },
                         child: Column(
                           children: [
                             SvgPicture.asset(
                               AppAssets.voice,
                               color:
-                                  _controller.selectedIndex.value == 2
+                                  controller.selectedIndex.value == 2
                                       ? AppColors.primary
                                       : AppColors.bottomTextColor,
                             ),
@@ -152,7 +153,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                               fontWeight: FontWeight.w500,
                               fontFamily: "Manrope",
                               color:
-                                  _controller.selectedIndex.value == 2
+                                  controller.selectedIndex.value == 2
                                       ? AppColors.primary
                                       : AppColors.bottomTextColor,
                             ),
@@ -162,14 +163,14 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                     ),
                     InkWell(
                       onTap: () {
-                        _controller.onTabTapped(3);
+                        controller.onTabTapped(3);
                       },
                       child: Column(
                         children: [
                           SvgPicture.asset(
                             AppAssets.pulse,
                             color:
-                                _controller.selectedIndex.value == 3
+                                controller.selectedIndex.value == 3
                                     ? AppColors.primary
                                     : AppColors.bottomTextColor,
                           ),
@@ -179,7 +180,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                             fontWeight: FontWeight.w500,
                             fontFamily: "Manrope",
                             color:
-                                _controller.selectedIndex.value == 3
+                                controller.selectedIndex.value == 3
                                     ? AppColors.primary
                                     : AppColors.bottomTextColor,
                           ),

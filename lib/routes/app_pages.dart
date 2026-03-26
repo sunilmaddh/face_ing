@@ -1,35 +1,37 @@
 import 'package:get/route_manager.dart';
-import 'package:ntt_data/modules/views/binah/mesurement_screen.dart';
-import 'package:ntt_data/modules/views/auth/view/otp_forgot_screen.dart';
-import 'package:ntt_data/modules/views/geust/add_new_geust_screen.dart';
-import 'package:ntt_data/modules/views/geust/geust_user_history_screen.dart';
-import 'package:ntt_data/modules/views/geust/guest_health_history_list.dart';
-import 'package:ntt_data/modules/views/geust/guest_history_details.dart';
-import 'package:ntt_data/modules/views/health_data/all_report_screen.dart';
-import 'package:ntt_data/modules/views/health_data/analyzing_health_data.dart';
-import 'package:ntt_data/modules/views/landing/binding/landing_binding.dart';
-import 'package:ntt_data/modules/views/landing/view/home/home_screen.dart';
-import 'package:ntt_data/modules/views/landing/view/landing_screen.dart';
-import 'package:ntt_data/modules/views/phq/screens/ai_session_screen.dart';
-import 'package:ntt_data/modules/views/phq/screens/phq_result_screen.dart';
-import 'package:ntt_data/modules/views/profile/congratulation_screen.dart';
-import 'package:ntt_data/modules/views/auth/view/create_account_screen.dart';
-import 'package:ntt_data/modules/views/auth/view/login_screen.dart';
-import 'package:ntt_data/modules/views/profile/health_menu_screen.dart';
-import 'package:ntt_data/modules/views/auth/view/onboard/reset_password_screen.dart';
-import 'package:ntt_data/modules/views/auth/view/onboard/onboard_screen.dart';
-import 'package:ntt_data/modules/views/auth/view/onboard/splash_screen.dart';
-import 'package:ntt_data/modules/views/profile/update_user_guest_details.dart';
-import 'package:ntt_data/modules/views/profile/user_health_details.dart';
-import 'package:ntt_data/modules/views/profile/user_history_data.dart';
-import 'package:ntt_data/modules/views/profile/vital_descriptions.dart';
-import 'package:ntt_data/modules/views/landing/pulse/views/pulse_screen.dart';
-import 'package:ntt_data/modules/views/landing/pulse/views/pulse_survey_analyzing_screen.dart';
-import 'package:ntt_data/modules/views/landing/pulse/views/pulse_survey_progress_widget.dart';
-import 'package:ntt_data/modules/views/landing/pulse/views/pulse_survey_screen.dart';
-import 'package:ntt_data/modules/views/landing/pulse/views/pulse_survey_sucess_screen.dart';
-import 'package:ntt_data/modules/views/vital_graph/binding/vital_graph_binding.dart';
-import 'package:ntt_data/modules/views/vital_graph/vital_graph_history.dart';
+import 'package:ntt_data/modules/ai_recommendation/controller/ai_advice_controller.dart';
+import 'package:ntt_data/modules/binah/view/mesurement_screen.dart';
+import 'package:ntt_data/modules/auth/view/otp_forgot_screen.dart';
+import 'package:ntt_data/modules/geust/view/add_new_geust_screen.dart';
+import 'package:ntt_data/modules/geust/view/geust_user_history_screen.dart';
+import 'package:ntt_data/modules/geust/view/guest_health_history_list.dart';
+import 'package:ntt_data/modules/geust/view/guest_history_details.dart';
+import 'package:ntt_data/modules/binah/view/all_report_screen.dart';
+import 'package:ntt_data/modules/binah/view/analyzing_health_data.dart';
+import 'package:ntt_data/modules/home/view/home_screen.dart';
+import 'package:ntt_data/modules/landing/binding/landing_binding.dart';
+import 'package:ntt_data/modules/landing/view/landing_screen.dart';
+import 'package:ntt_data/modules/voice_agent/view/ai_session_call_screen.dart';
+import 'package:ntt_data/modules/voice_agent/view/ai_session_screen.dart';
+import 'package:ntt_data/modules/phq/view/phq_result_screen.dart';
+import 'package:ntt_data/modules/auth/view/congratulation_screen.dart';
+import 'package:ntt_data/modules/auth/view/create_account_screen.dart';
+import 'package:ntt_data/modules/auth/view/login_screen.dart';
+import 'package:ntt_data/modules/auth/view/health_menu_screen.dart';
+import 'package:ntt_data/modules/auth/view/onboard/reset_password_screen.dart';
+import 'package:ntt_data/modules/auth/view/onboard/onboard_screen.dart';
+import 'package:ntt_data/modules/auth/view/onboard/splash_screen.dart';
+import 'package:ntt_data/modules/profile/view/update_user_guest_details.dart';
+import 'package:ntt_data/modules/profile/view/user_health_details.dart';
+import 'package:ntt_data/modules/profile/view/user_history_data.dart';
+import 'package:ntt_data/modules/profile/view/vital_descriptions.dart';
+import 'package:ntt_data/modules/pulse/views/pulse_screen.dart';
+import 'package:ntt_data/modules/pulse/views/pulse_survey_analyzing_screen.dart';
+import 'package:ntt_data/modules/pulse/views/pulse_survey_progress_widget.dart';
+import 'package:ntt_data/modules/pulse/views/pulse_survey_screen.dart';
+import 'package:ntt_data/modules/pulse/views/pulse_survey_sucess_screen.dart';
+import 'package:ntt_data/modules/vital_graph/binding/vital_graph_binding.dart';
+import 'package:ntt_data/modules/vital_graph/view/vital_graph_history.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
 class AppPages {
@@ -123,5 +125,9 @@ class AppPages {
     ),
     GetPage(name: AppRoutes.phqResultScreen, page: () => PhqResultScreen()),
     GetPage(name: AppRoutes.aiSessionScreen, page: () => AiSessionScreen()),
+    GetPage(
+      name: AppRoutes.aiSessionCallScreen,
+      page: () => AiSessionCallScreen(),
+    ),
   ];
 }

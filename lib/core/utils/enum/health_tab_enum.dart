@@ -1,0 +1,110 @@
+enum HealthTab {
+  all,
+  basicVitalSigns,
+  bloodlessBloodTests,
+  risks,
+  stress,
+  heartRateVariability,
+  advancedHeartRateVariability,
+}
+
+extension HealthTabExtension on HealthTab {
+  String get title {
+    switch (this) {
+      case HealthTab.all:
+        return "All";
+      case HealthTab.basicVitalSigns:
+        return "Basic Vital Signs";
+      case HealthTab.bloodlessBloodTests:
+        return "Bloodless Blood Tests";
+      case HealthTab.risks:
+        return "Risks";
+      case HealthTab.stress:
+        return "Stress";
+      case HealthTab.heartRateVariability:
+        return "Heart Rate Variability";
+      case HealthTab.advancedHeartRateVariability:
+        return "Advanced Heart Rate Variability";
+    }
+  }
+}
+
+enum HealthCategory {
+  basicVitalSigns,
+  bloodlessBloodTests,
+  risks,
+  stress,
+  heartRateVariability,
+  advancedHeartRateVariability,
+}
+
+extension HealthCategoryExtension on HealthCategory {
+  String get title {
+    switch (this) {
+      case HealthCategory.basicVitalSigns:
+        return "Basic Vital Signs";
+      case HealthCategory.bloodlessBloodTests:
+        return "Bloodless Blood Tests";
+      case HealthCategory.risks:
+        return "Risks";
+      case HealthCategory.stress:
+        return "Stress";
+      case HealthCategory.heartRateVariability:
+        return "Heart Rate Variability";
+      case HealthCategory.advancedHeartRateVariability:
+        return "Advanced Heart Rate Variability";
+    }
+  }
+
+  List<String> get vitals {
+    switch (this) {
+      case HealthCategory.basicVitalSigns:
+        return const [
+          "Wellness Score",
+          "Breathing Rate",
+          "Heart Rate",
+          "PRQ",
+          "Blood Pressure",
+          "Oxygen Saturation",
+        ];
+
+      case HealthCategory.bloodlessBloodTests:
+        return const ["Hemoglobin", "Hemoglobin A1C"];
+
+      case HealthCategory.risks:
+        return const [
+          "ASCVD Risk",
+          "Heart Age",
+          "High Blood Pressure Risk",
+          "High HbA1c Risk",
+          "High Fasting Glucose Risk",
+          "High Total Cholesterol Risk",
+          "Low Hemoglobin Risk",
+        ];
+
+      case HealthCategory.stress:
+        return const [
+          "Stress Level",
+          "Stress Index",
+          "Normalized Stress Index",
+        ];
+
+      case HealthCategory.heartRateVariability:
+        return const ["HRV SDNN", "Mean RRi", "RMSSD"];
+
+      case HealthCategory.advancedHeartRateVariability:
+        return const [
+          "Recovery Ability (PNS Zone)",
+          "PNS Index",
+          "Stress Response (SNS Zone)",
+          "SNS Index",
+          "SD1",
+          "SD2",
+          "LF/HF",
+        ];
+    }
+  }
+
+  List<String> get normalizedVitals =>
+      vitals.map((e) => e.toLowerCase().trim()).toList();
+}

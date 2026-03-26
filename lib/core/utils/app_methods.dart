@@ -1,14 +1,13 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/mixins/common_mixin.dart';
+import 'package:intl/intl.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/modules/views/geust/helper/guest_halper.dart';
+import 'package:ntt_data/core/utils/enum/health_tab_enum.dart';
+import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
-// ignore: depend_on_referenced_packages
-import 'package:intl/intl.dart';
-import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class AppMethods {
@@ -25,17 +24,18 @@ class AppMethods {
     List<dynamic> selectedAnswers,
   ) {
     if (selectedAnswers.isNotEmpty) {
-      int index = dataList.indexWhere(
-        (element) => element["question"] == question,
+      final index = dataList.indexWhere(
+        (element) => element[AppConstents.question] == question,
       );
+
       if (index != -1) {
-        dataList[index]["answer"] = selectedAnswers;
-        dataList[index]["id"] = id;
+        dataList[index][AppConstents.answer] = selectedAnswers;
+        dataList[index][AppConstents.id] = id;
       } else {
         dataList.add({
-          "id": id,
-          "question": question,
-          "answer": selectedAnswers,
+          AppConstents.id: id,
+          AppConstents.question: question,
+          AppConstents.answer: selectedAnswers,
         });
       }
     }
@@ -48,9 +48,8 @@ class AppMethods {
   }
 
   late AnimationController animationController;
-  AnimationController storeController() {
-    return animationController;
-  }
+
+  AnimationController storeController() => animationController;
 
   AnimationController sendController(AnimationController controller) {
     animationController = controller;
@@ -58,21 +57,18 @@ class AppMethods {
   }
 
   Future<double> calculateAge(String birthDate) async {
-    debugPrint("Age input: $birthDate");
-
-    // Supported date formats
     final formats = [
-      DateFormat('dd/MM/yyyy'),
-      DateFormat('MM/dd/yyyy'),
-      DateFormat('yyyy/MM/dd'),
-      DateFormat('yyyy-MM-dd'),
-      DateFormat('dd-MM-yyyy'),
-      DateFormat('MM-dd-yyyy'),
+      DateFormat(AppConstents.ddMMyyyySlash),
+      DateFormat(AppConstents.mmDDyyyySlash),
+      DateFormat(AppConstents.yyyyMMddSlash),
+      DateFormat(AppConstents.yyyyMMddDash),
+      DateFormat(AppConstents.ddMMyyyyDash),
+      DateFormat(AppConstents.mmDDyyyyDash),
     ];
 
     DateTime? parsedDate;
 
-    for (var format in formats) {
+    for (final format in formats) {
       try {
         parsedDate = format.parseStrict(birthDate);
 
@@ -80,7 +76,6 @@ class AppMethods {
           parsedDate = null;
           continue;
         }
-
         break;
       } catch (_) {
         continue;
@@ -88,26 +83,23 @@ class AppMethods {
     }
 
     if (parsedDate == null) {
-      throw FormatException("Invalid date format or 2-digit year: $birthDate");
+      throw FormatException("${AppConstents.invalidDateFormat}: $birthDate");
     }
 
-    debugPrint("Parsed Date: $parsedDate");
-
-    DateTime today = DateTime.now();
-    int age = today.year - parsedDate.year;
+    final today = DateTime.now();
+    var age = today.year - parsedDate.year;
 
     if (today.month < parsedDate.month ||
         (today.month == parsedDate.month && today.day < parsedDate.day)) {
       age--;
     }
 
-    debugPrint("Calculated Age: $age");
     return age.toDouble();
   }
 
   void logout() async {
     await IndoSharedPreference.instance.saveUserId("");
-    await IndoSharedPreference.instance.saveOnBoard("false");
+    await IndoSharedPreference.instance.saveOnBoard(AppConstents.falseValue);
     AppNavigation.offAll(AppRoutes.loginScreen);
   }
 
@@ -117,37 +109,42 @@ class AppMethods {
   }
 
   static bool stringToBool(String value) {
-    return value.toLowerCase() == 'true';
+    return value.toLowerCase() == AppConstents.trueValue;
   }
 
   static String? validateDOB(String? dob) {
     if (dob == null || dob.trim().isEmpty) {
-      return "Please select DOB";
+      return AppConstents.selectDob;
     }
 
     try {
-      final parseDate = DateFormat("dd/MM/yyyy").parseStrict(dob.trim());
-      parseDate.year;
+      final parseDate = DateFormat(
+        AppConstents.ddMMyyyySlash,
+      ).parseStrict(dob.trim());
       final now = DateTime.now();
       final minAllowedDate = DateTime(now.year - 18, now.month, now.day);
+
       if (parseDate.isAfter(minAllowedDate)) {
-        return "Age should be 18+";
+        return AppConstents.ageLimit;
       } else if (!validateDate(dob)) {
-        return "Invalid date format. Use dd/MM/yyyy";
+        return AppConstents.invalidDate;
       } else if (parseDate.year < 1925) {
-        return "Year must be 1925 or greater";
+        return AppConstents.yearLimit;
       }
     } catch (e) {
-      return "Invalid date format. Use dd/MM/yyyy";
+      return AppConstents.invalidDate;
     }
     return null;
   }
 
   Future<String> convertDateFormatToYY(String date) async {
-    final formats = [DateFormat("dd/MM/yyyy"), DateFormat("yyyy/MM/dd")];
+    final formats = [
+      DateFormat(AppConstents.ddMMyyyySlash),
+      DateFormat(AppConstents.yyyyMMddSlash),
+    ];
 
     DateTime? parsedDate;
-    for (var format in formats) {
+    for (final format in formats) {
       try {
         parsedDate = format.parseStrict(date);
         break;
@@ -157,16 +154,20 @@ class AppMethods {
     }
 
     if (parsedDate == null) {
-      throw FormatException("Invalid date format: $date");
+      throw FormatException("${AppConstents.invalidDateFormat}: $date");
     }
 
-    return DateFormat("yyyy/MM/dd").format(parsedDate);
+    return DateFormat(AppConstents.yyyyMMddSlash).format(parsedDate);
   }
 
   Future<String> convertDateFormateToDD(String date) async {
-    final formats = [DateFormat("dd/MM/yyyy"), DateFormat("yyyy/MM/dd")];
+    final formats = [
+      DateFormat(AppConstents.ddMMyyyySlash),
+      DateFormat(AppConstents.yyyyMMddSlash),
+    ];
+
     DateTime? parsedDate;
-    for (var format in formats) {
+    for (final format in formats) {
       try {
         parsedDate = format.parseStrict(date);
         break;
@@ -176,11 +177,10 @@ class AppMethods {
     }
 
     if (parsedDate == null) {
-      throw FormatException("Invalid date format: $date");
+      throw FormatException("${AppConstents.invalidDateFormat}: $date");
     }
 
-    String newDate = DateFormat("dd/MM/yyyy").format(parsedDate);
-    return newDate;
+    return DateFormat(AppConstents.ddMMyyyySlash).format(parsedDate);
   }
 
   static bool validateDate(String date) {
@@ -192,32 +192,33 @@ class AppMethods {
 
   static String? validateHeight(String? height) {
     if (height == null || height.isEmpty) {
-      return "Please enter height";
-    } else {
-      final parsedHeight = double.tryParse(height);
-      if (parsedHeight == null) {
-        return "Please enter a valid number";
-      } else if (parsedHeight < 130.0) {
-        return "Height must be 130 or greater";
-      } else if (parsedHeight > 230.0) {
-        return "Height must be 230 or less";
-      }
+      return AppConstents.enterHeight;
     }
+
+    final parsedHeight = double.tryParse(height);
+    if (parsedHeight == null) {
+      return AppConstents.validNumber;
+    } else if (parsedHeight < 130.0) {
+      return AppConstents.heightMin;
+    } else if (parsedHeight > 230.0) {
+      return AppConstents.heightMax;
+    }
+
     return null;
   }
 
   static String? validateWeight(String? weight) {
     if (weight == null || weight.isEmpty) {
-      return "Please enter weight";
-    } else {
-      final parsedWeight = double.tryParse(weight);
-      if (parsedWeight == null) {
-        return "Please enter a valid number";
-      } else if (parsedWeight < 40.0) {
-        return "Weight must be 40 or greater";
-      } else if (parsedWeight > 155.0) {
-        return "Weight must be 155 or less";
-      }
+      return AppConstents.enterWeight;
+    }
+
+    final parsedWeight = double.tryParse(weight);
+    if (parsedWeight == null) {
+      return AppConstents.validNumber;
+    } else if (parsedWeight < 40.0) {
+      return AppConstents.weightMin;
+    } else if (parsedWeight > 155.0) {
+      return AppConstents.weightMax;
     }
 
     return null;
@@ -225,50 +226,33 @@ class AppMethods {
 
   static String? validateName(String? name) {
     if (name == null || name.isEmpty) {
-      return "Please enter name";
-    } else if (!GuestHalper.isValidInput(name)) {
-      return "Please enter valid name";
+      return AppConstents.enterName;
+    } else if (!GuestHelper.isValidInput(name)) {
+      return AppConstents.validName;
     }
     return null;
   }
 
-  List<Map<String, String>> guestOptionList = [
-    {"name": "Update Profile Photo", "isOptionType": "Photo"},
-    {"name": "Update Profile Details", "isOptionType": "Details"},
+  final List<Map<String, String>> guestOptionList = [
+    {
+      AppConstents.name: AppConstents.updateProfilePhoto,
+      AppConstents.optionType: AppConstents.photo,
+    },
+    {
+      AppConstents.name: AppConstents.updateProfileDetails,
+      AppConstents.optionType: AppConstents.details,
+    },
   ];
+
   static String? validateEmail(String? email) {
     if (email == null || email.trim().isEmpty) {
       return null;
     }
     if (!GetUtils.isEmail(email.trim())) {
-      return 'Enter a valid email';
+      return AppConstents.enterEmail;
     }
     return null;
   }
-
-  // Future<void> editProfilePicture(
-  //   CommonMixin commonController,
-  //   guestId,
-  //   isGuest,
-  //   final VoidCallback whenComplete,
-  // ) async {
-  //   ImagePickerBottomsheet.showImagePickerBottomSheet(
-  //     onGalleryTap: () async {
-  //       await commonController
-  //           .uploadProfileFromGallery("false", guestId, isGuest)
-  //           .whenComplete(() {
-  //             whenComplete();
-  //           });
-  //     },
-  //     onCameraTap: () async {
-  //       await commonController
-  //           .uploadProfileFromCamera("false", guestId, isGuest)
-  //           .whenComplete(() {
-  //             whenComplete();
-  //           });
-  //     },
-  //   );
-  // }
 
   static Future<void> storeUserData({
     required String name,
@@ -296,36 +280,27 @@ class AppMethods {
   }
 
   Future<int> getBatteryLevel() async {
-    final level = await _battery.batteryLevel;
-    return level;
+    return await _battery.batteryLevel;
   }
 
   Future<bool> getBatterySaveMode() async {
-    final saveMode = await _battery.isInBatterySaveMode;
-    return saveMode;
+    return await _battery.isInBatterySaveMode;
   }
 
-  static const List<String> tabGuestTitles = [
-    "Basic Vital Signs",
-    "Bloodless Blood Tests",
-    "Risks",
-    "Stress",
-    "Heart Rate Variability",
-    "Advanced Heart Rate Variability",
+  static final List<HealthTab> guestTabs = [
+    HealthTab.basicVitalSigns,
+    HealthTab.bloodlessBloodTests,
+    HealthTab.risks,
+    HealthTab.stress,
+    HealthTab.heartRateVariability,
+    HealthTab.advancedHeartRateVariability,
   ];
-  static const List<String> tabTitles = [
-    "All",
-    "Basic Vital Signs",
-    "Bloodless Blood Tests",
-    "Risks",
-    "Stress",
-    "Heart Rate Variability",
-    "Advanced Heart Rate Variability",
-  ];
-  static final List<Widget> tabWidgets =
-      tabTitles.map((title) => Tab(text: title)).toList();
-  static final List<Widget> tabGuestWidget =
-      tabGuestTitles.map((title) => Tab(text: title)).toList();
+
+  static List<Widget> get tabWidgets =>
+      HealthTab.values.map((tab) => Tab(text: tab.title)).toList();
+
+  static List<Widget> get tabGuestWidget =>
+      guestTabs.map((tab) => Tab(text: tab.title)).toList();
 
   static bool isNumeric(String value) {
     return double.tryParse(value) != null;

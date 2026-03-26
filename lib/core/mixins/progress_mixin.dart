@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 mixin ProgressHandlerMixin on GetxController {
-  late AnimationController animationController;
+  AnimationController? animationController;
   final RxBool isStarted = false.obs;
   final RxInt progress = 0.obs;
   final RxString imageValidityString = "".obs;
@@ -12,19 +12,19 @@ mixin ProgressHandlerMixin on GetxController {
   final RxBool showImageValidity = false.obs;
 
   void startProgress({required int seconds}) {
-    animationController.duration = Duration(seconds: seconds);
-    animationController.reset();
+    animationController?.duration = Duration(seconds: seconds);
+    animationController?.reset();
     isStarted.value = true;
-    animationController.forward();
+    animationController?.forward();
   }
 
   void stopProgress() {
-    animationController.stop();
+    animationController?.stop();
     isStarted.value = false;
   }
 
   void resetProgress() {
-    animationController.reset();
+    animationController?.reset();
     progress.value = 0;
     isStarted.value = false;
   }
@@ -47,7 +47,7 @@ mixin ProgressHandlerMixin on GetxController {
 
   @override
   void onClose() {
-    animationController.dispose();
+    animationController?.dispose();
     super.onClose();
   }
 

@@ -32,19 +32,4 @@ class AppNavigation {
       Get.back();
     }
   }
-
-  // /// Navigate to the login screen
-  // static void goToLogin() {
-  //   Get.offAllNamed(AppRoutes.login);
-  // }
-
-  // /// Navigate to the home screen
-  // static void goToHome() {
-  //   Get.offAllNamed(AppRoutes.home);
-  // }
-
-  // /// Navigate to profile with optional arguments
-  // static void goToProfile({int? userId}) {
-  //   Get.toNamed(AppRoutes.profile, arguments: {"userId": userId});
-  // }
 }

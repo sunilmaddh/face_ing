@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ntt_data/data/models/vital_graph_response_model.dart';
-import 'package:ntt_data/modules/views/vital_graph/widgets/tablel_calender.dart';
+import 'package:ntt_data/modules/vital_graph/models/vital_graph_response_model.dart';
+import 'package:ntt_data/modules/vital_graph/widgets/tablel_calender.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class EventDot {

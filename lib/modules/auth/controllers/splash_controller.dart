@@ -1,0 +1,29 @@
+import 'package:get/get.dart';
+import 'package:ntt_data/core/base/base_controller.dart';
+import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
+
+class SplashController extends BaseController {
+  final IndoSharedPreference _indoSharedPreference =
+      IndoSharedPreference.instance;
+
+  Future<void> checkUserStatus() async {
+    final userId = await _indoSharedPreference.getUserId();
+    if (userId.isNotEmpty) {
+      final isOnboard = await _indoSharedPreference.getOnBoard();
+      if (isOnboard == "true") {
+        AppNavigation.off(AppRoutes.landingSceen);
+      } else {
+        AppNavigation.off(AppRoutes.createAccount);
+      }
+    } else {
+      final isWalk = await _indoSharedPreference.getWalkScreen();
+      if (isWalk == true) {
+        AppNavigation.off(AppRoutes.loginScreen);
+      } else {
+        AppNavigation.off(AppRoutes.onboardScreen);
+      }
+    }
+  }
+}

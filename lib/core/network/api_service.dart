@@ -1,14 +1,13 @@
 // import 'dart:convert';
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/network/api_request.dart';
 import 'package:ntt_data/core/network/api_response.dart';
 import 'package:ntt_data/core/network/encryption_service.dart';
-
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/utils/api_endpoints.dart';
+import 'package:ntt_data/core/network/api_endpoints.dart';
 
 typedef JsonMapper<T> = T Function(Map<String, dynamic> json);
 
@@ -20,7 +19,7 @@ class ApiService {
 
   String get baseUrl => ApiEndpoints.baseUrl;
   String get voiceBaseUrl => ApiEndpoints.voiceBaseUrl;
-  String get apiPrefix => "/api";
+  String get apiPrefix => AppConstents.apiPrefix;
 
   Uri _buildUri(ApiRequest request) {
     final host = request.useVoiceBaseUrl ? voiceBaseUrl : baseUrl;
@@ -46,7 +45,7 @@ class ApiService {
         retryOnUnauthorized: true,
       );
     } catch (e, s) {
-      debugPrint("API ERROR: $e");
+      debugPrint("${AppConstents.eroor} $e");
       debugPrintStack(stackTrace: s);
 
       return ApiResponse.failure(statusCode: -1, message: e.toString());
@@ -62,24 +61,23 @@ class ApiService {
     final accessToken = await IndoSharedPreference.instance.getAccessToken();
 
     final headers = <String, String>{
-      "Content-Type": "application/json",
+      AppConstents.contantType: AppConstents.applicationJson,
       ...?request.headers,
     };
 
-    if (request.requiresAuth && accessToken != null && accessToken.isNotEmpty) {
-      headers["Authorization"] = "Bearer $accessToken";
+    if (request.requiresAuth && accessToken.isNotEmpty) {
+      headers[AppConstents.autharization] =
+          "${AppConstents.bearer} $accessToken";
     }
 
     Object? finalBody = request.body;
     if (request.encryptBody && request.body != null) {
       finalBody = encryptionService.encryptRequest(request.body!);
     }
-
-    debugPrint("REQUEST URI: $uri");
-    debugPrint("REQUEST METHOD: ${request.method.name}");
-    debugPrint("REQUEST HEADERS: $headers");
-    debugPrint("REQUEST BODY: $finalBody");
-
+    debugPrint("${AppConstents.requestUri} $uri");
+    debugPrint("${AppConstents.requestMethod} ${request.method.name}");
+    debugPrint("${AppConstents.requestHeaders} $headers");
+    debugPrint("${AppConstents.requestBOdy} $finalBody");
     late http.Response response;
 
     switch (request.method) {
@@ -129,7 +127,9 @@ class ApiService {
     JsonMapper<T>? fromJson,
   }) {
     final decodedBodyText = utf8.decode(response.bodyBytes);
-    debugPrint("RESPONSE [${response.statusCode}]: $decodedBodyText");
+    debugPrint(
+      "${AppConstents.printResponse} [${response.statusCode}]: $decodedBodyText",
+    );
 
     Map<String, dynamic> jsonBody = {};
     if (decodedBodyText.isNotEmpty) {
@@ -140,14 +140,14 @@ class ApiService {
     }
 
     final message =
-        jsonBody["message"]?.toString() ??
-        jsonBody["msg"]?.toString() ??
-        "Request completed";
+        jsonBody[AppConstents.message]?.toString() ??
+        jsonBody[AppConstents.msg]?.toString() ??
+        AppConstents.requestCompleted;
 
     final isSuccess = response.statusCode >= 200 && response.statusCode < 300;
 
     Map<String, dynamic> processedBody = jsonBody;
-    if (jsonBody.containsKey("payload")) {
+    if (jsonBody.containsKey(AppConstents.payload)) {
       try {
         processedBody = encryptionService.decryptResponse(jsonBody);
       } catch (_) {
@@ -157,7 +157,7 @@ class ApiService {
 
     T? data;
     if (fromJson != null) {
-      final candidate = processedBody["data"];
+      final candidate = processedBody[AppConstents.data];
       if (candidate is Map<String, dynamic>) {
         data = fromJson(candidate);
       } else if (processedBody.isNotEmpty) {
@@ -185,7 +185,7 @@ class ApiService {
 
   Future<bool> _refreshToken() async {
     final refreshToken = await IndoSharedPreference.instance.getRefreshToken();
-    if (refreshToken == null || refreshToken.isEmpty) return false;
+    if (refreshToken.isEmpty) return false;
 
     final uri =
         isHttps
@@ -195,8 +195,8 @@ class ApiService {
     final response = await http.post(
       uri,
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $refreshToken",
+        AppConstents.contantType: AppConstents.applicationJson,
+        AppConstents.autharization: "${AppConstents.bearer} $refreshToken",
       },
     );
 
@@ -210,8 +210,8 @@ class ApiService {
     String? newAccessToken;
     if (body is Map<String, dynamic>) {
       newAccessToken =
-          body["accessToken"]?.toString() ??
-          body["data"]?["accessToken"]?.toString();
+          body[AppConstents.accessToken]?.toString() ??
+          body[AppConstents.data]?[AppConstents.accessToken]?.toString();
     }
 
     if (newAccessToken == null || newAccessToken.isEmpty) {
@@ -234,14 +234,18 @@ class ApiService {
       final uri =
           isHttps ? Uri.https(baseUrl, endpoint) : Uri.http(baseUrl, endpoint);
 
-      final request = http.MultipartRequest('PUT', uri);
+      final request = http.MultipartRequest(AppConstents.put, uri);
 
-      request.files.add(await http.MultipartFile.fromPath('file', filePath));
-      request.fields["isSignup"] = imageType;
-      request.fields["isGuest"] = isGuest;
-      request.fields["guestId"] = guestId;
+      request.files.add(
+        await http.MultipartFile.fromPath(AppConstents.file, filePath),
+      );
+      request.fields[AppConstents.isSignup] = imageType;
+      request.fields[AppConstents.isGuest] = isGuest;
+      request.fields[AppConstents.guestId] = guestId;
 
-      request.headers.addAll({"Authorization": "Bearer $accessToken"});
+      request.headers.addAll({
+        AppConstents.autharization: "${AppConstents.bearer} $accessToken",
+      });
 
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);

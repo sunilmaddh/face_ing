@@ -1,140 +1,206 @@
 import 'package:ntt_data/core/mixins/common_mixin.dart';
-import 'package:ntt_data/data/models/healthDetailsResponseModel.dart';
+import 'package:ntt_data/core/utils/enum/health_tab_enum.dart';
+import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 
 class GlobleHalper {
-  final Map<String, List<String>> healthCategories = {
-    "Basic Vital Signs": [
-      "Wellness Score",
-      "Breathing Rate",
-      "Heart Rate",
-      "PRQ",
-      "Blood Pressure",
-      "Oxygen Saturation",
-    ],
-    "Bloodless Blood Tests": ["Hemoglobin", "Hemoglobin A1C"],
-    "Risks": [
-      "ASCVD Risk",
-      "Heart Age",
-      "High Blood Pressure Risk",
-      "High HbA1c Risk",
-      "High Fasting Glucose Risk",
-      "High Total Cholesterol Risk",
-      "Low Hemoglobin Risk",
-    ],
-    "Stress": ["Stress Level", "Stress Index", "Normalized Stress Index"],
-    "Heart Rate Variability": ["HRV SDNN", "Mean RRi", "RMSSD"],
-    "Advanced Heart Rate Variability": [
-      "Recovery Ability (PNS Zone)",
-      "PNS Index",
-      "Stress Response (SNS Zone)",
-      "SNS Index",
-      "SD1",
-      "SD2",
-      "LF/HF",
-    ],
+  static final Map<HealthCategory, List<String>> normalizedCategories = {
+    for (final category in HealthCategory.values)
+      category: category.normalizedVitals,
   };
 
-  /// Stores categorized vitals into the controller
+  static HealthCategory? getCategoryByVitalName(String vitalName) {
+    final normalizedName = vitalName.toLowerCase().trim();
+
+    for (final entry in normalizedCategories.entries) {
+      if (entry.value.contains(normalizedName)) {
+        return entry.key;
+      }
+    }
+    return null;
+  }
+
   Future<void> storeTabData(
     HealthDetailsResponseModel healthDataList,
     CommonMixin controller,
-    isUserType,
+    String isUserType,
   ) async {
     if (healthDataList.healthDetail == null) return;
-    final Map<String, List<String>> normalizedCategories = {
-      for (var entry in healthCategories.entries)
-        entry.key: entry.value.map((e) => e.toLowerCase().trim()).toList(),
-    };
+
     void processVital(HealthDetailList result) {
-      final name = (result.vitalName ?? '').toLowerCase().trim();
-      if (normalizedCategories["Basic Vital Signs"]!.contains(name)) {
-        controller.basicVitalSigns.add(result);
-      } else if (normalizedCategories["Bloodless Blood Tests"]!.contains(
-        name,
-      )) {
-        isUserType == "guest"
-            ? controller.basicVitalSigns.add(result)
-            : controller.bloodlessBloodTests.add(result);
-      } else if (normalizedCategories["Risks"]!.contains(name)) {
-        controller.risks.add(result);
-      } else if (normalizedCategories["Stress"]!.contains(name)) {
-        controller.stress.add(result);
-      } else if (normalizedCategories["Heart Rate Variability"]!.contains(
-        name,
-      )) {
-        controller.heartRateVariability.add(result);
-      } else if (normalizedCategories["Advanced Heart Rate Variability"]!
-          .contains(name)) {
-        controller.advancedHeartRateVariability.add(result);
+      final vitalName = result.vitalName ?? '';
+      final category = getCategoryByVitalName(vitalName);
+
+      switch (category) {
+        case HealthCategory.basicVitalSigns:
+          controller.basicVitalSigns.add(result);
+          break;
+
+        case HealthCategory.bloodlessBloodTests:
+          if (isUserType == "guest") {
+            controller.basicVitalSigns.add(result);
+          } else {
+            controller.bloodlessBloodTests.add(result);
+          }
+          break;
+
+        case HealthCategory.risks:
+          controller.risks.add(result);
+          break;
+
+        case HealthCategory.stress:
+          controller.stress.add(result);
+          break;
+
+        case HealthCategory.heartRateVariability:
+          controller.heartRateVariability.add(result);
+          break;
+
+        case HealthCategory.advancedHeartRateVariability:
+          controller.advancedHeartRateVariability.add(result);
+          break;
+
+        case null:
+          break;
       }
     }
 
-    for (var result in healthDataList.healthDetail!) {
+    for (final result in healthDataList.healthDetail!) {
       processVital(result);
     }
   }
+  // final Map<String, List<String>> healthCategories = {
+  //   "Basic Vital Signs": [
+  //     "Wellness Score",
+  //     "Breathing Rate",
+  //     "Heart Rate",
+  //     "PRQ",
+  //     "Blood Pressure",
+  //     "Oxygen Saturation",
+  //   ],
+  //   "Bloodless Blood Tests": ["Hemoglobin", "Hemoglobin A1C"],
+  //   "Risks": [
+  //     "ASCVD Risk",
+  //     "Heart Age",
+  //     "High Blood Pressure Risk",
+  //     "High HbA1c Risk",
+  //     "High Fasting Glucose Risk",
+  //     "High Total Cholesterol Risk",
+  //     "Low Hemoglobin Risk",
+  //   ],
+  //   "Stress": ["Stress Level", "Stress Index", "Normalized Stress Index"],
+  //   "Heart Rate Variability": ["HRV SDNN", "Mean RRi", "RMSSD"],
+  //   "Advanced Heart Rate Variability": [
+  //     "Recovery Ability (PNS Zone)",
+  //     "PNS Index",
+  //     "Stress Response (SNS Zone)",
+  //     "SNS Index",
+  //     "SD1",
+  //     "SD2",
+  //     "LF/HF",
+  //   ],
+  // };
 
-  // Main Tabs
-  List<String> tabTitles = [
-    "All",
-    "Basic Vital Signs",
-    "Bloodless Blood Tests",
-    "Risks",
-    "Stress",
-    "Heart Rate Variability",
-    "Advanced Heart Rate Variability",
-  ];
+  // /// Stores categorized vitals into the controller
+  // Future<void> storeTabData(
+  //   HealthDetailsResponseModel healthDataList,
+  //   CommonMixin controller,
+  //   isUserType,
+  // ) async {
+  //   if (healthDataList.healthDetail == null) return;
+  //   final Map<String, List<String>> normalizedCategories = {
+  //     for (var entry in healthCategories.entries)
+  //       entry.key: entry.value.map((e) => e.toLowerCase().trim()).toList(),
+  //   };
+  //   void processVital(HealthDetailList result) {
+  //     final name = (result.vitalName ?? '').toLowerCase().trim();
+  //     if (normalizedCategories["Basic Vital Signs"]!.contains(name)) {
+  //       controller.basicVitalSigns.add(result);
+  //     } else if (normalizedCategories["Bloodless Blood Tests"]!.contains(
+  //       name,
+  //     )) {
+  //       isUserType == "guest"
+  //           ? controller.basicVitalSigns.add(result)
+  //           : controller.bloodlessBloodTests.add(result);
+  //     } else if (normalizedCategories["Risks"]!.contains(name)) {
+  //       controller.risks.add(result);
+  //     } else if (normalizedCategories["Stress"]!.contains(name)) {
+  //       controller.stress.add(result);
+  //     } else if (normalizedCategories["Heart Rate Variability"]!.contains(
+  //       name,
+  //     )) {
+  //       controller.heartRateVariability.add(result);
+  //     } else if (normalizedCategories["Advanced Heart Rate Variability"]!
+  //         .contains(name)) {
+  //       controller.advancedHeartRateVariability.add(result);
+  //     }
+  //   }
 
-  // Graph Tabs
-  List<String> tabGraphTitles = [
-    "Wellness",
-    "Basic Vital Signs",
-    "Bloodless Blood Tests",
-    "Risks",
-    "Stress",
-    "Heart Rate Variability",
-    "Advanced Heart Rate Variability",
-  ];
+  //   for (var result in healthDataList.healthDetail!) {
+  //     processVital(result);
+  //   }
+  // }
 
-  // Wellness Tabs
-  List<String> tabWellnessTitles = ["Wellness"];
+  // // Main Tabs
+  // List<String> tabTitles = [
+  //   "All",
+  //   "Basic Vital Signs",
+  //   "Bloodless Blood Tests",
+  //   "Risks",
+  //   "Stress",
+  //   "Heart Rate Variability",
+  //   "Advanced Heart Rate Variability",
+  // ];
 
-  // Vital Signs Tabs
-  List<String> tabVitalSignTitles = [
-    "Breathing Rate",
-    "Pulse Rate (Heart Rate)",
-    "PRQ",
-    "Blood Pressure",
-    "Oxygen Saturation",
-  ];
+  // // Graph Tabs
+  // List<String> tabGraphTitles = [
+  //   "Wellness",
+  //   "Basic Vital Signs",
+  //   "Bloodless Blood Tests",
+  //   "Risks",
+  //   "Stress",
+  //   "Heart Rate Variability",
+  //   "Advanced Heart Rate Variability",
+  // ];
 
-  // Bloodless Blood Tests Tabs
-  List<String> tabBBTTitles = ["Hemoglobin", "Hemoglobin A1C"];
+  // // Wellness Tabs
+  // List<String> tabWellnessTitles = ["Wellness"];
 
-  // Risk Tabs
-  List<String> tabRiskTitles = [
-    "ASCVD Risk",
-    "High Blood Pressure Risk",
-    "High HbA1c Risk",
-    "High Fasting Glucose Risk",
-    "High Total Cholesterol Risk",
-    "Low Hemoglobin Risk",
-  ];
+  // // Vital Signs Tabs
+  // List<String> tabVitalSignTitles = [
+  //   "Breathing Rate",
+  //   "Pulse Rate (Heart Rate)",
+  //   "PRQ",
+  //   "Blood Pressure",
+  //   "Oxygen Saturation",
+  // ];
 
-  // Stress Tabs
-  List<String> tabStressTitles = ["Stress Level"];
+  // // Bloodless Blood Tests Tabs
+  // List<String> tabBBTTitles = ["Hemoglobin", "Hemoglobin A1C"];
 
-  // HRV Basic Tabs
-  List<String> tabHRBTitles = ["HRV SDNN"];
+  // // Risk Tabs
+  // List<String> tabRiskTitles = [
+  //   "ASCVD Risk",
+  //   "High Blood Pressure Risk",
+  //   "High HbA1c Risk",
+  //   "High Fasting Glucose Risk",
+  //   "High Total Cholesterol Risk",
+  //   "Low Hemoglobin Risk",
+  // ];
 
-  // Advanced HRV Tabs
-  List<String> tabAHRVTitles = [
-    "PNS Zone",
-    "PNS Index",
-    "SNS Zone",
-    "SNS Index",
-    "SD1",
-    "SD2",
-    "LF/HF",
-  ];
+  // // Stress Tabs
+  // List<String> tabStressTitles = ["Stress Level"];
+
+  // // HRV Basic Tabs
+  // List<String> tabHRBTitles = ["HRV SDNN"];
+
+  // // Advanced HRV Tabs
+  // List<String> tabAHRVTitles = [
+  //   "PNS Zone",
+  //   "PNS Index",
+  //   "SNS Zone",
+  //   "SNS Index",
+  //   "SD1",
+  //   "SD2",
+  //   "LF/HF",
+  // ];
 }

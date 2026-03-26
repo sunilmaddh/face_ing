@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class AppDimensions {
   // Dynamic width and height scaling
   static double width(double value) => value.w;
   static double height(double value) => value.h;
+  static double get screenWidth => Get.width;
+  static double get screenHeight => Get.height;
 
   // Dynamic font size scaling
   static double font(double value) => value.sp;
