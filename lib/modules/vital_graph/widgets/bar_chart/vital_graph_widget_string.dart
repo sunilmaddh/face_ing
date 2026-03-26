@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
-import 'package:ntt_data/core/utils/extentions.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
 import 'package:ntt_data/modules/vital_graph/models/vital_graph_response_model.dart';
 import 'package:ntt_data/modules/vital_graph/helper/vital_color_helper.dart';
 

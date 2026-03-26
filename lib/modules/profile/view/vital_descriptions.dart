@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
@@ -11,7 +12,7 @@ import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 class VitalDescriptions extends BaseView<ProfileController> {
   VitalDescriptions({super.key});
 
-  final String vitalKey = Get.arguments["vitalKey"] ?? "";
+  final String vitalKey = Get.arguments[AppConstents.vitalKey] ?? "";
 
   @override
   bool get useDefaultLoader => false;
@@ -24,7 +25,10 @@ class VitalDescriptions extends BaseView<ProfileController> {
   @override
   Widget buildView(BuildContext context, ProfileController controller) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Vital Signs Description", onTop: Get.back),
+      appBar: CustomAppBar(
+        title: AppConstents.vitalSignsDescriptionTitle,
+        onTop: Get.back,
+      ),
       body: Container(
         decoration: BoxDecoration(
           color: AppColors.historyCardColor,

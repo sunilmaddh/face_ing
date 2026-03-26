@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/enum/health_tab_enum.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
 import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -235,11 +236,11 @@ class AppMethods {
 
   final List<Map<String, String>> guestOptionList = [
     {
-      AppConstents.name: AppConstents.updateProfilePhoto,
+      AppConstents.nameLower: AppConstents.updateProfilePhoto,
       AppConstents.optionType: AppConstents.photo,
     },
     {
-      AppConstents.name: AppConstents.updateProfileDetails,
+      AppConstents.nameLower: AppConstents.updateProfileDetails,
       AppConstents.optionType: AppConstents.details,
     },
   ];
@@ -287,30 +288,15 @@ class AppMethods {
     return await _battery.isInBatterySaveMode;
   }
 
-  static final List<HealthTab> guestTabs = [
-    HealthTab.basicVitalSigns,
-    HealthTab.bloodlessBloodTests,
-    HealthTab.risks,
-    HealthTab.stress,
-    HealthTab.heartRateVariability,
-    HealthTab.advancedHeartRateVariability,
-  ];
-
-  static List<Widget> get tabWidgets =>
-      HealthTab.values.map((tab) => Tab(text: tab.title)).toList();
-
-  static List<Widget> get tabGuestWidget =>
-      guestTabs.map((tab) => Tab(text: tab.title)).toList();
-
-  static bool isNumeric(String value) {
-    return double.tryParse(value) != null;
-  }
-
   Future<void> toggleWakelock(bool enable) async {
     if (enable) {
       await WakelockPlus.enable();
     } else {
       await WakelockPlus.disable();
     }
+  }
+
+  static bool isNumeric(String value) {
+    return double.tryParse(value) != null;
   }
 }

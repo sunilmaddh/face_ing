@@ -2,7 +2,7 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/utils/enum/health_data_enum.dart';
 import 'package:ntt_data/core/utils/enum/vital_key.dart';
-import 'package:ntt_data/core/utils/extentions.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
 import 'package:ntt_data/modules/binah/handler/vital_sign_helper.dart';
 import 'package:ntt_data/modules/binah/helper/health_common_helper.dart';
 import 'package:ntt_data/modules/binah/widgets/common_health_asset.dart';

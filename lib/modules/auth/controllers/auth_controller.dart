@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
@@ -128,7 +129,7 @@ class AuthController extends BaseController
       );
 
       if (response.statusCode != 200 || response.data == null) {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
         return;
       }
 
@@ -138,7 +139,9 @@ class AuthController extends BaseController
         navigateBack();
         navigateTo(AppRoutes.otpForgotScreen);
       } else {
-        setError(userAuthResponse.value?.message ?? "Something went wrong");
+        setError(
+          userAuthResponse.value?.message ?? AppConstents.commonErrorMessage,
+        );
       }
     } catch (e) {
       setError(e.toString());
@@ -158,7 +161,7 @@ class AuthController extends BaseController
       );
 
       if (response.statusCode != 200 || response.data == null) {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
         return;
       }
 
@@ -189,7 +192,7 @@ class AuthController extends BaseController
       );
 
       if (response.statusCode != 200) {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
         return;
       }
 
@@ -216,7 +219,7 @@ class AuthController extends BaseController
       final response = await authRepository.getMedicalQuestionList();
 
       if (response.statusCode != 200 || response.data == null) {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
         return;
       }
 
@@ -257,7 +260,7 @@ class AuthController extends BaseController
       );
 
       if (response.statusCode != 200 || response.data == null) {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
         return;
       }
       final result = response.data!;

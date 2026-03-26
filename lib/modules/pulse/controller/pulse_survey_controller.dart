@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/modules/pulse/models/pulse_survey_model.dart';
 import 'package:ntt_data/modules/pulse/models/pulse_survey_question_list_model.dart';
 import 'package:ntt_data/modules/pulse/repositories/pulse_survey_repository.dart';
@@ -36,11 +37,11 @@ class PulseSurveyController extends BaseController {
         pulseSurveyList.value = result ?? PulseSurveyQuestionListModel();
         pulseQuestionList.value = pulseSurveyList.value.questions ?? [];
       } else {
-        setError(response.message ?? "Something went wrong");
+        setError(response.message ?? AppConstents.commonErrorMessage);
       }
     } catch (e) {
       debugPrint(e.toString());
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       isPulseQuestionListLoading(false);
     }
@@ -59,11 +60,11 @@ class PulseSurveyController extends BaseController {
         await fetchPulseSurvey();
         pulseList.clear();
       } else {
-        setError(responseData.message ?? "Something went wrong");
+        setError(responseData.message ?? AppConstents.commonErrorMessage);
       }
     } catch (e) {
       debugPrint(e.toString());
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -83,11 +84,11 @@ class PulseSurveyController extends BaseController {
           pulseSurveyADayList.value = result.pulseSurveyADayList ?? [];
         }
       } else {
-        setError(responseData.message ?? "Something went wrong");
+        setError(responseData.message ?? AppConstents.commonErrorMessage);
       }
     } catch (e) {
       debugPrint(e.toString());
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       isPulseSurveryLoading(false);
     }

@@ -351,7 +351,10 @@ class MeasurementController extends GetxController
         var result = responseData.data;
         scanMessageList.value = result!.scannedMessage!;
       } else {
-        AppSnackbar.show(title: "Error", message: "Something went wrong");
+        AppSnackbar.show(
+          title: "Error",
+          message: AppConstents.commonErrorMessage,
+        );
       }
     } catch (e) {
       AppSnackbar.show(title: "Exception", message: e.toString());

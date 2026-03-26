@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/modules/phq/repositories/phq_repository.dart';
 import 'package:ntt_data/modules/voice_agent/model/kintsungi_questionaries_response.dart';
 
@@ -44,10 +45,10 @@ class PhqController extends BaseController {
                 ? (questionnaires[2].questions ?? [])
                 : [];
       } else {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }

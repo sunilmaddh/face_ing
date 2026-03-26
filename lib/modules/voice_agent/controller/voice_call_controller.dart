@@ -63,7 +63,7 @@ class VoiceCallController extends BaseController {
       if (responseData.statusCode == 200) {
         final result = responseData.data;
         if (result == null) {
-          setError("Something went wrong");
+          setError(AppConstents.commonErrorMessage);
           return false;
         }
         agentName.value = result.agentName ?? "";
@@ -74,12 +74,12 @@ class VoiceCallController extends BaseController {
         webhookResponse.value = result;
         return true;
       } else {
-        setError(responseData.message ?? "Something went wrong");
+        setError(responseData.message ?? AppConstents.commonErrorMessage);
         return false;
       }
     } catch (e) {
       debugPrint(e.toString());
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
       return false;
     } finally {
       showLoading(false);

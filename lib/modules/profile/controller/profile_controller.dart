@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/helper/globle_halper.dart';
+import 'package:ntt_data/data/services/profile_upload_services.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/modules/profile/models/user_history_list_model.dart';
@@ -13,6 +15,7 @@ import 'package:ntt_data/modules/profile/models/vital_descriptions_model.dart';
 import 'package:ntt_data/modules/profile/helper/profile_helper.dart';
 import 'package:ntt_data/modules/profile/repositories/profile_repository.dart';
 import 'package:ntt_data/routes/app_routes.dart';
+import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 
 class ProfileController extends BaseController
     with RadioStateMixin, CommonMixin {
@@ -74,11 +77,11 @@ class ProfileController extends BaseController
         userHealthList.value = result?.userHealthList ?? [];
       } else {
         userHealthList.clear();
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
       userHealthList.clear();
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -123,12 +126,12 @@ class ProfileController extends BaseController
       } else {
         binahHIstoryDetails.clear();
         clearHealthCategarie();
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
       binahHIstoryDetails.clear();
       clearHealthCategarie();
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -173,10 +176,10 @@ class ProfileController extends BaseController
         setSuccess("Update details successfully");
         clearProfileData();
       } else {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -201,10 +204,10 @@ class ProfileController extends BaseController
         vitalDescriptionModel.value = result!;
         vitalDesc.value = vitalDescriptionModel.value.vitalDesc.toString();
       } else {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       isVitalDescriptionLoading(false);
     }
@@ -223,10 +226,10 @@ class ProfileController extends BaseController
         AppMethods().logout();
         setSuccess("Successfully logged out");
       } else {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       isLoadingLogout(false);
     }
@@ -273,6 +276,44 @@ class ProfileController extends BaseController
     required String userFlag,
   }) async {
     await updateDetailsUG(data: data, userFlag: userFlag);
+  }
+
+  Future<void> editProfilePicture(
+    CommonMixin commonController,
+    guestId,
+    isGuest,
+    final VoidCallback whenComplete,
+  ) async {
+    ImagePickerBottomsheet.showImagePickerBottomSheet(
+      onGalleryTap: () async {
+        final file = await ProfileUploadService().uploadProfileImage(
+          source: ImagePickSource.gallery,
+        );
+
+        // await commonController
+        //     .uploadProfileFromGallery("false", guestId, isGuest)
+        //     .whenComplete(() {
+        //       whenComplete();
+        //     });
+      },
+      onCameraTap: () async {
+        final file = await ProfileUploadService().uploadProfileImage(
+          source: ImagePickSource.camera,
+        );
+        // await commonController
+        //     .uploadProfileFromCamera("false", guestId, isGuest)
+        //     .whenComplete(() {
+        //       whenComplete();
+        //     });
+      },
+    );
+  }
+
+  Future<void> uploadProfile({required String imagePath}) async {
+    var response = profileRepository.uploadImage(
+      filePath: imagePath,
+      imageType: "",
+    );
   }
 
   // ==============================

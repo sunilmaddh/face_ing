@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         // initialBinding: AppBindings(),
         useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
-        title: 'Face.ing',
+        title: AppConstents.appTitle,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(backgroundColor: AppColors.btntext),

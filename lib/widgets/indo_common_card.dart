@@ -4,7 +4,7 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
-import 'package:ntt_data/core/utils/extentions.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
 import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';

@@ -87,7 +87,7 @@ class AiSessionController extends BaseController {
 
       return success;
     } catch (e) {
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
       return false;
     } finally {
       isInitiating.value = false;
@@ -112,10 +112,10 @@ class AiSessionController extends BaseController {
       if (response.statusCode == 200 && response.data != null) {
         return response.data!.sessionId ?? "";
       }
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
       return "";
     } catch (e) {
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
       return "";
     }
   }

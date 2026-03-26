@@ -7,9 +7,11 @@ import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
+import 'package:ntt_data/core/utils/enum/enums.dart';
+import 'package:ntt_data/core/utils/enum/gender_enum.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
 import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
-import 'package:ntt_data/modules/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
@@ -22,9 +24,9 @@ import 'package:intl/intl.dart';
 class UpdateUserGuestDetails extends BaseView<ProfileController> {
   UpdateUserGuestDetails({super.key});
 
-  final String guestId = Get.arguments["guestId"] ?? "";
-  final String name = Get.arguments["name"] ?? "";
-  final String userFlag = Get.arguments["userFlag"] ?? "";
+  final String guestId = Get.arguments[AppConstents.guestId] ?? "";
+  final String name = Get.arguments[AppConstents.nameLower] ?? "";
+  final String userFlag = Get.arguments[AppConstents.userFlag] ?? "";
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -34,7 +36,10 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
   @override
   Widget buildView(BuildContext context, ProfileController controller) {
     return Scaffold(
-      appBar: CustomAppBar(onTop: AppNavigation.back, title: "Update Details"),
+      appBar: CustomAppBar(
+        onTop: AppNavigation.back,
+        title: AppConstents.updateDetailsTitle,
+      ),
       backgroundColor: AppColors.historyCardColor,
       body: SafeArea(
         child: ListView(
@@ -57,7 +62,7 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
                               CustomFormField(
                                 validator: AppMethods.validateName,
                                 label: name,
-                                hint: "Enter your name",
+                                hint: AppConstents.enterNameHint,
                                 controller: controller.nameController,
                               ),
 
@@ -65,8 +70,8 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
                                 const SizedBox(height: 15),
                                 CustomFormField(
                                   validator: AppMethods.validateEmail,
-                                  label: "Email Id",
-                                  hint: "Enter your email",
+                                  label: AppConstents.emailLevel,
+                                  hint: AppConstents.emailHint,
                                   controller: controller.emailController,
                                 ),
                               ],
@@ -75,9 +80,9 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
 
                               RadioWidget(
                                 selectionType: controller.genderType,
-                                level: 'Gender',
-                                radioTextRight: 'Female',
-                                radioTextLeft: 'Male',
+                                level: AppConstents.genderLevel,
+                                radioTextRight: Gender.female.value,
+                                radioTextLeft: Gender.male.value,
                                 onSelectionChanged: (value) {
                                   controller.genderType.value = value;
                                 },
@@ -94,7 +99,7 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
                                       context: context,
                                       onDateSelected: (selectedDate) {
                                         final formattedDate = DateFormat(
-                                          'dd/MM/yyyy',
+                                          AppConstents.ddMMyyyySlash,
                                         ).format(selectedDate);
                                         controller.dobController.text =
                                             formattedDate;
@@ -107,7 +112,7 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
                                   ),
                                 ),
                                 label: AppConstents.dob,
-                                hint: "Select your date of birth",
+                                hint: AppConstents.selectDobHint,
                                 controller: controller.dobController,
                               ),
 
@@ -116,9 +121,9 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
                               CommonDropdownTextField(
                                 unit: "Kg",
                                 defaultValue: "60",
-                                title: "Select Your Weight (Kg)",
+                                title: AppConstents.selectWeightLevel,
                                 columns: 5,
-                                hintText: "Enter your weight (Kg)",
+                                hintText: AppConstents.enterWeightHint,
                                 validator: AppMethods.validateWeight,
                                 label: AppConstents.weight,
                                 options: GuestHelper.weightList,
@@ -130,9 +135,9 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
                               CommonDropdownTextField(
                                 unit: "Cm",
                                 defaultValue: "160",
-                                title: "Select your height (Cm)",
+                                title: AppConstents.selectHeightLevel,
                                 columns: 5,
-                                hintText: "Enter your height (Cm)",
+                                hintText: AppConstents.enterHeightHint,
                                 validator: AppMethods.validateHeight,
                                 label: AppConstents.height,
                                 options: GuestHelper.heightList,
@@ -143,9 +148,9 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
 
                               RadioWidget(
                                 selectionType: controller.smokerType,
-                                level: 'Smoker type',
-                                radioTextLeft: 'Smoker',
-                                radioTextRight: 'No Smoker',
+                                level: AppConstents.smokerLevel,
+                                radioTextLeft: Smoker.smoker.value,
+                                radioTextRight: Smoker.nonSmoker.value,
                                 onSelectionChanged: (value) {
                                   controller.smokerType.value = value;
                                 },
@@ -174,12 +179,12 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
                           if (!_formKey.currentState!.validate()) return;
 
                           if (controller.genderType.isEmpty) {
-                            controller.setError("Please select gender");
+                            controller.setError(AppConstents.selectGender);
                             return;
                           }
 
                           if (controller.smokerType.isEmpty) {
-                            controller.setError("Please select Smoker type");
+                            controller.setError(AppConstents.selectSmokerType);
                             return;
                           }
 
@@ -199,7 +204,7 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
                             email: controller.emailController.text,
                           );
                         },
-                        text: "Update",
+                        text: AppConstents.update,
                       ),
                     ),
                   ),

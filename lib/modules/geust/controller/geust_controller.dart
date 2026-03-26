@@ -4,6 +4,7 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
@@ -78,12 +79,12 @@ class GeustController extends BaseController
       } else {
         guestList.clear();
         filteredItems.clear();
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
       guestList.clear();
       filteredItems.clear();
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -122,11 +123,11 @@ class GeustController extends BaseController
         clearHealthCategarie();
       } else {
         clearHealthCategarie();
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
       clearHealthCategarie();
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -155,10 +156,10 @@ class GeustController extends BaseController
       if (responseData.statusCode == 200) {
         setSuccess("Store health data successfully");
       } else {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -188,10 +189,10 @@ class GeustController extends BaseController
         guestImage.value = "";
         setSuccess("Guest added successfully");
       } else {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -211,10 +212,10 @@ class GeustController extends BaseController
         setSuccess("Guest removed successfully");
         await getGeustHistory();
       } else {
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -242,11 +243,11 @@ class GeustController extends BaseController
         );
       } else {
         guestHealthList.clear();
-        setError("Something went wrong");
+        setError(AppConstents.commonErrorMessage);
       }
     } catch (e) {
       guestHealthList.clear();
-      setError("Something went wrong");
+      setError(AppConstents.commonErrorMessage);
     } finally {
       showLoading(false);
     }

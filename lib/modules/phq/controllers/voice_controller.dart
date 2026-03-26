@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/voice_agent/repositories/voice_agent_repository.dart';
 
@@ -15,7 +16,7 @@ class VoiceController extends GetxController {
     } else {
       AppSnackbar.show(
         title: "Error",
-        message: "Something went wrong",
+        message: AppConstents.commonErrorMessage,
         isError: true,
       );
       return "";

@@ -1,8 +1,6 @@
-import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
-import 'package:ntt_data/modules/auth/controllers/auth_controller.dart';
-import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -91,7 +89,11 @@ class ProfileHelper {
     profileController.emailController.text = emailId;
     AppNavigation.to(
       AppRoutes.updateUserGuestDetails,
-      arguments: {"guestId": guestId, "userFlag": userFlag, "name": levelName},
+      arguments: {
+        AppConstents.guestId: guestId,
+        AppConstents.userFlag: userFlag,
+        AppConstents.nameLower: levelName,
+      },
     );
   }
 
@@ -121,14 +123,14 @@ class ProfileHelper {
   Map<String, String> extractDateAndTime(String dateTimeStr) {
     // Supported formats list
     final formats = [
-      "yyyy-MM-dd HH:mm:ss",
-      "yyyy/MM/dd HH:mm:ss",
-      "dd-MM-yyyy HH:mm:ss",
-      "dd/MM/yyyy HH:mm:ss",
-      "yyyy-MM-dd",
-      "yyyy/MM/dd",
-      "dd-MM-yyyy",
-      "dd/MM/yyyy",
+      AppConstents.yyyyMMdd_HHmmss_dash,
+      AppConstents.yyyyMMdd_HHmmss_slash,
+      AppConstents.ddMMyyyy_HHmmss_dash,
+      AppConstents.ddMMyyyy_HHmmss_slash,
+      AppConstents.yyyyMMddDash,
+      AppConstents.yyyyMMddSlash,
+      AppConstents.ddMMyyyyDash,
+      AppConstents.ddMMyyyySlash,
     ];
 
     for (String format in formats) {
@@ -136,7 +138,7 @@ class ProfileHelper {
         DateTime dateTime = DateFormat(format).parseStrict(dateTimeStr);
 
         // Format output
-        String date = DateFormat('dd/MM/yyyy').format(dateTime);
+        String date = DateFormat(AppConstents.ddMMyyyySlash).format(dateTime);
         String time = DateFormat('HH:mm:ss').format(dateTime);
 
         return {"date": date, "time": time};
@@ -148,8 +150,4 @@ class ProfileHelper {
     // Return fallback if no format matched
     return {"date": "Invalid", "time": "Invalid"};
   }
-
-  // Future<void> logoutHelper() async {
-  //   _profileController.logoutUser();
-  // }
 }

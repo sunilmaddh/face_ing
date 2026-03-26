@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/extentions.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
 
 class CustomBottomSheet {
   static void show({

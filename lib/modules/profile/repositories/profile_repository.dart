@@ -36,6 +36,16 @@ class ProfileRepository {
     return await profileService.getVitalDescriptionService(data: data);
   }
 
+  Future<ApiResponse<Map<String, dynamic>>> uploadImage({
+    required String filePath,
+    required String imageType,
+  }) async {
+    return await profileService.uploadImage(
+      filePath: filePath,
+      imageType: imageType,
+    );
+  }
+
   Future<ApiResponse<void>> logoutUser() async {
     return await profileService.logoutUserService();
   }

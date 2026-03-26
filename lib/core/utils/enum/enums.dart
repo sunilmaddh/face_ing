@@ -1,0 +1,1 @@
+enum Smoker { smoker, nonSmoker }

@@ -2,6 +2,7 @@ import 'package:ntt_data/core/network/api_request.dart';
 import 'package:ntt_data/core/network/api_response.dart';
 import 'package:ntt_data/core/network/api_service.dart';
 import 'package:ntt_data/core/network/api_endpoints.dart';
+import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/modules/profile/models/update_details_response_model.dart';
 import 'package:ntt_data/modules/profile/models/user_history_list_model.dart';
@@ -73,6 +74,19 @@ class ProfileService {
         body: data,
       ),
       fromJson: (json) => VitalDescriptionsModel.fromJson(json),
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> uploadImage({
+    required String filePath,
+    required String imageType,
+  }) async {
+    return await apiService.uploadImage(
+      endpoint: ApiEndpoints().profileUpload,
+      filePath: filePath,
+      imageType: imageType,
+      guestId: "",
+      isGuest: "false",
     );
   }
 

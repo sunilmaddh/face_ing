@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/extentions.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
 import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 

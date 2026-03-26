@@ -4,6 +4,7 @@ class AppConstents {
   static const String
   licenceKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7",
   tanantId = "909ea670-d488-4601-bc8a-01627516631f",
+  appTitle = "Face.ing",
   commonFont = "Manrope",
   login = "Login",
   resetPassword = "Reset Password",
@@ -99,6 +100,21 @@ class AppConstents {
   static const String invalidDate = "Invalid date format. Use dd/MM/yyyy";
   static const String invalidDateFormat = "Invalid date format";
   static const String yearLimit = "Year must be 1925 or greater";
+  static const String selectGender = "Please select gender";
+  static const String selectSmokerType = "Please select Smoker type";
+
+  //hint
+  static const String enterNameHint = "Enter your name";
+  static const String enterEmailIdHint = "Enter your email";
+  static const String selectDobHint = "Select your date of birth";
+  static const String enterWeightHint = "Enter your weight (Kg)";
+  static const String enterHeightHint = "Enter your height (Cm)";
+  //level
+  static const String emailLevel = "Email Id";
+  static const String genderLevel = 'Gender';
+  static const String selectWeightLevel = "Select Your Weight (Kg)";
+  static const String selectHeightLevel = "Select Your Height (Cm)";
+  static const String smokerLevel = 'Smoker type';
 
   // Profile
   static const String updateProfilePhoto = "Update Profile Photo";
@@ -112,6 +128,10 @@ class AppConstents {
   static const String answer = "answer";
   static const String nameLower = "name";
   static const String optionType = "isOptionType";
+  static const String userFlag = "userFlag";
+  static const String vitalKey = "vitalKey";
+  static const String vitalSignsDescriptionTitle = "Vital Signs Description";
+  static const String guestHealthHistoryTitle = "Guest Health History";
 
   // Boolean values
   static const String trueValue = "true";
@@ -124,4 +144,19 @@ class AppConstents {
   static const String yyyyMMddDash = "yyyy-MM-dd";
   static const String ddMMyyyyDash = "dd-MM-yyyy";
   static const String mmDDyyyyDash = "MM-dd-yyyy";
+
+  //screen name
+  static const String userHealthReportsTitle = "User Health Reports";
+  static const String userHistoryTitle = "User History";
+  static const String updateDetailsTitle = "Update Details";
+  //button text
+  static const String update = "Update";
+
+  static const String yyyyMMdd_HHmmss_dash = "yyyy-MM-dd HH:mm:ss";
+  static const String yyyyMMdd_HHmmss_slash = "yyyy/MM/dd HH:mm:ss";
+  static const String ddMMyyyy_HHmmss_dash = "dd-MM-yyyy HH:mm:ss";
+  static const String ddMMyyyy_HHmmss_slash = "dd/MM/yyyy HH:mm:ss";
+
+  //error message
+  static const String commonErrorMessage = "Something went wrong";
 }

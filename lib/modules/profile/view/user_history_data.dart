@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
@@ -32,14 +33,14 @@ class UserHistoryData extends BaseView<ProfileController> {
     return Scaffold(
       appBar: CustomAppBar(
         onTop: AppNavigation.back,
-        title: "User History",
+        title: AppConstents.userHistoryTitle,
         actions: [
           InkWell(
             onTap: () {
               _vitalGraphController.selectedIndex.value = 0;
               AppNavigation.to(
                 AppRoutes.vitalGraphHistory,
-                arguments: {"guestId": ""},
+                arguments: {AppConstents.guestId: ""},
               );
             },
             child: Padding(

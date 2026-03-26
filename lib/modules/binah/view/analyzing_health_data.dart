@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/core/utils/helper/globle_halper.dart';
 import 'package:ntt_data/modules/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/modules/binah/helper/health_report_helper.dart';
@@ -24,7 +25,7 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData>
   @override
   void initState() {
     _tabController = TabController(
-      length: AppMethods.tabWidgets.length,
+      length: GlobleHalper.tabWidgets.length,
       vsync: this,
     );
 
@@ -70,8 +71,8 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData>
           tabWidgets:
               (_measurementController.scanType.value != "add-guest" &&
                       _measurementController.scanType.value != "re-scan")
-                  ? AppMethods.tabWidgets
-                  : AppMethods.tabGuestWidget,
+                  ? GlobleHalper.tabWidgets
+                  : GlobleHalper.tabGuestWidget,
           tabBarWidgets: barWidgets,
           tabController: _tabController,
           onTabChanged: (index) {

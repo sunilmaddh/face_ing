@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/core/storage/indo_shared_preference.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
@@ -14,7 +15,7 @@ import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 class GuestHealthHistoryList extends BaseView<GeustController> {
   const GuestHealthHistoryList({super.key});
 
-  String get guestId => Get.arguments["guestId"] ?? "";
+  String get guestId => Get.arguments[AppConstents.guestId] ?? "";
 
   @override
   bool get useDefaultLoader => false;
@@ -24,7 +25,7 @@ class GuestHealthHistoryList extends BaseView<GeustController> {
     return Scaffold(
       appBar: CustomAppBar(
         onTop: AppNavigation.back,
-        title: "Guest Health History",
+        title: AppConstents.guestHealthHistoryTitle,
       ),
       body: Obx(() {
         if (controller.isLoading.isTrue) {

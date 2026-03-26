@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/utils/enum/health_tab_enum.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 
 class GlobleHalper {
@@ -68,6 +70,21 @@ class GlobleHalper {
       processVital(result);
     }
   }
+
+  static final List<HealthTab> guestTabs = [
+    HealthTab.basicVitalSigns,
+    HealthTab.bloodlessBloodTests,
+    HealthTab.risks,
+    HealthTab.stress,
+    HealthTab.heartRateVariability,
+    HealthTab.advancedHeartRateVariability,
+  ];
+  static List<Widget> get tabWidgets =>
+      HealthTab.values.map((tab) => Tab(text: tab.title)).toList();
+
+  static List<Widget> get tabGuestWidget =>
+      guestTabs.map((tab) => Tab(text: tab.title)).toList();
+
   // final Map<String, List<String>> healthCategories = {
   //   "Basic Vital Signs": [
   //     "Wellness Score",
