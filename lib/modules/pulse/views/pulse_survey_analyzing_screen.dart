@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -57,14 +57,14 @@ class _PulseSurveyAnalyzingScreenState
             SvgPicture.asset(AppAssets.success),
             30.verticalSpace,
             CommonText.text(
-              AppConstents.allDone,
+              AppStrings.allDone,
               fontSize: AppDimensions.font(22),
               fontWeight: FontWeight.w800,
               color: AppColors.primary,
             ),
             10.verticalSpace,
             CommonText.text(
-              AppConstents.analyzingYourPulseSurvey,
+              AppStrings.analyzingYourPulseSurvey,
               fontSize: AppDimensions.font(16),
               fontWeight: FontWeight.w400,
               color: AppColors.conDiscription,

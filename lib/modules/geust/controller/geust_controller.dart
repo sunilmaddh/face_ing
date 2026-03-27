@@ -4,12 +4,12 @@ import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/helper/globle_halper.dart';
 import 'package:ntt_data/modules/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
@@ -60,7 +60,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await IndoSharedPreference.instance.getUserId();
+      final userID = await AppPreferences.instance.getUserId();
       final responseData = await guestRepository.getGeustHistory(
         userId: userID,
       );
@@ -79,12 +79,12 @@ class GeustController extends BaseController
       } else {
         guestList.clear();
         filteredItems.clear();
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
       guestList.clear();
       filteredItems.clear();
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -98,7 +98,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await IndoSharedPreference.instance.getUserId();
+      final userID = await AppPreferences.instance.getUserId();
       final responseData = await guestRepository.getGeustDetails(
         userId: userID,
         guestId: guestID,
@@ -123,11 +123,11 @@ class GeustController extends BaseController
         clearHealthCategarie();
       } else {
         clearHealthCategarie();
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
       clearHealthCategarie();
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -141,7 +141,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await IndoSharedPreference.instance.getUserId();
+      final userID = await AppPreferences.instance.getUserId();
       final data = await GuestHelper().userMapData(
         userId: userID,
         guestId: guestId,
@@ -156,10 +156,10 @@ class GeustController extends BaseController
       if (responseData.statusCode == 200) {
         setSuccess("Store health data successfully");
       } else {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -169,7 +169,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await IndoSharedPreference.instance.getUserId();
+      final userID = AppPreferences.instance.getUserId();
       final data = await GuestHelper().mapData(
         userId: userID,
         name: nameTextController.text.trim(),
@@ -189,10 +189,10 @@ class GeustController extends BaseController
         guestImage.value = "";
         setSuccess("Guest added successfully");
       } else {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -202,7 +202,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await IndoSharedPreference.instance.getUserId();
+      final userID = await AppPreferences.instance.getUserId();
       final responseData = await guestRepository.deleteGuest(
         userId: userID,
         guestId: guestId,
@@ -212,10 +212,10 @@ class GeustController extends BaseController
         setSuccess("Guest removed successfully");
         await getGeustHistory();
       } else {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -225,7 +225,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await IndoSharedPreference.instance.getUserId();
+      final userID = await AppPreferences.instance.getUserId();
       final responseData = await guestRepository.getUserHealthHistory(
         userId: userID,
         isUser: 'false',
@@ -243,11 +243,11 @@ class GeustController extends BaseController
         );
       } else {
         guestHealthList.clear();
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
       guestHealthList.clear();
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -318,17 +318,26 @@ class GeustController extends BaseController
     );
   }
 
-  Future<void> uploadProfile({required String imagePath}) async {
+  Future<void> uploadProfile({
+    required String imagePath,
+    required String guestId,
+    required String isGuest,
+  }) async {
+    showLoading(true);
     try {
       var response = await guestRepository.uploadImage(
         filePath: imagePath,
         imageType: "",
+        guestId: guestId,
+        isGuest: isGuest,
       );
       if (response.success) {
         final result = response.data;
         // userImage.value = result?.imagePath ?? "";
-        // IndoSharedPreference.instance.saveUserImage(result?.imagePath ?? "");
+        // AppPreferences.instance.saveUserImage(result?.imagePath ?? "");
         // debugPrint("Result $result ${userUpdateImage.value}");
+        showLoading(false);
+        await getGeustHistory();
       } else {
         setError("Something went wrong");
       }

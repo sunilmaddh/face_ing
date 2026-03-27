@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -21,7 +23,7 @@ class ResetPasswordScreen extends StatelessWidget {
         onTop: () {
           AppNavigation.back();
         },
-        title: AppConstents.resetPassword,
+        title: AppStrings.resetPassword,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -36,14 +38,14 @@ class ResetPasswordScreen extends StatelessWidget {
                   SizedBox(height: AppDimensions.height(30)),
                   CustomFormField(
                     obscureText: true,
-                    label: AppConstents.password,
-                    hint: AppConstents.passHint,
+                    label: AppStrings.password,
+                    hint: ValidationStrings.passHint,
                     controller: _authController.passwordController,
                   ),
                   SizedBox(height: 20),
                   CustomFormField(
-                    label: AppConstents.confirmPassword,
-                    hint: AppConstents.confPassHint,
+                    label: AppStrings.confirmPassword,
+                    hint: ValidationStrings.confPassHint,
                     controller: _authController.confirmPasswordController,
                   ),
                 ],
@@ -59,7 +61,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: PrimaryButton(
-                        text: AppConstents.confirm,
+                        text: AppStrings.confirm,
                         onPressed: () {
                           _authController.resetPassword();
                         },

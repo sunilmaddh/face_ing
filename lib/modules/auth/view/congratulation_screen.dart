@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -35,7 +36,7 @@ class CongratulationScreen extends StatelessWidget {
               ),
               SizedBox(height: AppDimensions.height(70)),
               CommonText.text(
-                AppConstents.congractText,
+                AppStrings.congratsText,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 fontSize: AppDimensions.font(22),
@@ -44,7 +45,7 @@ class CongratulationScreen extends StatelessWidget {
               ),
               SizedBox(height: AppDimensions.height(20)),
               CommonText.text(
-                AppConstents.congractDis,
+                AppStrings.congratsDescription,
                 textAlign: TextAlign.center,
                 maxLines: 3,
                 fontSize: AppDimensions.font(20),

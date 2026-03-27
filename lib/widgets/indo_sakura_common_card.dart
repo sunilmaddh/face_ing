@@ -5,7 +5,7 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/extensions/extentions.dart';
-import 'package:ntt_data/data/helper/vital_status_halper.dart';
+import 'package:ntt_data/data/helper/binah_status_halper.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';

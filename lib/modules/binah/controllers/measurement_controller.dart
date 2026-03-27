@@ -8,12 +8,16 @@ import 'package:biosensesignal_flutter_sdk/session/user_information.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vitals/vital_sign_pulse_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/base/base_controller.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
+import 'package:ntt_data/core/utils/enum/enums.dart';
+import 'package:ntt_data/core/utils/enum/gender_enum.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
 import 'package:ntt_data/modules/binah/handler/vital__result_handler.dart';
 import 'package:ntt_data/modules/binah/handler/vital_navigation_service.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/modules/binah/repositories/mesurement_repository.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
@@ -38,7 +42,7 @@ import 'package:biosensesignal_flutter_sdk/alerts/warning_data.dart';
 import 'package:biosensesignal_flutter_sdk/alerts/error_data.dart';
 import 'package:biosensesignal_flutter_sdk/health_monitor_exception.dart';
 
-class MeasurementController extends GetxController
+class MeasurementController extends BaseController
     with
         StateMixin,
         GetTickerProviderStateMixin,
@@ -48,7 +52,7 @@ class MeasurementController extends GetxController
   MeasurementController({required this.mesurementRepository});
   final MesurementRepository mesurementRepository;
   final _geustController = Get.find<GeustController>();
-  final licenseKey = AppConstents.licenceKey;
+  final licenseKey = ApiConstants.licenseKey;
   final measurementDuration = 60;
   Session? _session;
   final Rx<SessionState?> sessionState = Rx<SessionState?>(null);
@@ -150,7 +154,7 @@ class MeasurementController extends GetxController
   Future<void> startStopButtonClicked() async {
     showImageValidity.value = false;
     final state = sessionState.value;
-    debugPrint("Start scanning $state");
+
     Future.delayed(Duration(seconds: 5), () {
       if (sessionState.value == SessionState.ready) {
         isStarted.value = true;
@@ -158,7 +162,6 @@ class MeasurementController extends GetxController
           isLoading.value = false;
           startProgress(seconds: 60);
         });
-        debugPrint("Start scanning $state");
       } else if (state == SessionState.processing) {
         isLoading.value = false;
         isStarted.value = false;
@@ -170,36 +173,31 @@ class MeasurementController extends GetxController
   @override
   void onImageData(sdk_image_data.ImageData imageData) {
     this.imageData.value = imageData;
-    debugPrint("Image validity: ${imageData.imageValidity}");
     showImageValidity.value = true;
     switch (imageData.imageValidity) {
       case ImageValidity.valid:
-        handleValid("Perfect! Please hold it.");
+        handleValid(ImageValidityMessage.valid.message);
         break;
 
       case ImageValidity.invalidDeviceOrientation:
-        handleInvalid("Return to portrait mode.");
+        handleInvalid(ImageValidityMessage.invalidDeviceOrientation.message);
         break;
 
       case ImageValidity.invalidRoi:
       case ImageValidity.faceTooFar:
-        handleInvalid("Please move your face closer to the camera.");
+        handleInvalid(ImageValidityMessage.faceTooFar.message);
         break;
 
       case ImageValidity.tiltedHead:
-        handleInvalid(
-          "Make sure your head is upright and centered in the frame.",
-        );
+        handleInvalid(ImageValidityMessage.tiltedHead.message);
         break;
 
       case ImageValidity.unevenLight:
-        handleInvalid(
-          "Ensure your face is clearly visible with no shadows or bright spots.",
-        );
+        handleInvalid(ImageValidityMessage.unevenLight.message);
         break;
 
       default:
-        handleInvalid("Unknown Error");
+        handleInvalid(ImageValidityMessage.unknown.message);
         break;
     }
   }
@@ -226,7 +224,7 @@ class MeasurementController extends GetxController
   @override
   void onError(ErrorData errorData) {
     error.value = "Error: ${errorData.code}";
-    debugPrint("Error: ${errorData.code}");
+    // debugPrint("Error: ${errorData.code}");
   }
 
   @override
@@ -280,14 +278,14 @@ class MeasurementController extends GetxController
       await _terminateSession();
     }
     await _reset();
-    debugPrint("user2 Information $genderType$weight$height,$age,$smokerType");
+    // debugPrint("user2 Information $genderType$weight$height,$age,$smokerType");
     var userInformation = UserInformation(
-      sex: genderType == "Male" ? Sex.male : Sex.female,
+      sex: genderType == Gender.male.value ? Sex.male : Sex.female,
       age: age,
       weight: weight,
       height: height,
       smokingStatus:
-          smokerType == "Smoker"
+          smokerType == Smoker.smoker.value
               ? SmokingStatus.smoker
               : SmokingStatus.nonSmoker,
     );
@@ -308,7 +306,7 @@ class MeasurementController extends GetxController
       if (_session != null && sessionState.value == SessionState.ready) {
         await _session?.start(measurementDuration);
       }
-      debugPrint("measurementDuration ${measurementDuration.toString()}");
+      // debugPrint("measurementDuration ${measurementDuration.toString()}");
     } on HealthMonitorException catch (e) {
       error.value = "Error: ${e.code}";
     }
@@ -351,13 +349,10 @@ class MeasurementController extends GetxController
         var result = responseData.data;
         scanMessageList.value = result!.scannedMessage!;
       } else {
-        AppSnackbar.show(
-          title: "Error",
-          message: AppConstents.commonErrorMessage,
-        );
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
-      AppSnackbar.show(title: "Exception", message: e.toString());
+      setError(e.toString());
     }
   }
 }

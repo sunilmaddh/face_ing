@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/modules/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/auth/view/health_menu_page_view_builder.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -17,7 +18,7 @@ class HealthMenuScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         onTop: AppNavigation.back,
-        title: AppConstents.createAccount,
+        title: AppStrings.createAccount,
       ),
       body: SafeArea(
         child: Padding(

@@ -1,7 +1,9 @@
-import 'package:ntt_data/core/constants/app_constents.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/date_formats.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
+import 'package:ntt_data/modules/profile/models/requets/update_details_request.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +12,7 @@ class ProfileHelper {
   // final ProfileController _profileController = Get.find<ProfileController>();
 
   /// Prepares the details map for update
-  Future<Map<String, dynamic>> updateDetailsMap({
+  Future<UpdateDetailsRequest> updateDetailsRequest({
     required String userId,
     required String guestId,
     required String userFlag,
@@ -22,18 +24,18 @@ class ProfileHelper {
     required String height,
     required String email,
   }) async {
-    return {
-      "userId": userId,
-      "guestId": guestId,
-      "userFlag": userFlag,
-      "name": name,
-      "gender": gender,
-      "dob": dob,
-      "smokerType": smokerType,
-      "emailId": email,
-      "weight": weight,
-      "height": height,
-    };
+    return UpdateDetailsRequest(
+      userId: userId,
+      guestId: guestId,
+      userFlag: userFlag,
+      name: name,
+      gender: gender,
+      dob: dob,
+      smokerType: smokerType,
+      weight: weight,
+      height: height,
+      email: email,
+    );
   }
 
   // /// Calls the function to update user/guest details
@@ -90,20 +92,20 @@ class ProfileHelper {
     AppNavigation.to(
       AppRoutes.updateUserGuestDetails,
       arguments: {
-        AppConstents.guestId: guestId,
-        AppConstents.userFlag: userFlag,
-        AppConstents.nameLower: levelName,
+        ApiConstants.guestId: guestId,
+        ApiConstants.userFlag: userFlag,
+        ApiConstants.nameKey: levelName,
       },
     );
   }
 
   Future<void> retainedUserData(ProfileController controller) async {
-    var name = await IndoSharedPreference.instance.getUserName();
-    var gender = await IndoSharedPreference.instance.getGenderType();
-    var dob = await IndoSharedPreference.instance.getAge();
-    var weight = await IndoSharedPreference.instance.getWeight();
-    var height = await IndoSharedPreference.instance.getHeight();
-    var smokerType = await IndoSharedPreference.instance.getSmokerType();
+    var name = await AppPreferences.instance.getUserName();
+    var gender = await AppPreferences.instance.getGenderType();
+    var dob = await AppPreferences.instance.getAge();
+    var weight = await AppPreferences.instance.getWeight();
+    var height = await AppPreferences.instance.getHeight();
+    var smokerType = await AppPreferences.instance.getSmokerType();
     var newData = await AppMethods().convertDateFormateToDD(dob);
     await retainedData(
       name: name,
@@ -123,14 +125,14 @@ class ProfileHelper {
   Map<String, String> extractDateAndTime(String dateTimeStr) {
     // Supported formats list
     final formats = [
-      AppConstents.yyyyMMdd_HHmmss_dash,
-      AppConstents.yyyyMMdd_HHmmss_slash,
-      AppConstents.ddMMyyyy_HHmmss_dash,
-      AppConstents.ddMMyyyy_HHmmss_slash,
-      AppConstents.yyyyMMddDash,
-      AppConstents.yyyyMMddSlash,
-      AppConstents.ddMMyyyyDash,
-      AppConstents.ddMMyyyySlash,
+      DateFormats.yyyyMMddHHmmssDash,
+      DateFormats.yyyyMMddHHmmssSlash,
+      DateFormats.ddMMyyyyHHmmssDash,
+      DateFormats.ddMMyyyyHHmmssSlash,
+      DateFormats.yyyyMMddDash,
+      DateFormats.yyyyMMddSlash,
+      DateFormats.ddMMyyyyDash,
+      DateFormats.ddMMyyyySlash,
     ];
 
     for (String format in formats) {
@@ -138,7 +140,7 @@ class ProfileHelper {
         DateTime dateTime = DateFormat(format).parseStrict(dateTimeStr);
 
         // Format output
-        String date = DateFormat(AppConstents.ddMMyyyySlash).format(dateTime);
+        String date = DateFormat(DateFormats.ddMMyyyySlash).format(dateTime);
         String time = DateFormat('HH:mm:ss').format(dateTime);
 
         return {"date": date, "time": time};

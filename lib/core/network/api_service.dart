@@ -1,13 +1,18 @@
-// import 'dart:convert';
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_config.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_logs.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
+import 'package:ntt_data/core/network/api_endpoints.dart';
 import 'package:ntt_data/core/network/api_request.dart';
 import 'package:ntt_data/core/network/api_response.dart';
 import 'package:ntt_data/core/network/encryption_service.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/network/api_endpoints.dart';
+import 'package:ntt_data/core/storage/secure_storage.dart';
+import 'package:ntt_data/core/utils/app_logger.dart';
 
 typedef JsonMapper<T> = T Function(Map<String, dynamic> json);
 
@@ -19,7 +24,9 @@ class ApiService {
 
   String get baseUrl => ApiEndpoints.baseUrl;
   String get voiceBaseUrl => ApiEndpoints.voiceBaseUrl;
-  String get apiPrefix => AppConstents.apiPrefix;
+  String get apiPrefix => ApiConstants.apiPrefix;
+
+  bool get _shouldUseEncryption => kReleaseMode;
 
   Uri _buildUri(ApiRequest request) {
     final host = request.useVoiceBaseUrl ? voiceBaseUrl : baseUrl;
@@ -28,10 +35,7 @@ class ApiService {
             ? "$apiPrefix${request.endpoint}"
             : request.endpoint;
 
-    if (request.isHttps) {
-      return Uri.https(host, path);
-    }
-    return Uri.http(host, path);
+    return request.isHttps ? Uri.https(host, path) : Uri.http(host, path);
   }
 
   Future<ApiResponse<T>> send<T>(
@@ -45,9 +49,7 @@ class ApiService {
         retryOnUnauthorized: true,
       );
     } catch (e, s) {
-      debugPrint("${AppConstents.eroor} $e");
-      debugPrintStack(stackTrace: s);
-
+      AppLogger.error(AppLogs.apiError, e, s);
       return ApiResponse.failure(statusCode: -1, message: e.toString());
     }
   }
@@ -58,26 +60,32 @@ class ApiService {
     required bool retryOnUnauthorized,
   }) async {
     final uri = _buildUri(request);
-    final accessToken = await IndoSharedPreference.instance.getAccessToken();
+    final accessToken = await SecureStorageService.instance.getAccessToken();
 
     final headers = <String, String>{
-      AppConstents.contantType: AppConstents.applicationJson,
+      ApiConstants.contentType: ApiConstants.applicationJson,
       ...?request.headers,
     };
 
     if (request.requiresAuth && accessToken.isNotEmpty) {
-      headers[AppConstents.autharization] =
-          "${AppConstents.bearer} $accessToken";
+      headers[ApiConstants.authorization] =
+          "${ApiConstants.bearer} $accessToken";
     }
 
     Object? finalBody = request.body;
-    if (request.encryptBody && request.body != null) {
+
+    if (_shouldUseEncryption && request.encryptBody && request.body != null) {
       finalBody = encryptionService.encryptRequest(request.body!);
     }
-    debugPrint("${AppConstents.requestUri} $uri");
-    debugPrint("${AppConstents.requestMethod} ${request.method.name}");
-    debugPrint("${AppConstents.requestHeaders} $headers");
-    debugPrint("${AppConstents.requestBOdy} $finalBody");
+
+    _logRequest(
+      uri: uri,
+      method: request.method.name,
+      headers: headers,
+      body: finalBody,
+      isEncrypted: _shouldUseEncryption && request.encryptBody,
+    );
+
     late http.Response response;
 
     switch (request.method) {
@@ -109,55 +117,74 @@ class ApiService {
     if (response.statusCode == 401 &&
         retryOnUnauthorized &&
         request.requiresAuth) {
+      AppLogger.warning(AppLogs.tokenExpiredRefresh);
+
       final refreshed = await _refreshToken();
+
       if (refreshed) {
+        AppLogger.info(AppLogs.tokenRefreshSuccess);
         return _sendInternal<T>(
           request,
           fromJson: fromJson,
           retryOnUnauthorized: false,
         );
+      } else {
+        AppLogger.error(AppLogs.tokenRefreshFailed);
       }
     }
 
-    return _parseResponse<T>(response, fromJson: fromJson);
+    return _parseResponse<T>(response, fromJson: fromJson, request: request);
   }
 
   ApiResponse<T> _parseResponse<T>(
     http.Response response, {
     JsonMapper<T>? fromJson,
+    ApiRequest? request,
   }) {
     final decodedBodyText = utf8.decode(response.bodyBytes);
-    debugPrint(
-      "${AppConstents.printResponse} [${response.statusCode}]: $decodedBodyText",
+
+    _logResponse(
+      statusCode: response.statusCode,
+      responseBody: decodedBodyText,
     );
 
     Map<String, dynamic> jsonBody = {};
+
     if (decodedBodyText.isNotEmpty) {
-      final decoded = jsonDecode(decodedBodyText);
-      if (decoded is Map<String, dynamic>) {
-        jsonBody = decoded;
+      try {
+        final decoded = jsonDecode(decodedBodyText);
+        if (decoded is Map<String, dynamic>) {
+          jsonBody = decoded;
+        }
+      } catch (e, s) {
+        AppLogger.error(AppLogs.responseJsonDecodeFailed, e, s);
       }
     }
 
     final message =
-        jsonBody[AppConstents.message]?.toString() ??
-        jsonBody[AppConstents.msg]?.toString() ??
-        AppConstents.requestCompleted;
+        jsonBody[ApiConstants.message]?.toString() ??
+        jsonBody[ApiConstants.msg]?.toString() ??
+        ApiConstants.requestCompleted;
 
     final isSuccess = response.statusCode >= 200 && response.statusCode < 300;
 
     Map<String, dynamic> processedBody = jsonBody;
-    if (jsonBody.containsKey(AppConstents.payload)) {
+
+    if (_shouldUseEncryption &&
+        request?.encryptBody == true &&
+        jsonBody.containsKey(ApiConstants.payload)) {
       try {
         processedBody = encryptionService.decryptResponse(jsonBody);
-      } catch (_) {
+      } catch (e, s) {
+        AppLogger.error(AppLogs.responseDecryptionFailed, e, s);
         processedBody = jsonBody;
       }
     }
 
     T? data;
     if (fromJson != null) {
-      final candidate = processedBody[AppConstents.data];
+      final candidate = processedBody[ApiConstants.data];
+
       if (candidate is Map<String, dynamic>) {
         data = fromJson(candidate);
       } else if (processedBody.isNotEmpty) {
@@ -184,42 +211,63 @@ class ApiService {
   }
 
   Future<bool> _refreshToken() async {
-    final refreshToken = await IndoSharedPreference.instance.getRefreshToken();
-    if (refreshToken.isEmpty) return false;
+    try {
+      final refreshToken =
+          await SecureStorageService.instance.getRefreshToken();
 
-    final uri =
-        isHttps
-            ? Uri.https(baseUrl, ApiEndpoints().refreshToken)
-            : Uri.http(baseUrl, ApiEndpoints().refreshToken);
+      if (refreshToken.isEmpty) {
+        AppLogger.warning(AppLogs.refreshTokenEmpty);
+        return false;
+      }
 
-    final response = await http.post(
-      uri,
-      headers: {
-        AppConstents.contantType: AppConstents.applicationJson,
-        AppConstents.autharization: "${AppConstents.bearer} $refreshToken",
-      },
-    );
+      final uri =
+          isHttps
+              ? Uri.https(baseUrl, ApiEndpoints().refreshToken)
+              : Uri.http(baseUrl, ApiEndpoints().refreshToken);
 
-    if (response.statusCode != 200) {
+      final headers = {
+        ApiConstants.contentType: ApiConstants.applicationJson,
+        ApiConstants.authorization: "${ApiConstants.bearer} $refreshToken",
+      };
+
+      AppLogger.debug(AppLogs.refreshTokenRequest);
+      AppLogger.debug("${AppLogs.url}: $uri");
+      AppLogger.debug("${AppLogs.headers}: ${_maskHeaders(headers)}");
+
+      final response = await http.post(uri, headers: headers);
+
+      final decodedText = utf8.decode(response.bodyBytes);
+
+      AppLogger.info(AppLogs.refreshTokenResponse);
+      AppLogger.info("${AppLogs.status}: ${response.statusCode}");
+      AppLogger.debug("${AppLogs.response}: $decodedText");
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      final body = jsonDecode(decodedText);
+
+      String? newAccessToken;
+      if (body is Map<String, dynamic>) {
+        newAccessToken =
+            body[ApiConstants.accessToken]?.toString() ??
+            body[ApiConstants.data]?[ApiConstants.accessToken]?.toString();
+      }
+
+      if (newAccessToken == null || newAccessToken.isEmpty) {
+        AppLogger.warning(AppLogs.newAccessTokenMissing);
+        return false;
+      }
+
+      await SecureStorageService.instance.saveAccessToken(newAccessToken);
+      AppLogger.info(AppLogs.newAccessTokenSaved);
+
+      return true;
+    } catch (e, s) {
+      AppLogger.error(AppLogs.refreshTokenApiFailed, e, s);
       return false;
     }
-
-    final decodedText = utf8.decode(response.bodyBytes);
-    final body = jsonDecode(decodedText);
-
-    String? newAccessToken;
-    if (body is Map<String, dynamic>) {
-      newAccessToken =
-          body[AppConstents.accessToken]?.toString() ??
-          body[AppConstents.data]?[AppConstents.accessToken]?.toString();
-    }
-
-    if (newAccessToken == null || newAccessToken.isEmpty) {
-      return false;
-    }
-
-    await IndoSharedPreference.instance.saveAccessToken(newAccessToken);
-    return true;
   }
 
   Future<ApiResponse<T>> uploadImage<T>({
@@ -231,67 +279,88 @@ class ApiService {
     required T Function(Map<String, dynamic> json) fromJson,
   }) async {
     try {
-      final accessToken = await IndoSharedPreference.instance.getAccessToken();
+      final accessToken = await SecureStorageService.instance.getAccessToken();
 
       final uri =
           isHttps ? Uri.https(baseUrl, endpoint) : Uri.http(baseUrl, endpoint);
 
-      final request = http.MultipartRequest(AppConstents.put, uri);
+      final request = http.MultipartRequest(ApiConstants.put, uri);
 
       request.files.add(
-        await http.MultipartFile.fromPath(AppConstents.file, filePath),
+        await http.MultipartFile.fromPath(ApiConstants.file, filePath),
       );
 
-      request.fields[AppConstents.isSignup] = imageType;
-      request.fields[AppConstents.isGuest] = isGuest;
-      request.fields[AppConstents.guestId] = guestId;
+      request.fields[ApiConstants.isSignup] = imageType;
+      request.fields[ApiConstants.isGuest] = isGuest;
+      request.fields[ApiConstants.guestId] = guestId;
 
       request.headers.addAll({
-        AppConstents.autharization: "${AppConstents.bearer} $accessToken",
+        ApiConstants.authorization: "${ApiConstants.bearer} $accessToken",
       });
+
+      AppLogger.debug(AppLogs.imageUploadRequest);
+      AppLogger.debug("${AppLogs.url}: $uri");
+      AppLogger.debug("${AppLogs.headers}: ${_maskHeaders(request.headers)}");
+      AppLogger.debug("${AppLogs.filePath}: $filePath");
+      AppLogger.debug("${AppLogs.fields}: ${request.fields}");
 
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
 
+      AppLogger.info(AppLogs.imageUploadResponse);
+      AppLogger.info("${AppLogs.status}: ${response.statusCode}");
+
       return _parseResponse<T>(response, fromJson: fromJson);
-    } catch (e) {
+    } catch (e, s) {
+      AppLogger.error(AppLogs.imageUploadError, e, s);
       return ApiResponse.failure(statusCode: -1, message: e.toString());
     }
   }
-  // Future<ApiResponse<Map<String, dynamic>>> uploadImage({
-  //   required String endpoint,
-  //   required String filePath,
-  //   required String imageType,
-  //   required String guestId,
-  //   required String isGuest,
-  // }) async {
-  //   try {
-  //     final accessToken = await IndoSharedPreference.instance.getAccessToken();
-  //     final uri =
-  //         isHttps ? Uri.https(baseUrl, endpoint) : Uri.http(baseUrl, endpoint);
 
-  //     final request = http.MultipartRequest(AppConstents.put, uri);
+  void _logRequest({
+    required Uri uri,
+    required String method,
+    required Map<String, String> headers,
+    required Object? body,
+    required bool isEncrypted,
+  }) {
+    AppLogger.debug(AppLogs.apiRequest);
+    AppLogger.debug("${AppLogs.url}: $uri");
+    AppLogger.debug("${AppLogs.method}: $method");
+    AppLogger.debug("${AppLogs.headers}: ${_maskHeaders(headers)}");
 
-  //     request.files.add(
-  //       await http.MultipartFile.fromPath(AppConstents.file, filePath),
-  //     );
-  //     request.fields[AppConstents.isSignup] = imageType;
-  //     request.fields[AppConstents.isGuest] = isGuest;
-  //     request.fields[AppConstents.guestId] = guestId;
+    if (body != null) {
+      if (isEncrypted) {
+        AppLogger.debug("${AppLogs.body}: ${AppLogs.encrypted}");
+      } else {
+        AppLogger.debug("${AppLogs.body}: $body");
+      }
+    } else {
+      AppLogger.debug("${AppLogs.body}: ${AppLogs.nullText}");
+    }
+  }
 
-  //     request.headers.addAll({
-  //       AppConstents.autharization: "${AppConstents.bearer} $accessToken",
-  //     });
+  void _logResponse({required int statusCode, required String responseBody}) {
+    AppLogger.info(AppLogs.apiResponse);
+    AppLogger.info("${AppLogs.status}: $statusCode");
+    AppLogger.debug("${AppLogs.response}: $responseBody");
+  }
 
-  //     final streamedResponse = await request.send();
-  //     final response = await http.Response.fromStream(streamedResponse);
+  Map<String, String> _maskHeaders(Map<String, String> headers) {
+    final masked = Map<String, String>.from(headers);
 
-  //     return _parseResponse<Map<String, dynamic>>(
-  //       response,
-  //       fromJson: (json) => json,
-  //     );
-  //   } catch (e) {
-  //     return ApiResponse.failure(statusCode: -1, message: e.toString());
-  //   }
-  // }
+    if (masked.containsKey(ApiConstants.authorization)) {
+      masked[ApiConstants.authorization] = _maskValue(
+        masked[ApiConstants.authorization]!,
+      );
+    }
+
+    return masked;
+  }
+
+  String _maskValue(String value) {
+    if (value.isEmpty) return value;
+    if (value.length <= 10) return AppLogs.masked;
+    return "${value.substring(0, 5)}${AppLogs.masked}${value.substring(value.length - 5)}";
+  }
 }

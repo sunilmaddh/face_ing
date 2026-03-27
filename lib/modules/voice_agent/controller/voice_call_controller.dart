@@ -1,10 +1,18 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/env_config.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
+import 'package:ntt_data/core/network/api_endpoints.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
+import 'package:ntt_data/core/storage/secure_storage.dart';
 import 'package:ntt_data/modules/voice_agent/controller/socket_controller.dart';
 import 'package:ntt_data/modules/voice_agent/helper/audio_player.dart';
+import 'package:ntt_data/modules/voice_agent/model/request/start_streaming_request.dart';
+import 'package:ntt_data/modules/voice_agent/model/request/voice_call_request.dart';
+import 'package:ntt_data/modules/voice_agent/model/request/voice_webhook_request.dart';
 import 'package:ntt_data/modules/voice_agent/model/webhook_response.dart';
 import 'package:ntt_data/modules/voice_agent/repositories/voice_agent_repository.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,36 +42,32 @@ class VoiceCallController extends BaseController {
     isConverssionStarted.value = true;
   }
 
-  Future<bool> getCredentials({
-    required String sessionId,
-    required bool isUserVoice,
-    required bool isAgentVoice,
-    required bool isUserTransaction,
-    required bool isAgentTransaction,
-    required bool isFullRecording,
-    required bool isUserAgentVoice,
-  }) async {
+  Future<bool> getCredentials({required VoiceCallRequest request}) async {
     showLoading(true);
-
     try {
-      final userName = await IndoSharedPreference.instance.getUserName();
-      final token = await IndoSharedPreference.instance.getAccessToken();
-      final responseData = await voiceAgentRepository.initiateWebhook(
-        tanantId: AppConstents.tanantId,
+      final userName = AppPreferences.instance.getUserName();
+      final token = await SecureStorageService.instance.getAccessToken();
+      final requestData = VoiceWebhookRequest(
+        agentId: ApiConstants.agentId,
         userName: userName,
-        sessionId: sessionId,
-        token: token,
-        isUserVoice: isUserVoice,
-        isAgentVoice: isAgentVoice,
-        isUserTransaction: isUserTransaction,
-        isAgentTransaction: isAgentTransaction,
-        isFullRecording: isFullRecording,
-        isUserAgentVoice: isUserAgentVoice,
+        isUserVoice: request.isUserVoice,
+        isAgentVoice: request.isAgentVoice,
+        isUserTranscription: request.isUserTransaction,
+        isAgentTranscription: request.isAgentTransaction,
+        isFullRecording: request.isFullRecording,
+        isUserAgentVoice: request.isUserAgentVoice,
+        sessionId: request.sessionId,
+        sessionToken: token,
+        sessionUrl: ApiEndpoints.sessionUrl,
+      );
+      final responseData = await voiceAgentRepository.initiateWebhook(
+        tanantId: ApiConstants.tenantId,
+        request: requestData,
       );
       if (responseData.statusCode == 200) {
         final result = responseData.data;
         if (result == null) {
-          setError(AppConstents.commonErrorMessage);
+          setError(ValidationStrings.commonErrorMessage);
           return false;
         }
         agentName.value = result.agentName ?? "";
@@ -74,12 +78,11 @@ class VoiceCallController extends BaseController {
         webhookResponse.value = result;
         return true;
       } else {
-        setError(responseData.message ?? AppConstents.commonErrorMessage);
+        setError(responseData.message);
         return false;
       }
     } catch (e) {
-      debugPrint(e.toString());
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
       return false;
     } finally {
       showLoading(false);
@@ -100,16 +103,18 @@ class VoiceCallController extends BaseController {
       );
       await playDuringCalling();
       await Future.delayed(const Duration(milliseconds: 300));
-      final message = {
-        "type": "start",
-        "stream_sid": webhookResponse.value.streamSid,
-        "transport": "webrtc_mobile",
-      };
-      debugPrint("Message $message");
-      await socketController.sendMessage(message);
+      final message = StartStreamRequest(
+        streamSid: webhookResponse.value.streamSid ?? "",
+      );
+      // {
+      //   "type": "start",
+      //   "stream_sid": webhookResponse.value.streamSid,
+      //   "transport": "webrtc_mobile",
+      // };
+
+      await socketController.sendMessage(message.toJson());
       return true;
     } catch (e) {
-      debugPrint(e.toString());
       setError("Failed to start call");
       return false;
     }

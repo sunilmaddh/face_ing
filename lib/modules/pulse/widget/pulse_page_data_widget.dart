@@ -16,7 +16,7 @@ class PulsePageDataWidget extends StatelessWidget {
   });
 
   final String text;
-  final List<dynamic> list;
+  final List<String> list;
   late final RxInt selectedIndex =
       pulseController.getSelectedIndex(id, list).obs;
 

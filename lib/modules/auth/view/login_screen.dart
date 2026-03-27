@@ -3,7 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/modules/auth/controllers/auth_controller.dart';
@@ -63,8 +64,8 @@ class LoginScreen extends BaseView<AuthController> {
                           }
                           return null;
                         },
-                        label: AppConstents.email,
-                        hint: AppConstents.emailHint,
+                        label: AppStrings.email,
+                        hint: ValidationStrings.emailHint,
                         controller: controller.emailController,
                       ),
 
@@ -78,8 +79,8 @@ class LoginScreen extends BaseView<AuthController> {
                           }
                           return null;
                         },
-                        label: AppConstents.password,
-                        hint: AppConstents.passHint,
+                        label: AppStrings.password,
+                        hint: ValidationStrings.passHint,
                         controller: controller.passwordController,
                       ),
 
@@ -97,7 +98,7 @@ class LoginScreen extends BaseView<AuthController> {
                           );
                         },
                         child: CommonText.text(
-                          AppConstents.forgotPassword,
+                          AppStrings.forgotPassword,
                           fontSize: AppDimensions.font(16),
                           fontWeight: FontWeight.w500,
                           color: AppColors.primary,
@@ -110,7 +111,7 @@ class LoginScreen extends BaseView<AuthController> {
                         alignment: Alignment.bottomRight,
                         child: PrimaryButton(
                           isLoading: controller.isLoading.value,
-                          text: AppConstents.login,
+                          text: AppStrings.login,
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               controller.userLogin();

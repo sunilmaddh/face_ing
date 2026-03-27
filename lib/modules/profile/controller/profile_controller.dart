@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
+import 'package:ntt_data/core/storage/secure_storage.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/helper/globle_halper.dart';
-import 'package:ntt_data/data/services/profile_upload_services.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
+import 'package:ntt_data/modules/profile/models/requets/update_details_request.dart';
+import 'package:ntt_data/modules/profile/models/requets/user_health_details_request.dart';
+import 'package:ntt_data/modules/profile/models/requets/user_history_request.dart';
+import 'package:ntt_data/modules/profile/models/requets/vital_description_request.dart';
 import 'package:ntt_data/modules/profile/models/user_history_list_model.dart';
 import 'package:ntt_data/modules/profile/models/vital_descriptions_model.dart';
 import 'package:ntt_data/modules/profile/helper/profile_helper.dart';
 import 'package:ntt_data/modules/profile/repositories/profile_repository.dart';
 import 'package:ntt_data/routes/app_routes.dart';
-import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 
 class ProfileController extends BaseController
     with RadioStateMixin, CommonMixin {
@@ -44,6 +46,7 @@ class ProfileController extends BaseController
   final userImage = "".obs;
   final userEmail = "".obs;
   final userUpdateName = "".obs;
+  final RxBool imageProfileLoading = false.obs;
 
   // 🔹 Data
   final RxList<UserHealthList> userHealthList = <UserHealthList>[].obs;
@@ -64,12 +67,12 @@ class ProfileController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await IndoSharedPreference.instance.getUserId();
+      final userID = AppPreferences.instance.getUserId();
 
-      final data = {"userId": userID, "userFlag": "true"};
+      final request = UserHistoryRequest(userId: userID, userFlag: "true");
 
       final responseData = await profileRepository.getUserHealthHistory(
-        data: data,
+        data: request,
       );
 
       if (responseData.statusCode == 200) {
@@ -78,19 +81,16 @@ class ProfileController extends BaseController
         userHealthList.value = result?.userHealthList ?? [];
       } else {
         userHealthList.clear();
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
       userHealthList.clear();
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
   }
 
-  // ==============================
-  // USER HEALTH DETAILS
-  // ==============================
   Future<void> getUserHealthDetails({
     required dynamic healthId,
     required dynamic isFullHistory,
@@ -98,18 +98,17 @@ class ProfileController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await IndoSharedPreference.instance.getUserId();
+      final userID = AppPreferences.instance.getUserId();
 
-      final data = {
-        "userId": userID,
-        "healthId": healthId,
-        "isFullHistory": isFullHistory,
-      };
-
-      final responseData = await profileRepository.getUserHealthDetails(
-        data: data,
+      final request = UserHealthDetailsRequest(
+        userId: userID,
+        healthId: healthId,
+        isFullHistory: isFullHistory,
       );
 
+      final responseData = await profileRepository.getUserHealthDetails(
+        data: request,
+      );
       if (responseData.statusCode == 200) {
         binahHIstoryDetails.clear();
         clearHealthCategarie();
@@ -127,37 +126,30 @@ class ProfileController extends BaseController
       } else {
         binahHIstoryDetails.clear();
         clearHealthCategarie();
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
       binahHIstoryDetails.clear();
       clearHealthCategarie();
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
   }
 
-  // ==============================
-  // UPDATE USER / GUEST
-  // ==============================
   Future<void> updateDetailsUG({
-    required Map<String, dynamic> data,
+    required UpdateDetailsRequest data,
     required String userFlag,
   }) async {
     showLoading(true);
 
     try {
       final responseData = await profileRepository.updateDetailsUG(data: data);
-
       if (responseData.statusCode == 200) {
         final result = responseData.data;
-
         navigateBack();
-
         if (userFlag == "true") {
-          final isFullStory =
-              await IndoSharedPreference.instance.getHistoryType();
+          final isFullStory = AppPreferences.instance.getHistoryType();
           userUpdateName.value = result?.name ?? "";
           await AppMethods.storeUserData(
             name: result?.name ?? "",
@@ -173,30 +165,26 @@ class ProfileController extends BaseController
         } else {
           Get.find<GeustController>().getGeustHistory();
         }
-
-        setSuccess("Update details successfully");
+        setSuccess(ValidationStrings.updateDetailsSuccess);
         clearProfileData();
       } else {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
   }
 
-  // ==============================
-  // VITAL DESCRIPTION
-  // ==============================
   Future<void> getVitalDescryption({required dynamic vitalKey}) async {
     isVitalDescriptionLoading(true);
 
     try {
-      final data = {"vitalKey": vitalKey};
+      final request = VitalDescriptionRequest(vitalKey: vitalKey);
 
       final responseData = await profileRepository.getVitalDescription(
-        data: data,
+        data: request,
       );
 
       if (responseData.statusCode == 200) {
@@ -205,45 +193,39 @@ class ProfileController extends BaseController
         vitalDescriptionModel.value = result!;
         vitalDesc.value = vitalDescriptionModel.value.vitalDesc.toString();
       } else {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       isVitalDescriptionLoading(false);
     }
   }
 
-  // ==============================
-  // LOGOUT
-  // ==============================
   Future<void> logoutUser() async {
     isLoadingLogout(true);
-
     try {
       final responseData = await profileRepository.logoutUser();
-
       if (responseData.statusCode == 200) {
+        SecureStorageService.instance.clearAll;
         AppMethods().logout();
-        setSuccess("Successfully logged out");
+        setSuccess(ValidationStrings.logoutSucess);
       } else {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       isLoadingLogout(false);
     }
   }
 
   Future<void> initializeData() async {
-    userName.value = await IndoSharedPreference.instance.getUserName();
-    userEmail.value = await IndoSharedPreference.instance.getUserEmail();
-    userImage.value = await IndoSharedPreference.instance.getUserImage();
+    userName.value = AppPreferences.instance.getUserName();
+    userEmail.value = AppPreferences.instance.getUserEmail();
+    userImage.value = AppPreferences.instance.getUserImage();
   }
 
-  /// Sends the details to the ProfileController
-  ///
   final helper = ProfileHelper();
   Future<void> callUpdateApi({
     required String userId,
@@ -257,7 +239,7 @@ class ProfileController extends BaseController
     required String height,
     required String email,
   }) async {
-    final data = await helper.updateDetailsMap(
+    final request = await helper.updateDetailsRequest(
       userId: userId,
       guestId: guestId,
       userFlag: userFlag,
@@ -269,21 +251,18 @@ class ProfileController extends BaseController
       height: height,
       email: email,
     );
-    await callUpdateUGDetails(data: data, userFlag: userFlag);
+    await callUpdateUGDetails(request: request, userFlag: userFlag);
   }
 
   Future<void> callUpdateUGDetails({
-    required Map<String, dynamic> data,
+    required UpdateDetailsRequest request,
     required String userFlag,
   }) async {
-    await updateDetailsUG(data: data, userFlag: userFlag);
+    await updateDetailsUG(data: request, userFlag: userFlag);
   }
 
-  // Future<void> editProfilePicture() async {
-
-  // }
-
   Future<void> uploadProfile({required String imagePath}) async {
+    imageProfileLoading(true);
     try {
       var response = await profileRepository.uploadImage(
         filePath: imagePath,
@@ -292,14 +271,18 @@ class ProfileController extends BaseController
       if (response.success) {
         final result = response.data;
         userImage.value = result?.imagePath ?? "";
-        IndoSharedPreference.instance.saveUserImage(result?.imagePath ?? "");
-        debugPrint("Result $result ${userUpdateImage.value}");
+        AppPreferences.instance.saveUserImage(result?.imagePath ?? "");
+        imageProfileLoading(false);
       } else {
-        setError("Something went wrong");
+        imageProfileLoading(false);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
       setError(e.toString());
       debugPrint(e.toString());
+      imageProfileLoading(false);
+    } finally {
+      imageProfileLoading(false);
     }
   }
 

@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_config.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: AppConstents.deviceSize,
+      designSize: AppConfig.deviceSize,
       minTextAdapt: true,
       ensureScreenSize: true,
       child: GetMaterialApp(

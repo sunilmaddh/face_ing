@@ -9,6 +9,7 @@ import audio_session
 import battery_plus
 import connectivity_plus
 import file_selector_macos
+import flutter_secure_storage_darwin
 import flutter_sound
 import flutter_webrtc
 import just_audio
@@ -26,6 +27,7 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   BatteryPlusMacosPlugin.register(with: registry.registrar(forPlugin: "BatteryPlusMacosPlugin"))
   ConnectivityPlusPlugin.register(with: registry.registrar(forPlugin: "ConnectivityPlusPlugin"))
   FileSelectorPlugin.register(with: registry.registrar(forPlugin: "FileSelectorPlugin"))
+  FlutterSecureStorageDarwinPlugin.register(with: registry.registrar(forPlugin: "FlutterSecureStorageDarwinPlugin"))
   FlutterSoundPlugin.register(with: registry.registrar(forPlugin: "FlutterSoundPlugin"))
   FlutterWebRTCPlugin.register(with: registry.registrar(forPlugin: "FlutterWebRTCPlugin"))
   JustAudioPlugin.register(with: registry.registrar(forPlugin: "JustAudioPlugin"))

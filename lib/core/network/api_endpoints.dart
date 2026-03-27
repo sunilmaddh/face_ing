@@ -12,6 +12,9 @@ class ApiEndpoints {
   static const String initiateWebsocket =
       "wss://dev.sourcebytes.ai/ws/v1/web/voice_agent";
 
+  static const String sessionUrl =
+      "http://${ApiEndpoints.baseUrl}/kintsugi/submit-audio";
+
   static const String baseUrl =
       //"192.168.0.120:8085";
       //dev

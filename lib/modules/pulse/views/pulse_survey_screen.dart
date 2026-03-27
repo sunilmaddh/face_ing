@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/home/widget/circle_card_widget.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
@@ -53,7 +54,7 @@ class PulseSurveyScreen extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: CommonText.text(
-                          AppConstents.howDoYouFeelToday,
+                          AppStrings.howDoYouFeelToday,
                           color: AppColors.primary,
                           fontSize: 20,
                           fontWeight: FontWeight.w700,

@@ -8,7 +8,7 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 class CustomFormField extends StatelessWidget {
   final String label;
   final String hint;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final TextInputType keyboardType;
   bool obscureText;
   final String? Function(String?)? validator;
@@ -28,7 +28,7 @@ class CustomFormField extends StatelessWidget {
     required this.hint,
     this.readOnly = false,
     this.enable = true,
-    required this.controller,
+    this.controller,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.validator,

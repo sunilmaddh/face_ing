@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/modules/pulse/models/pulse_survey_model.dart';
 import 'package:ntt_data/modules/pulse/models/pulse_survey_question_list_model.dart';
+import 'package:ntt_data/modules/pulse/models/requests/pulse_survey_answer_request.dart';
 import 'package:ntt_data/modules/pulse/repositories/pulse_survey_repository.dart';
 
 class PulseSurveyController extends BaseController {
   PulseSurveyController({required this.pulseSurveyRepository});
-
   final PulseSurveyRepository pulseSurveyRepository;
-
   final Rx<PulseSurveyQuestionListModel> pulseSurveyList =
       PulseSurveyQuestionListModel().obs;
   final RxList<Question> pulseQuestionList = <Question>[].obs;
@@ -20,11 +19,9 @@ class PulseSurveyController extends BaseController {
   final RxBool isPulseSurveryLoading = false.obs;
   final RxBool isPulseQuestionListLoading = false.obs;
   final RxBool isEnable = false.obs;
-
   bool isNavigating = false;
-
-  final List<Map<String, dynamic>> pulseList = [];
-
+  final RxList<PulseSurveyAnswerRequest> pulseList =
+      <PulseSurveyAnswerRequest>[].obs;
   PageController? pageController;
 
   Future<void> getPulseQuetionList() async {
@@ -37,11 +34,11 @@ class PulseSurveyController extends BaseController {
         pulseSurveyList.value = result ?? PulseSurveyQuestionListModel();
         pulseQuestionList.value = pulseSurveyList.value.questions ?? [];
       } else {
-        setError(response.message ?? AppConstents.commonErrorMessage);
+        setError(response.message);
       }
     } catch (e) {
       debugPrint(e.toString());
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       isPulseQuestionListLoading(false);
     }
@@ -52,7 +49,7 @@ class PulseSurveyController extends BaseController {
 
     try {
       final responseData = await pulseSurveyRepository.storePulseSurvey(
-        data: pulseList,
+        data: pulseList.toList(),
       );
 
       if (responseData.statusCode == 200) {
@@ -60,11 +57,11 @@ class PulseSurveyController extends BaseController {
         await fetchPulseSurvey();
         pulseList.clear();
       } else {
-        setError(responseData.message ?? AppConstents.commonErrorMessage);
+        setError(responseData.message);
       }
     } catch (e) {
       debugPrint(e.toString());
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -84,34 +81,36 @@ class PulseSurveyController extends BaseController {
           pulseSurveyADayList.value = result.pulseSurveyADayList ?? [];
         }
       } else {
-        setError(responseData.message ?? AppConstents.commonErrorMessage);
+        setError(responseData.message);
       }
     } catch (e) {
       debugPrint(e.toString());
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       isPulseSurveryLoading(false);
     }
   }
 
-  void storeQuestionAnswer(String id, String question, String selectedAnswers) {
-    if (selectedAnswers.isEmpty) return;
+  void storeQuestionAnswer(String id, String question, String selectedAnswer) {
+    if (selectedAnswer.isEmpty) return;
 
     final existingIndex = pulseList.indexWhere(
-      (element) => element["questionId"] == id,
+      (element) => element.questionId == id,
     );
 
     if (existingIndex != -1) {
-      pulseList[existingIndex]["answer"] = selectedAnswers;
+      pulseList[existingIndex] = pulseList[existingIndex].copyWith(
+        answer: selectedAnswer,
+      );
     } else {
-      pulseList.add({
-        "questionId": id,
-        "pulseSurveyQuestion": question,
-        "answer": selectedAnswers,
-      });
+      pulseList.add(
+        PulseSurveyAnswerRequest(
+          questionId: id,
+          pulseSurveyQuestion: question,
+          answer: selectedAnswer,
+        ),
+      );
     }
-
-    debugPrint("pulseList : $pulseList");
   }
 
   void setPageController(PageController controller) {
@@ -132,14 +131,14 @@ class PulseSurveyController extends BaseController {
     }
   }
 
-  int getSelectedIndex(String questionId, List<dynamic> options) {
+  int getSelectedIndex(String questionId, List<String> options) {
     final index = pulseList.indexWhere(
-      (element) => element["questionId"] == questionId,
+      (element) => element.questionId == questionId,
     );
 
     if (index == -1) return -1;
 
-    final selected = pulseList[index]["answer"];
+    final selected = pulseList[index].answer;
     return options.indexOf(selected);
   }
 

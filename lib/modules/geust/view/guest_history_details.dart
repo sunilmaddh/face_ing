@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/geust/widget/build_card_widget.dart';
@@ -33,7 +33,7 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
 
   Future<void> _initiateData() async {
     controller.isFullStory.value =
-        await IndoSharedPreference.instance.getHistoryType();
+        await AppPreferences.instance.getHistoryType();
 
     if (controller.isFullStory.isTrue) {
       controller.tabWidget.value = [

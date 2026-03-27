@@ -6,11 +6,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
+import 'package:ntt_data/core/constants/date_formats.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
+import 'package:ntt_data/core/utils/enum/enums.dart';
+import 'package:ntt_data/core/utils/enum/gender_enum.dart';
+import 'package:ntt_data/core/utils/extensions/extentions.dart';
+import 'package:ntt_data/data/services/profile_upload_services.dart';
 import 'package:ntt_data/modules/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart' show AppNavigation;
@@ -29,7 +35,7 @@ class CreateAccountScreen extends StatelessWidget {
   CreateAccountScreen({super.key});
   final AuthController _authController = Get.find<AuthController>();
   final _formKey = GlobalKey<FormState>();
-  List<String> smokerTypeList = ["Smoker", "Non Smoker"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +44,7 @@ class CreateAccountScreen extends StatelessWidget {
         onTop: () {
           AppNavigation.back();
         },
-        title: AppConstents.createAccount,
+        title: AppStrings.createAccount,
       ),
       body: SafeArea(
         child: Padding(
@@ -53,15 +59,15 @@ class CreateAccountScreen extends StatelessWidget {
                   validator: (name) {
                     return AppMethods.validateName(name);
                   },
-                  label: AppConstents.name,
-                  hint: "Enter your name",
+                  label: AppStrings.name,
+                  hint: ValidationStrings.enterNameHint,
                   controller: _authController.nameController,
                 ),
                 SizedBox(height: 15),
                 RadioWidget(
-                  level: 'Gender',
-                  radioTextLeft: 'Male',
-                  radioTextRight: 'Female',
+                  level: AppStrings.genderLevel,
+                  radioTextLeft: Gender.male.value,
+                  radioTextRight: Gender.female.value,
                   onSelectionChanged: (value) {
                     _authController.selectionType.value = value;
                   },
@@ -80,7 +86,7 @@ class CreateAccountScreen extends StatelessWidget {
                         context: context,
                         onDateSelected: (selectedDate) {
                           String formattedDate = DateFormat(
-                            'dd/MM/yyyy',
+                            DateFormats.ddMMyyyySlash,
                           ).format(selectedDate);
                           _authController.dateController.text = formattedDate;
                         },
@@ -91,21 +97,21 @@ class CreateAccountScreen extends StatelessWidget {
                       color: AppColors.primary,
                     ),
                   ),
-                  label: AppConstents.dob,
-                  hint: "Select your date of birth",
+                  label: AppStrings.dob,
+                  hint: ValidationStrings.selectDobHint,
                   controller: _authController.dateController,
                 ),
                 SizedBox(height: 15),
                 CommonDropdownTextField(
                   unit: "Kg",
                   defaultValue: "60",
-                  title: "Select your weight (kg)",
+                  title: AppStrings.selectWeightLevel,
                   columns: 5,
-                  hintText: "Enter your weight (kg)",
+                  hintText: ValidationStrings.enterWeightHint,
                   validator: (weight) {
                     return AppMethods.validateWeight(weight);
                   },
-                  label: AppConstents.weight,
+                  label: AppStrings.weight,
                   options: GuestHelper.weightList,
 
                   controller: _authController.weightController,
@@ -116,22 +122,22 @@ class CreateAccountScreen extends StatelessWidget {
                 CommonDropdownTextField(
                   unit: "cm",
                   defaultValue: "160",
-                  title: "Select your height (Cm)",
+                  title: AppStrings.selectHeightLevel,
                   columns: 5,
-                  hintText: "Enter your height (Cm)",
+                  hintText: ValidationStrings.enterHeightHint,
                   validator: (height) {
                     return AppMethods.validateHeight(height);
                   },
-                  label: AppConstents.height,
+                  label: AppStrings.height,
                   options: GuestHelper.heightList,
                   controller: _authController.heightController,
                 ),
                 SizedBox(height: 15),
                 RadioWidget(
                   selectionType: _authController.smokerType,
-                  level: 'Smoker type',
-                  radioTextLeft: 'Smoker',
-                  radioTextRight: 'No Smoker',
+                  level: AppStrings.smokerLevel,
+                  radioTextLeft: Smoker.smoker.value,
+                  radioTextRight: Smoker.nonSmoker.value,
                   onSelectionChanged: (value) {
                     _authController.smokerType.value = value;
                   },
@@ -143,7 +149,7 @@ class CreateAccountScreen extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "User Image",
+                          text: AppStrings.userImageLevel,
                           style: TextStyle(
                             fontSize: AppDimensions.font(16),
                             fontWeight: FontWeight.w500,
@@ -152,7 +158,7 @@ class CreateAccountScreen extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: "(optional)",
+                          text: AppStrings.optional,
                           style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xff4A4949),
@@ -227,24 +233,43 @@ class CreateAccountScreen extends StatelessWidget {
                                     ),
                                     child: InkWell(
                                       onTap: () {
-                                        // ImagePickerBottomsheet.showImagePickerBottomSheet(
-                                        //   onGalleryTap: () async {
-                                        //     await _authController
-                                        //         .uploadProfileFromGallery(
-                                        //           "true",
-                                        //           "",
-                                        //           "false",
-                                        //         );
-                                        //   },
-                                        //   onCameraTap: () async {
-                                        //     await _authController
-                                        //         .uploadProfileFromCamera(
-                                        //           "true",
-                                        //           "",
-                                        //           "false",
-                                        //         );
-                                        //   },
-                                        // );
+                                        ImagePickerBottomsheet.showImagePickerBottomSheet(
+                                          onGalleryTap: () async {
+                                            final file =
+                                                await ProfileUploadService()
+                                                    .uploadProfileImage(
+                                                      source:
+                                                          ImagePickSource
+                                                              .gallery,
+                                                    );
+                                            if (file.path.isNotEmpty) {
+                                              _authController.profileUrl.value =
+                                                  file;
+                                              await _authController
+                                                  .uploadProfile(
+                                                    imagePath: file.path,
+                                                  );
+                                            }
+                                          },
+                                          onCameraTap: () async {
+                                            final file =
+                                                await ProfileUploadService()
+                                                    .uploadProfileImage(
+                                                      source:
+                                                          ImagePickSource
+                                                              .camera,
+                                                    );
+
+                                            if (file.path.isNotEmpty) {
+                                              _authController.profileUrl.value =
+                                                  file;
+                                              await _authController
+                                                  .uploadProfile(
+                                                    imagePath: file.path,
+                                                  );
+                                            }
+                                          },
+                                        );
                                       },
                                       child: Row(
                                         mainAxisAlignment:
@@ -274,7 +299,7 @@ class CreateAccountScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: PrimaryButton(
-                    text: AppConstents.continueBtn,
+                    text: AppStrings.continueBtn,
                     onPressed: () {
                       debugPrint(_authController.userId.value);
                       if (_formKey.currentState!.validate()) {

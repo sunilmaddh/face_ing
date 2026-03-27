@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/landing/controller/landing_controller.dart';
 import 'package:ntt_data/modules/landing/view/landing_screen.dart';
@@ -124,7 +125,7 @@ class PulseScreen extends StatelessWidget {
                       children: [
                         10.verticalSpace,
                         CommonText.text(
-                          AppConstents.latestResult,
+                          AppStrings.latestResult,
                           fontSize: AppDimensions.font(14),
                           fontWeight: FontWeight.w700,
                           color: Color(0xff898989),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  const AppColors._();
   static const Color primary = Color(0xff0072BC),
       secondary = Color(0xFF03DAC5),
       background = Color(0xFFF5F5F5),
@@ -41,4 +42,14 @@ class AppColors {
   static Color progressColorDeactive = Color(0xff0072BC).withOpacity(0.26);
   // ignore: deprecated_member_use
   static Color selectedList = Color(0xffd9f0ff).withOpacity(0.53);
+
+  static const Color success = Color(0xFF1BC76D); // Green
+  static const Color warning = Color(0xFFEEC000); // Yellow
+  static const Color danger = Color(0xFFFA704E); // Red
+
+  /// Optional semantic naming (more readable)
+  static const Color lowRisk = success;
+  static const Color mediumRisk = warning;
+  static const Color highRisk = danger;
+  static const Color white = Colors.white;
 }

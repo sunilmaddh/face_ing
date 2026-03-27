@@ -58,10 +58,14 @@ class GuestRepository {
   Future<ApiResponse<UploadImageResponseModel>> uploadImage({
     required String filePath,
     required String imageType,
+    required String guestId,
+    required String isGuest,
   }) async {
     return await guestService.uploadImage(
       filePath: filePath,
       imageType: imageType,
+      guestId: guestId,
+      isGuest: isGuest,
     );
   }
 }

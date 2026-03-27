@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/binah/handler/vital_navigation_service.dart';
 import 'package:ntt_data/core/mixins/progress_mixin.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
@@ -85,7 +85,7 @@ class VitalResultsHandler {
   }
 
   void _handleValidResults(VitalSignsResults finalResults) async {
-    final isFullStory = await IndoSharedPreference.instance.getHistoryType();
+    final isFullStory = await AppPreferences.instance.getHistoryType();
     isFirstEver.value = false;
     if (finalResults.getResult(VitalSignTypes.pulseRate) == null) {
       debugPrint("Pulse Rate missing, stopping flow");

@@ -4,7 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/home/controller/home_controller.dart';
 import 'package:ntt_data/modules/home/helper/home_helper.dart';
@@ -102,7 +103,7 @@ class MenuCardWidget extends StatelessWidget {
                                             ),
                                             SizedBox(height: 10.h),
                                             CommonText.text(
-                                              AppConstents.latestResult,
+                                              AppStrings.latestResult,
                                               fontSize: 12.sp,
                                               fontWeight: FontWeight.w700,
                                               fontFamily: "Manrope",

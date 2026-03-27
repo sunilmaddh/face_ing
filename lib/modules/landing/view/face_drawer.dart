@@ -3,14 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_config.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/data/services/profile_upload_services.dart';
-import 'package:ntt_data/modules/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/home/widget/custom_circular_avatar.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/profile/helper/profile_helper.dart';
@@ -23,7 +23,6 @@ import 'package:shimmer/shimmer.dart';
 
 class FaceDrawer extends StatelessWidget {
   FaceDrawer({super.key});
-  // final AuthController _authController = Get.find<AuthController>();
   final ProfileController _profileController = Get.find<ProfileController>();
 
   /// Reusable ListTile builder
@@ -95,117 +94,97 @@ class FaceDrawer extends StatelessWidget {
                       SizedBox(
                         width: AppDimensions.width(90),
                         child: Obx(() {
-                          // if (_authController.imageLoading.isTrue) {
-                          //   return ClipOval(
-                          //     child: Shimmer.fromColors(
-                          //       baseColor: Colors.grey.shade300,
-                          //       highlightColor: Colors.grey.shade100,
-                          //       child: Container(
-                          //         width: 95,
-                          //         height: 95,
-                          //         color: Colors.white,
-                          //       ),
-                          //     ),
-                          //   );
-                          // } else {
-
-                          return Stack(
-                            children: [
-                              _profileController.userImage.isNotEmpty
-                                  ? CircularImageWithShimmer(
-                                    size: 95,
-                                    imageUrl:
-                                        _profileController.userImage.value,
-                                  )
-                                  : CustomCircularAvatar(
-                                    color: AppColors.guestIconColor,
-                                    widget: CommonText.text(
-                                      _profileController.userName.isNotEmpty
-                                          ? _profileController.userName
-                                              .substring(0, 1)
-                                              .toUpperCase()
-                                          : "",
-                                      color: AppColors.btntext,
-                                      fontSize: AppDimensions.font(30),
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: InkWell(
-                                  onTap: () {
-                                    CommonDialog().editGuestDialog(
-                                      guestOptionList:
-                                          AppMethods().guestOptionList,
-                                      context: context,
-                                      onConfirm: (value) {
-                                        if (value == "Photo") {
-                                          ImagePickerBottomsheet.showImagePickerBottomSheet(
-                                            onGalleryTap: () async {
-                                              final file =
-                                                  await ProfileUploadService()
-                                                      .uploadProfileImage(
-                                                        source:
-                                                            ImagePickSource
-                                                                .gallery,
-                                                      );
-                                              if (file.path.isNotEmpty) {
-                                                await _profileController
-                                                    .uploadProfile(
-                                                      imagePath: file.path,
-                                                    );
-                                              }
-
-                                              // await commonController
-                                              //     .uploadProfileFromGallery("false", guestId, isGuest)
-                                              //     .whenComplete(() {
-                                              //       whenComplete();
-                                              //     });
-                                            },
-                                            onCameraTap: () async {
-                                              final file =
-                                                  await ProfileUploadService()
-                                                      .uploadProfileImage(
-                                                        source:
-                                                            ImagePickSource
-                                                                .camera,
-                                                      );
-                                              if (file.path.isNotEmpty) {
-                                                await _profileController
-                                                    .uploadProfile(
-                                                      imagePath: file.path,
-                                                    );
-                                              }
-                                              // await commonController
-                                              //     .uploadProfileFromCamera("false", guestId, isGuest)
-                                              //     .whenComplete(() {
-                                              //       whenComplete();
-                                              //     });
-                                            },
-                                          );
-                                          // _profileController
-                                          //     .editProfilePicture();
-                                          // AppMethods().editProfilePicture(
-                                          //   _authController,
-                                          //   "",
-                                          //   "false",
-                                          //   () {},
-                                          // );
-                                        } else {
-                                          ProfileHelper().retainedUserData(
-                                            _profileController,
-                                          );
-                                        }
-                                      },
-                                      onCancel: () {},
-                                    );
-                                  },
-                                  child: SvgPicture.asset(AppAssets.editIcon),
+                          if (_profileController.imageProfileLoading.isTrue) {
+                            return ClipOval(
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.grey.shade100,
+                                child: Container(
+                                  width: 95,
+                                  height: 95,
+                                  color: Colors.white,
                                 ),
                               ),
-                            ],
-                          );
-                          //   }
+                            );
+                          } else {
+                            return Stack(
+                              children: [
+                                _profileController.userImage.isNotEmpty
+                                    ? CircularImageWithShimmer(
+                                      size: 95,
+                                      imageUrl:
+                                          _profileController.userImage.value,
+                                    )
+                                    : CustomCircularAvatar(
+                                      color: AppColors.guestIconColor,
+                                      widget: CommonText.text(
+                                        _profileController.userName.isNotEmpty
+                                            ? _profileController.userName
+                                                .substring(0, 1)
+                                                .toUpperCase()
+                                            : "",
+                                        color: AppColors.btntext,
+                                        fontSize: AppDimensions.font(30),
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: InkWell(
+                                    onTap: () {
+                                      CommonDialog().editGuestDialog(
+                                        guestOptionList:
+                                            AppMethods().guestOptionList,
+                                        context: context,
+                                        onConfirm: (value) {
+                                          if (value == "Photo") {
+                                            ImagePickerBottomsheet.showImagePickerBottomSheet(
+                                              onGalleryTap: () async {
+                                                final file =
+                                                    await ProfileUploadService()
+                                                        .uploadProfileImage(
+                                                          source:
+                                                              ImagePickSource
+                                                                  .gallery,
+                                                        );
+                                                if (file.path.isNotEmpty) {
+                                                  await _profileController
+                                                      .uploadProfile(
+                                                        imagePath: file.path,
+                                                      );
+                                                }
+                                              },
+                                              onCameraTap: () async {
+                                                final file =
+                                                    await ProfileUploadService()
+                                                        .uploadProfileImage(
+                                                          source:
+                                                              ImagePickSource
+                                                                  .camera,
+                                                        );
+                                                if (file.path.isNotEmpty) {
+                                                  await _profileController
+                                                      .uploadProfile(
+                                                        imagePath: file.path,
+                                                      );
+                                                }
+                                              },
+                                            );
+                                          } else {
+                                            ProfileHelper().retainedUserData(
+                                              _profileController,
+                                            );
+                                          }
+                                        },
+                                        onCancel: () {},
+                                      );
+                                    },
+                                    child: SvgPicture.asset(AppAssets.editIcon),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
                         }),
                       ),
                       SizedBox(height: AppDimensions.height(20)),
@@ -216,7 +195,7 @@ class FaceDrawer extends StatelessWidget {
                               : _profileController.userName.value,
                           fontSize: AppDimensions.font(16),
                           fontWeight: FontWeight.w400,
-                          fontFamily: AppConstents.gilroyBold,
+                          fontFamily: AppConfig.gilroyBold,
                         ),
                       ),
                       SizedBox(height: AppDimensions.height(10)),
@@ -225,7 +204,7 @@ class FaceDrawer extends StatelessWidget {
                           _profileController.userEmail.value,
                           fontSize: AppDimensions.font(14),
                           fontWeight: FontWeight.w400,
-                          fontFamily: AppConstents.gilroyMedium,
+                          fontFamily: AppConfig.gilroyMedium,
                         ),
                       ),
                     ],

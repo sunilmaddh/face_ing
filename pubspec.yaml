@@ -66,6 +66,8 @@ dependencies:
   flutter_sound: ^9.30.0
   text_scroll: ^0.2.1
   marquee: ^2.3.0
+  flutter_secure_storage: ^10.0.0
+  logger: ^2.7.0
   # flutter_secure_storage: ^4.2.1
   
 

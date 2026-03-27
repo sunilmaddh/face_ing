@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/helper/globle_halper.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
@@ -18,7 +19,7 @@ class UserHealthDetails extends BaseView<ProfileController> {
   @override
   Future<void> onInit(ProfileController controller) async {
     controller.isFullStory.value =
-        await IndoSharedPreference.instance.getHistoryType();
+        await AppPreferences.instance.getHistoryType();
 
     if (controller.isFullStory.isTrue) {
       controller.tabWidget.value = [
@@ -46,7 +47,7 @@ class UserHealthDetails extends BaseView<ProfileController> {
     return Scaffold(
       appBar: CustomAppBar(
         onTop: AppNavigation.back,
-        title: AppConstents.userHealthReportsTitle,
+        title: AppStrings.userHealthReportsTitle,
       ),
       body: Container(
         margin: const EdgeInsets.all(15),

@@ -5,11 +5,15 @@ import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
+import 'package:ntt_data/data/services/profile_upload_services.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/geust/widget/geust_user_history_card.dart';
+import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
+import 'package:ntt_data/modules/profile/helper/profile_helper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
+import 'package:ntt_data/widgets/bottom_sheet/image_picker_bottomsheet.dart';
 import 'package:ntt_data/widgets/button/rounded_button.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 
@@ -107,7 +111,50 @@ class GeustUserHistoryScreen extends BaseView<GeustController> {
                   guestOptionList: AppMethods().guestOptionList,
 
                   onOptionList: (value) async {
-                    // future logic
+                    if (value == "Photo") {
+                      ImagePickerBottomsheet.showImagePickerBottomSheet(
+                        onGalleryTap: () async {
+                          final file = await ProfileUploadService()
+                              .uploadProfileImage(
+                                source: ImagePickSource.gallery,
+                              );
+                          if (file.path.isNotEmpty) {
+                            await controller.uploadProfile(
+                              imagePath: file.path,
+                              guestId: result.guestId ?? "",
+                              isGuest: "true",
+                            );
+                          }
+                        },
+                        onCameraTap: () async {
+                          final file = await ProfileUploadService()
+                              .uploadProfileImage(
+                                source: ImagePickSource.camera,
+                              );
+                          if (file.path.isNotEmpty) {
+                            await controller.uploadProfile(
+                              imagePath: file.path,
+                              guestId: result.guestId ?? "",
+                              isGuest: 'true',
+                            );
+                          }
+                        },
+                      );
+                    } else {
+                      ProfileHelper().retainedData(
+                        name: result.name.toString(),
+                        weight: result.weight.toString(),
+                        height: result.height.toString(),
+                        gender: result.gender.toString(),
+                        dob: result.dob.toString(),
+                        smokerType: result.smokerType.toString(),
+                        guestId: result.guestId.toString(),
+                        userFlag: "false",
+                        levelName: "Patient ID",
+                        emailId: result.email.toString(),
+                        profileController: Get.find<ProfileController>(),
+                      );
+                    }
                   },
                 ),
               );

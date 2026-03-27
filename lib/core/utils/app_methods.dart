@@ -2,10 +2,11 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
-import 'package:ntt_data/core/utils/enum/health_tab_enum.dart';
-import 'package:ntt_data/core/utils/extensions/extentions.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
+import 'package:ntt_data/core/constants/date_formats.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -26,17 +27,17 @@ class AppMethods {
   ) {
     if (selectedAnswers.isNotEmpty) {
       final index = dataList.indexWhere(
-        (element) => element[AppConstents.question] == question,
+        (element) => element[ApiConstants.question] == question,
       );
 
       if (index != -1) {
-        dataList[index][AppConstents.answer] = selectedAnswers;
-        dataList[index][AppConstents.id] = id;
+        dataList[index][ApiConstants.answer] = selectedAnswers;
+        dataList[index][ApiConstants.id] = id;
       } else {
         dataList.add({
-          AppConstents.id: id,
-          AppConstents.question: question,
-          AppConstents.answer: selectedAnswers,
+          ApiConstants.id: id,
+          ApiConstants.question: question,
+          ApiConstants.answer: selectedAnswers,
         });
       }
     }
@@ -59,12 +60,12 @@ class AppMethods {
 
   Future<double> calculateAge(String birthDate) async {
     final formats = [
-      DateFormat(AppConstents.ddMMyyyySlash),
-      DateFormat(AppConstents.mmDDyyyySlash),
-      DateFormat(AppConstents.yyyyMMddSlash),
-      DateFormat(AppConstents.yyyyMMddDash),
-      DateFormat(AppConstents.ddMMyyyyDash),
-      DateFormat(AppConstents.mmDDyyyyDash),
+      DateFormat(DateFormats.ddMMyyyySlash),
+      DateFormat(DateFormats.mmDDyyyySlash),
+      DateFormat(DateFormats.yyyyMMddSlash),
+      DateFormat(DateFormats.yyyyMMddDash),
+      DateFormat(DateFormats.ddMMyyyyDash),
+      DateFormat(DateFormats.mmDDyyyyDash),
     ];
 
     DateTime? parsedDate;
@@ -84,7 +85,9 @@ class AppMethods {
     }
 
     if (parsedDate == null) {
-      throw FormatException("${AppConstents.invalidDateFormat}: $birthDate");
+      throw FormatException(
+        "${ValidationStrings.invalidDateFormat}: $birthDate",
+      );
     }
 
     final today = DateTime.now();
@@ -99,8 +102,8 @@ class AppMethods {
   }
 
   void logout() async {
-    await IndoSharedPreference.instance.saveUserId("");
-    await IndoSharedPreference.instance.saveOnBoard(AppConstents.falseValue);
+    await AppPreferences.instance.saveUserId("");
+    await AppPreferences.instance.saveOnBoard(ApiConstants.falseValue);
     AppNavigation.offAll(AppRoutes.loginScreen);
   }
 
@@ -110,38 +113,38 @@ class AppMethods {
   }
 
   static bool stringToBool(String value) {
-    return value.toLowerCase() == AppConstents.trueValue;
+    return value.toLowerCase() == ApiConstants.trueValue;
   }
 
   static String? validateDOB(String? dob) {
     if (dob == null || dob.trim().isEmpty) {
-      return AppConstents.selectDob;
+      return ValidationStrings.selectDob;
     }
 
     try {
       final parseDate = DateFormat(
-        AppConstents.ddMMyyyySlash,
+        DateFormats.ddMMyyyySlash,
       ).parseStrict(dob.trim());
       final now = DateTime.now();
       final minAllowedDate = DateTime(now.year - 18, now.month, now.day);
 
       if (parseDate.isAfter(minAllowedDate)) {
-        return AppConstents.ageLimit;
+        return ValidationStrings.ageLimit;
       } else if (!validateDate(dob)) {
-        return AppConstents.invalidDate;
+        return ValidationStrings.invalidDate;
       } else if (parseDate.year < 1925) {
-        return AppConstents.yearLimit;
+        return ValidationStrings.yearLimit;
       }
     } catch (e) {
-      return AppConstents.invalidDate;
+      return ValidationStrings.invalidDate;
     }
     return null;
   }
 
   Future<String> convertDateFormatToYY(String date) async {
     final formats = [
-      DateFormat(AppConstents.ddMMyyyySlash),
-      DateFormat(AppConstents.yyyyMMddSlash),
+      DateFormat(DateFormats.ddMMyyyySlash),
+      DateFormat(DateFormats.yyyyMMddSlash),
     ];
 
     DateTime? parsedDate;
@@ -155,16 +158,16 @@ class AppMethods {
     }
 
     if (parsedDate == null) {
-      throw FormatException("${AppConstents.invalidDateFormat}: $date");
+      throw FormatException("${ValidationStrings.invalidDateFormat}: $date");
     }
 
-    return DateFormat(AppConstents.yyyyMMddSlash).format(parsedDate);
+    return DateFormat(DateFormats.yyyyMMddSlash).format(parsedDate);
   }
 
   Future<String> convertDateFormateToDD(String date) async {
     final formats = [
-      DateFormat(AppConstents.ddMMyyyySlash),
-      DateFormat(AppConstents.yyyyMMddSlash),
+      DateFormat(DateFormats.ddMMyyyySlash),
+      DateFormat(DateFormats.yyyyMMddSlash),
     ];
 
     DateTime? parsedDate;
@@ -178,10 +181,10 @@ class AppMethods {
     }
 
     if (parsedDate == null) {
-      throw FormatException("${AppConstents.invalidDateFormat}: $date");
+      throw FormatException("${ValidationStrings.invalidDateFormat}: $date");
     }
 
-    return DateFormat(AppConstents.ddMMyyyySlash).format(parsedDate);
+    return DateFormat(DateFormats.ddMMyyyySlash).format(parsedDate);
   }
 
   static bool validateDate(String date) {
@@ -193,16 +196,16 @@ class AppMethods {
 
   static String? validateHeight(String? height) {
     if (height == null || height.isEmpty) {
-      return AppConstents.enterHeight;
+      return ValidationStrings.enterHeight;
     }
 
     final parsedHeight = double.tryParse(height);
     if (parsedHeight == null) {
-      return AppConstents.validNumber;
+      return ValidationStrings.validNumber;
     } else if (parsedHeight < 130.0) {
-      return AppConstents.heightMin;
+      return ValidationStrings.heightMin;
     } else if (parsedHeight > 230.0) {
-      return AppConstents.heightMax;
+      return ValidationStrings.heightMax;
     }
 
     return null;
@@ -210,16 +213,16 @@ class AppMethods {
 
   static String? validateWeight(String? weight) {
     if (weight == null || weight.isEmpty) {
-      return AppConstents.enterWeight;
+      return ValidationStrings.enterWeight;
     }
 
     final parsedWeight = double.tryParse(weight);
     if (parsedWeight == null) {
-      return AppConstents.validNumber;
+      return ValidationStrings.validNumber;
     } else if (parsedWeight < 40.0) {
-      return AppConstents.weightMin;
+      return ValidationStrings.weightMin;
     } else if (parsedWeight > 155.0) {
-      return AppConstents.weightMax;
+      return ValidationStrings.weightMax;
     }
 
     return null;
@@ -227,21 +230,21 @@ class AppMethods {
 
   static String? validateName(String? name) {
     if (name == null || name.isEmpty) {
-      return AppConstents.enterName;
+      return ValidationStrings.enterName;
     } else if (!GuestHelper.isValidInput(name)) {
-      return AppConstents.validName;
+      return ValidationStrings.validName;
     }
     return null;
   }
 
   final List<Map<String, String>> guestOptionList = [
     {
-      AppConstents.nameLower: AppConstents.updateProfilePhoto,
-      AppConstents.optionType: AppConstents.photo,
+      ApiConstants.nameKey: AppStrings.updateProfilePhoto,
+      ApiConstants.optionType: AppStrings.photo,
     },
     {
-      AppConstents.nameLower: AppConstents.updateProfileDetails,
-      AppConstents.optionType: AppConstents.details,
+      ApiConstants.nameKey: AppStrings.updateProfileDetails,
+      ApiConstants.optionType: AppStrings.details,
     },
   ];
 
@@ -250,7 +253,7 @@ class AppMethods {
       return null;
     }
     if (!GetUtils.isEmail(email.trim())) {
-      return AppConstents.enterEmail;
+      return ValidationStrings.enterEmail;
     }
     return null;
   }
@@ -267,16 +270,16 @@ class AppMethods {
     required bool isFullHistory,
   }) async {
     await Future.wait([
-      IndoSharedPreference.instance.saveUserName(name),
-      IndoSharedPreference.instance.saveGenderType(gender.toString()),
-      IndoSharedPreference.instance.saveHeight(height.toString()),
-      IndoSharedPreference.instance.saveWeight(weight.toString()),
-      IndoSharedPreference.instance.saveAge(dob.toString()),
-      IndoSharedPreference.instance.saveSmokerType(smokerType.toString()),
-      IndoSharedPreference.instance.saveHistoryType(isFullHistory),
+      AppPreferences.instance.saveUserName(name),
+      AppPreferences.instance.saveGenderType(gender.toString()),
+      AppPreferences.instance.saveHeight(height.toString()),
+      AppPreferences.instance.saveWeight(weight.toString()),
+      AppPreferences.instance.saveAge(dob.toString()),
+      AppPreferences.instance.saveSmokerType(smokerType.toString()),
+      AppPreferences.instance.saveHistoryType(isFullHistory),
       if (userImage.isNotEmpty)
-        IndoSharedPreference.instance.saveUserImage(userImage),
-      if (email.isNotEmpty) IndoSharedPreference.instance.saveUserEmail(email),
+        AppPreferences.instance.saveUserImage(userImage),
+      if (email.isNotEmpty) AppPreferences.instance.saveUserEmail(email),
     ]);
   }
 

@@ -1,4 +1,5 @@
 class AppAssets {
+  const AppAssets._();
   static const String baseUrlAssets = "assets/images";
   static const String baseUrlPng = "$baseUrlAssets/png";
   static const String baseUrlSvg = "$baseUrlAssets/svg";

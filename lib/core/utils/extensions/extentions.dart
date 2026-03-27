@@ -127,3 +127,28 @@ extension SmkoerExtension on Smoker {
     }
   }
 }
+
+extension ImageValidityMessageExt on ImageValidityMessage {
+  String get message {
+    switch (this) {
+      case ImageValidityMessage.valid:
+        return "Perfect! Please hold it.";
+
+      case ImageValidityMessage.invalidDeviceOrientation:
+        return "Return to portrait mode.";
+
+      case ImageValidityMessage.invalidRoi:
+      case ImageValidityMessage.faceTooFar:
+        return "Please move your face closer to the camera.";
+
+      case ImageValidityMessage.tiltedHead:
+        return "Make sure your head is upright and centered in the frame.";
+
+      case ImageValidityMessage.unevenLight:
+        return "Ensure your face is clearly visible with no shadows or bright spots.";
+
+      case ImageValidityMessage.unknown:
+        return "Unknown Error";
+    }
+  }
+}

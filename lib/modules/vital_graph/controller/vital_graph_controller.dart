@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/utils/dialog/common_date_picker.dart';
 import 'package:ntt_data/modules/vital_graph/helper/vital_grapgh_helper.dart';
 import 'package:ntt_data/modules/vital_graph/models/vital_graph_response_model.dart';
@@ -81,7 +81,7 @@ class VitalGraphController extends BaseController {
 
         final result = responseData.data;
         if (result == null) {
-          setError(AppConstents.commonErrorMessage);
+          setError(ValidationStrings.commonErrorMessage);
           return;
         }
 
@@ -106,12 +106,12 @@ class VitalGraphController extends BaseController {
         }
       } else {
         await clearData();
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
       await clearData();
       debugPrint(e.toString());
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     } finally {
       showLoading(false);
     }
@@ -151,11 +151,11 @@ class VitalGraphController extends BaseController {
           updateState(() {});
         }
       } else {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
       }
     } catch (e) {
       debugPrint(e.toString());
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
     }
   }
 

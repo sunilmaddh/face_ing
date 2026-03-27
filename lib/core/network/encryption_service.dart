@@ -1,19 +1,29 @@
 import 'dart:convert';
-
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:ntt_data/core/constants/api_constants.dart';
 
 class EncryptionService {
   const EncryptionService();
+
+  static final encrypt.Key _key = encrypt.Key.fromUtf8(
+    '32characterslongsecretkey!!!!',
+  );
+
+  static final encrypt.IV _iv = encrypt.IV.fromUtf8('16charactersiv!!');
+
+  static final encrypt.Encrypter _encrypter = encrypt.Encrypter(
+    encrypt.AES(_key, mode: encrypt.AESMode.cbc),
+  );
 
   Object encryptRequest(Object body) {
     final jsonString = jsonEncode(body);
     final encrypted = _encrypt(jsonString);
 
-    return {AppConstents.payload: encrypted};
+    return {ApiConstants.payload: encrypted};
   }
 
   Map<String, dynamic> decryptResponse(Map<String, dynamic> responseBody) {
-    final payload = responseBody[AppConstents.payload];
+    final payload = responseBody[ApiConstants.payload];
 
     if (payload is! String || payload.isEmpty) {
       return responseBody;
@@ -30,13 +40,11 @@ class EncryptionService {
   }
 
   String _encrypt(String plainText) {
-    // TODO: replace with real encryption logic
-    // Example: AES / RSA / backend-required method
-    return base64Encode(utf8.encode(plainText));
+    final encrypted = _encrypter.encrypt(plainText, iv: _iv);
+    return encrypted.base64;
   }
 
   String _decrypt(String cipherText) {
-    // TODO: replace with real decryption logic
-    return utf8.decode(base64Decode(cipherText));
+    return _encrypter.decrypt64(cipherText, iv: _iv);
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/modules/ai_recommendation/models/ai_reccamandation_response.dart';
 import 'package:ntt_data/modules/ai_recommendation/repositories/ai_advice_repository.dart';
 
@@ -18,7 +17,7 @@ class AiAdviceController extends BaseController {
       final response = await adviceRepository.getAiAdvice();
 
       if (response.statusCode != 200 || response.data == null) {
-        setError(response.message ?? AppConstents.commonErrorMessage);
+        setError(response.message);
         return;
       }
 

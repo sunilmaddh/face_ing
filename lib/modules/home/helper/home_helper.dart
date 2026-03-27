@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/binah/controllers/measurement_controller.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/home/controller/home_controller.dart';
@@ -20,12 +20,12 @@ class HomeHalper {
 
   void _startMeasurement() async {
     _measurementController.isScanningDone.value = false;
-    String genderType = await IndoSharedPreference.instance.getGenderType();
-    String dobRaw = await IndoSharedPreference.instance.getAge();
-    String height = await IndoSharedPreference.instance.getHeight();
-    String weight = await IndoSharedPreference.instance.getWeight();
-    String name = await IndoSharedPreference.instance.getUserName();
-    String smokerType = await IndoSharedPreference.instance.getSmokerType();
+    String genderType = await AppPreferences.instance.getGenderType();
+    String dobRaw = await AppPreferences.instance.getAge();
+    String height = await AppPreferences.instance.getHeight();
+    String weight = await AppPreferences.instance.getWeight();
+    String name = await AppPreferences.instance.getUserName();
+    String smokerType = await AppPreferences.instance.getSmokerType();
     _measurementController.weight.value = double.parse(weight);
     _measurementController.height.value = double.parse(height);
     _measurementController.genderType.value = genderType;

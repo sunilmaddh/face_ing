@@ -108,7 +108,7 @@ class ProfileUploadService {
   }
 }
 
-//  final userId = await IndoSharedPreference.instance.getUserId();
+//  final userId = await AppPreferences.instance.getUserId();
 
 //     final responseData = await uploadRequest(
 //       file: profileUrl.value,
@@ -138,7 +138,7 @@ class ProfileUploadService {
 //       }
 //     } else {
 //       userImage.value = imagePath;
-//       await IndoSharedPreference.instance.saveUserImage(imagePath);
+//       await AppPreferences.instance.saveUserImage(imagePath);
 //     }
 
 //     AppSnackbar.show(title: "Success", message: "Profile uploaded");

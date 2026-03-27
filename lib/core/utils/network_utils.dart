@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 
 class NetworkUtil {
@@ -25,8 +26,8 @@ class NetworkUtil {
         // ignore: use_build_context_synchronously
         context: buildContext,
         onConfirm: () {},
-        title: "Connection Error",
-        message: AppConstents.networkErroMessage,
+        title: AppStrings.connectionError,
+        message: ValidationStrings.networkErrorMessage,
         confirmText: "Ok",
       );
       return false;

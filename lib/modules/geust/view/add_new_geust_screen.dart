@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
@@ -95,7 +96,7 @@ class AddNewGuestScreen extends BaseView<GeustController> {
                                   color: AppColors.primary,
                                 ),
                               ),
-                              label: AppConstents.dob,
+                              label: AppStrings.dob,
                               hint: "Select your date of birth",
                               controller: controller.dobTextController,
                             ),
@@ -107,7 +108,7 @@ class AddNewGuestScreen extends BaseView<GeustController> {
                               columns: 5,
                               hintText: "Enter your weight (Kg)",
                               validator: AppMethods.validateWeight,
-                              label: AppConstents.weight,
+                              label: AppStrings.weight,
                               options: GuestHelper.weightList,
                               controller: controller.weightTextController,
                             ),
@@ -119,7 +120,7 @@ class AddNewGuestScreen extends BaseView<GeustController> {
                               columns: 5,
                               hintText: "Enter your height (Cm)",
                               validator: AppMethods.validateHeight,
-                              label: AppConstents.height,
+                              label: AppStrings.height,
                               options: GuestHelper.heightList,
                               controller: controller.heightTextController,
                             ),
@@ -211,7 +212,7 @@ class AddNewGuestScreen extends BaseView<GeustController> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TermsCheckboxWidget(
-                        message: AppConstents.message,
+                        message: ApiConstants.message,
                         controller: controller,
                       ),
                       SizedBox(height: AppDimensions.height(30)),
@@ -250,7 +251,7 @@ class AddNewGuestScreen extends BaseView<GeustController> {
                       Padding(
                         padding: AppDimensions.only(left: 20.0),
                         child: CommonText.text(
-                          "Note: ${AppConstents.notDiscription}",
+                          "Note: ${AppStrings.noteDescription}",
                           fontSize: AppDimensions.font(12),
                           fontWeight: FontWeight.w500,
                           maxLines: 2,

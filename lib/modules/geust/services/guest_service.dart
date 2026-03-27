@@ -4,6 +4,10 @@ import 'package:ntt_data/core/network/api_service.dart';
 import 'package:ntt_data/core/network/api_endpoints.dart';
 import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/modules/geust/models/guest_list_response_model.dart';
+import 'package:ntt_data/modules/geust/models/requests/delete_guest_request.dart';
+import 'package:ntt_data/modules/geust/models/requests/get_geust_details_request.dart';
+import 'package:ntt_data/modules/geust/models/requests/get_guest_history_request.dart';
+import 'package:ntt_data/modules/geust/models/requests/use%20_health_history_request.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/modules/profile/models/user_history_list_model.dart';
 
@@ -14,12 +18,12 @@ class GuestService {
   Future<ApiResponse<GuestListResponseModel>> getGeustHistoryService({
     required String userId,
   }) async {
-    var data = {"userId": userId};
+    var data = GetGuestHistoryRequest(userId: userId);
     return await apiService.send<GuestListResponseModel>(
       ApiRequest(
         endpoint: apiEndpoints.listOfGeust,
         method: HttpMethod.post,
-        body: data,
+        body: data.toJson(),
       ),
       fromJson: (json) => GuestListResponseModel.fromJson(json),
     );
@@ -31,17 +35,18 @@ class GuestService {
     required String scanId,
     required bool isFullHistory,
   }) async {
-    final data = {
-      "userId": userId,
-      "guestId": guestId,
-      "healthId": scanId,
-      "isFullHistory": isFullHistory,
-    };
+    final data = GetGuestDetailsRequest(
+      userId: userId,
+      guestId: guestId,
+      healthId: scanId,
+      isFullHistory: isFullHistory,
+    );
+
     return await apiService.send<HealthDetailsResponseModel>(
       ApiRequest(
         endpoint: apiEndpoints.geustHistoryList,
         method: HttpMethod.post,
-        body: data,
+        body: data.toJson(),
       ),
       fromJson: (json) => HealthDetailsResponseModel.fromJson(json),
     );
@@ -61,12 +66,12 @@ class GuestService {
     required String userId,
     required String guestId,
   }) async {
-    final data = {"userId": userId, "guestId": guestId};
+    final data = DeleteGuestRequest(userId: userId, guestId: guestId);
     return await apiService.send(
       ApiRequest(
         endpoint: apiEndpoints.deleteGuest,
         method: HttpMethod.post,
-        body: data,
+        body: data.toJson(),
       ),
     );
   }
@@ -87,12 +92,16 @@ class GuestService {
     required String isUser,
     required String guestId,
   }) async {
-    var data = {"userId": userId, "guestId": guestId, "isUser": isUser};
+    var data = UserHealthHistoryRequest(
+      userId: userId,
+      guestId: guestId,
+      isUser: isUser,
+    );
     return await apiService.send<UserHistoryListModel>(
       ApiRequest(
         endpoint: apiEndpoints.userHealthHistory,
         method: HttpMethod.post,
-        body: data,
+        body: data.toJson(),
       ),
       fromJson: (json) => UserHistoryListModel.fromJson(json),
     );
@@ -101,13 +110,15 @@ class GuestService {
   Future<ApiResponse<UploadImageResponseModel>> uploadImage({
     required String filePath,
     required String imageType,
+    required String guestId,
+    required String isGuest,
   }) async {
     return await apiService.uploadImage<UploadImageResponseModel>(
       endpoint: ApiEndpoints().profileUpload,
       filePath: filePath,
       imageType: imageType,
-      guestId: "",
-      isGuest: "false",
+      guestId: guestId,
+      isGuest: isGuest,
       fromJson:
           (Map<String, dynamic> json) =>
               UploadImageResponseModel.fromJson(json),

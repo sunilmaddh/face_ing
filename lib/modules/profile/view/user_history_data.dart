@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
@@ -33,14 +34,14 @@ class UserHistoryData extends BaseView<ProfileController> {
     return Scaffold(
       appBar: CustomAppBar(
         onTop: AppNavigation.back,
-        title: AppConstents.userHistoryTitle,
+        title: AppStrings.userHistoryTitle,
         actions: [
           InkWell(
             onTap: () {
               _vitalGraphController.selectedIndex.value = 0;
               AppNavigation.to(
                 AppRoutes.vitalGraphHistory,
-                arguments: {AppConstents.guestId: ""},
+                arguments: {ApiConstants.guestId: ""},
               );
             },
             child: Padding(
@@ -82,7 +83,7 @@ class UserHistoryData extends BaseView<ProfileController> {
               child: InkWell(
                 onTap: () async {
                   final isFullStory =
-                      await IndoSharedPreference.instance.getHistoryType();
+                      await AppPreferences.instance.getHistoryType();
 
                   controller.getUserHealthDetails(
                     healthId: result.scanId,

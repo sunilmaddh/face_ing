@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
+import 'package:ntt_data/core/utils/app_logger.dart';
 import 'package:ntt_data/modules/phq/controllers/assessment_controller.dart';
 import 'package:ntt_data/modules/voice_agent/controller/socket_controller.dart';
 import 'package:ntt_data/modules/voice_agent/controller/voice_call_controller.dart';
 import 'package:ntt_data/modules/voice_agent/helper/audio_player.dart';
+import 'package:ntt_data/modules/voice_agent/model/request/voice_call_request.dart';
 import 'package:ntt_data/modules/voice_agent/native/start_native_call.dart';
 import 'package:ntt_data/modules/voice_agent/repositories/voice_agent_repository.dart';
 
@@ -74,20 +76,33 @@ class AiSessionController extends BaseController {
       if (sessionId.isEmpty) return false;
 
       assessmentController.sessionId.value = sessionId;
-
-      final success = await voiceCallController.getCredentials(
+      final request = VoiceCallRequest(
         sessionId: sessionId,
         isUserVoice: true,
-        isAgentVoice: false,
+        isAgentVoice: true,
         isUserTransaction: false,
-        isAgentTransaction: true,
-        isFullRecording: false,
-        isUserAgentVoice: false,
+        isAgentTransaction: false,
+        isFullRecording: true,
+        isUserAgentVoice: true,
       );
+
+      final success = await voiceCallController.getCredentials(
+        request: request,
+      );
+
+      // final success = await voiceCallController.getCredentials(
+      //   sessionId: sessionId,
+      //   isUserVoice: true,
+      //   isAgentVoice: false,
+      //   isUserTransaction: false,
+      //   isAgentTransaction: true,
+      //   isFullRecording: false,
+      //   isUserAgentVoice: false,
+      // );
 
       return success;
     } catch (e) {
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
       return false;
     } finally {
       isInitiating.value = false;
@@ -112,10 +127,10 @@ class AiSessionController extends BaseController {
       if (response.statusCode == 200 && response.data != null) {
         return response.data!.sessionId ?? "";
       }
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
       return "";
     } catch (e) {
-      setError(AppConstents.commonErrorMessage);
+      setError(ValidationStrings.commonErrorMessage);
       return "";
     }
   }
@@ -140,7 +155,7 @@ class AiSessionController extends BaseController {
         await Future.delayed(Duration(milliseconds: waitMs));
       }
 
-      voiceCallController.messageC.value = AppConstents.voiceAgentEndMessage;
+      voiceCallController.messageC.value = AppStrings.voiceAgentEndMessage;
 
       final message = {
         "type": "call_ended",
@@ -157,12 +172,10 @@ class AiSessionController extends BaseController {
 
       await stop();
     } catch (e) {
-      debugPrint("endSessionGracefully error: $e");
-
+      AppLogger.error("endSessionGracefully error: $e");
       try {
         await socketController.disconnect();
       } catch (_) {}
-
       await stop();
       setError("Failed to end session properly");
     }

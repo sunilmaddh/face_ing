@@ -3,14 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/mixins/checkbox_state_mixin.dart';
 import 'package:ntt_data/core/mixins/common_mixin.dart';
 import 'package:ntt_data/core/mixins/gender_state_mixin.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
+import 'package:ntt_data/core/storage/secure_storage.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
+import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/modules/auth/models/error_response.dart';
 import 'package:ntt_data/modules/auth/models/login_response_model.dart';
+import 'package:ntt_data/modules/auth/models/requests/medical_question_answer_request.dart';
 import 'package:ntt_data/modules/auth/models/user_create_response_model.dart';
 import 'package:ntt_data/modules/auth/repositories/auth_repository.dart';
 import 'package:ntt_data/modules/pulse/models/medical_question_model.dart';
@@ -21,14 +24,18 @@ class AuthController extends BaseController
   AuthController({required this.authRepository});
 
   final AuthRepository authRepository;
+
   final userAuthResponse = Rxn<UserAuthResponse>();
   final loginResponseModel = Rxn<LoginResponseModel>();
   final userCreateModel = Rxn<UserCreateResponseModel>();
+  final uploadImageResponse = Rxn<UploadImageResponseModel>();
+
   final medicalQuestionList = <MedicalQuestionListModel>[].obs;
-  final dataList = <Map<String, dynamic>>[].obs;
-  final userName = "".obs;
-  final userImage = "".obs;
-  final userEmail = "".obs;
+  final dataList = <MedicalQuestionAnswerRequest>[].obs;
+
+  final userName = ''.obs;
+  final userImage = ''.obs;
+  final userEmail = ''.obs;
 
   @override
   RxString otp = ''.obs;
@@ -38,6 +45,7 @@ class AuthController extends BaseController
   final selectionGenderType = ''.obs;
   final date = ''.obs;
   final smokerType = ''.obs;
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
@@ -62,7 +70,7 @@ class AuthController extends BaseController
       );
 
       if (response.statusCode != 200 || response.data == null) {
-        setError(response.message);
+        setError(response.message ?? ValidationStrings.commonErrorMessage);
         return;
       }
 
@@ -71,17 +79,17 @@ class AuthController extends BaseController
 
       final accessToken = response.headers?['accesstoken'] ?? '';
       if (accessToken.isNotEmpty) {
-        await IndoSharedPreference.instance.saveAccessToken(accessToken);
+        await SecureStorageService.instance.saveAccessToken(accessToken);
       }
 
-      await IndoSharedPreference.instance.saveUserId(result.userId ?? '');
+      await AppPreferences.instance.saveUserId(result.userId ?? '');
 
       if (result.success != "true") {
         setError(result.message ?? "Login failed");
         return;
       }
 
-      await IndoSharedPreference.instance.saveOnBoard(result.onBoarded ?? '');
+      await AppPreferences.instance.saveOnBoard(result.onBoarded ?? '');
 
       if (result.onBoarded == "false") {
         setSuccess(result.message ?? "Login successful");
@@ -110,6 +118,7 @@ class AuthController extends BaseController
           isFullHistory: isFullHistory,
         );
       }
+
       setSuccess(result.message ?? "Login successful");
       navigateOff(AppRoutes.landingSceen);
       clearData();
@@ -129,7 +138,7 @@ class AuthController extends BaseController
       );
 
       if (response.statusCode != 200 || response.data == null) {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
         return;
       }
 
@@ -140,7 +149,8 @@ class AuthController extends BaseController
         navigateTo(AppRoutes.otpForgotScreen);
       } else {
         setError(
-          userAuthResponse.value?.message ?? AppConstents.commonErrorMessage,
+          userAuthResponse.value?.message ??
+              ValidationStrings.commonErrorMessage,
         );
       }
     } catch (e) {
@@ -161,7 +171,7 @@ class AuthController extends BaseController
       );
 
       if (response.statusCode != 200 || response.data == null) {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
         return;
       }
 
@@ -192,7 +202,7 @@ class AuthController extends BaseController
       );
 
       if (response.statusCode != 200) {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
         return;
       }
 
@@ -219,7 +229,7 @@ class AuthController extends BaseController
       final response = await authRepository.getMedicalQuestionList();
 
       if (response.statusCode != 200 || response.data == null) {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
         return;
       }
 
@@ -256,24 +266,21 @@ class AuthController extends BaseController
         dob: dob,
         userImage: userImage.value,
         smokerType: smokerType.value,
-        healthList: dataList,
+        healthList: dataList.toList(),
       );
 
       if (response.statusCode != 200 || response.data == null) {
-        setError(AppConstents.commonErrorMessage);
+        setError(ValidationStrings.commonErrorMessage);
         return;
       }
+
       final result = response.data!;
       userCreateModel.value = result;
 
-      await IndoSharedPreference.instance.saveOnBoard("true");
+      await AppPreferences.instance.saveOnBoard("true");
 
       final user = result.commonUserDetailsDao;
       if (user != null) {
-        // userImage.value = user.userImage ?? '';
-        // userEmail.value = user.userEmail ?? '';
-        // userName.value = user.userName ?? '';
-
         await AppMethods.storeUserData(
           name: user.userName ?? '',
           weight: user.userWeight ?? '',
@@ -303,9 +310,13 @@ class AuthController extends BaseController
   ) {
     if (selectedAnswers.isEmpty) return;
 
-    final item = {"id": id, "question": question, "answer": selectedAnswers};
+    final item = MedicalQuestionAnswerRequest(
+      id: id,
+      question: question,
+      answer: selectedAnswers,
+    );
 
-    final index = dataList.indexWhere((e) => e["question"] == question);
+    final index = dataList.indexWhere((e) => e!.question == question);
 
     if (index != -1) {
       dataList[index] = item;
@@ -314,6 +325,28 @@ class AuthController extends BaseController
     }
 
     dataList.refresh();
+  }
+
+  Future<void> uploadProfile({required String imagePath}) async {
+    try {
+      final response = await authRepository.uploadImage(
+        filePath: imagePath,
+        imageType: "true",
+      );
+
+      if (response.success && response.data != null) {
+        uploadImageResponse.value = response.data;
+        userImage.value = response.data?.imagePath ?? '';
+        await AppPreferences.instance.saveUserImage(
+          response.data?.imagePath ?? '',
+        );
+      } else {
+        setError(response.message ?? "Something went wrong");
+      }
+    } catch (e) {
+      setError(e.toString());
+      debugPrint(e.toString());
+    }
   }
 
   void clearData() {
@@ -328,18 +361,20 @@ class AuthController extends BaseController
 
   @override
   void onClose() {
-    emailController.clear();
-    passwordController.clear();
-    nameController.clear();
-    weightController.clear();
-    heightController.clear();
-    dateController.clear();
-    forgotEmailController.clear();
-    passwordForgotController.clear();
-    confirmPasswordController.clear();
-    userName.value = "";
-    userEmail.value = "";
-    userImage.value = "";
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    weightController.dispose();
+    heightController.dispose();
+    dateController.dispose();
+    forgotEmailController.dispose();
+    passwordForgotController.dispose();
+    confirmPasswordController.dispose();
+
+    userName.value = '';
+    userEmail.value = '';
+    userImage.value = '';
+
     super.onClose();
   }
 }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+// ignore: unused_import
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/extensions/extentions.dart';
 
@@ -121,7 +123,7 @@ class CustomBottomSheetConfidence {
                         20.verticalSpace,
 
                         Text(
-                          AppConstents.confidenceLevelDiscription,
+                          AppStrings.confidenceLevelDescription,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: AppColors.searchColor,

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
-import 'package:ntt_data/core/storage/indo_shared_preference.dart';
+import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
+import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
@@ -15,7 +16,7 @@ import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 class GuestHealthHistoryList extends BaseView<GeustController> {
   const GuestHealthHistoryList({super.key});
 
-  String get guestId => Get.arguments[AppConstents.guestId] ?? "";
+  String get guestId => Get.arguments[ApiConstants.guestId] ?? "";
 
   @override
   bool get useDefaultLoader => false;
@@ -25,7 +26,7 @@ class GuestHealthHistoryList extends BaseView<GeustController> {
     return Scaffold(
       appBar: CustomAppBar(
         onTop: AppNavigation.back,
-        title: AppConstents.guestHealthHistoryTitle,
+        title: AppStrings.guestHealthHistoryTitle,
       ),
       body: Obx(() {
         if (controller.isLoading.isTrue) {
@@ -55,7 +56,7 @@ class GuestHealthHistoryList extends BaseView<GeustController> {
               child: InkWell(
                 onTap: () async {
                   final isFullStory =
-                      await IndoSharedPreference.instance.getHistoryType();
+                      await AppPreferences.instance.getHistoryType();
 
                   await controller.getGeustDetails(
                     guestId,

@@ -1,21 +1,34 @@
 import 'dart:core';
 
 import 'package:ntt_data/core/network/api_response.dart';
+import 'package:ntt_data/data/models/upload_image_response_model.dart';
 import 'package:ntt_data/modules/auth/models/error_response.dart';
 import 'package:ntt_data/modules/auth/models/login_response_model.dart';
-import 'package:ntt_data/modules/pulse/models/medical_question_model.dart';
+import 'package:ntt_data/modules/auth/models/requests/forgot_otp_request.dart';
+import 'package:ntt_data/modules/auth/models/requests/login_request.dart';
+import 'package:ntt_data/modules/auth/models/requests/medical_question_answer_request.dart';
+import 'package:ntt_data/modules/auth/models/requests/per_details_doa_request.dart';
+import 'package:ntt_data/modules/auth/models/requests/profile_creation_request.dart';
+import 'package:ntt_data/modules/auth/models/requests/reset_password_request.dart';
+import 'package:ntt_data/modules/auth/models/requests/upload_image_request.dart';
+import 'package:ntt_data/modules/auth/models/requests/user_doa_request.dart';
+import 'package:ntt_data/modules/auth/models/requests/verify_otp_request.dart';
 import 'package:ntt_data/modules/auth/models/user_create_response_model.dart';
 import 'package:ntt_data/modules/auth/services/auth_service.dart';
+import 'package:ntt_data/modules/pulse/models/medical_question_model.dart';
 
 class AuthRepository {
   AuthRepository({required this.authService});
+
   final AuthService authService;
 
   Future<ApiResponse<LoginResponseModel>> login({
     required String email,
     required String password,
   }) async {
-    return await authService.userLogin(email: email, password: password);
+    final request = LoginRequest(emailId: email, password: password);
+
+    return await authService.userLogin(request: request);
   }
 
   Future<ApiResponse<UserCreateResponseModel>> createProfile({
@@ -28,26 +41,32 @@ class AuthRepository {
     required String dob,
     required String userImage,
     required String smokerType,
-    required List<Map<String, dynamic>> healthList,
+    required List<MedicalQuestionAnswerRequest> healthList,
   }) async {
-    return await authService.profileCreation(
-      emailId: emailId,
-      userId: userId,
-      name: name,
-      genderType: genderType,
-      weight: weight,
-      height: height,
-      dob: dob,
-      userImage: userImage,
-      smokerType: smokerType,
-      healthList: healthList,
+    final request = ProfileCreationRequest(
+      userDao: UserDaoRequest(emailId: emailId, userId: userId),
+      perDetailsDao: PerDetailsDaoRequest(
+        userEmail: emailId,
+        userName: name,
+        userGender: genderType,
+        userWeight: weight,
+        userHeight: height,
+        userDOB: dob,
+        userImage: userImage,
+        smokerType: smokerType,
+      ),
+      helthDetailsListDao: healthList,
     );
+
+    return await authService.profileCreation(request: request);
   }
 
   Future<ApiResponse<UserAuthResponse>> getForgotOtp({
     required String email,
   }) async {
-    return await authService.getForgotOtp(email: email);
+    final request = ForgotOtpRequest(emailId: email);
+
+    return await authService.getForgotOtp(request: request);
   }
 
   Future<ApiResponse<UserAuthResponse>> verifyForgotOtp({
@@ -55,11 +74,13 @@ class AuthRepository {
     required String otp,
     required String userId,
   }) async {
-    return await authService.verifyForgotOtp(
+    final request = VerifyForgotOtpRequest(
       emailId: emailId,
       otp: otp,
       userId: userId,
     );
+
+    return await authService.verifyForgotOtp(request: request);
   }
 
   Future<ApiResponse<UserAuthResponse>> resetPassword({
@@ -68,31 +89,29 @@ class AuthRepository {
     required String confirmPassword,
     required String userId,
   }) async {
-    return await authService.resetPassword(
+    final request = ResetPasswordRequest(
       emailId: emailId,
       password: password,
       confirmPassword: confirmPassword,
       userId: userId,
     );
+
+    return await authService.resetPassword(request: request);
+  }
+
+  Future<ApiResponse<UploadImageResponseModel>> uploadImage({
+    required String filePath,
+    required String imageType,
+  }) async {
+    final request = UploadImageRequest(
+      filePath: filePath,
+      imageType: imageType,
+    );
+
+    return await authService.uploadImage(request: request);
   }
 
   Future<ApiResponse<MedicalQuestionModels>> getMedicalQuestionList() async {
     return await authService.getMedicalQeustionList();
   }
-
-  // Future<ApiResponse<Map<String, dynamic>>> uploadUserProfile({
-  //   required String imagePath,
-  //   required String userID,
-  //   required String imageType,
-  //   required String guestId,
-  //   required String isGuest,
-  // }) async {
-  //   return await authService.uploadDocument(
-  //     imagePath,
-  //     userID,
-  //     imageType,
-  //     guestId,
-  //     isGuest,
-  //   );
-  // }
 }

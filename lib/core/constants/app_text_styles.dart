@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_constents.dart';
+import 'package:ntt_data/core/constants/app_config.dart';
 
 class AppTextStyles {
-  static const String fontFamily = AppConstents.commonFont;
+  const AppTextStyles._();
+  static const String fontFamily = AppConfig.commonFont;
 
   // Common text sizes
   static const double small = 14.0;
