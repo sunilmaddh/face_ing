@@ -100,9 +100,8 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                           ),
                         ),
                         SizedBox(height: AppDimensions.height(30)),
-                        CommonText.text(
+                        CommonText.titleMedium(
                           "Generating Health Report",
-                          fontSize: AppDimensions.font(16),
                           fontWeight: FontWeight.w400,
                         ),
                       ],
@@ -187,13 +186,9 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
                                                   );
                                                 }
                                               },
-                                              child: CommonText.text(
+                                              child: CommonText.headlineSmall(
                                                 "Stop",
                                                 color: AppColors.blackColor,
-                                                fontSize: AppDimensions.font(
-                                                  18,
-                                                ),
-                                                fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                           ),

@@ -16,7 +16,9 @@ import 'package:ntt_data/widgets/fields/custom_form_field.dart';
 
 class LoginScreen extends BaseView<AuthController> {
   LoginScreen({super.key});
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget buildView(BuildContext context, AuthController controller) {
     return Scaffold(
@@ -27,7 +29,7 @@ class LoginScreen extends BaseView<AuthController> {
         onTop: () {
           AppNavigation.back();
         },
-        title: "Login",
+        title: AppStrings.login,
       ),
       body: SafeArea(
         child: Padding(
@@ -56,11 +58,10 @@ class LoginScreen extends BaseView<AuthController> {
                         child: SvgPicture.asset(AppAssets.logo),
                       ),
                       SizedBox(height: AppDimensions.height(45)),
-
                       CustomFormField(
                         validator: (email) {
                           if (email == null || email.isEmpty) {
-                            return "Please enter email ID";
+                            return ValidationStrings.pleaseEnterEmail;
                           }
                           return null;
                         },
@@ -68,14 +69,12 @@ class LoginScreen extends BaseView<AuthController> {
                         hint: ValidationStrings.emailHint,
                         controller: controller.emailController,
                       ),
-
                       const SizedBox(height: 20),
-
                       CustomFormField(
                         obscureText: true,
                         validator: (password) {
                           if (password == null || password.isEmpty) {
-                            return "Please enter password";
+                            return ValidationStrings.enterPassword;
                           }
                           return null;
                         },
@@ -83,30 +82,24 @@ class LoginScreen extends BaseView<AuthController> {
                         hint: ValidationStrings.passHint,
                         controller: controller.passwordController,
                       ),
-
                       SizedBox(height: AppDimensions.height(10)),
-
                       InkWell(
                         onTap: () {
                           CommonDialog().showFullWidthDialog(
                             isLoading: controller.isLoading,
-                            title: "Forgot password",
+                            title: ValidationStrings.forgotPasswordTitle,
                             textController: controller.forgotEmailController,
                             onPressed: () {
                               controller.getForgetOtp();
                             },
                           );
                         },
-                        child: CommonText.text(
+                        child: CommonText.titleMedium(
                           AppStrings.forgotPassword,
-                          fontSize: AppDimensions.font(16),
-                          fontWeight: FontWeight.w500,
                           color: AppColors.primary,
                         ),
                       ),
-
                       const Spacer(),
-
                       Align(
                         alignment: Alignment.bottomRight,
                         child: PrimaryButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/auth/widgets/onboarding_page_view.dart';
@@ -14,6 +15,7 @@ class CustomOnboardingScreen extends StatelessWidget {
   List<dynamic> pages;
 
   CustomOnboardingScreen({super.key, required this.pages});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +46,7 @@ class CustomOnboardingScreen extends StatelessWidget {
                   pages: pages,
                   valueCurrentIndex: _currentIndex,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ValueListenableBuilder<int>(
                   valueListenable: _currentIndex,
                   builder: (context, currentIndex, child) {
@@ -55,16 +57,15 @@ class CustomOnboardingScreen extends StatelessWidget {
                           AppNavigation.to(AppRoutes.loginScreen);
                         } else {
                           _pageController.nextPage(
-                            duration: Duration(milliseconds: 500),
+                            duration: const Duration(milliseconds: 500),
                             curve: Curves.ease,
                           );
                         }
                       },
-
                       text:
                           currentIndex == pages.length - 1
-                              ? 'Get started'
-                              : 'Next',
+                              ? AppStrings.getStarted
+                              : AppStrings.next,
                     );
                   },
                 ),

@@ -53,10 +53,9 @@ class PulseSurveyScreen extends StatelessWidget {
                           color: Colors.white,
                           shape: BoxShape.circle,
                         ),
-                        child: CommonText.text(
+                        child: CommonText.headlineMedium(
                           AppStrings.howDoYouFeelToday,
                           color: AppColors.primary,
-                          fontSize: 20,
                           fontWeight: FontWeight.w700,
                           textAlign: TextAlign.center,
                         ),

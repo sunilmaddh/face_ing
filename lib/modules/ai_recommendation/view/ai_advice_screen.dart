@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/core/constants/app_strings.dart'; // ✅ added
 import 'package:ntt_data/modules/ai_recommendation/controller/ai_advice_controller.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -24,7 +25,7 @@ class AiAdviceScreen extends BaseView<AiAdviceController> {
       appBar: CustomAppBar(
         isLeading: false,
         isCenterTitle: false,
-        title: "Daily Advice",
+        title: AppStrings.dailyAdvice, // ✅ updated
         onTop: () {},
       ),
       body: Obx(() {
@@ -49,29 +50,23 @@ class AiAdviceScreen extends BaseView<AiAdviceController> {
                   height: 120.h,
                 ),
                 SizedBox(height: 10.h),
-                CommonText.text(
-                  "Personalized insights for your day.",
-                  fontSize: 12.sp,
-                  fontFamily: "Manrope",
+                CommonText.labelMedium(
+                  AppStrings.personalizedInsights, // ✅ updated
                   fontWeight: FontWeight.w700,
                   color: const Color(0xff616161).withAlpha(128),
                 ),
                 SizedBox(height: 30.h),
-                CommonText.text(
+                CommonText.titleMedium(
                   response.resp1!,
                   maxLines: 100,
-                  fontFamily: "Manrope",
-                  fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
                   color: const Color(0xff616161),
                 ),
                 SizedBox(height: 30.h),
                 if (response.resp2 != null && response.resp2!.isNotEmpty)
-                  CommonText.text(
+                  CommonText.titleMedium(
                     response.resp2!,
                     maxLines: 100,
-                    fontFamily: "Manrope",
-                    fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xff616161),
                   ),

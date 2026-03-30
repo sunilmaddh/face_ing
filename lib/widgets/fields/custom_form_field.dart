@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_text_styles.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 
 // ignore: must_be_immutable
@@ -51,7 +51,7 @@ class CustomFormField extends StatelessWidget {
           style: TextStyle(
             fontSize: AppDimensions.font(16),
             fontWeight: FontWeight.w500,
-            fontFamily: AppTextStyles.fontFamily,
+            fontFamily: AppFonts.secondary,
           ),
         ),
         const SizedBox(height: 3),

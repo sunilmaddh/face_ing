@@ -92,12 +92,10 @@ class AiSessionScreen extends BaseView<AiSessionController> {
         const SizedBox(height: 20),
         QuestionCard(
           widget: Obx(
-            () => CommonText.text(
+            () => CommonText.labelLarge(
               voiceCallController.agentName.value,
               textAlign: TextAlign.center,
               fontWeight: FontWeight.w600,
-              fontFamily: "Manrope",
-              fontSize: AppDimensions.font(14),
               color: const Color(0xff137FEC).withOpacity(0.6),
             ),
           ),
@@ -214,7 +212,6 @@ class AiSessionScreen extends BaseView<AiSessionController> {
                   "Start Now",
                   color: AppColors.btntext,
                   fontWeight: FontWeight.w700,
-                  fontFamily: "Manrope",
                 ),
               ],
             ),

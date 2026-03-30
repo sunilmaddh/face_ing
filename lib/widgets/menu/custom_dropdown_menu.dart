@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -34,7 +35,7 @@ class CustomDropdownMenu extends StatelessWidget {
           icon: Icon(Icons.keyboard_arrow_down_sharp, color: AppColors.btntext),
           dropdownColor: AppColors.primary,
           style: TextStyle(
-            fontFamily: AppTextStyles.fontFamilyGilroy,
+            fontFamily: AppFontType.secondary.name,
             fontSize: AppDimensions.font(12),
             fontWeight: FontWeight.w400,
             color: AppColors.primary,
@@ -49,10 +50,9 @@ class CustomDropdownMenu extends StatelessWidget {
               items.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: CommonText.text(
+                  child: CommonText.labelMedium(
                     value,
-                    fontFamily: AppTextStyles.fontFamilyGilroy,
-                    fontSize: AppDimensions.font(12),
+                    fontType: AppFontType.secondary,
                     fontWeight: FontWeight.w400,
                     color: AppColors.btntext,
                   ),

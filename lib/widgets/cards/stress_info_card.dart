@@ -43,10 +43,9 @@ class StressInfoCard extends StatelessWidget {
             children: [
               Expanded(
                 flex: 3,
-                child: CommonText.text(
+                child: CommonText.labelSmall(
                   maxLines: 2,
                   titleText,
-                  fontSize: AppDimensions.font(10),
                   fontWeight: FontWeight.w400,
                   color: Color(0xff575656),
                 ),
@@ -126,10 +125,9 @@ class StressInfoCard extends StatelessWidget {
                               status: vitalConfidenceLevel.toFirstCaps(),
                             );
                           },
-                          child: CommonText.text(
+                          child: CommonText.labelLarge(
                             "${vitalConfidenceLevel.toFirstCaps()} Confidence",
                             decoration: TextDecoration.underline,
-                            fontSize: AppDimensions.font(14),
                             fontWeight: FontWeight.w400,
                             color: AppColors.searchColor,
                           ),

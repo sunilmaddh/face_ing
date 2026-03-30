@@ -29,10 +29,9 @@ class PulsePageDataWidget extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: AppDimensions.height(40)),
-        CommonText.text(
+        CommonText.titleMedium(
           question,
           color: AppColors.primary,
-          fontSize: AppDimensions.font(16),
           fontWeight: FontWeight.w700,
           maxLines: 5,
           textAlign: TextAlign.center,

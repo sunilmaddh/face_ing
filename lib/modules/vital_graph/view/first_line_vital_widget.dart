@@ -29,10 +29,9 @@ class FirstLineVitalWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Obx(
-                () => CommonText.text(
+                () => CommonText.headlineMedium(
                   controller.vitalGraphResponse.value.dateRange ?? '',
                   fontWeight: FontWeight.bold,
-                  fontSize: AppDimensions.font(21),
                 ),
               ),
 

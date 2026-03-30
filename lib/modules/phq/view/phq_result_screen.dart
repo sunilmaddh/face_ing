@@ -58,8 +58,10 @@ class _PhqResultScreenState extends State<PhqResultScreen> {
                       padding: EdgeInsets.all(16),
                       child: CommonText.text(
                         _formatDate(controller.createDate.value),
-                        color: Colors.grey.shade600,
-                        fontSize: 14,
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     Expanded(

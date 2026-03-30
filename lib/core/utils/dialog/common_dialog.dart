@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
@@ -41,12 +42,7 @@ class CommonDialog {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CommonText.text(
-                  title,
-                  fontSize: AppDimensions.font(16),
-                  fontWeight: FontWeight.w500,
-                  fontFamily: AppTextStyles.fontFamily,
-                ),
+                CommonText.titleMedium(title),
                 const SizedBox(height: 30),
                 CustomFormField(
                   validator: (email) {
@@ -167,19 +163,18 @@ class CommonDialog {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: AppColors.btntext,
-          title: CommonText.text(
+          title: CommonText.headlineSmall(
             title,
             maxLines: 2,
-            fontSize: AppDimensions.font(18),
+
             fontWeight: FontWeight.w400,
-            fontFamily: "Gilroy-Bold",
+            fontType: AppFontType.secondary,
           ),
-          content: CommonText.text(
+          content: CommonText.titleSmall(
             message,
             maxLines: 5,
-            fontSize: AppDimensions.font(15),
             fontWeight: FontWeight.w400,
-            fontFamily: "Gilroy-Medium",
+            fontType: AppFontType.secondary,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -347,12 +342,12 @@ class CommonDialog {
                 //     child: SvgPicture.asset(AppAssets.cloaseDialog),
                 //   ),
                 // ),
-                CommonText.text(
+                CommonText.headlineLarge(
                   maxLines: 2,
                   title,
-                  fontSize: AppDimensions.font(22),
+
                   fontWeight: FontWeight.w400,
-                  fontFamily: "Gilroy-Bold",
+                  fontType: AppFontType.secondary,
                   color: AppColors.blackColor,
                 ),
 
@@ -361,7 +356,7 @@ class CommonDialog {
                   maxLines: 5,
                   message,
                   textAlign: TextAlign.start,
-                  fontFamily: "Gilroy-Medium",
+                  fontType: AppFontType.secondary,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff5C5C5C),
                 ),
@@ -550,12 +545,12 @@ class CommonDialog {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CommonText.text(
+                            CommonText.titleMedium(
                               name,
-                              fontSize: AppDimensions.font(16),
+
                               fontWeight: FontWeight.w400,
                               color: AppColors.guestOptionColor,
-                              fontFamily: "Gilroy-Medium",
+                              fontType: AppFontType.secondary,
                             ),
                             Icon(
                               Icons.arrow_forward_ios,
@@ -674,16 +669,7 @@ class CommonDialog {
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),
-                        children: [
-                          // TextSpan(
-                          //   text: "  $unit",
-                          //   style: TextStyle(
-                          //     fontSize: 12,
-                          //     color: Colors.black,
-                          //     fontWeight: FontWeight.w500,
-                          //   ),
-                          // ),
-                        ],
+                        children: [],
                       ),
                     ),
                   );

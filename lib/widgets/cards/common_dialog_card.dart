@@ -29,11 +29,10 @@ void commonDialogCard({
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CommonText.text(
+              CommonText.headlineSmall(
                 title,
                 fontWeight: FontWeight.w700,
                 color: AppColors.primary,
-                fontSize: AppDimensions.font(18),
               ),
               SizedBox(height: AppDimensions.height(30)),
               SizedBox(

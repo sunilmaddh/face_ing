@@ -38,18 +38,18 @@ class DailyAdviceCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CommonText.text(
+                  CommonText.titleMedium(
                     "Daily Advice",
                     fontWeight: FontWeight.w800,
-                    fontSize: AppDimensions.font(16),
+
                     color: AppColors.btntext,
                   ),
                   8.verticalSpace,
                   SizedBox(
                     width: AppDimensions.width(180),
-                    child: CommonText.text(
+                    child: CommonText.labelSmall(
                       "Personalized insights for your day.",
-                      fontSize: 10,
+
                       color: AppColors.btntext,
                       maxLines: 2,
                       fontWeight: FontWeight.w700,

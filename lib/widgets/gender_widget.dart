@@ -25,11 +25,7 @@ class RadioWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CommonText.text(
-          level,
-          fontSize: AppDimensions.font(16),
-          fontWeight: FontWeight.w500,
-        ),
+        CommonText.titleMedium(level),
         SizedBox(height: AppDimensions.height(8.0)),
         Row(
           children: [

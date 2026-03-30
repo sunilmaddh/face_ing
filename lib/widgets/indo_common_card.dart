@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/extensions/extentions.dart';
@@ -96,18 +97,16 @@ class _CommonCardState extends State<IndoCommonCard> {
                             )
                             : SizedBox(),
                         SizedBox(height: AppDimensions.height(10)),
-                        CommonText.text(
+                        CommonText.labelLarge(
                           maxLines: 3,
                           widget.vitalName,
-                          fontSize: AppDimensions.font(14),
                           fontWeight: FontWeight.w400,
                           color: Color(0xff575656),
                           textAlign: TextAlign.left,
                         ),
 
-                        CommonText.text(
+                        CommonText.labelSmall(
                           widget.vitalCondition,
-                          fontSize: AppDimensions.font(10),
                           fontWeight: FontWeight.w400,
                           color: Color(0xff575656),
                         ),
@@ -150,22 +149,21 @@ class _CommonCardState extends State<IndoCommonCard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonText.text(
-                            fontFamily: "Gilroy-Medium",
+                          CommonText.titleMedium(
+                            fontType: AppFontType.secondary,
                             maxLines: 3,
                             widget.vitalStatus.isNotEmpty
                                 ? "${widget.vitalHeading} is ${AppMethods.capitalizeFirst(widget.vitalStatus)}"
                                 : "",
 
-                            fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: Color(0xff5E5D5D),
                           ),
                           const SizedBox(height: 10),
-                          CommonText.text(
+                          CommonText.labelMedium(
                             maxLines: 7,
                             widget.vitalDescription,
-                            fontSize: AppDimensions.font(12),
+
                             fontWeight: FontWeight.w400,
                             color: Color(0xff5E5D5D),
                           ),
@@ -198,14 +196,12 @@ class _CommonCardState extends State<IndoCommonCard> {
                                                           .toFirstCaps(),
                                                 );
                                               },
-                                              child: CommonText.text(
+                                              child: CommonText.labelMedium(
                                                 "${widget.confidenceLevel.toFirstCaps()} Confidence",
 
                                                 decoration:
                                                     TextDecoration.underline,
-                                                fontSize: AppDimensions.font(
-                                                  13,
-                                                ),
+
                                                 fontWeight: FontWeight.w400,
                                                 color: AppColors.searchColor,
                                               ),
@@ -233,12 +229,10 @@ class _CommonCardState extends State<IndoCommonCard> {
                                                     ),
                                                   ),
 
-                                                  CommonText.text(
+                                                  CommonText.labelLarge(
                                                     widget.vitalStatus
                                                         .toFirstCaps(),
 
-                                                    fontSize:
-                                                        AppDimensions.font(14),
                                                     fontWeight: FontWeight.w400,
                                                     color: statusColor,
                                                   ),

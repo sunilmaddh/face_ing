@@ -56,16 +56,14 @@ class _PulseSurveyAnalyzingScreenState
           children: [
             SvgPicture.asset(AppAssets.success),
             30.verticalSpace,
-            CommonText.text(
+            CommonText.headlineLarge(
               AppStrings.allDone,
-              fontSize: AppDimensions.font(22),
               fontWeight: FontWeight.w800,
               color: AppColors.primary,
             ),
             10.verticalSpace,
-            CommonText.text(
+            CommonText.titleMedium(
               AppStrings.analyzingYourPulseSurvey,
-              fontSize: AppDimensions.font(16),
               fontWeight: FontWeight.w400,
               color: AppColors.conDiscription,
             ),

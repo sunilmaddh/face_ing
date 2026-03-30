@@ -31,9 +31,18 @@ class ValidationStrings {
   static const enterWeightHint = "Enter your weight (Kg)";
   static const enterHeightHint = "Enter your height (Cm)";
 
+  static const String enterEmailError = "Please enter email ID";
+  static const String enterPasswordError = "Please enter password";
+
   static const commonErrorMessage = "Something went wrong";
   static const logoutSucess = "Successfully logged out";
   static const updateDetailsSuccess = "Update details successfully";
   static const networkErrorMessage =
       "We’re having trouble connecting to the server. Please check your internet connection and try again.";
+
+  static const String forgotPasswordTitle = "Forgot password";
+  static const String enterPassword = "Please enter password";
+  static const String pleaseEnterEmail = "Please enter email ID";
+  static const String incorrectOtp = "Incorrect OTP";
+  static const String enterCorrectOtp = "Please enter correct OTP";
 }

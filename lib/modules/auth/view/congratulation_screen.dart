@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
@@ -35,20 +34,19 @@ class CongratulationScreen extends StatelessWidget {
                 width: AppDimensions.width(104),
               ),
               SizedBox(height: AppDimensions.height(70)),
-              CommonText.text(
+              CommonText.labelMedium(
                 AppStrings.congratsText,
                 textAlign: TextAlign.center,
                 maxLines: 2,
-                fontSize: AppDimensions.font(22),
+
                 fontWeight: FontWeight.w600,
                 color: AppColors.conTitle,
               ),
               SizedBox(height: AppDimensions.height(20)),
-              CommonText.text(
+              CommonText.headlineMedium(
                 AppStrings.congratsDescription,
                 textAlign: TextAlign.center,
                 maxLines: 3,
-                fontSize: AppDimensions.font(20),
                 fontWeight: FontWeight.w400,
                 color: AppColors.conDiscription,
               ),

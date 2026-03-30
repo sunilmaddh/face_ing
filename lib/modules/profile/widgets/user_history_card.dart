@@ -32,19 +32,11 @@ class UserHistoryCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CommonText.text(
-                    "Date: ",
-                    fontSize: AppDimensions.font(14),
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Manrope",
-                  ),
-                  CommonText.text(
+                  CommonText.labelLarge("Date: ", color: Colors.black),
+                  CommonText.titleMedium(
                     date.toString(),
-                    fontSize: AppDimensions.font(16),
-                    color: Colors.black,
+
                     fontWeight: FontWeight.w700,
-                    fontFamily: "Manrope",
                   ),
                 ],
               ),
@@ -92,19 +84,10 @@ class UserHistoryCard extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CommonText.text(
-                              "Scan Id: ",
-                              fontSize: AppDimensions.font(14),
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "Manrope",
-                            ),
-                            CommonText.text(
+                            CommonText.labelLarge("Scan Id: "),
+                            CommonText.labelLarge(
                               scanId,
-                              fontSize: AppDimensions.font(14),
-                              color: Colors.black,
                               fontWeight: FontWeight.w700,
-                              fontFamily: "Manrope",
                             ),
                           ],
                         ),

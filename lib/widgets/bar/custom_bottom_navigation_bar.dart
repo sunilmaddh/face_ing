@@ -66,11 +66,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               children: [
                 Align(
                   alignment: Alignment.center,
-                  child: CommonText.text(
+                  child: CommonText.labelMedium(
                     "Face Scan",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Manrope",
                     color: AppColors.bottomTextColor,
                   ),
                 ),
@@ -91,11 +88,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                                     : AppColors.bottomTextColor,
                           ),
 
-                          CommonText.text(
+                          CommonText.labelMedium(
                             "Home",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Manrope",
                             color:
                                 controller.selectedIndex.value == 0
                                     ? AppColors.primary
@@ -117,11 +111,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                                     ? AppColors.primary
                                     : AppColors.bottomTextColor,
                           ),
-                          CommonText.text(
+                          CommonText.labelMedium(
                             "AI Advice",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Manrope",
                             color:
                                 controller.selectedIndex.value == 1
                                     ? AppColors.primary
@@ -147,11 +138,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                                       ? AppColors.primary
                                       : AppColors.bottomTextColor,
                             ),
-                            CommonText.text(
+                            CommonText.labelMedium(
                               "Voice",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "Manrope",
                               color:
                                   controller.selectedIndex.value == 2
                                       ? AppColors.primary
@@ -174,11 +162,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                                     ? AppColors.primary
                                     : AppColors.bottomTextColor,
                           ),
-                          CommonText.text(
+                          CommonText.labelMedium(
                             "Pulse survey",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Manrope",
+
                             color:
                                 controller.selectedIndex.value == 3
                                     ? AppColors.primary

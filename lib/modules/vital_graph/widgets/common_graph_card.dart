@@ -73,11 +73,12 @@ class CommonGraphCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CommonText.text(
+                        style: TextStyle(fontSize: 13, fontFamily: "Mulish"),
                         maxLines: 2,
                         vitalName,
-                        fontSize: 13,
+
                         fontWeight: FontWeight.w600,
-                        fontFamily: "Mulish",
+
                         color: Color(0xff616161),
                       ),
 
@@ -111,9 +112,13 @@ class CommonGraphCard extends StatelessWidget {
                               avg.isNotEmpty
                                   ? CommonText.text(
                                     "Avg:",
-                                    fontSize: 13,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontFamily: "Mulish",
+                                    ),
+
                                     fontWeight: FontWeight.w600,
-                                    fontFamily: "Mulish",
+
                                     color: Color(0xff818181),
                                   )
                                   : SizedBox(),

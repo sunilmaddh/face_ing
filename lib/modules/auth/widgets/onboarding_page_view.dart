@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_text_styles.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
 
@@ -33,13 +33,16 @@ class OnboardingPageView extends StatelessWidget {
           SizedBox(height: 20),
           Text(
             title,
-            style: AppTextStyles.largeText(fontSize: AppDimensions.font(24)),
+            style: TextStyle(
+              fontSize: AppDimensions.font(24),
+              fontFamily: AppFonts.primary,
+            ),
           ),
           SizedBox(height: 10),
           Text(
             description,
             textAlign: TextAlign.center,
-            style: AppTextStyles.smallText(
+            style: TextStyle(
               color: AppColors.descriptionColor,
               fontWeight: FontWeight.w400,
             ),

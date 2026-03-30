@@ -2,7 +2,7 @@ class AppStrings {
   const AppStrings._();
 
   static const appTitle = "Face.ing";
-  static const commonFont = "Manrope";
+  // static const commonFont = "Manrope";
 
   static const login = "Login";
   static const resetPassword = "Reset Password";
@@ -60,6 +60,31 @@ class AppStrings {
 
   static const prediabetesRisk = 'Prediabetes risk';
   static const diabetesRisk = 'Diabetes risk';
+  static const String otpNotReceived = "Didn't receive the OTP?";
+  static const String resendOtp = "Resend OTP";
+  static const String secondsSuffix = "s";
+
+  static const String dailyAdvice = "Daily Advice";
+  static const String personalizedInsights =
+      "Personalized insights for your day.";
+
+  static const String onboardWelcomeTitle = "Welcome";
+  static const String onboardWelcomeDesc =
+      "Discover amazing features with our app.";
+
+  static const String onboardEasyTitle = "Easy to Use";
+  static const String onboardEasyDesc = "Navigate with ease and simplicity.";
+
+  static const String onboardStartTitle = "Get Started";
+  static const String onboardStartDesc =
+      "Join us and explore endless possibilities!";
+  static const String verify = "Verify";
+  static const String otpScreenTitle = "OTP Screen";
+  static const String enterOtp = "Enter OTP";
+  static const String next = 'Next';
+  static const String getStarted = 'Get Started';
+
+  static const String healthDataReport = "Health Data Report";
 
   static const voiceAgentEndMessage =
       "Our time for today’s session is coming to an end. Thank you for sharing with me. Please take care of yourself, and remember you can always come back if you’d like to talk again. Goodbye for now.";

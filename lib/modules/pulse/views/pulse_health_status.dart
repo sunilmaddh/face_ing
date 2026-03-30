@@ -32,18 +32,22 @@ class PulseHealthStatus extends StatelessWidget {
                       children: [
                         CommonText.text(
                           value.title.toString(),
-                          fontSize: AppDimensions.font(13),
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff616161),
+                          style: TextStyle(
+                            fontSize: AppDimensions.font(13),
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff616161),
+                          ),
                         ),
                         8.verticalSpace,
 
                         CommonText.text(
                           value.status.toString(),
-                          fontSize: AppDimensions.font(13),
-                          fontWeight: FontWeight.w700,
-                          color: PulseHelper().getColor(
-                            value.status.toString(),
+                          style: TextStyle(
+                            fontSize: AppDimensions.font(13),
+                            fontWeight: FontWeight.w700,
+                            color: PulseHelper().getColor(
+                              value.status.toString(),
+                            ),
                           ),
                         ),
                         SizedBox(height: 30),

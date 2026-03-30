@@ -6,8 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/constants/app_strings.dart';
-import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/constants/date_formats.dart';
 import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
@@ -153,7 +153,7 @@ class CreateAccountScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: AppDimensions.font(16),
                             fontWeight: FontWeight.w500,
-                            fontFamily: AppTextStyles.fontFamily,
+                            fontFamily: AppFonts.secondary,
                             color: AppColors.blackColor,
                           ),
                         ),
@@ -281,9 +281,8 @@ class CreateAccountScreen extends StatelessWidget {
                                             width: AppDimensions.width(24),
                                           ),
                                           SizedBox(width: 5.0),
-                                          CommonText.text(
+                                          CommonText.titleMedium(
                                             "Upload file",
-                                            fontSize: AppDimensions.font(16),
                                             fontWeight: FontWeight.w600,
                                             color: Color(0xff263238),
                                           ),

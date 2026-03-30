@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ntt_data/core/constants/app_strings.dart'; // ✅ added
+import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/auth/controllers/auth_controller.dart';
 import 'package:ntt_data/modules/auth/widgets/otp_field_widget.dart';
@@ -9,6 +11,7 @@ import 'package:ntt_data/widgets/button/primary_button.dart';
 
 class OtpForgotScreen extends StatelessWidget {
   OtpForgotScreen({super.key});
+
   final _authController = Get.find<AuthController>();
 
   @override
@@ -17,12 +20,12 @@ class OtpForgotScreen extends StatelessWidget {
       floatingActionButton: Obx(
         () => PrimaryButton(
           isLoading: _authController.isLoading.value,
-          text: "Verify",
+          text: AppStrings.verify, // ✅ updated
           onPressed: () {
             if (_authController.otp.value.length != 4) {
               AppSnackbar.show(
-                title: "Incorrect OTP",
-                message: "Please enter correct otp",
+                title: ValidationStrings.incorrectOtp, // ✅ updated
+                message: ValidationStrings.enterCorrectOtp, // ✅ updated
               );
             } else {
               _authController.verifyForgotOtp();
@@ -34,11 +37,10 @@ class OtpForgotScreen extends StatelessWidget {
         onTop: () {
           AppNavigation.back();
         },
-        title: "Otp screen",
+        title: AppStrings.otpScreenTitle, // ✅ updated
       ),
       body: OtpFieldWidget(
-        title: "Enter OTP",
-
+        title: AppStrings.enterOtp, // ✅ updated
         onResend: () {
           _authController.getForgetOtp();
         },

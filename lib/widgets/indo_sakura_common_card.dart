@@ -5,7 +5,7 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/extensions/extentions.dart';
-import 'package:ntt_data/data/helper/binah_status_halper.dart';
+import 'package:ntt_data/modules/binah/helper/binah_status_halper.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
@@ -103,10 +103,10 @@ class IndoSakuraCommonCard extends StatelessWidget {
                               fit: BoxFit.cover,
                             ),
                           SizedBox(height: AppDimensions.height(5)),
-                          CommonText.text(
+                          CommonText.labelLarge(
                             maxLines: 3,
                             vitalName,
-                            fontSize: AppDimensions.font(14),
+
                             fontWeight: FontWeight.w400,
                             color: Color(0xff575656),
                           ),
@@ -114,9 +114,9 @@ class IndoSakuraCommonCard extends StatelessWidget {
                               ? SizedBox(height: AppDimensions.height(5))
                               : SizedBox.shrink(),
                           vitalCondition.isNotEmpty
-                              ? CommonText.text(
+                              ? CommonText.labelSmall(
                                 vitalCondition,
-                                fontSize: AppDimensions.font(10),
+
                                 color: Color(0xff575656),
                               )
                               : SizedBox.shrink(),
@@ -155,18 +155,17 @@ class IndoSakuraCommonCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         // mainAxisAlignment: MainAxisAlignment.,
                         children: [
-                          CommonText.text(
+                          CommonText.titleMedium(
                             maxLines: 3,
                             vitalHeading,
-                            fontSize: AppDimensions.font(16),
+
                             fontWeight: FontWeight.w400,
                             color: Color(0xff5E5D5D),
                           ),
                           SizedBox(height: AppDimensions.height(10)),
-                          CommonText.text(
+                          CommonText.labelMedium(
                             maxLines: 9,
                             vitalDescription,
-                            fontSize: AppDimensions.font(12),
                             color: Color(0xff5E5D5D),
                           ),
                           SizedBox(height: AppDimensions.height(10)),
@@ -198,13 +197,12 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                                         .toFirstCaps(),
                                               );
                                             },
-                                            child: CommonText.text(
+                                            child: CommonText.labelMedium(
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 2,
                                               "${confidenceLevel.toFirstCaps()} Confidence",
                                               decoration:
                                                   TextDecoration.underline,
-                                              fontSize: 13,
                                               fontWeight: FontWeight.w400,
                                               color: AppColors.searchColor,
                                             ),
@@ -223,9 +221,8 @@ class IndoSakuraCommonCard extends StatelessWidget {
                                         SizedBox(
                                           width: AppDimensions.width(5.0),
                                         ),
-                                        CommonText.text(
+                                        CommonText.labelLarge(
                                           AppMethods.capitalizeFirst(status),
-                                          fontSize: AppDimensions.font(14),
                                           color: color,
                                         ),
                                       ],
@@ -376,20 +373,19 @@ class VitalSubListWidget extends StatelessWidget {
                               children: [
                                 Flexible(
                                   flex: 3,
-                                  child: CommonText.text(
+                                  child: CommonText.labelSmall(
                                     maxLines: 2,
                                     result.vitalName.toString(),
-                                    fontSize: AppDimensions.font(10),
+
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xff575656),
                                   ),
                                 ),
                                 Flexible(
                                   flex: 5,
-                                  child: CommonText.text(
+                                  child: CommonText.labelSmall(
                                     maxLines: 2,
                                     result.vitalHeading.toString(),
-                                    fontSize: AppDimensions.font(10),
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xff575656),
                                   ),

@@ -83,10 +83,8 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
                         horizontal: 20,
                         vertical: 20,
                       ),
-                      child: CommonText.text(
+                      child: CommonText.headlineMedium(
                         filterType[index],
-                        fontFamily: "Manrope",
-                        fontSize: AppDimensions.font(20.0),
                         color:
                             _vitalGraphController.selectedIndex.value == index
                                 ? AppColors.primary

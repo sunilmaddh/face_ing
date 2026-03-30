@@ -3,8 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_config.dart';
-import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/common_assets.dart';
@@ -41,11 +40,7 @@ class FaceDrawer extends StatelessWidget {
             width: AppDimensions.width(20),
             height: AppDimensions.height(20),
           ),
-          title: CommonText.text(
-            title,
-            fontSize: AppDimensions.font(16),
-            fontWeight: FontWeight.w600,
-          ),
+          title: CommonText.titleMedium(title, fontWeight: FontWeight.w600),
           subtitle: subtitle != null ? CommonText.text(subtitle) : null,
           trailing: trailing,
           onTap: onTap,
@@ -123,9 +118,12 @@ class FaceDrawer extends StatelessWidget {
                                                 .substring(0, 1)
                                                 .toUpperCase()
                                             : "",
-                                        color: AppColors.btntext,
-                                        fontSize: AppDimensions.font(30),
-                                        fontWeight: FontWeight.w700,
+
+                                        style: TextStyle(
+                                          fontSize: AppDimensions.font(30),
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.btntext,
+                                        ),
                                       ),
                                     ),
                                 Align(
@@ -189,22 +187,22 @@ class FaceDrawer extends StatelessWidget {
                       ),
                       SizedBox(height: AppDimensions.height(20)),
                       Obx(
-                        () => CommonText.text(
+                        () => CommonText.titleMedium(
                           _profileController.userUpdateName.isNotEmpty
                               ? _profileController.userUpdateName.value
                               : _profileController.userName.value,
-                          fontSize: AppDimensions.font(16),
+
                           fontWeight: FontWeight.w400,
-                          fontFamily: AppConfig.gilroyBold,
+                          fontType: AppFontType.secondary,
+                          // fontFamily: AppConfig.gilroyBold,
                         ),
                       ),
                       SizedBox(height: AppDimensions.height(10)),
                       Obx(
-                        () => CommonText.text(
+                        () => CommonText.labelLarge(
                           _profileController.userEmail.value,
-                          fontSize: AppDimensions.font(14),
                           fontWeight: FontWeight.w400,
-                          fontFamily: AppConfig.gilroyMedium,
+                          fontType: AppFontType.secondary,
                         ),
                       ),
                     ],
@@ -249,10 +247,12 @@ class FaceDrawer extends StatelessWidget {
               children: [
                 CommonText.text(
                   "v1.0.17",
-                  color: AppColors.powerBy,
-                  fontSize: AppDimensions.font(14),
-                  fontWeight: FontWeight.w700,
-                  fontFamily: "Open Sans",
+                  style: TextStyle(
+                    fontSize: AppDimensions.font(14),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "Open Sans",
+                    color: AppColors.powerBy,
+                  ),
                 ),
               ],
             ),
@@ -264,10 +264,12 @@ class FaceDrawer extends StatelessWidget {
                 children: [
                   CommonText.text(
                     "Powered By ",
-                    color: AppColors.powerBy,
-                    fontSize: AppDimensions.font(20),
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "Open Sans",
+                    style: TextStyle(
+                      color: AppColors.powerBy,
+                      fontSize: AppDimensions.font(20),
+                      fontWeight: FontWeight.w700,
+                      fontFamily: "Open Sans",
+                    ),
                   ),
                   CommonAssets.svgAsset(AppAssets.faceLogo),
                 ],

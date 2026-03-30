@@ -32,8 +32,7 @@ class CommonListCard extends StatelessWidget {
                   ? Border()
                   : Border.all(color: Color(0xffDDDDDD), width: 1),
         ),
-        child: CommonText.text(
-          fontSize: AppDimensions.font(16),
+        child: CommonText.titleMedium(
           fontWeight: FontWeight.w600,
           text,
           color: isSelected ? AppColors.primary : Color(0xff717171),

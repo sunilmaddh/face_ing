@@ -117,20 +117,17 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Obx(
-                              () => CommonText.text(
+                              () => CommonText.displaySmall(
                                 controller.sessionTime.value,
-                                fontSize: AppDimensions.font(24),
-                                fontWeight: FontWeight.w700,
+
                                 color: AppColors.bottomTextColor,
-                                fontFamily: "Manrope",
                               ),
                             ),
-                            CommonText.text(
+                            CommonText.labelLarge(
                               "Listening...",
-                              fontSize: AppDimensions.font(14),
+
                               fontWeight: FontWeight.w700,
                               color: AppColors.infoIconColor,
-                              fontFamily: "Manrope",
                             ),
                           ],
                         ),
@@ -176,11 +173,11 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CommonText.text(
+                    CommonText.labelLarge(
                       voiceCallController.agentName.value,
-                      fontFamily: "Manrope",
+
                       fontWeight: FontWeight.w600,
-                      fontSize: AppDimensions.font(14),
+
                       color: AppColors.primary.withOpacity(0.6),
                     ),
                     SizedBox(height: AppDimensions.height(10)),

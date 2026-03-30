@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/utils/app_methods.dart';
 import 'package:ntt_data/core/utils/helper/globle_halper.dart';
 import 'package:ntt_data/modules/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/home/helper/home_helper.dart';
 import 'package:ntt_data/modules/home/widget/circle_card_widget.dart';
@@ -35,19 +36,21 @@ class WellnessCard extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CommonText.text(
+                        CommonText.labelSmall(
                           "Wellness Score",
-                          fontSize: AppDimensions.font(11),
+
                           fontWeight: FontWeight.w700,
                           color: AppColors.primary,
-                          fontFamily: "DM Sans",
+                          fontType: AppFontType.mono,
                         ),
-                        CommonText.text(
+                        Text(
                           guageValue.toStringAsFixed(0),
-                          fontSize: AppDimensions.font(55),
-                          fontWeight: FontWeight.w700,
-                          color: HomeHalper().getWellnessColor(status),
-                          fontFamily: "League Spartan",
+                          style: TextStyle(
+                            fontSize: AppDimensions.font(55),
+                            fontWeight: FontWeight.w700,
+                            color: HomeHalper().getWellnessColor(status),
+                            fontFamily: "League Spartan",
+                          ),
                         ),
                         wellnessDiff != "null" && wellnessDiff != "0"
                             ? Row(
@@ -62,9 +65,9 @@ class WellnessCard extends StatelessWidget {
                                       Icons.arrow_drop_up,
                                       color: Colors.green,
                                     ),
-                                CommonText.text(
+                                CommonText.titleSmall(
                                   wellnessDiff,
-                                  fontSize: AppDimensions.font(15),
+
                                   fontWeight: FontWeight.w600,
                                   color:
                                       wellnessPosNeg == "Negative"
@@ -77,9 +80,11 @@ class WellnessCard extends StatelessWidget {
                         wellnessDiff != "null"
                             ? CommonText.text(
                               "From Last time",
-                              fontSize: AppDimensions.font(8),
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primary,
+                              style: TextStyle(
+                                fontSize: AppDimensions.font(8),
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primary,
+                              ),
                             )
                             : SizedBox.shrink(),
                       ],

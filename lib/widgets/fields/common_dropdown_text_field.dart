@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/app_text_styles.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
 
@@ -48,7 +48,7 @@ class CommonDropdownTextField extends StatelessWidget {
           style: TextStyle(
             fontSize: AppDimensions.font(16),
             fontWeight: FontWeight.w500,
-            fontFamily: AppTextStyles.fontFamily,
+            fontFamily: AppFontType.secondary.name,
           ),
         ),
         const SizedBox(height: 3),

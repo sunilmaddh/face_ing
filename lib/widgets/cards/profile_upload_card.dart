@@ -97,9 +97,8 @@ class ProfileUploadCard extends StatelessWidget {
                                 width: AppDimensions.width(24),
                               ),
                               const SizedBox(width: 5.0),
-                              CommonText.text(
+                              CommonText.titleMedium(
                                 "Upload Profile Image",
-                                fontSize: AppDimensions.font(16),
                                 fontWeight: FontWeight.w600,
                                 color: const Color(0xff263238),
                               ),

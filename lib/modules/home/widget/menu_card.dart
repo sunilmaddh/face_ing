@@ -38,10 +38,8 @@ class MenuCard extends StatelessWidget {
                     child: SvgPicture.asset(AppAssets.correct),
                   ),
                   5.horizontalSpace,
-                  CommonText.text(
+                  CommonText.labelLarge(
                     menuTitle,
-                    fontFamily: "DM Sans",
-                    fontSize: AppDimensions.font(14),
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,
                   ),

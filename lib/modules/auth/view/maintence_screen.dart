@@ -24,11 +24,10 @@ class MaintenceScreen extends StatelessWidget {
             AppAssets.maintence,
           ),
           20.verticalSpace,
-          CommonText.text(
+          CommonText.displayLarge(
             "Coming Soon.......",
             fontWeight: FontWeight.w700,
             color: AppColors.primary,
-            fontSize: AppDimensions.font(30),
           ),
         ],
       ),

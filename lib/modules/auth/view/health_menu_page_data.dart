@@ -29,10 +29,9 @@ class HealthMenuPageData extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: AppDimensions.height(30)),
-        CommonText.text(
+        CommonText.titleMedium(
           text,
           color: AppColors.primary,
-          fontSize: AppDimensions.font(16),
           fontWeight: FontWeight.w700,
           maxLines: 5,
         ),

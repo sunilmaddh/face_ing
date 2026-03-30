@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/home/controller/home_controller.dart';
@@ -102,11 +101,10 @@ class MenuCardWidget extends StatelessWidget {
                                               vitalValues: pulseList,
                                             ),
                                             SizedBox(height: 10.h),
-                                            CommonText.text(
+                                            CommonText.labelMedium(
                                               AppStrings.latestResult,
-                                              fontSize: 12.sp,
+
                                               fontWeight: FontWeight.w700,
-                                              fontFamily: "Manrope",
                                               color: const Color(0xff898989),
                                             ),
                                             SizedBox(height: 5.h),
@@ -121,11 +119,9 @@ class MenuCardWidget extends StatelessWidget {
                                                   color: statusColor,
                                                 ),
                                                 SizedBox(width: 10.w),
-                                                CommonText.text(
+                                                CommonText.titleMedium(
                                                   status,
-                                                  fontSize: AppDimensions.font(
-                                                    16,
-                                                  ),
+
                                                   fontWeight: FontWeight.w700,
                                                   color: statusColor,
                                                 ),
@@ -167,10 +163,9 @@ class MenuCardWidget extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        CommonText.text(
+                                        CommonText.labelLarge(
                                           "Blood Pressure",
-                                          fontFamily: "Manrope",
-                                          fontSize: AppDimensions.font(14),
+
                                           fontWeight: FontWeight.w700,
                                           color: AppColors.blackColor,
                                         ),
@@ -189,15 +184,13 @@ class MenuCardWidget extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        CommonText.text(
+                                        CommonText.displaySmall(
                                           homeController
                                                   .wellnessModel
                                                   .value
                                                   ?.bloodPressure ??
                                               "No result",
-                                          fontFamily: "Manrope",
-                                          fontSize: AppDimensions.font(24),
-                                          fontWeight: FontWeight.w700,
+
                                           color: homeHelper.getBloodColor(
                                             homeController
                                                     .wellnessModel
@@ -207,10 +200,8 @@ class MenuCardWidget extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(width: AppDimensions.width(5)),
-                                        CommonText.text(
+                                        CommonText.labelLarge(
                                           "bpm",
-                                          fontFamily: "Manrope",
-                                          fontSize: AppDimensions.font(14),
                                           fontWeight: FontWeight.w400,
                                           color: AppColors.blackColor,
                                         ),
@@ -252,10 +243,9 @@ class MenuCardWidget extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    CommonText.text(
+                                    CommonText.labelLarge(
                                       "Anxiety",
-                                      fontFamily: "Manrope",
-                                      fontSize: AppDimensions.font(14),
+
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.blackColor,
                                     ),
@@ -270,10 +260,9 @@ class MenuCardWidget extends StatelessWidget {
                                       ),
                                     ),
                                     SizedBox(height: AppDimensions.height(20)),
-                                    CommonText.text(
+                                    CommonText.labelLarge(
                                       anxietyText,
-                                      fontFamily: "Manrope",
-                                      fontSize: AppDimensions.font(14),
+
                                       fontWeight: FontWeight.w700,
                                       color: _getColor(anxietyText),
                                     ),
@@ -308,10 +297,9 @@ class MenuCardWidget extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    CommonText.text(
+                                    CommonText.labelLarge(
                                       "Depression",
-                                      fontFamily: "Manrope",
-                                      fontSize: AppDimensions.font(14),
+
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.blackColor,
                                     ),
@@ -326,10 +314,8 @@ class MenuCardWidget extends StatelessWidget {
                                       ),
                                     ),
                                     SizedBox(height: AppDimensions.height(20)),
-                                    CommonText.text(
+                                    CommonText.labelLarge(
                                       depressionText,
-                                      fontFamily: "Manrope",
-                                      fontSize: AppDimensions.font(14),
                                       fontWeight: FontWeight.w700,
                                       color: _getColor(depressionText),
                                     ),

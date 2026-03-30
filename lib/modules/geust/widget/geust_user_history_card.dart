@@ -71,9 +71,7 @@ class GeustUserHistoryCard extends StatelessWidget {
                               ? CircularImageWithShimmer(imageUrl: guestImage)
                               : CustomCircularAvatar(
                                 color: AppColors.guestIconColor,
-                                widget: CommonText.text(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
+                                widget: CommonText.displaySmall(
                                   name.isNotEmpty
                                       ? name.substring(0, 1).toUpperCase()
                                       : "",
@@ -126,52 +124,8 @@ class GeustUserHistoryCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // RichText(
-                          //   overflow: TextOverflow.ellipsis,
-                          //   maxLines: 1,
-                          //   text: TextSpan(
-                          //     text:
-                          //         gender.isNotEmpty
-                          //             ? "(${gender.substring(0, 1).toUpperCase()})"
-                          //             : "",
-                          //     style: TextStyle(
-                          //       fontSize: AppDimensions.font(14),
-                          //       color: Colors.black,
-                          //       fontWeight: FontWeight.w500,
-
-                          //       // Default style
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
-
-                      // SizedBox(
-                      //   width: AppDimensions.width(100),
-                      //   child: Row(
-                      //     mainAxisSize: MainAxisSize.min,
-                      //     children: [
-                      //       SizedBox(
-                      //         width: AppDimensions.width(120),
-                      //         child: CommonText.text(
-                      //           maxLines: 3,
-
-                      //           name,
-                      //           fontSize: AppDimensions.font(16),
-                      //           fontWeight: FontWeight.w700,
-                      //         ),
-                      //       ),
-                      //       SizedBox(width: 5),
-                      //       CommonText.text(
-                      //         gender.isNotEmpty
-                      //             ? "(${gender.substring(0, 1).toUpperCase()})"
-                      //             : "",
-                      //         fontSize: AppDimensions.font(16),
-                      //         fontWeight: FontWeight.w700,
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                   Column(
@@ -198,9 +152,8 @@ class GeustUserHistoryCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: AppDimensions.height(15)),
-                      CommonText.text(
+                      CommonText.titleMedium(
                         gender,
-                        fontSize: AppDimensions.font(16),
                         fontWeight: FontWeight.w700,
                       ),
                     ],
@@ -262,18 +215,12 @@ class GeustUserHistoryCard extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CommonText.text(
+                                CommonText.labelLarge(
                                   "Weight",
-                                  fontSize: AppDimensions.font(14),
+
                                   color: Colors.black,
-                                  fontWeight: FontWeight.w500,
                                 ),
-                                CommonText.text(
-                                  "$weight KG",
-                                  fontSize: AppDimensions.font(14),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                CommonText.labelLarge("$weight KG"),
                               ],
                             ),
                             SizedBox(height: AppDimensions.height(10)),
@@ -282,18 +229,8 @@ class GeustUserHistoryCard extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CommonText.text(
-                                  "Height",
-                                  fontSize: AppDimensions.font(14),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                CommonText.text(
-                                  "$height cm",
-                                  fontSize: AppDimensions.font(14),
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                CommonText.labelLarge("Height"),
+                                CommonText.labelLarge("$height cm"),
                               ],
                             ),
                             SizedBox(height: AppDimensions.height(10)),
@@ -305,11 +242,11 @@ class GeustUserHistoryCard extends StatelessWidget {
                                 InkWell(
                                   onTap: onTop,
 
-                                  child: CommonText.text(
+                                  child: CommonText.labelLarge(
                                     "View history",
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: AppDimensions.font(14),
+
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),

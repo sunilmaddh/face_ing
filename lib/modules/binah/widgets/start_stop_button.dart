@@ -30,12 +30,11 @@ class StartStopButton extends StatelessWidget {
                 Column(
                   children: [
                     SizedBox(height: AppDimensions.height(10)),
-                    CommonText.text(
+                    CommonText.headlineSmall(
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       "${userName.trimRight()}, Ready to Measure Your Vital Signs?",
                       color: AppColors.primary,
-                      fontSize: AppDimensions.font(18),
                       fontWeight: FontWeight.w500,
                     ),
                     SizedBox(height: AppDimensions.height(8.0)),

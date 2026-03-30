@@ -65,9 +65,8 @@ class PulseScreen extends StatelessWidget {
             ),
           ),
         ),
-        title: CommonText.text(
+        title: CommonText.headlineSmall(
           "Pulse History",
-          fontSize: 18,
           fontWeight: FontWeight.w700,
           color: AppColors.primary,
         ),
@@ -99,9 +98,8 @@ class PulseScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: AppDimensions.symmetric(horizontal: 20.w),
-                    child: CommonText.text(
+                    child: CommonText.titleLarge(
                       "Pulse survey not completed yet",
-                      fontSize: 17.sp,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -124,9 +122,9 @@ class PulseScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         10.verticalSpace,
-                        CommonText.text(
+                        CommonText.labelLarge(
                           AppStrings.latestResult,
-                          fontSize: AppDimensions.font(14),
+
                           fontWeight: FontWeight.w700,
                           color: Color(0xff898989),
                         ),
@@ -153,9 +151,11 @@ class PulseScreen extends StatelessWidget {
                                 CommonText.text(
                                   _controller.pulseSevryModel.value.status
                                       .toString(),
-                                  fontSize: AppDimensions.font(46),
-                                  fontWeight: FontWeight.w700,
-                                  color: color,
+                                  style: TextStyle(
+                                    fontSize: AppDimensions.font(46),
+                                    fontWeight: FontWeight.w700,
+                                    color: color,
+                                  ),
                                 ),
                               ],
                             ),

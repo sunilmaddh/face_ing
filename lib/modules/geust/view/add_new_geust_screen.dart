@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/api_constants.dart';
+import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
@@ -154,7 +155,7 @@ class AddNewGuestScreen extends BaseView<GeustController> {
                                       style: TextStyle(
                                         fontSize: AppDimensions.font(16),
                                         fontWeight: FontWeight.w500,
-                                        fontFamily: AppTextStyles.fontFamily,
+                                        fontFamily: AppFonts.primary,
                                         color: AppColors.blackColor,
                                       ),
                                     ),
@@ -170,30 +171,6 @@ class AddNewGuestScreen extends BaseView<GeustController> {
                               ),
                             ),
                             const SizedBox(height: 10),
-
-                            // Uncomment when needed
-                            // ProfileUploadCard(
-                            //   isProfile: controller.isProfile,
-                            //   profileUrl: controller.profileUrl,
-                            //   onRemove: () {
-                            //     controller.isProfile.value = false;
-                            //     controller.profileUrl.value = File("");
-                            //   },
-                            //   onGalleryTap: () async {
-                            //     await controller.uploadProfileFromGallery(
-                            //       "",
-                            //       "",
-                            //       "true",
-                            //     );
-                            //   },
-                            //   onCameraTap: () async {
-                            //     controller.uploadProfileFromCamera(
-                            //       "",
-                            //       "",
-                            //       "true",
-                            //     );
-                            //   },
-                            // ),
                           ],
                         ),
                       ),
@@ -250,10 +227,8 @@ class AddNewGuestScreen extends BaseView<GeustController> {
                       10.verticalSpace,
                       Padding(
                         padding: AppDimensions.only(left: 20.0),
-                        child: CommonText.text(
+                        child: CommonText.labelMedium(
                           "Note: ${AppStrings.noteDescription}",
-                          fontSize: AppDimensions.font(12),
-                          fontWeight: FontWeight.w500,
                           maxLines: 2,
                           color: Colors.grey,
                           textAlign: TextAlign.center,

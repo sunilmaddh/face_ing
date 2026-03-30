@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
+import 'package:ntt_data/core/constants/app_strings.dart'; // ✅ added
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/binah/helper/health_report_helper.dart';
 import 'package:ntt_data/modules/binah/widgets/vital_card_widget.dart';
@@ -16,22 +17,17 @@ class AllReportScreen extends StatefulWidget {
 class _AllReportScreenState extends State<AllReportScreen>
     with SingleTickerProviderStateMixin {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.btntext,
       appBar: CustomAppBar(
-        title: "Health data report",
+        title: AppStrings.healthDataReport, // ✅ updated
         onTop: () {
           AppNavigation.back();
         },
       ),
       body: Container(
-        margin: EdgeInsets.all(15.0),
+        margin: const EdgeInsets.all(15.0), // ✅ const added
         decoration: BoxDecoration(
           color: AppColors.historyCardColor,
           borderRadius: BorderRadius.circular(20),
