@@ -45,4 +45,5 @@ class ValidationStrings {
   static const String pleaseEnterEmail = "Please enter email ID";
   static const String incorrectOtp = "Incorrect OTP";
   static const String enterCorrectOtp = "Please enter correct OTP";
+  static const String selectSmoker = "Please select smoker type";
 }
