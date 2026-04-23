@@ -60,7 +60,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await AppPreferences.instance.getUserId();
+      final userID = AppPreferences.instance.getUserId();
       final responseData = await guestRepository.getGeustHistory(
         userId: userID,
       );
@@ -98,7 +98,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await AppPreferences.instance.getUserId();
+      final userID = AppPreferences.instance.getUserId();
       final responseData = await guestRepository.getGeustDetails(
         userId: userID,
         guestId: guestID,

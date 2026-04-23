@@ -85,6 +85,26 @@ class AppStrings {
   static const String getStarted = 'Get Started';
 
   static const String healthDataReport = "Health Data Report";
+  static const String addGuest = "Add Guest";
+  static const String patientId = "Patient ID";
+  static const String emailOptional = "Email ID (Optional)";
+
+  static const String guestImage = "Guest Image";
+
+  // Units
+  static const String kg = "Kg";
+  static const String cm = "Cm";
+
+  // Defaults
+  static const String defaultWeight = "60";
+  static const String defaultHeight = "160";
+
+  // Errors
+
+  static const String acceptTerms = "Please accept terms and conditions";
+
+  // Note
+  static const String notePrefix = "Note:";
 
   static const voiceAgentEndMessage =
       "Our time for today’s session is coming to an end. Thank you for sharing with me. Please take care of yourself, and remember you can always come back if you’d like to talk again. Goodbye for now.";
