@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/core/utils/app_logger.dart';
 import 'package:ntt_data/modules/phq/controllers/aisession_controller.dart';
 import 'package:ntt_data/modules/phq/widgets/question_card.dart';
 import 'package:ntt_data/modules/voice_agent/controller/voice_call_controller.dart';
@@ -235,6 +236,8 @@ class AiSessionScreen extends BaseView<AiSessionController> {
       agentIds: voiceCallController.agentId.value,
       streamIds: voiceCallController.streamId.value,
     );
+
+    AppLogger.info("initializeAndStartCall ${success.toString()}");
 
     if (success) {
       AppNavigation.to(AppRoutes.aiSessionCallScreen);

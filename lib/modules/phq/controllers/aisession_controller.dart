@@ -90,16 +90,6 @@ class AiSessionController extends BaseController {
         request: request,
       );
 
-      // final success = await voiceCallController.getCredentials(
-      //   sessionId: sessionId,
-      //   isUserVoice: true,
-      //   isAgentVoice: false,
-      //   isUserTransaction: false,
-      //   isAgentTransaction: true,
-      //   isFullRecording: false,
-      //   isUserAgentVoice: false,
-      // );
-
       return success;
     } catch (e) {
       setError(ValidationStrings.commonErrorMessage);

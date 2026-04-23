@@ -206,15 +206,14 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                           Stack(
                             alignment: Alignment.center,
                             children: [
-                              Obx(
-                                () => AnimatedBuilder(
+                              Obx(() {
+                                final isStarted =
+                                    voiceCallController
+                                        .isConverssionStarted
+                                        .isTrue;
+                                return AnimatedBuilder(
                                   animation: _animationController,
                                   builder: (context, child) {
-                                    final isStarted =
-                                        voiceCallController
-                                            .isConverssionStarted
-                                            .isTrue;
-
                                     return SizedBox(
                                       width:
                                           isStarted
@@ -234,17 +233,16 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                       ),
                                     );
                                   },
-                                ),
-                              ),
-                              Obx(
-                                () => AnimatedBuilder(
+                                );
+                              }),
+                              Obx(() {
+                                final isStarted =
+                                    voiceCallController
+                                        .isConverssionStarted
+                                        .isTrue;
+                                return AnimatedBuilder(
                                   animation: _animationController,
                                   builder: (context, child) {
-                                    final isStarted =
-                                        voiceCallController
-                                            .isConverssionStarted
-                                            .isTrue;
-
                                     return Container(
                                       width:
                                           isStarted
@@ -266,19 +264,18 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                       ),
                                     );
                                   },
-                                ),
-                              ),
+                                );
+                              }),
                               Positioned(
                                 top: 17,
-                                child: Obx(
-                                  () => AnimatedBuilder(
+                                child: Obx(() {
+                                  final isStarted =
+                                      voiceCallController
+                                          .isConverssionStarted
+                                          .isTrue;
+                                  return AnimatedBuilder(
                                     animation: _animationController,
                                     builder: (context, child) {
-                                      final isStarted =
-                                          voiceCallController
-                                              .isConverssionStarted
-                                              .isTrue;
-
                                       return Container(
                                         width:
                                             isStarted
@@ -302,20 +299,19 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                         ),
                                       );
                                     },
-                                  ),
-                                ),
+                                  );
+                                }),
                               ),
                               Positioned(
                                 top: 26,
-                                child: Obx(
-                                  () => AnimatedBuilder(
+                                child: Obx(() {
+                                  final isStarted =
+                                      voiceCallController
+                                          .isConverssionStarted
+                                          .isTrue;
+                                  return AnimatedBuilder(
                                     animation: _animationController,
                                     builder: (context, child) {
-                                      final isStarted =
-                                          voiceCallController
-                                              .isConverssionStarted
-                                              .isTrue;
-
                                       return Container(
                                         width:
                                             isStarted
@@ -339,8 +335,8 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                         ),
                                       );
                                     },
-                                  ),
-                                ),
+                                  );
+                                }),
                               ),
                               Positioned(
                                 top: 34,

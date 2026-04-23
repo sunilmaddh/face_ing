@@ -24,31 +24,7 @@ class VoiceAgentService {
   Future<ApiResponse<WebhookResponse>> initiateWebhook({
     required String tanantId,
     required VoiceWebhookRequest request,
-    // required String userName,
-    // required String sessionId,
-    // required String token,
-    // required bool isUserVoice,
-    // required bool isAgentVoice,
-    // required bool isUserTransaction,
-    // required bool isAgentTransaction,
-    // required bool isFullRecording,
-    // required bool isUserAgentVoice,
   }) async {
-    // final data = {
-    //   "agent_id": "2f0817e4-6585-4ebe-8a0a-29f09652ef00",
-    //   "user_name": userName,
-    //   "is_user_voice": isUserVoice,
-    //   "is_agent_voice": isAgentVoice,
-    //   "is_user_transcription": isUserTransaction,
-    //   "is_agent_transcription": isAgentTransaction,
-    //   "is_full_recording": isFullRecording,
-    //   "is_user_agent_voice": isUserAgentVoice,
-    //   "session_id": sessionId,
-    //   "session_token": token,
-    //   "session_url": "http://${ApiEndpoints.baseUrl}/kintsugi/submit-audio",
-    //   "session_user_duration": 60,
-    // };
-
     return await apiService.send<WebhookResponse>(
       ApiRequest(
         endpoint: "${apiEndpoint.initiateWebhook}/$tanantId/",

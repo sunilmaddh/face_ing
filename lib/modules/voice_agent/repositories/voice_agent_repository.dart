@@ -18,15 +18,6 @@ class VoiceAgentRepository {
     return await voiceAgentService.initiateWebhook(
       tanantId: tanantId,
       request: request,
-      // userName: userName,
-      // sessionId: request.sessionId,
-      // token: token,
-      // isUserVoice: request.isUserVoice,
-      // isAgentVoice: request.isAgentVoice,
-      // isUserTransaction: request.isUserTransaction,
-      // isAgentTransaction: request.isAgentTransaction,
-      // isFullRecording: request.isFullRecording,
-      // isUserAgentVoice: request.isUserAgentVoice,
     );
   }
 }

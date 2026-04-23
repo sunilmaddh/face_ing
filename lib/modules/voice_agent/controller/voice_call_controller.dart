@@ -8,6 +8,7 @@ import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/network/api_endpoints.dart';
 import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/storage/secure_storage.dart';
+import 'package:ntt_data/core/utils/app_logger.dart';
 import 'package:ntt_data/modules/voice_agent/controller/socket_controller.dart';
 import 'package:ntt_data/modules/voice_agent/helper/audio_player.dart';
 import 'package:ntt_data/modules/voice_agent/model/request/start_streaming_request.dart';
@@ -106,12 +107,6 @@ class VoiceCallController extends BaseController {
       final message = StartStreamRequest(
         streamSid: webhookResponse.value.streamSid ?? "",
       );
-      // {
-      //   "type": "start",
-      //   "stream_sid": webhookResponse.value.streamSid,
-      //   "transport": "webrtc_mobile",
-      // };
-
       await socketController.sendMessage(message.toJson());
       return true;
     } catch (e) {
