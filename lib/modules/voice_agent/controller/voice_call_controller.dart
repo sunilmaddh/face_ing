@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
 import 'package:ntt_data/core/constants/api_constants.dart';
-import 'package:ntt_data/core/constants/env_config.dart';
 import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/network/api_endpoints.dart';
 import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/storage/secure_storage.dart';
-import 'package:ntt_data/core/utils/app_logger.dart';
 import 'package:ntt_data/modules/voice_agent/controller/socket_controller.dart';
 import 'package:ntt_data/modules/voice_agent/helper/audio_player.dart';
 import 'package:ntt_data/modules/voice_agent/model/request/start_streaming_request.dart';
@@ -97,20 +93,26 @@ class VoiceCallController extends BaseController {
   }) async {
     try {
       messageC.value = "";
+
       await socketController.connectSocket(
         tenantId: tenantIds,
         botId: agentIds,
         streamId: streamIds,
       );
-      await playDuringCalling();
-      await Future.delayed(const Duration(milliseconds: 300));
-      final message = StartStreamRequest(
-        streamSid: webhookResponse.value.streamSid ?? "",
-      );
+
+      final streamSid = webhookResponse.value.streamSid;
+      if (streamSid == null || streamSid.isEmpty) {
+        setError("Stream SID not available");
+        return false;
+      }
+
+      final message = StartStreamRequest(streamSid: streamSid);
       await socketController.sendMessage(message.toJson());
+      await Future.delayed(const Duration(milliseconds: 300));
+      await playDuringCalling();
       return true;
     } catch (e) {
-      setError("Failed to start call");
+      setError("Failed to start call: $e");
       return false;
     }
   }
