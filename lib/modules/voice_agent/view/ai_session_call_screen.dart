@@ -167,7 +167,6 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
               if (voiceCallController.messageC.isEmpty) {
                 return SizedBox(height: AppDimensions.height(160));
               }
-
               return QuestionCard(
                 widget: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

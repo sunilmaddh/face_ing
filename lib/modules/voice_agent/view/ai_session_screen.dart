@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
-import 'package:ntt_data/core/utils/app_logger.dart';
 import 'package:ntt_data/modules/phq/controllers/aisession_controller.dart';
 import 'package:ntt_data/modules/phq/widgets/question_card.dart';
 import 'package:ntt_data/modules/voice_agent/controller/voice_call_controller.dart';
+import 'package:ntt_data/modules/voice_agent/helper/audio_player.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -223,6 +223,7 @@ class AiSessionScreen extends BaseView<AiSessionController> {
   }
 
   Future<void> _startCall(AiSessionController controller) async {
+    await initPlayer();
     bool isCallReady = controller.isCallReady.value;
 
     if (controller.isFirstTimeToConnect.isFalse) {
@@ -237,7 +238,9 @@ class AiSessionScreen extends BaseView<AiSessionController> {
       streamIds: voiceCallController.streamId.value,
     );
 
-    AppLogger.info("initializeAndStartCall ${success.toString()}");
+    // AppLogger.info("initializeAndStartCall ${success.toString()}");
+    // AppNavigation.to(AppRoutes.aiSessionCallScreen);
+    // controller.isFirstTimeToConnect.value = false;
 
     if (success) {
       AppNavigation.to(AppRoutes.aiSessionCallScreen);

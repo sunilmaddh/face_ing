@@ -2,11 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:ntt_data/core/constants/app_config.dart';
 import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/constants/app_logs.dart';
-import 'package:ntt_data/core/constants/app_strings.dart';
-import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/network/api_endpoints.dart';
 import 'package:ntt_data/core/network/api_request.dart';
 import 'package:ntt_data/core/network/api_response.dart';

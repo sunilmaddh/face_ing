@@ -108,8 +108,9 @@ class VoiceCallController extends BaseController {
 
       final message = StartStreamRequest(streamSid: streamSid);
       await socketController.sendMessage(message.toJson());
-      await Future.delayed(const Duration(milliseconds: 300));
       await playDuringCalling();
+      await Future.delayed(const Duration(milliseconds: 300));
+
       return true;
     } catch (e) {
       setError("Failed to start call: $e");
