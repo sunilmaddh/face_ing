@@ -212,7 +212,11 @@ class GeustController extends GetxController
   Future<void> getGuestHealthHistory() async {
     isLoading(true);
     var userID = await IndoSharedPreference.instance.getUserId();
-    var data = {"userId": userID, "guestId": guestId.value, "isUser": "false"};
+    var data = {
+      "userId": userID,
+      "guestId": guestId.value,
+      "userFlag": "false",
+    };
     debugPrint(data.toString());
     Map<String, dynamic> responseData = await GeustServices()
         .getUserHealthHistoryService(data: data);

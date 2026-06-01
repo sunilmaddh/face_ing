@@ -6,7 +6,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-parcelize")
     id("dev.flutter.flutter-gradle-plugin")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"// Flutter plugin must be last
+    id("org.jetbrains.kotlin.plugin.compose") version "2.2.20"// Flutter plugin must be last
 }
 
 android {
@@ -14,8 +14,8 @@ android {
         compose= true
     }
     namespace = "com.face.face"
-    compileSdk = flutter?.compileSdkVersion ?: 33
-    ndkVersion = "27.0.12077973"
+    compileSdk = flutter?.compileSdkVersion ?: 34
+    ndkVersion = "28.2.13676358"
 
 
     compileOptions {

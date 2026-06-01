@@ -218,11 +218,16 @@ class CreateAccountScreen extends StatelessWidget {
                                   ),
                                 )
                                 : DottedBorder(
-                                  dashPattern: [6, 5],
-                                  strokeWidth: 3.0,
-                                  borderType: BorderType.RRect,
-                                  radius: Radius.circular(10),
-                                  color: AppColors.dottedBorderColor,
+                                  options: RectDottedBorderOptions(
+                                    dashPattern: [6, 5],
+                                    strokeWidth: 3.0,
+                                    color: AppColors.dottedBorderColor,
+                                  ),
+                                  // dashPattern: [6, 5],
+                                  // strokeWidth: 3.0,
+                                  // borderType: BorderType.RRect,
+                                  // radius: Radius.circular(10),
+                                  // color: AppColors.dottedBorderColor,
                                   child: Container(
                                     height: AppDimensions.height(161),
                                     width: MediaQuery.of(context).size.width,
