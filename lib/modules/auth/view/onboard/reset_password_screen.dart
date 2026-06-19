@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';

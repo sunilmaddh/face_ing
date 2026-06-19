@@ -141,7 +141,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await AppPreferences.instance.getUserId();
+      final userID = AppPreferences.instance.getUserId();
       final data = await GuestHelper().userMapData(
         userId: userID,
         guestId: guestId,
@@ -202,7 +202,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await AppPreferences.instance.getUserId();
+      final userID = AppPreferences.instance.getUserId();
       final responseData = await guestRepository.deleteGuest(
         userId: userID,
         guestId: guestId,
@@ -225,7 +225,7 @@ class GeustController extends BaseController
     showLoading(true);
 
     try {
-      final userID = await AppPreferences.instance.getUserId();
+      final userID = AppPreferences.instance.getUserId();
       final responseData = await guestRepository.getUserHealthHistory(
         userId: userID,
         isUser: 'false',
@@ -332,7 +332,7 @@ class GeustController extends BaseController
         isGuest: isGuest,
       );
       if (response.success) {
-        final result = response.data;
+        // final result = response.data;
         // userImage.value = result?.imagePath ?? "";
         // AppPreferences.instance.saveUserImage(result?.imagePath ?? "");
         // debugPrint("Result $result ${userUpdateImage.value}");

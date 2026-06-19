@@ -100,12 +100,12 @@ class ProfileHelper {
   }
 
   Future<void> retainedUserData(ProfileController controller) async {
-    var name = await AppPreferences.instance.getUserName();
-    var gender = await AppPreferences.instance.getGenderType();
-    var dob = await AppPreferences.instance.getAge();
-    var weight = await AppPreferences.instance.getWeight();
-    var height = await AppPreferences.instance.getHeight();
-    var smokerType = await AppPreferences.instance.getSmokerType();
+    var name = AppPreferences.instance.getUserName();
+    var gender = AppPreferences.instance.getGenderType();
+    var dob = AppPreferences.instance.getAge();
+    var weight = AppPreferences.instance.getWeight();
+    var height = AppPreferences.instance.getHeight();
+    var smokerType = AppPreferences.instance.getSmokerType();
     var newData = await AppMethods().convertDateFormateToDD(dob);
     await retainedData(
       name: name,

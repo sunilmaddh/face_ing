@@ -357,6 +357,7 @@ class _CustomLineBarChartState extends State<CustomLineBarChart> {
                     end: Alignment.bottomCenter,
                     colors: [
                       const Color(0xffD0FBFF),
+                      // ignore: deprecated_member_use
                       const Color(0xffDDF2F4).withOpacity(0.2),
                     ],
                   ),

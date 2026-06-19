@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       ensureScreenSize: true,
       child: GetMaterialApp(
+        navigatorKey: Get.key,
         useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         title: AppStrings.appTitle,
@@ -46,11 +47,11 @@ class MyApp extends StatelessWidget {
             child: child ?? const SizedBox.shrink(),
           );
         },
-        routingCallback: (routing) {
-          if (Get.isSnackbarOpen) {
-            Get.closeCurrentSnackbar();
-          }
-        },
+        // routingCallback: (routing) {
+        //   if (Get.isSnackbarOpen) {
+        //     Get.closeCurrentSnackbar();
+        //   }
+        // },
       ),
     );
   }

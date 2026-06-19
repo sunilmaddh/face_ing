@@ -70,6 +70,7 @@ class MeasurementController extends BaseController
   @override
   final RxBool isStarted = false.obs;
   final RxBool isScanningDone = false.obs;
+  @override
   RxBool isLoading = false.obs;
   RxString smokerType = ''.obs;
   RxString guestId = "".obs;

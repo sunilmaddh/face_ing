@@ -7,7 +7,6 @@ import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
-import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
 
 class VitalResultsHandler {
   final Rx<VitalSignsResults> vitalsResults;
@@ -85,7 +84,7 @@ class VitalResultsHandler {
   }
 
   void _handleValidResults(VitalSignsResults finalResults) async {
-    final isFullStory = await AppPreferences.instance.getHistoryType();
+    final isFullStory = AppPreferences.instance.getHistoryType();
     isFirstEver.value = false;
     if (finalResults.getResult(VitalSignTypes.pulseRate) == null) {
       debugPrint("Pulse Rate missing, stopping flow");

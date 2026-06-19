@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/landing/controller/landing_controller.dart';
@@ -142,6 +141,7 @@ class PulseScreen extends StatelessWidget {
                                         .toString(),
                                   ),
                                   width: 60,
+                                  // ignore: deprecated_member_use
                                   color: PulseHelper().getColor(
                                     _controller.pulseSevryModel.value.status
                                         .toString(),

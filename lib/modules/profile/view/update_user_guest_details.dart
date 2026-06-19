@@ -193,8 +193,7 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
                             return;
                           }
 
-                          final userId =
-                              await AppPreferences.instance.getUserId();
+                          final userId = AppPreferences.instance.getUserId();
 
                           controller.callUpdateApi(
                             userId: userId,

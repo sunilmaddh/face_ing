@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_controller.dart';
-import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/modules/phq/repositories/phq_repository.dart';
 import 'package:ntt_data/modules/voice_agent/model/kintsungi_questionaries_response.dart';
@@ -32,7 +31,7 @@ class PhqController extends BaseController {
         final questionnaires = result.questionnaires ?? [];
 
         phqTwoQuestion.value =
-            questionnaires.length > 0
+            questionnaires.isNotEmpty
                 ? (questionnaires[0].questions ?? [])
                 : [];
 

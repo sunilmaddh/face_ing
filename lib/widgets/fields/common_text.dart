@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/constants/app_text_styles.dart';
 

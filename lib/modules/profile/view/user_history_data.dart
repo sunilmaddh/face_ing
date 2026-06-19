@@ -82,8 +82,7 @@ class UserHistoryData extends BaseView<ProfileController> {
               padding: const EdgeInsets.only(top: 10),
               child: InkWell(
                 onTap: () async {
-                  final isFullStory =
-                      await AppPreferences.instance.getHistoryType();
+                  final isFullStory = AppPreferences.instance.getHistoryType();
 
                   controller.getUserHealthDetails(
                     healthId: result.scanId,

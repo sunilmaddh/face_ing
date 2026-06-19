@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: duplicate_ignore, unused_element_parameter, deprecated_member_use
 
 import 'dart:math';
 
@@ -292,6 +292,8 @@ class _ValueDotPainter extends FlDotPainter {
   _ValueDotPainter(
     this.spot, {
     required this.textColor,
+    // ignore: duplicate_ignore
+    // ignore: unused_element_parameter
     this.radius = 4,
     this.padding = const EdgeInsets.symmetric(horizontal: 4, vertical: 7),
     this.borderColor = Colors.grey,

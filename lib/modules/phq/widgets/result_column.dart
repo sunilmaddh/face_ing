@@ -22,10 +22,12 @@ class ResultColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // ignore: deprecated_member_use
         Icon(icon, color: Colors.grey.withOpacity(0.7), size: 32),
         const SizedBox(height: 8),
         Text(
           label,
+          // ignore: deprecated_member_use
           style: TextStyle(color: Colors.black.withOpacity(0.9), fontSize: 11),
         ),
         const SizedBox(height: 4),

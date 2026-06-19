@@ -115,6 +115,7 @@ class FirstLineVitalWidget extends StatelessWidget {
     await VitalGraphHelper().callForCalenderWithDateRange("4W", calDate, null);
 
     showCommonDatePicker(
+      // ignore: use_build_context_synchronously
       context: context,
       initialDate: initialDate,
       firstDate: DateTime(2020),

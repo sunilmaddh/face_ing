@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
-import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
@@ -18,8 +17,7 @@ class UserHealthDetails extends BaseView<ProfileController> {
 
   @override
   Future<void> onInit(ProfileController controller) async {
-    controller.isFullStory.value =
-        await AppPreferences.instance.getHistoryType();
+    controller.isFullStory.value = AppPreferences.instance.getHistoryType();
 
     if (controller.isFullStory.isTrue) {
       controller.tabWidget.value = [

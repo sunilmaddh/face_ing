@@ -32,8 +32,7 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
   }
 
   Future<void> _initiateData() async {
-    controller.isFullStory.value =
-        await AppPreferences.instance.getHistoryType();
+    controller.isFullStory.value = AppPreferences.instance.getHistoryType();
 
     if (controller.isFullStory.isTrue) {
       controller.tabWidget.value = [

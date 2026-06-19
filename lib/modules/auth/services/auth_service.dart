@@ -1,5 +1,4 @@
 // ignore: implementation_imports
-import 'dart:io';
 
 import 'package:ntt_data/core/network/api_request.dart';
 import 'package:ntt_data/core/network/api_response.dart';

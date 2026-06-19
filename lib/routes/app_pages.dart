@@ -1,5 +1,4 @@
 import 'package:get/route_manager.dart';
-import 'package:ntt_data/modules/ai_recommendation/controller/ai_advice_controller.dart';
 import 'package:ntt_data/modules/binah/view/mesurement_screen.dart';
 import 'package:ntt_data/modules/auth/view/otp_forgot_screen.dart';
 import 'package:ntt_data/modules/geust/view/add_new_geust_screen.dart';

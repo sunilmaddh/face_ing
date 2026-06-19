@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore: file_names
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +31,7 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
   List<FlSpot> getSpots() {
     final List<FlSpot> spots = [];
 
+    // ignore: unused_local_variable
     double lastValue = 0; // If you prefer last-known-value → use this
 
     for (int i = 0; i < widget.vitalValues.length; i++) {
@@ -137,6 +138,7 @@ class _PulseLineChartWidgetState extends State<PulseLineChartWidget> {
                     end: Alignment.bottomCenter,
                     colors: [
                       const Color(0xffD0FBFF),
+                      // ignore: deprecated_member_use
                       const Color(0xffDDF2F4).withOpacity(0.2),
                     ],
                   ),
@@ -232,6 +234,7 @@ class _ValueDotPainter extends FlDotPainter {
   _ValueDotPainter(
     this.spot, {
     required this.textColor,
+    // ignore: unused_element_parameter
     this.radius = 4,
     this.showText = true,
   });

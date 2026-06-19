@@ -19,8 +19,10 @@ class CircleCardWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.btntext,
         shape: BoxShape.circle,
+        // ignore: deprecated_member_use
         border: Border.all(color: Color(0xffE0E0E0).withOpacity(0.2)),
         boxShadow: [
+          // ignore: deprecated_member_use
           BoxShadow(color: Color(0xff000000).withOpacity(0.1), blurRadius: 4.r),
         ],
       ),

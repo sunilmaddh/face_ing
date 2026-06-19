@@ -82,6 +82,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                         children: [
                           SvgPicture.asset(
                             AppAssets.home,
+                            // ignore: deprecated_member_use
                             color:
                                 controller.selectedIndex.value == 0
                                     ? AppColors.primary
@@ -106,6 +107,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                         children: [
                           SvgPicture.asset(
                             AppAssets.aiAdivice,
+                            // ignore: deprecated_member_use
                             color:
                                 controller.selectedIndex.value == 1
                                     ? AppColors.primary
@@ -133,6 +135,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                           children: [
                             SvgPicture.asset(
                               AppAssets.voice,
+                              // ignore: deprecated_member_use
                               color:
                                   controller.selectedIndex.value == 2
                                       ? AppColors.primary
@@ -157,6 +160,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                         children: [
                           SvgPicture.asset(
                             AppAssets.pulse,
+                            // ignore: deprecated_member_use
                             color:
                                 controller.selectedIndex.value == 3
                                     ? AppColors.primary

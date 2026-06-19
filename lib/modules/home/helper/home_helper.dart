@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/binah/controllers/measurement_controller.dart';
@@ -20,12 +18,12 @@ class HomeHalper {
 
   void _startMeasurement() async {
     _measurementController.isScanningDone.value = false;
-    String genderType = await AppPreferences.instance.getGenderType();
-    String dobRaw = await AppPreferences.instance.getAge();
-    String height = await AppPreferences.instance.getHeight();
-    String weight = await AppPreferences.instance.getWeight();
-    String name = await AppPreferences.instance.getUserName();
-    String smokerType = await AppPreferences.instance.getSmokerType();
+    String genderType = AppPreferences.instance.getGenderType();
+    String dobRaw = AppPreferences.instance.getAge();
+    String height = AppPreferences.instance.getHeight();
+    String weight = AppPreferences.instance.getWeight();
+    String name = AppPreferences.instance.getUserName();
+    String smokerType = AppPreferences.instance.getSmokerType();
     _measurementController.weight.value = double.parse(weight);
     _measurementController.height.value = double.parse(height);
     _measurementController.genderType.value = genderType;

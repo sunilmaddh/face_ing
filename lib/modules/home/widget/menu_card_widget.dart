@@ -116,6 +116,7 @@ class MenuCardWidget extends StatelessWidget {
                                                   pulseHelper.getImage(status),
                                                   width: 24.w,
                                                   height: 24.h,
+                                                  // ignore: deprecated_member_use
                                                   color: statusColor,
                                                 ),
                                                 SizedBox(width: 10.w),

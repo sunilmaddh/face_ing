@@ -1,17 +1,8 @@
-import 'dart:io';
-
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_sign_types.dart';
 import 'package:biosensesignal_flutter_sdk/vital_signs/vital_signs_results.dart';
-import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
-import 'package:ntt_data/modules/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/modules/binah/handler/vital_sign_helper.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
-import 'package:ntt_data/core/utils/app_snackbar.dart';
-import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/binah/widgets/getvitalStatus.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 
 class GuestHelper {
   Future<double> calculateAge(String dob) async {
@@ -19,90 +10,6 @@ class GuestHelper {
   }
 
   bool isAdult(double age) => age >= 18;
-  // final controller = Get.find<MeasurementController>();
-  // final _guestController = Get.find<GeustController>();
-  // callMeasurement() {
-  //   _startMeasurement();
-  // }
-
-  // _startMeasurement() async {
-  //   controller.isScanningDone.value = false;
-  //   controller.age.value = await AppMethods().calculateAge(
-  //     _guestController.dobTextController.text,
-  //   );
-  //   debugPrint("Age ${controller.age.value.toString()}");
-  //   controller.weight.value = double.parse(
-  //     _guestController.weightTextController.text,
-  //   );
-  //   controller.height.value = double.parse(
-  //     _guestController.heightTextController.text,
-  //   );
-  //   controller.genderType.value = _guestController.selectionType.value;
-  //   if (controller.age.value < 18) {
-  //     AppSnackbar.show(
-  //       title: "Age Restriction",
-  //       message: "You must be 18 or older to continue",
-  //     );
-  //   } else {
-  //     AppNavigation.to(
-  //       AppRoutes.mesurementScreen,
-  //       arguments: {
-  //         "scanType": "add-guest",
-  //         "userName": _guestController.nameTextController.text,
-  //       },
-  //     );
-  //   }
-  // }
-
-  // callReScanMeasurement(
-  //   String genderType,
-  //   String dob,
-  //   String weight,
-  //   String height,
-  //   String smokerType,
-  //   String guestId,
-  //   String guestName,
-  // ) {
-  //   _startMeasurementRescan(
-  //     genderType,
-  //     dob,
-  //     weight,
-  //     height,
-  //     smokerType,
-  //     guestId,
-  //     guestName,
-  //   );
-  // }
-
-  // _startMeasurementRescan(
-  //   String genderType,
-  //   String dob,
-  //   String weight,
-  //   String height,
-  //   String smokerType,
-  //   String guestId,
-  //   String guestName,
-  // ) async {
-  //   controller.isScanningDone.value = false;
-  //   controller.age.value = await AppMethods().calculateAge(dob);
-  //   debugPrint(controller.age.value.toString());
-  //   controller.weight.value = double.parse(weight);
-  //   controller.height.value = double.parse(height);
-  //   controller.genderType.value = genderType;
-  //   controller.guestId.value = guestId;
-  //   controller.smokerType.value = smokerType;
-  //   if (controller.age.value < 18) {
-  //     AppSnackbar.show(
-  //       title: "Age Restriction",
-  //       message: "You must be 18 or older to continue",
-  //     );
-  //   } else {
-  //     AppNavigation.to(
-  //       AppRoutes.mesurementScreen,
-  //       arguments: {"scanType": "re-scan", "userName": guestName},
-  //     );
-  //   }
-  // }
 
   static bool isValidInput(String input) {
     final regex = RegExp(r'^[a-zA-Z0-9 .]+$');
@@ -309,27 +216,6 @@ class GuestHelper {
 
     return binahData;
   }
-
-  // clearData() {
-  //   _guestController.nameTextController.clear();
-  //   _guestController.weightTextController.clear();
-  //   _guestController.heightTextController.clear();
-  //   _guestController.dobTextController.clear();
-  //   _guestController.selectionType.value = "";
-  //   _guestController.isTermAccepted.value = false;
-  //   _guestController.isChecked.value = false;
-  //   _guestController.profileUrl.value = File("");
-  //   _guestController.isProfile.value = false;
-  //   controller.smokerTypeController.clear();
-  //   controller.selectionType.value = "";
-  //   _guestController.selectionType.value = "";
-  //   _guestController.emailTextController.clear();
-  //   _guestController.guestImage.value = "";
-  // }
-
-  // clearLoading() {
-  //   _guestController.isLoading.value = false;
-  // }
 
   static List<String> weightList = List.generate(
     116,

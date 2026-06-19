@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/constants/validation_strings.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/voice_agent/repositories/voice_agent_repository.dart';

@@ -177,6 +177,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
 
                       fontWeight: FontWeight.w600,
 
+                      // ignore: deprecated_member_use
                       color: AppColors.primary.withOpacity(0.6),
                     ),
                     SizedBox(height: AppDimensions.height(10)),
@@ -259,6 +260,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                         shape: BoxShape.circle,
                                         color: const Color(
                                           0xFF2196F3,
+                                          // ignore: deprecated_member_use
                                         ).withOpacity(0.15),
                                       ),
                                     );
@@ -294,6 +296,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                           shape: BoxShape.circle,
                                           color: const Color(
                                             0xFF2196F3,
+                                            // ignore: deprecated_member_use
                                           ).withOpacity(0.15),
                                         ),
                                       );
@@ -330,6 +333,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                           shape: BoxShape.circle,
                                           color: const Color(
                                             0xFF2196F3,
+                                            // ignore: deprecated_member_use
                                           ).withOpacity(0.25),
                                         ),
                                       );

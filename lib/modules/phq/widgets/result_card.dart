@@ -71,6 +71,7 @@ class ResultCard extends StatelessWidget {
                     Container(
                       width: 1,
                       height: 60,
+                      // ignore: deprecated_member_use
                       color: Colors.white.withOpacity(0.3),
                     ),
                     Expanded(

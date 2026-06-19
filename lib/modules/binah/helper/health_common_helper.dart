@@ -10,6 +10,7 @@ class HealthCommonHelper {
 
   double homoGlobinMin() {
     bool isMale = false;
+    // ignore: unused_local_variable
     double hemoglobinMin = 0.0;
 
     if (_geustController.selectionType.isNotEmpty) {
@@ -22,6 +23,7 @@ class HealthCommonHelper {
 
   double homoGlobinMax() {
     bool isMale = false;
+    // ignore: unused_local_variable
     double hemoglobinMax = 0.0;
     if (_geustController.selectionType.isNotEmpty) {
       isMale = _geustController.selectionType.value == "Male";

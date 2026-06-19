@@ -70,6 +70,7 @@ class AuthController extends BaseController
       );
 
       if (response.statusCode != 200 || response.data == null) {
+        // ignore: dead_null_aware_expression
         setError(response.message ?? ValidationStrings.commonErrorMessage);
         return;
       }
@@ -236,6 +237,7 @@ class AuthController extends BaseController
       final result = response.data!;
       medicalQuestionList.assignAll(result.list ?? []);
 
+      // ignore: unrelated_type_equality_checks
       if (result.isSuccess == true) {
         setSuccess(result.message ?? "Questions loaded");
         navigateTo(AppRoutes.healthMenu);
@@ -316,7 +318,7 @@ class AuthController extends BaseController
       answer: selectedAnswers,
     );
 
-    final index = dataList.indexWhere((e) => e!.question == question);
+    final index = dataList.indexWhere((e) => e.question == question);
 
     if (index != -1) {
       dataList[index] = item;
@@ -341,6 +343,7 @@ class AuthController extends BaseController
           response.data?.imagePath ?? '',
         );
       } else {
+        // ignore: dead_null_aware_expression
         setError(response.message ?? "Something went wrong");
       }
     } catch (e) {

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/modules/voice_agent/controller/socket_controller.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -29,9 +30,11 @@ class NativeMicSender {
       (pcmBytes) {
         if (isAgentSpeaking()) {
           if (debug) {
-            print(
-              "🔇 dropping mic frame while agent speaking bytes=${pcmBytes.length}",
-            );
+            if (kDebugMode) {
+              print(
+                "🔇 dropping mic frame while agent speaking bytes=${pcmBytes.length}",
+              );
+            }
           }
           return;
         }
@@ -51,17 +54,23 @@ class NativeMicSender {
         }
 
         if (debug) {
-          print("🎤 native mic frame sent bytes=${pcmBytes.length}");
+          if (kDebugMode) {
+            print("🎤 native mic frame sent bytes=${pcmBytes.length}");
+          }
         }
       },
       onError: (e, st) {
         if (debug) {
-          print("❌ Native mic stream error: $e");
+          if (kDebugMode) {
+            print("❌ Native mic stream error: $e");
+          }
         }
       },
       onDone: () {
         if (debug) {
-          print("⚠️ Native mic stream done");
+          if (kDebugMode) {
+            print("⚠️ Native mic stream done");
+          }
         }
       },
       cancelOnError: false,
@@ -70,7 +79,9 @@ class NativeMicSender {
     _subscribed = true;
 
     if (debug) {
-      print("✅ NativeMicSender subscribed to pcmStream");
+      if (kDebugMode) {
+        print("✅ NativeMicSender subscribed to pcmStream");
+      }
     }
   }
 
@@ -81,7 +92,9 @@ class NativeMicSender {
     _captureStarted = true;
 
     if (debug) {
-      print("✅ NativeMicSender started capture");
+      if (kDebugMode) {
+        print("✅ NativeMicSender started capture");
+      }
     }
   }
 
@@ -96,7 +109,9 @@ class NativeMicSender {
     _captureStarted = false;
 
     if (debug) {
-      print("🛑 NativeMicSender stopped");
+      if (kDebugMode) {
+        print("🛑 NativeMicSender stopped");
+      }
     }
   }
 }

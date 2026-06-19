@@ -97,6 +97,7 @@ class AiSessionScreen extends BaseView<AiSessionController> {
               voiceCallController.agentName.value,
               textAlign: TextAlign.center,
               fontWeight: FontWeight.w600,
+              // ignore: deprecated_member_use
               color: const Color(0xff137FEC).withOpacity(0.6),
             ),
           ),
@@ -132,6 +133,7 @@ class AiSessionScreen extends BaseView<AiSessionController> {
       height: AppDimensions.height(size),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
+        // ignore: deprecated_member_use
         color: const Color(0xff137FEC).withOpacity(opacity),
       ),
     );

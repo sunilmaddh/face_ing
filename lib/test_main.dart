@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_config.dart';
-import 'package:ntt_data/core/constants/api_constants.dart';
 
 void main() {
   runApp(MyApp());

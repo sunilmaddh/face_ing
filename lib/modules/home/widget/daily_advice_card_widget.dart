@@ -65,6 +65,7 @@ class DailyAdviceCardWidget extends StatelessWidget {
                     AppAssets.aiAdivice,
                     height: AppDimensions.height(30),
                     width: AppDimensions.width(30),
+                    // ignore: deprecated_member_use
                     color: AppColors.bottomTextColor,
                   ),
                 ),

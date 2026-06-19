@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'native_mic_sender.dart';
 
@@ -42,13 +43,17 @@ class CallAudioController {
     );
 
     if (debug) {
-      print("✅ Native mic sender created");
+      if (kDebugMode) {
+        print("✅ Native mic sender created");
+      }
     }
 
     await nativeMicSender!.prepare();
 
     if (debug) {
-      print("✅ Native mic sender prepared (capture not started yet)");
+      if (kDebugMode) {
+        print("✅ Native mic sender prepared (capture not started yet)");
+      }
     }
   }
 
@@ -59,7 +64,9 @@ class CallAudioController {
     await nativeMicSender?.startCapture();
 
     if (debug) {
-      print("✅ Native mic capture actually started");
+      if (kDebugMode) {
+        print("✅ Native mic capture actually started");
+      }
     }
   }
 
@@ -96,9 +103,11 @@ class CallAudioController {
     _agentAudioEndsAtMs = base + chunkMs + safetyTailMs;
 
     if (debug) {
-      print(
-        "🎧 queued agent chunk bytes=$bytes frames=$frames chunkMs=$chunkMs agentAudioEndsAtMs=$_agentAudioEndsAtMs now=$now",
-      );
+      if (kDebugMode) {
+        print(
+          "🎧 queued agent chunk bytes=$bytes frames=$frames chunkMs=$chunkMs agentAudioEndsAtMs=$_agentAudioEndsAtMs now=$now",
+        );
+      }
     }
   }
 }

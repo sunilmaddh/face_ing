@@ -18,14 +18,14 @@ class NavigationEvent {
 
 class BaseController extends GetxController {
   final isLoading = false.obs;
-  final errorMessage = RxnString();
+  final errorMessage = ''.obs;
   final successMessage = RxnString();
   final navigationEvent = Rxn<NavigationEvent>();
 
   void showLoading([bool value = true]) => isLoading.value = value;
 
   void setError(String message) => errorMessage.value = message;
-  void clearError() => errorMessage.value = null;
+  void clearError() => errorMessage.value = "";
 
   void setSuccess(String message) => successMessage.value = message;
   void clearSuccess() => successMessage.value = null;

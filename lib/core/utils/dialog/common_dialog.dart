@@ -869,6 +869,7 @@ class CommonDialog {
                               index == controller.selectedMonthIndex.value;
 
                           bool isFutureMonth =
+                              // ignore: unrelated_type_equality_checks
                               (controller.selectedYear == currentYear &&
                                   index + 1 > currentMonth);
 
