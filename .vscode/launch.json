@@ -1,0 +1,53 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Flutter: Run all Tests",
+            "type": "dart",
+            "request": "launch",
+            "program": "./test/"
+        },
+
+        {
+            "name": "face_ing",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "face_ing (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "face_ing (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "biosensesignalsdk",
+            "cwd": "biosensesignalsdk",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "biosensesignalsdk (profile mode)",
+            "cwd": "biosensesignalsdk",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "biosensesignalsdk (release mode)",
+            "cwd": "biosensesignalsdk",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
