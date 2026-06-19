@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
-import 'package:ntt_data/modules/profile/helper/profile_helper.dart';
 
 class DialogHelper {
   void showBatteryLevelAlertDialog(BuildContext context) {

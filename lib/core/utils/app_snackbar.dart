@@ -20,9 +20,9 @@ class AppSnackbar {
     _lastShownTime = now;
 
     // Close any existing snackbar
-    if (Get.isSnackbarOpen) {
-      Get.closeCurrentSnackbar();
-    }
+    // if (Get.isSnackbarOpen) {
+    //   Get.closeCurrentSnackbar();
+    // }
 
     // Show snackbar
     Get.snackbar(

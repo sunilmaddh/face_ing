@@ -12,13 +12,9 @@ import 'package:ntt_data/routes/app_routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await AppPreferences.instance.init();
-
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
   AppBindings().dependencies();
-
   runApp(const MyApp());
 }
 
