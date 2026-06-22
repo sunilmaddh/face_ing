@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:ntt_data/core/constants/app_constents.dart';
 import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
 import 'package:ntt_data/modules/views/voice/controller/voice_controller.dart';
@@ -17,6 +18,7 @@ class AiSessionController extends GetxController {
   RxBool isTimeOver = false.obs;
   RxBool isFirstTimeToConnect = false.obs;
   RxBool isSecondTimeToConnect = false.obs;
+  RxBool isGetCredentials = false.obs;
 
   final stopwatch = Stopwatch();
   Timer? timer;
@@ -103,15 +105,20 @@ class AiSessionController extends GetxController {
     Get.find<VoiceController>().isInitiating(true);
     final response = await Get.find<VoiceController>().initiateKintisugi();
     Get.find<AssessmentController>().sessionId.value = response;
-    await Get.find<VoiceCallController>().getCredentials(
-      sessionId: response,
-      isUserVoice: true,
-      isAgentVoice: false,
-      isUserTransaction: false,
-      isAgentTransaction: true,
-      isFullRecording: false,
-      isUserAgentVoice: false,
-    );
+    if (response.isNotEmpty) {
+      isGetCredentials.value = await Get.find<VoiceCallController>()
+          .getCredentials(
+            sessionId: response,
+            isUserVoice: true,
+            isAgentVoice: false,
+            isUserTransaction: false,
+            isAgentTransaction: true,
+            isFullRecording: false,
+            isUserAgentVoice: false,
+          );
+    } else {
+      isGetCredentials.value = false;
+    }
     Get.find<VoiceController>().isInitiating(false);
   }
 }

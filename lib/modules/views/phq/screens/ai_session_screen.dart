@@ -181,6 +181,12 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                                                       ) {
                                                         return CircularProgressIndicator();
                                                       },
+                                                      errorWidget:
+                                                          (_, __, ___) =>
+                                                              const Icon(
+                                                                Icons.person,
+                                                                size: 50,
+                                                              ),
                                                     ),
                                                   ),
                                                 ),
@@ -254,23 +260,29 @@ class _AiSessionScreenState extends State<AiSessionScreen> {
                                           await initPlayer();
                                         }
                                         controller.isFirstTimeToConnect(false);
-                                        voiceCallCOntroller
-                                            .initializeAndStartCall(
-                                              tenantIds:
-                                                  voiceCallCOntroller
-                                                      .tenant
-                                                      .value,
-                                              agentIds:
-                                                  voiceCallCOntroller
-                                                      .agentId
-                                                      .value,
-                                              streamIds:
-                                                  voiceCallCOntroller
-                                                      .streamId
-                                                      .value,
-                                            );
-                                        Get.to(() => AiSessionCallScreen());
-                                        // await playDuringCalling();
+
+                                        if (controller
+                                            .isGetCredentials
+                                            .isTrue) {
+                                          await voiceCallCOntroller
+                                              .initializeAndStartCall(
+                                                tenantIds:
+                                                    voiceCallCOntroller
+                                                        .tenant
+                                                        .value,
+                                                agentIds:
+                                                    voiceCallCOntroller
+                                                        .agentId
+                                                        .value,
+                                                streamIds:
+                                                    voiceCallCOntroller
+                                                        .streamId
+                                                        .value,
+                                              );
+
+                                          Get.to(() => AiSessionCallScreen());
+                                          // await playDuringCalling();
+                                        }
                                         controller.isSecondTimeToConnect(false);
                                       },
                                       style: ElevatedButton.styleFrom(
