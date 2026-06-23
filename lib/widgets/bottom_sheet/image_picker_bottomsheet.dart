@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
 
 class ImagePickerBottomsheet {
@@ -25,7 +25,6 @@ class ImagePickerBottomsheet {
                   leading: Icon(Icons.image, color: Colors.blue),
                   title: Text("Gallery"),
                   onTap: () {
-                    Get.back(); // Close bottom sheet
                     onGalleryTap(); // Call gallery function
                   },
                 ),
@@ -44,7 +43,7 @@ class ImagePickerBottomsheet {
                   leading: Icon(Icons.camera_alt, color: Colors.green),
                   title: Text("Camera"),
                   onTap: () {
-                    Get.back(); // Close bottom sheet
+                    AppNavigation.back(); // Close bottom sheet
                     onCameraTap(); // Call camera function
                   },
                 ),

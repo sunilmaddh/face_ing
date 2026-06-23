@@ -15,7 +15,6 @@ import 'package:ntt_data/core/utils/enum/gender_enum.dart';
 import 'package:ntt_data/core/utils/extensions/extentions.dart';
 import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
@@ -39,10 +38,7 @@ class UpdateUserGuestDetails extends BaseView<ProfileController> {
   @override
   Widget buildView(BuildContext context, ProfileController controller) {
     return Scaffold(
-      appBar: CustomAppBar(
-        onTop: AppNavigation.back,
-        title: AppStrings.updateDetailsTitle,
-      ),
+      appBar: CustomAppBar(title: AppStrings.updateDetailsTitle),
       backgroundColor: AppColors.historyCardColor,
       body: SafeArea(
         child: ListView(

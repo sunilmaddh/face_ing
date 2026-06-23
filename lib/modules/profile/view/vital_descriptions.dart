@@ -26,10 +26,7 @@ class VitalDescriptions extends BaseView<ProfileController> {
   @override
   Widget buildView(BuildContext context, ProfileController controller) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: AppStrings.vitalSignsDescriptionTitle,
-        onTop: Get.back,
-      ),
+      appBar: CustomAppBar(title: AppStrings.vitalSignsDescriptionTitle),
       body: Container(
         decoration: BoxDecoration(
           color: AppColors.historyCardColor,

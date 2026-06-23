@@ -9,7 +9,6 @@ import 'package:ntt_data/modules/vital_graph/controller/vital_graph_controller.d
 import 'package:ntt_data/modules/vital_graph/view/first_line_vital_widget.dart';
 import 'package:ntt_data/modules/vital_graph/helper/vital_grapgh_helper.dart';
 import 'package:ntt_data/modules/vital_graph/view/vital_graph_first_card.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 
@@ -45,7 +44,7 @@ class _VitalGraphHistoryState extends State<VitalGraphHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.btntext,
-      appBar: CustomAppBar(onTop: () => AppNavigation.back(), title: "History"),
+      appBar: CustomAppBar(title: "History"),
       bottomNavigationBar: Container(
         alignment: Alignment.bottomCenter,
         width: double.infinity,

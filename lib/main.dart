@@ -47,11 +47,11 @@ class MyApp extends StatelessWidget {
             child: child ?? const SizedBox.shrink(),
           );
         },
-        // routingCallback: (routing) {
-        //   if (Get.isSnackbarOpen) {
-        //     Get.closeCurrentSnackbar();
-        //   }
-        // },
+        routingCallback: (routing) {
+          if (Get.isSnackbarOpen) {
+            Get.closeCurrentSnackbar();
+          }
+        },
       ),
     );
   }

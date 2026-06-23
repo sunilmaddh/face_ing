@@ -13,6 +13,7 @@ import 'package:ntt_data/core/constants/app_fonts.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/app_snackbar.dart';
 import 'package:ntt_data/modules/vital_graph/controller/vital_graph_controller.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/button/primary_button.dart';
 import 'package:ntt_data/widgets/cards/common_dialog_card.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -59,7 +60,7 @@ class CommonDialog {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
-                      onPressed: () => Get.back(),
+                      onPressed: () => AppNavigation.back(),
                       child: const Text("Close"),
                     ),
                     Obx(
@@ -92,7 +93,7 @@ class CommonDialog {
     BottomPicker.date(
       closeWidget: InkWell(
         onTap: () {
-          Get.back();
+          AppNavigation.back();
         },
         child: SvgPicture.asset(AppAssets.cloaseDialog),
       ),

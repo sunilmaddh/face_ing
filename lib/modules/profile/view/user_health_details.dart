@@ -8,7 +8,6 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/helper/globle_halper.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/profile/widgets/health_details_list_widget.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
 
@@ -43,10 +42,7 @@ class UserHealthDetails extends BaseView<ProfileController> {
   @override
   Widget buildView(BuildContext context, ProfileController controller) {
     return Scaffold(
-      appBar: CustomAppBar(
-        onTop: AppNavigation.back,
-        title: AppStrings.userHealthReportsTitle,
-      ),
+      appBar: CustomAppBar(title: AppStrings.userHealthReportsTitle),
       body: Container(
         margin: const EdgeInsets.all(15),
         decoration: BoxDecoration(

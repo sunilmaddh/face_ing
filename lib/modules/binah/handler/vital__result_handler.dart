@@ -7,6 +7,7 @@ import 'package:ntt_data/core/mixins/progress_mixin.dart';
 import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/dialog/dialog_halper.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 
 class VitalResultsHandler {
   final Rx<VitalSignsResults> vitalsResults;
@@ -97,7 +98,7 @@ class VitalResultsHandler {
             isScanningDone(false);
             // GuestHalper().clearData();
             _guestController.getGeustHistory();
-            Get.back();
+            AppNavigation.back();
           },
           isFullStory: false,
         );

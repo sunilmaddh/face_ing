@@ -5,7 +5,6 @@ import 'package:ntt_data/core/storage/app_preferences.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/geust/widget/build_card_widget.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 
 class GuestHistoryDetails extends StatefulWidget {
@@ -77,10 +76,7 @@ class _GuestHistoryDetailsState extends State<GuestHistoryDetails>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        onTop: AppNavigation.back,
-        title: "Guest Health Reports",
-      ),
+      appBar: CustomAppBar(title: "Guest Health Reports"),
       body: Container(
         margin: const EdgeInsets.all(15),
         decoration: BoxDecoration(

@@ -11,6 +11,6 @@ class UserHealthHistoryRequest {
   });
 
   Map<String, dynamic> toJson() {
-    return {"userId": userId, "guestId": guestId, "isUser": isUser};
+    return {"userId": userId, "guestId": guestId, "userFlag": isUser};
   }
 }

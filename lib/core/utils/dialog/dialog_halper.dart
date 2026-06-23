@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/dialog/common_dialog.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 
 class DialogHelper {
   void showBatteryLevelAlertDialog(BuildContext context) {
@@ -12,7 +13,7 @@ class DialogHelper {
       context: context,
       onConfirm: () {},
       onCancel: () {
-        Get.back();
+        AppNavigation.back();
       },
     );
   }
@@ -26,7 +27,7 @@ class DialogHelper {
       context: context,
       onConfirm: () {},
       onCancel: () {
-        Get.back();
+        AppNavigation.back();
       },
     );
   }
@@ -39,7 +40,7 @@ class DialogHelper {
       context: Get.context!,
       onConfirm: () {},
       onCancel: () {
-        Get.back();
+        AppNavigation.back();
       },
       confirmText: 'Try Again',
     );
@@ -53,7 +54,7 @@ class DialogHelper {
       context: context,
       onConfirm: () {},
       onCancel: () {
-        Get.back();
+        AppNavigation.back();
       },
       confirmText: 'Try Again',
     );
@@ -71,7 +72,7 @@ class DialogHelper {
       context: context,
       onConfirm: onTop,
       onCancel: () {
-        Get.back();
+        AppNavigation.back();
       },
       confirmText: 'Yes',
     );

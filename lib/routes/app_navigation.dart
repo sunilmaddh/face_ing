@@ -29,7 +29,7 @@ class AppNavigation {
   /// Navigate back to the previous screen
   static void back() {
     if (Get.previousRoute.isNotEmpty) {
-      Get.back();
+      AppNavigation.back();
     }
   }
 }

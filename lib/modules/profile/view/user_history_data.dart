@@ -33,7 +33,6 @@ class UserHistoryData extends BaseView<ProfileController> {
   Widget buildView(BuildContext context, ProfileController controller) {
     return Scaffold(
       appBar: CustomAppBar(
-        onTop: AppNavigation.back,
         title: AppStrings.userHistoryTitle,
         actions: [
           InkWell(

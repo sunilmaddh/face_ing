@@ -6,7 +6,6 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/modules/binah/helper/health_report_helper.dart';
 import 'package:ntt_data/modules/binah/widgets/getvitalStatus.dart';
 import 'package:ntt_data/modules/binah/widgets/vital_card_widget.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_tab_bar_view.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 
@@ -53,9 +52,9 @@ class _AnalyzingHealthDataState extends State<AnalyzingHealthData>
     return Scaffold(
       backgroundColor: AppColors.btntext,
       appBar: CustomAppBar(
-        onTop: () {
-          AppNavigation.back();
-        },
+        // onTop: () {
+        //   AppNavigation.back();
+        // },
         isCenterTitle: true,
         title: "Health data report",
       ),

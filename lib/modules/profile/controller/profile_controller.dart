@@ -18,6 +18,7 @@ import 'package:ntt_data/modules/profile/models/user_history_list_model.dart';
 import 'package:ntt_data/modules/profile/models/vital_descriptions_model.dart';
 import 'package:ntt_data/modules/profile/helper/profile_helper.dart';
 import 'package:ntt_data/modules/profile/repositories/profile_repository.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
 class ProfileController extends BaseController
@@ -273,6 +274,7 @@ class ProfileController extends BaseController
         userImage.value = result?.imagePath ?? "";
         AppPreferences.instance.saveUserImage(result?.imagePath ?? "");
         imageProfileLoading(false);
+        AppNavigation.back();
       } else {
         imageProfileLoading(false);
         setError(ValidationStrings.commonErrorMessage);

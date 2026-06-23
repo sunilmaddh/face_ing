@@ -235,10 +235,10 @@ class _PhqResultScreenState extends State<PhqResultScreen> {
                           onPressed: () {
                             if (controller.isFromHomeScreen.isTrue) {
                               controller.isFromHomeScreen(false);
-                              Get.back();
+                              AppNavigation.back();
                               LandingController.instance.onTabTapped(2);
                             } else {
-                              Get.back();
+                              AppNavigation.back();
                             }
                           },
                           style: ElevatedButton.styleFrom(

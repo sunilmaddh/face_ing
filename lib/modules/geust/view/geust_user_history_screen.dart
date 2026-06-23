@@ -48,7 +48,7 @@ class GeustUserHistoryScreen extends BaseView<GeustController> {
         isAppBar: false,
         size: AppDimensions.height(58),
       ),
-      appBar: CustomAppBar(onTop: AppNavigation.back, title: "Guest History"),
+      appBar: CustomAppBar(title: "Guest History"),
       body: Padding(
         padding: EdgeInsets.all(AppDimensions.padding(15)),
         child: Obx(() {

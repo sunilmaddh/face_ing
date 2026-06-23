@@ -74,9 +74,9 @@ class _MeasurementScreenState extends State<MeasurementScreen> {
       child: Scaffold(
         appBar: CustomAppBar(
           title: "Measurement",
-          onTop: () {
-            Get.back();
-          },
+          // onTop: () {
+          //   AppNavigation.back();
+          // },
         ),
         backgroundColor: Colors.transparent,
         body: Obx(

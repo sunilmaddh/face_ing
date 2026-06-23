@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ntt_data/core/constants/app_assets.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bottom_sheet/custom_bottom_sheet.dart';
 import 'package:ntt_data/widgets/button/rounded_button.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
@@ -26,7 +26,7 @@ class BottomsheetHelper {
                 isAppBar: false,
                 isClose: true,
                 onPressed: () {
-                  Get.back();
+                  AppNavigation.back();
                   // tabController.animateTo(0);
                 },
               ),

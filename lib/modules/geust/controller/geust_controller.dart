@@ -18,6 +18,7 @@ import 'package:ntt_data/modules/geust/models/guest_list_response_model.dart';
 import 'package:ntt_data/modules/geust/repositoriese/guest_repository.dart';
 import 'package:ntt_data/modules/profile/models/healthDetailsResponseModel.dart';
 import 'package:ntt_data/modules/profile/models/user_history_list_model.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
 class GeustController extends BaseController
@@ -338,6 +339,7 @@ class GeustController extends BaseController
         // debugPrint("Result $result ${userUpdateImage.value}");
         showLoading(false);
         await getGeustHistory();
+        AppNavigation.back();
       } else {
         setError("Something went wrong");
       }

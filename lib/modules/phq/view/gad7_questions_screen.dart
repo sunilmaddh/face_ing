@@ -31,8 +31,8 @@ class Gad7QuestionsScreen extends StatelessWidget {
                           Get.find<AssessmentController>().sessionId.value,
                     );
                     Get.off(() => PhqResultScreen())!.whenComplete(() {
-                      Get.back();
-                      Get.back();
+                      AppNavigation.back();
+                      AppNavigation.back();
                     });
                   }
                   : null,
@@ -66,8 +66,8 @@ class Gad7QuestionsScreen extends StatelessWidget {
             onPressed: () async {
               // final result = await assessmentController.getResult();
               Get.off(() => PhqResultScreen())!.whenComplete(() {
-                Get.back();
-                Get.back();
+                AppNavigation.back();
+                AppNavigation.back();
               });
             },
             child: const Text(

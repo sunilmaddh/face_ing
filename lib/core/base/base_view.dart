@@ -39,7 +39,7 @@ class _BaseViewState<T extends BaseController> extends State<BaseView<T>> {
     widget.onInit(controller);
 
     _errorWorker = ever(controller.errorMessage, (msg) {
-      if (msg != null && msg.toString().isNotEmpty) {
+      if (msg.toString().isNotEmpty) {
         AppSnackbar.show(
           title: "Error",
           message: msg.toString(),

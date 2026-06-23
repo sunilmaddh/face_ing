@@ -59,7 +59,7 @@ class Phq9QuestionsScreen extends StatelessWidget {
           TextButton(
             onPressed: () async {
               Get.off(() => PhqResultScreen())!.whenComplete(() {
-                Get.back();
+                AppNavigation.back();
               });
             },
             child: const Text(

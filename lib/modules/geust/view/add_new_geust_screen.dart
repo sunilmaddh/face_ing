@@ -19,7 +19,6 @@ import 'package:ntt_data/modules/auth/widgets/terms_checkbox_widget.dart';
 import 'package:ntt_data/modules/binah/controllers/measurement_controller.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/geust/helper/guest_halper.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/button/scan_button.dart';
 import 'package:ntt_data/widgets/cards/common_card.dart';
@@ -42,10 +41,7 @@ class AddNewGuestScreen extends BaseView<GeustController> {
   @override
   Widget buildView(BuildContext context, GeustController controller) {
     return Scaffold(
-      appBar: CustomAppBar(
-        onTop: AppNavigation.back,
-        title: AppStrings.addGuest,
-      ),
+      appBar: CustomAppBar(title: AppStrings.addGuest),
       backgroundColor: AppColors.historyCardColor,
       body: SafeArea(
         child: SingleChildScrollView(

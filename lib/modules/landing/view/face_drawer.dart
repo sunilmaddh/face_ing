@@ -81,7 +81,9 @@ class FaceDrawer extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
-                            onTap: AppNavigation.back,
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
                             child: SvgPicture.asset(AppAssets.backButton),
                           ),
                         ),

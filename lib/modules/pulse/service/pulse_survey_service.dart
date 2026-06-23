@@ -16,6 +16,7 @@ class PulseSurveyService {
       ApiRequest(
         endpoint: apiEndpoints.getPulseSurveyQuestionsForUser,
         method: HttpMethod.get,
+        headers: {},
       ),
       fromJson: (json) => PulseSurveyQuestionListModel.fromJson(json),
     );

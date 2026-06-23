@@ -7,6 +7,7 @@ import 'package:ntt_data/core/constants/api_constants.dart';
 import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/extensions/extentions.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 
 class CustomBottomSheet {
   static void show({
@@ -102,7 +103,7 @@ class CustomBottomSheetConfidence {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => Get.back(),
+                              onPressed: () => AppNavigation.back(),
                               icon: const Icon(Icons.arrow_back_ios),
                             ),
                             Expanded(

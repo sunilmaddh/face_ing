@@ -9,7 +9,6 @@ import 'package:ntt_data/core/utils/app_dimentions.dart';
 import 'package:ntt_data/core/utils/date_time_halper.dart';
 import 'package:ntt_data/modules/geust/controller/geust_controller.dart';
 import 'package:ntt_data/modules/profile/widgets/user_history_card.dart';
-import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/custom_shimmer.dart/shimmer_widget.dart';
 
@@ -24,10 +23,7 @@ class GuestHealthHistoryList extends BaseView<GeustController> {
   @override
   Widget buildView(BuildContext context, GeustController controller) {
     return Scaffold(
-      appBar: CustomAppBar(
-        onTop: AppNavigation.back,
-        title: AppStrings.guestHealthHistoryTitle,
-      ),
+      appBar: CustomAppBar(title: AppStrings.guestHealthHistoryTitle),
       body: Obx(() {
         if (controller.isLoading.isTrue) {
           return ShimmerLoadingScreen(widget: ShimmerListItem(), itemCount: 8);
