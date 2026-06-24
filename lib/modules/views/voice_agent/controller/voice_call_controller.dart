@@ -42,7 +42,8 @@ class VoiceCallController extends GetxController {
       var userName = await IndoSharedPreference.instance.getUserName();
       var token = await IndoSharedPreference.instance.getAccessToken();
       var data = {
-        "agent_id": "2f0817e4-6585-4ebe-8a0a-29f09652ef00",
+        "agent_id": "c899cabb-39d7-423f-ad83-a40ef2ed1115",
+        // "2f0817e4-6585-4ebe-8a0a-29f09652ef00",
         "user_name": userName,
         "is_user_voice": isUserVoice,
         "is_agent_voice": isAgentVoice,
@@ -97,8 +98,8 @@ class VoiceCallController extends GetxController {
     try {
       messageC.value = "";
       await Get.find<SocketController>().connectSocket(
-        tenantId: tenantIds,
-        botId: agentIds,
+        tenantId: "61a4dd35-338d-401a-a2fa-946b654a91f8",
+        botId: "c899cabb-39d7-423f-ad83-a40ef2ed1115",
         streamId: streamIds,
       );
       await playDuringCalling();

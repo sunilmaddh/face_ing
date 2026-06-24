@@ -5,7 +5,6 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/modules/views/landing/landing_controller.dart';
 import 'package:ntt_data/modules/views/phq/controllers/assessment_controller.dart';
 import 'package:ntt_data/routes/app_navigation.dart';
-import 'package:ntt_data/routes/app_routes.dart';
 import 'package:ntt_data/widgets/bar/custom_app_bar.dart';
 import 'package:ntt_data/widgets/fields/common_text.dart';
 import '../widgets/result_card.dart';
