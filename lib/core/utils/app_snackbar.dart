@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'app_context.dart';
 
 class AppSnackbar {
   static DateTime? _lastShownTime;
   static const int _debounceMs = 500;
 
   static void show({
-    required String title,
     required String message,
     bool isError = false,
+    required String title,
   }) {
     final now = DateTime.now();
 
@@ -19,26 +19,31 @@ class AppSnackbar {
 
     _lastShownTime = now;
 
-    // Safely close existing snackbar
-    if (Get.isSnackbarOpen) {
-      Get.closeAllSnackbars();
-    }
+    final messenger = AppContext.scaffoldMessengerKey.currentState;
 
-    Future.delayed(const Duration(milliseconds: 100), () {
-      return Get.snackbar(
-        title,
-        message,
-        snackPosition: SnackPosition.BOTTOM,
+    if (messenger == null) return;
+
+    messenger.clearSnackBars();
+
+    messenger.showSnackBar(
+      SnackBar(
         backgroundColor: isError ? Colors.red : Colors.green,
-        colorText: Colors.white,
-        borderRadius: 10,
-        margin: const EdgeInsets.all(10),
         duration: const Duration(seconds: 3),
-        icon: Icon(
-          isError ? Icons.error : Icons.check_circle,
-          color: Colors.white,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(10),
+        content: Row(
+          children: [
+            Icon(
+              isError ? Icons.error : Icons.check_circle,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(message, style: const TextStyle(color: Colors.white)),
+            ),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }

@@ -7,6 +7,7 @@ import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/constants/app_config.dart';
 import 'package:ntt_data/core/constants/app_strings.dart';
 import 'package:ntt_data/core/storage/app_preferences.dart';
+import 'package:ntt_data/core/utils/app_context.dart';
 import 'package:ntt_data/routes/app_pages.dart';
 import 'package:ntt_data/routes/app_routes.dart';
 
@@ -28,7 +29,9 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       ensureScreenSize: true,
       child: GetMaterialApp(
-        navigatorKey: Get.key,
+        navigatorKey: AppContext.navigatorKey,
+        scaffoldMessengerKey: AppContext.scaffoldMessengerKey,
+
         useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         title: AppStrings.appTitle,
