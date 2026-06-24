@@ -71,8 +71,8 @@ class SocketController extends GetxController {
     _prebufferFlushTimer = null;
 
     await _service.connect(
-      "wss://0fe3-106-51-217-182.ngrok-free.app/ws/v1/web/voice_agent/$tenantId/$botId/$streamId",
-      // "wss://dev.sourcebytes.ai/ws/v1/web/voice_agent/$tenantId/$botId/$streamId/",
+      // "wss://0fe3-106-51-217-182.ngrok-free.app/ws/v1/web/voice_agent/$tenantId/$botId/$streamId",
+      "wss://dev.sourcebytes.ai/ws/v1/web/voice_agent/$tenantId/$botId/$streamId/",
     );
     isConnected.value = true;
 

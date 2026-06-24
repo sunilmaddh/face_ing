@@ -357,6 +357,11 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
                                             child: CircularProgressIndicator(),
                                           );
                                         },
+                                        errorWidget:
+                                            (_, __, ___) => const Icon(
+                                              Icons.person,
+                                              size: 50,
+                                            ),
                                       ),
                                     ),
                                   ),

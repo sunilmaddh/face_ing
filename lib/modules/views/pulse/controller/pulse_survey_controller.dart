@@ -17,7 +17,6 @@ class PulseSurveyController extends GetxController {
   RxBool isPulseSurveryLoading = false.obs;
   RxBool isPulseQuestionListLoading = false.obs;
   RxBool isEnable = false.obs;
-
   bool isNavigating = false;
 
   // List<Map<String, dynamic>> pulseList = [];
@@ -101,12 +100,15 @@ class PulseSurveyController extends GetxController {
       }
       if (statusCode == 200) {
         final result = responseData[AppConstents.response];
-        if (!isNavigating) {
-          pulseSevryModel.value = PulseSurveyModel.fromJson(result);
-          pulseSurveyADayList.value =
-              pulseSevryModel.value.pulseSurveyADayList!;
-          isPulseSurveryLoading(false);
-        }
+        pulseSevryModel.value = PulseSurveyModel.fromJson(result);
+        pulseSurveyADayList.value = pulseSevryModel.value.pulseSurveyADayList!;
+        isPulseSurveryLoading(false);
+        // if (!isNavigating) {
+        //   pulseSevryModel.value = PulseSurveyModel.fromJson(result);
+        //   pulseSurveyADayList.value =
+        //       pulseSevryModel.value.pulseSurveyADayList!;
+        //   isPulseSurveryLoading(false);
+        // }
       } else {
         AppSnackbar.show(
           title: "Error",
