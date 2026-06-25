@@ -16,7 +16,7 @@ class AppConstents {
   forgotPassword = "Forgot password?",
   donThaveAccoount = "Don’t have account?",
   voiceAgentEndMessage =
-      "Our time for today’s session is coming to an end. Thank you for sharing with me. Please take care of yourself, and remember you can always come back if you’d like to talk again. Goodbye for now.",
+      "Our time for today’s session is coming to an end. Thank you for sharing with me. Please take care of yourself, and remember you can always come back if you’d like to talk again.",
   signUp = "Sigup",
   gilroyBold = "Gilroy-Bold",
   gilroyMedium = "Gilroy-Medium",
