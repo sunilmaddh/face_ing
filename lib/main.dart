@@ -31,7 +31,6 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         navigatorKey: AppContext.navigatorKey,
         scaffoldMessengerKey: AppContext.scaffoldMessengerKey,
-
         useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         title: AppStrings.appTitle,

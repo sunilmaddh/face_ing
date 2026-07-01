@@ -169,7 +169,6 @@ class CreateAccountScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10),
-
                 SizedBox(
                   height: AppDimensions.height(190),
                   width: MediaQuery.of(context).size.width,
