@@ -137,6 +137,14 @@ class SessionManager:
                 .build(licenseDetails: LicenseDetails(licenseKey: licenseKey, productId: productId))
         }
     
+    func startPostureCheck() throws {
+        try session?.startPostureCheck()
+    }
+
+    func stopPostureCheck() throws {
+        try session?.stopPostureCheck()
+    }
+
     func startPPGDevicesScan(scannerId: String, deviceType: Int, timeout: Int?) throws {
         if (resolveDeviceType(deviceType: deviceType) != PPGDeviceType.polar) {
             return

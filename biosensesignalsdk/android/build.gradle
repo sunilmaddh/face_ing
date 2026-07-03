@@ -1,5 +1,5 @@
 group 'com.biosensesignal.flutter_sdk'
-version '5.11.4'
+version '5.13.1'
 
 buildscript {
     ext.kotlin_version = '1.9.0'
@@ -56,3 +56,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 }
+

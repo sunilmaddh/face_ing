@@ -139,6 +139,14 @@ class BiosenseSignalFlutterSdkPlugin: FlutterPlugin, ActivityAware, MethodCallHa
           sessionManager?.stopPPGDeviceScan(call.argument<String>("scannerId") ?: "")
           result.success(null)
         }
+        NativeBridgeApi.startPostureCheck -> {
+          sessionManager?.startPostureCheck()
+          result.success(null)
+        }
+        NativeBridgeApi.stopPostureCheck -> {
+          sessionManager?.stopPostureCheck()
+          result.success(null)
+        }
       }
     } catch (e: HealthMonitorException) {
       result.error(e.errorCode.toString(), e.domain, null)

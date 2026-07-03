@@ -13,5 +13,7 @@ abstract class NativeBridgeApi {
         const val getMinPolarVersion = "getMinPolarVersion";
         const val startPPGDevicesScan = "startPPGDevicesScan";
         const val stopPPGDeviceScan = "stopPPGDevicesScan";
+        const val startPostureCheck = "startPostureCheck";
+        const val stopPostureCheck = "stopPostureCheck";
     }
 }

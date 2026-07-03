@@ -165,6 +165,16 @@ class SessionManager(private val eventChannel: BiosenseSignalEventChannel):
         }
     }
 
+    @Throws(HealthMonitorException::class)
+    fun startPostureCheck() {
+        session?.startPostureCheck()
+    }
+
+    @Throws(HealthMonitorException::class)
+    fun stopPostureCheck() {
+        session?.stopPostureCheck()
+    }
+
     fun startPPGDevicesScan(
         context: Context,
         scannerId: String,

@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
     s.name             = 'biosensesignal_flutter_sdk'
-    s.version          = '5.11.4'
+    s.version          = '5.13.1'
     s.summary          = 'A new flutter plugin project.'
     s.description      = <<-DESC
         BiosenseSignal Flutter SDK.

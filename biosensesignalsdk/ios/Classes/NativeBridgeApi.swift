@@ -20,4 +20,6 @@ class NativeBridgeApi {
     static let getPolarMinVersion = "getPolarMinVersion";
     static let startPPGDevicesScan = "startPPGDevicesScan";
     static let stopPPGDeviceScan = "stopPPGDevicesScan";
+    static let startPostureCheck = "startPostureCheck";
+    static let stopPostureCheck = "stopPostureCheck";
 }

@@ -117,6 +117,22 @@ class Session {
     await methodChannel.invokeMethod(MethodCalls.terminateSession);
   }
 
+  Future<void> startPostureCheck() async {
+    try {
+      await methodChannel.invokeMethod(MethodCalls.startPostureCheck);
+    } on PlatformException catch (e) {
+      throw HealthMonitorException(e.message!, int.parse(e.code));
+    }
+  }
+
+  Future<void> stopPostureCheck() async {
+    try {
+      await methodChannel.invokeMethod(MethodCalls.stopPostureCheck);
+    } on PlatformException catch (e) {
+      throw HealthMonitorException(e.message!, int.parse(e.code));
+    }
+  }
+
   Future<SessionState?> getState() async {
     int value = await methodChannel.invokeMethod(MethodCalls.getSessionState);
     return createSessionState(value);

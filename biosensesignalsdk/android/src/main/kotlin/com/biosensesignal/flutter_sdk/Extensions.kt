@@ -2,6 +2,11 @@ package com.biosensesignal.flutter_sdk
 
 import com.biosensesignal.sdk.api.SessionEnabledVitalSigns
 import com.biosensesignal.sdk.api.images.ImageData
+import com.biosensesignal.sdk.api.images.capture_data.CaptureData
+import com.biosensesignal.sdk.api.images.capture_data.CaptureDeviceData
+import com.biosensesignal.sdk.api.images.capture_data.CaptureEnvironmentData
+import com.biosensesignal.sdk.api.images.capture_data.CaptureFaceData
+import com.biosensesignal.sdk.api.images.capture_data.CaptureMetric
 import com.biosensesignal.sdk.api.license.LicenseInfo
 import com.biosensesignal.sdk.api.alerts.AlertData
 import com.biosensesignal.sdk.api.ppg_device_scanner.PPGDevice
@@ -41,8 +46,57 @@ fun ImageData.toMap(): Map<String, Any?> {
     return mapOf(
         Pair("width", image.width),
         Pair("height", image.height),
-        Pair("roi", roi?.toMap()),
-        Pair("validity", imageValidity)
+        Pair("roi", captureData?.face?.roi?.toMap() ?: roi?.toMap()),
+        Pair("validity", imageValidity),
+        Pair("captureData", captureData?.toMap())
+    )
+}
+
+fun CaptureData.toMap(): Map<String, Any?> {
+    return mapOf(
+        Pair("validity", validity.ordinal),
+        Pair("face", face.toMap()),
+        Pair("device", device.toMap()),
+        Pair("environment", environment.toMap())
+    )
+}
+
+fun CaptureFaceData.toMap(): Map<String, Any?> {
+    val landmarksMap = mutableMapOf<String, Any>()
+    landmarks.forEach { (landmark, point) ->
+        landmarksMap[landmark.ordinal.toString()] = mapOf(
+            Pair("x", point.x.toDouble()),
+            Pair("y", point.y.toDouble())
+        )
+    }
+    return mapOf(
+        Pair("roi", roi.toMap()),
+        Pair("landmarks", landmarksMap),
+        Pair("yaw", yaw.toMap()),
+        Pair("roll", roll.toMap()),
+        Pair("pitch", pitch.toMap()),
+        Pair("verticalAlignment", verticalAlignment.toMap()),
+        Pair("horizontalAlignment", horizontalAlignment.toMap())
+    )
+}
+
+fun CaptureDeviceData.toMap(): Map<String, Any?> {
+    return mapOf(
+        Pair("pitch", pitch?.toMap()),
+        Pair("distance", distance.toMap())
+    )
+}
+
+fun CaptureEnvironmentData.toMap(): Map<String, Any> {
+    return mapOf(
+        Pair("lightingUniformity", lightingUniformity.toMap())
+    )
+}
+
+fun CaptureMetric.toMap(): Map<String, Any> {
+    return mapOf(
+        Pair("value", value),
+        Pair("status", status.ordinal)
     )
 }
 

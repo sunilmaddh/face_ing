@@ -116,11 +116,73 @@ extension CGRect {
 
 extension ImageData {
     func toMap() -> [String: Any?] {
+        let roiMap: [String: Int]? = captureData != nil
+            ? captureData!.face.roi.toMap()
+            : (roi.isNull ? nil : roi.toMap())
         return [
             "width": Int.init(image.size.width),
             "height": Int.init(image.size.height),
-            "roi": roi.isNull ? nil : roi.toMap(),
-            "validity": imageValidity
+            "roi": roiMap,
+            "validity": imageValidity,
+            "captureData": captureData?.toMap()
+        ]
+    }
+}
+
+extension CaptureData {
+    func toMap() -> [String: Any?] {
+        return [
+            "validity": validity.rawValue,
+            "face": face.toMap(),
+            "device": device.toMap(),
+            "environment": environment.toMap()
+        ]
+    }
+}
+
+extension CaptureFaceData {
+    func toMap() -> [String: Any?] {
+        var landmarksMap = [String: Any]()
+        for (landmark, point) in landmarks {
+            landmarksMap[String(landmark.rawValue)] = [
+                "x": point.x,
+                "y": point.y
+            ]
+        }
+        return [
+            "roi": roi.toMap(),
+            "landmarks": landmarksMap,
+            "yaw": yaw.toMap(),
+            "roll": roll.toMap(),
+            "pitch": pitch.toMap(),
+            "verticalAlignment": verticalAlignment.toMap(),
+            "horizontalAlignment": horizontalAlignment.toMap()
+        ]
+    }
+}
+
+extension CaptureDeviceData {
+    func toMap() -> [String: Any?] {
+        return [
+            "pitch": pitch?.toMap(),
+            "distance": distance.toMap()
+        ]
+    }
+}
+
+extension CaptureEnvironmentData {
+    func toMap() -> [String: Any] {
+        return [
+            "lightingUniformity": lightingUniformity.toMap()
+        ]
+    }
+}
+
+extension CaptureMetric {
+    func toMap() -> [String: Any] {
+        return [
+            "value": value,
+            "status": status.rawValue
         ]
     }
 }

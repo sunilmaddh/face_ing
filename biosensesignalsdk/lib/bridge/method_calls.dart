@@ -9,4 +9,6 @@ abstract class MethodCalls {
   static const String getMinPolarVersion = "getMinPolarVersion";
   static const String startPPGDevicesScan = "startPPGDevicesScan";
   static const String stopPPGDeviceScan = "stopPPGDevicesScan";
+  static const String startPostureCheck = "startPostureCheck";
+  static const String stopPostureCheck = "stopPostureCheck";
 }

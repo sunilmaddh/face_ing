@@ -87,11 +87,17 @@ public class SwiftBiosenseSignalFlutterSdkPlugin: NSObject, FlutterPlugin {
                     deviceType: (arguments?["deviceType"] as! Int),
                     timeout: (arguments?["timeout"] as? Int))
                 result(nil)
-            case NativeBridgeApi.stopPPGDeviceScan:
-                SessionManager.shared.stopPPGDevicesScan(
-                    scannerId: (arguments?["scannerId"] as! String)
-                )
-                result(nil)
+                case NativeBridgeApi.stopPPGDeviceScan:
+                    SessionManager.shared.stopPPGDevicesScan(
+                        scannerId: (arguments?["scannerId"] as! String)
+                    )
+                    result(nil)
+                case NativeBridgeApi.startPostureCheck:
+                    try SessionManager.shared.startPostureCheck()
+                    result(nil)
+                case NativeBridgeApi.stopPostureCheck:
+                    try SessionManager.shared.stopPostureCheck()
+                    result(nil)
                 default:
                     return
                     
