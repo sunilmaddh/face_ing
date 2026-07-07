@@ -103,7 +103,9 @@ class SocketController extends BaseController {
   Future<void> _handleSocketData(dynamic data, String streamId) async {
     messages.add(data.toString());
     debugPrint("Agent message $messages");
+
     final Map<String, dynamic> decoded = jsonDecode(data);
+    debugPrint("Event ${decoded['event']}");
     debugPrint("Message ${decoded['message']}");
 
     if (decoded['type'] == 'agent_audio') {

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ntt_data/core/base/base_view.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
@@ -185,42 +186,45 @@ class AiSessionScreen extends BaseView<AiSessionController> {
     BuildContext context,
     AiSessionController controller,
   ) {
-    return SizedBox(
-      height: AppDimensions.height(48),
-      child: Obx(() {
-        if (controller.isSecondTimeToConnect.isTrue) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColors.primary),
-          );
-        }
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.r),
+      child: SizedBox(
+        height: AppDimensions.height(48),
+        child: Obx(() {
+          if (controller.isSecondTimeToConnect.isTrue) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            );
+          }
 
-        return ElevatedButton(
-          onPressed: () async {
-            await _startCall(controller);
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
+          return ElevatedButton(
+            onPressed: () async {
+              await _startCall(controller);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+              elevation: 4,
             ),
-            elevation: 4,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.phone_outlined, color: AppColors.btntext),
-                CommonText.text(
-                  "Start Now",
-                  color: AppColors.btntext,
-                  fontWeight: FontWeight.w700,
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.phone_outlined, color: AppColors.btntext),
+                  CommonText.text(
+                    "Start Now",
+                    color: AppColors.btntext,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 

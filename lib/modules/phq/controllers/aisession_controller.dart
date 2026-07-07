@@ -81,7 +81,7 @@ class AiSessionController extends BaseController {
         isUserVoice: true,
         isAgentVoice: true,
         isUserTransaction: false,
-        isAgentTransaction: false,
+        isAgentTransaction: true,
         isFullRecording: true,
         isUserAgentVoice: true,
       );
