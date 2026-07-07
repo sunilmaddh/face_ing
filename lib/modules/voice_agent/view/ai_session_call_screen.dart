@@ -194,7 +194,7 @@ class _AiSessionCallScreenState extends State<AiSessionCallScreen>
             }),
             SizedBox(height: AppDimensions.height(20)),
             Padding(
-              padding: AppDimensions.only(top: 50),
+              padding: AppDimensions.only(top: 20),
               child: Stack(
                 children: [
                   Align(

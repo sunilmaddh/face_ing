@@ -110,41 +110,47 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
     // MARK: - Start Engine
 
+    // MARK: - Start Engine
+
     private func startAudioEngine() throws {
 
         let session = AVAudioSession.sharedInstance()
 
-        // ✅ BEST CONFIG (Echo cancel)
         try session.setCategory(
             .playAndRecord,
             mode: .voiceChat,
-            options: [.allowBluetooth, .allowBluetoothA2DP]
+            options: [.allowBluetooth, .defaultToSpeaker]
         )
 
         try session.setActive(true)
 
-        // ✅ Route audio properly
         routeAudio()
 
-        // ✅ Create engine
         audioEngine = AVAudioEngine()
+
         guard let engine = audioEngine else { return }
 
         let inputNode = engine.inputNode
 
-        // ✅ FORCE FORMAT (critical fix)
-        let format = AVAudioFormat(
-            commonFormat: .pcmFormatInt16,
-            sampleRate: 24000,
-            channels: 1,
-            interleaved: true
-        )!
+        // IMPORTANT: Always use the hardware format
+        let inputFormat = inputNode.outputFormat(forBus: 0)
+
+        print("========== INPUT FORMAT ==========")
+        print("Sample Rate : \(inputFormat.sampleRate)")
+        print("Channels    : \(inputFormat.channelCount)")
+        print("Common      : \(inputFormat.commonFormat)")
+        print("Interleaved : \(inputFormat.isInterleaved)")
+        print("==================================")
 
         inputNode.removeTap(onBus: 0)
 
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
-            self.log("🎧 BUFFER RECEIVED")
-            self.processAudioBuffer(buffer: buffer)
+        inputNode.installTap(
+            onBus: 0,
+            bufferSize: 1024,
+            format: inputFormat
+        ) { [weak self] buffer, _ in
+
+            self?.processAudioBuffer(buffer: buffer)
         }
 
         engine.prepare()
@@ -156,21 +162,34 @@ class VoiceBridgePlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
 
     // MARK: - Process Audio
 
+    // MARK: - Process Audio
+
     private func processAudioBuffer(buffer: AVAudioPCMBuffer) {
 
+        guard let floatData = buffer.floatChannelData else {
+            log("❌ floatChannelData is nil")
+            return
+        }
+
         let frameLength = Int(buffer.frameLength)
+        let channelData = floatData.pointee
 
-        if let int16Data = buffer.int16ChannelData {
+        var pcm16 = [Int16]()
+        pcm16.reserveCapacity(frameLength)
 
-            let channel = int16Data.pointee
-            let data = Data(bytes: channel, count: frameLength * 2)
+        for i in 0..<frameLength {
 
-            DispatchQueue.main.async {
-                self.eventSink?(FlutterStandardTypedData(bytes: data))
-            }
+            let sample = max(-1.0, min(1.0, channelData[i]))
+            let intSample = Int16(sample * Float(Int16.max))
+            pcm16.append(intSample)
+        }
 
-        } else {
-            log("❌ No int16 data")
+        let data = pcm16.withUnsafeBufferPointer {
+            Data(buffer: $0)
+        }
+
+        DispatchQueue.main.async {
+            self.eventSink?(FlutterStandardTypedData(bytes: data))
         }
     }
 
