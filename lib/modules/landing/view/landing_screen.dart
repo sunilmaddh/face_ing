@@ -11,15 +11,18 @@ class LandingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ignore: deprecated_member_use
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: CustomBottomNavigationBar(
-        pageList: const [
-          HomeScreen(),
-          AiAdviceScreen(),
-          _AiSessionTab(),
-          PulseSurveyScreen(fromBottomNav: false),
-        ],
+    return SafeArea(
+      top: false,
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: CustomBottomNavigationBar(
+          pageList: const [
+            HomeScreen(),
+            AiAdviceScreen(),
+            _AiSessionTab(),
+            PulseSurveyScreen(fromBottomNav: false),
+          ],
+        ),
       ),
     );
   }

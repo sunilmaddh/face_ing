@@ -34,24 +34,34 @@ class WellnessCard extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CommonText.labelSmall(
+                        CommonText.labelMedium(
                           "Wellness Score",
 
                           fontWeight: FontWeight.w700,
                           color: AppColors.primary,
                           fontType: AppFontType.mono,
                         ),
-                        Text(
+                        CommonText.text(
                           guageValue.toStringAsFixed(0),
+
                           style: TextStyle(
-                            fontSize: AppDimensions.font(55),
                             fontWeight: FontWeight.w700,
-                            color: HomeHalper().getWellnessColor(status),
-                            fontFamily: "League Spartan",
+                            fontSize: 40,
                           ),
+                          color: HomeHalper().getWellnessColor(status),
                         ),
+                        // Text(
+                        //   guageValue.toStringAsFixed(0),
+                        //   style: TextStyle(
+                        //     fontSize: AppDimensions.font(55),
+                        //     fontWeight: FontWeight.w700,
+                        //     color: HomeHalper().getWellnessColor(status),
+                        //     fontFamily: "League Spartan",
+                        //   ),
+                        // ),
                         wellnessDiff != "null" && wellnessDiff != "0"
                             ? Row(
                               mainAxisSize: MainAxisSize.min,
