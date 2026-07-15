@@ -198,7 +198,9 @@ class MeasurementController extends GetxController
         break;
 
       default:
-        handleInvalid("Unknown Error");
+        handleInvalid(
+          "Ensure your face is clearly visible with no shadows or bright spots.",
+        );
         break;
     }
   }
