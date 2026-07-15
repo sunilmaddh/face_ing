@@ -34,8 +34,8 @@ class ApiConstants {
 
   static const accessKey = "access_token";
   static const refreshKey = 'refresh_token';
-  static const agentId = "3d053c31-15c3-4d57-8ab6-d70ef27fb49a";
-  static const tenantId = "05fe806e-7dc0-465c-9305-3c3fafced082";
+  static const agentId = "9364804f-36e9-4d62-9b34-c807a03eef04";
+  static const tenantId = "2b7ba806-33a3-45d8-bce3-3352c81c38b0";
   static const licenseKey = "5109AA-AA2AB0-4FCBA4-D140D7-480067-AC54E7";
 
   static const String connectionTimeout =

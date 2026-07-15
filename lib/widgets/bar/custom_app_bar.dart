@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ntt_data/core/constants/app_colors.dart';
 import 'package:ntt_data/core/utils/app_dimentions.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
 import 'package:ntt_data/widgets/button/rounded_button.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -38,7 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed:
                       onTop ??
                       () {
-                        Navigator.of(context).maybePop();
+                        AppNavigation.back();
                       },
                 ),
               )

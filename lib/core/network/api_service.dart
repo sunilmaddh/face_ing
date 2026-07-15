@@ -203,8 +203,7 @@ class ApiService {
 
     final message =
         processedBody[ApiConstants.message]?.toString() ??
-        processedBody[ApiConstants.msg]?.toString() ??
-        ApiConstants.requestCompleted;
+        processedBody[ApiConstants.msg]?.toString();
 
     T? data;
 
@@ -223,7 +222,7 @@ class ApiService {
     if (isSuccess) {
       return ApiResponse.success(
         statusCode: statusCode,
-        message: message,
+        message: message ?? "",
         data: data,
         rawBody: processedBody,
         headers: _convertHeaders(response.headers),
@@ -232,7 +231,7 @@ class ApiService {
 
     return ApiResponse.failure(
       statusCode: statusCode,
-      message: message,
+      message: message ?? "",
       rawBody: processedBody,
       headers: _convertHeaders(response.headers),
     );

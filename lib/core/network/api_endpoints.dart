@@ -7,10 +7,10 @@ class ApiEndpoints {
 
   ApiEndpoints._internal();
 
-  static const String voiceBaseUrl = "dev.sourcebytes.ai";
+  static const String voiceBaseUrl = "app.sourcebytes.ai";
   String initiateWebhook = "/api/v1/voice_agent/web/voice/webhook";
   static const String initiateWebsocket =
-      "wss://dev.sourcebytes.ai/ws/v1/web/voice_agent";
+      "wss://$voiceBaseUrl/ws/v1/web/voice_agent";
 
   static const String sessionUrl =
       "http://${ApiEndpoints.baseUrl}/kintsugi/submit-audio";
