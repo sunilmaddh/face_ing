@@ -16,20 +16,28 @@ class CommonText {
     TextDecoration? decoration,
     TextOverflow overflow = TextOverflow.ellipsis,
   }) {
-    return Text(
-      key: key,
-      text,
-      style: TextStyle(
-        decorationColor: AppColors.primary,
-        decoration: decoration,
-        fontFamily: fontFamily,
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        color: color,
+    return Padding(
+      padding: EdgeInsets.zero,
+      child: Text(
+        key: key,
+        text,
+        style: TextStyle(
+          decorationColor: AppColors.primary,
+          decoration: decoration,
+          fontFamily: fontFamily,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+        ),
+        textAlign: textAlign,
+        maxLines: maxLines,
+        overflow: overflow,
+
+        textHeightBehavior: const TextHeightBehavior(
+          applyHeightToFirstAscent: false,
+          applyHeightToLastDescent: false,
+        ),
       ),
-      textAlign: textAlign,
-      maxLines: maxLines,
-      overflow: overflow,
     );
   }
 }

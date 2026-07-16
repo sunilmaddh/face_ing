@@ -47,7 +47,7 @@ class WellnessCard extends StatelessWidget {
                           fontSize: AppDimensions.font(55),
                           fontWeight: FontWeight.w700,
                           color: HomeHalper().getWellnessColor(status),
-                          fontFamily: "League Spartan",
+                          // fontFamily: "League Spartan",
                         ),
                         wellnessDiff != "null" && wellnessDiff != "0"
                             ? Row(
@@ -89,7 +89,7 @@ class WellnessCard extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: CircularPercentIndicator(
-                      radius: 91.r,
+                      radius: 93.r,
                       lineWidth: 15.w,
                       percent: guageValue / 10, // dynamic value
                       animation: true,
