@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
 
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:get/get.dart';
 import 'package:ntt_data/core/utils/app_methods.dart';
-import 'package:ntt_data/modules/phq/view/phq_two_questions_screen.dart';
+import 'package:ntt_data/routes/app_navigation.dart';
+import 'package:ntt_data/routes/app_routes.dart';
 
 final FlutterSoundPlayer player = FlutterSoundPlayer();
 
@@ -12,6 +12,10 @@ Future<void> initPlayer() async {
 }
 
 Future<void> disposePlayer() async {
+  if (player.isPlaying) {
+    await player.stopPlayer();
+  }
+
   await player.closePlayer();
 }
 
@@ -24,7 +28,7 @@ Future<void> playBeep() async {
     whenFinished: () {
       disposePlayer();
       AppMethods().toggleWakelock(true);
-      Get.off(() => PhqTwoQuestionsScreen());
+      AppNavigation.off(AppRoutes.phqTwoQuestion);
     },
   );
 }

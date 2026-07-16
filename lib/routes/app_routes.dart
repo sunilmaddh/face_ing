@@ -34,5 +34,6 @@ class AppRoutes {
       phqResultScreen = '/phq_result_screen',
       aiSessionCallScreen = "/aiSession_Call_Screen",
       aiSessionScreen = '/ai_session_screen',
-      pulseSuccess = '/pulse_sucess';
+      pulseSuccess = '/pulse_sucess',
+      phqTwoQuestion = '/PhqTwoQuestionsScreen';
 }

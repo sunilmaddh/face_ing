@@ -17,10 +17,13 @@ class Pcm16StreamPlayer {
   // ring buffer ~10 seconds
   static const int ringSize = chunkBytes * 250;
 
+  Future<void>? _pumpFuture;
+
   bool _initialized = false;
   bool _started = false;
   bool _pumpStarted = false;
   bool _pumpRunning = false;
+  bool _disposing = false;
 
   late Uint8List _ring;
   int _w = 0;
@@ -51,8 +54,8 @@ class Pcm16StreamPlayer {
   }
 
   Future<void> feedBase64Pcm16(String b64) async {
+    if (_disposing) return;
     if (!_started) await start();
-
     var bytes = base64Decode(b64);
     if (bytes.isEmpty) return;
     if (bytes.length.isOdd) {
@@ -67,7 +70,7 @@ class Pcm16StreamPlayer {
     if (!_pumpStarted && _count >= chunkBytes * startBufferChunks) {
       _pumpStarted = true;
       _pumpRunning = true;
-      _pumpLoop();
+      _pumpFuture = _pumpLoop();
     }
   }
 
@@ -124,28 +127,52 @@ class Pcm16StreamPlayer {
   }
 
   Future<void> _pumpLoop() async {
-    while (_pumpRunning && _started) {
+    while (_pumpRunning && _started && !_disposing) {
       final out = _readChunkOrSilence();
-      await _player.feedUint8FromStream(out);
+
+      try {
+        if (_started && !_disposing) {
+          await _player.feedUint8FromStream(out);
+        }
+      } catch (e) {
+        print("Audio feed stopped: $e");
+        _pumpRunning = false;
+      }
+
       await Future.delayed(const Duration(milliseconds: 20));
     }
   }
 
   Future<void> dispose() async {
+    // Block new audio
+    _disposing = true;
+
+    // Stop pump loop
     _pumpRunning = false;
     _pumpStarted = false;
 
+    // Wait until feedUint8FromStream finishes
+    await _pumpFuture;
+
     try {
-      if (_started) await _player.stopPlayer();
+      if (_started) {
+        await _player.stopPlayer();
+      }
     } catch (_) {}
+
     try {
-      if (_initialized) await _player.closePlayer();
+      if (_initialized) {
+        await _player.closePlayer();
+      }
     } catch (_) {}
 
     _started = false;
     _initialized = false;
+
     _w = 0;
     _r = 0;
     _count = 0;
+
+    _disposing = false;
   }
 }

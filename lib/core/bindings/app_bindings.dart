@@ -28,9 +28,7 @@ import 'package:ntt_data/modules/voice_agent/services/voice_agent_service.dart';
 import 'package:ntt_data/modules/voice_agent/services/web_socket_services.dart';
 import 'package:ntt_data/modules/phq/controllers/aisession_controller.dart';
 import 'package:ntt_data/modules/phq/controllers/assessment_controller.dart';
-import 'package:ntt_data/modules/phq/controllers/phq_controller.dart';
 import 'package:ntt_data/modules/phq/repositories/phq_repository.dart';
-import 'package:ntt_data/modules/phq/services/phq_service.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/profile/repositories/profile_repository.dart';
 import 'package:ntt_data/modules/profile/services/profile_service.dart';
@@ -90,12 +88,7 @@ class AppBindings extends Bindings {
     Get.lazyPut<GuestRepository>(
       () => GuestRepository(guestService: Get.find<GuestService>()),
     );
-    Get.lazyPut<PhqService>(
-      () => PhqService(apiService: Get.find<ApiService>()),
-    );
-    Get.lazyPut<PhqRepository>(
-      () => PhqRepository(phqService: Get.find<PhqService>()),
-    );
+
     Get.lazyPut<MesurementService>(
       () => MesurementService(apiService: Get.find<ApiService>()),
     );
@@ -139,10 +132,6 @@ class AppBindings extends Bindings {
         mesurementRepository: Get.find<MesurementRepository>(),
       ),
     );
-    Get.lazyPut<PhqController>(
-      () => PhqController(phqRepository: Get.find<PhqRepository>()),
-    );
-
     Get.lazyPut<GeustController>(
       () => GeustController(guestRepository: Get.find<GuestRepository>()),
       fenix: true,

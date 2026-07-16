@@ -11,6 +11,7 @@ import 'package:ntt_data/modules/geust/repositoriese/guest_repository.dart';
 import 'package:ntt_data/modules/geust/services/guest_service.dart';
 import 'package:ntt_data/modules/home/controller/home_controller.dart';
 import 'package:ntt_data/modules/landing/controller/landing_controller.dart';
+import 'package:ntt_data/modules/phq/services/phq_service.dart';
 import 'package:ntt_data/modules/pulse/controller/pulse_survey_controller.dart';
 import 'package:ntt_data/modules/pulse/repositories/pulse_survey_repository.dart';
 import 'package:ntt_data/modules/pulse/service/pulse_survey_service.dart';
@@ -23,9 +24,7 @@ import 'package:ntt_data/modules/voice_agent/services/voice_agent_service.dart';
 import 'package:ntt_data/modules/voice_agent/services/web_socket_services.dart';
 import 'package:ntt_data/modules/phq/controllers/aisession_controller.dart';
 import 'package:ntt_data/modules/phq/controllers/assessment_controller.dart';
-import 'package:ntt_data/modules/phq/controllers/phq_controller.dart';
 import 'package:ntt_data/modules/phq/repositories/phq_repository.dart';
-import 'package:ntt_data/modules/phq/services/phq_service.dart';
 import 'package:ntt_data/modules/profile/controller/profile_controller.dart';
 import 'package:ntt_data/modules/profile/repositories/profile_repository.dart';
 import 'package:ntt_data/modules/profile/services/profile_service.dart';
@@ -115,9 +114,6 @@ class LandingBinding extends Bindings {
       () => MeasurementController(
         mesurementRepository: Get.find<MesurementRepository>(),
       ),
-    );
-    Get.lazyPut<PhqController>(
-      () => PhqController(phqRepository: Get.find<PhqRepository>()),
     );
 
     Get.lazyPut<GeustController>(

@@ -10,6 +10,8 @@ import 'package:ntt_data/modules/binah/view/analyzing_health_data.dart';
 import 'package:ntt_data/modules/home/view/home_screen.dart';
 import 'package:ntt_data/modules/landing/binding/landing_binding.dart';
 import 'package:ntt_data/modules/landing/view/landing_screen.dart';
+import 'package:ntt_data/modules/phq/bindings/phq_binding.dart';
+import 'package:ntt_data/modules/phq/view/phq_two_questions_screen.dart';
 import 'package:ntt_data/modules/voice_agent/view/ai_session_call_screen.dart';
 import 'package:ntt_data/modules/voice_agent/view/ai_session_screen.dart';
 import 'package:ntt_data/modules/phq/view/phq_result_screen.dart';
@@ -127,6 +129,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.aiSessionCallScreen,
       page: () => AiSessionCallScreen(),
+    ),
+
+    GetPage(
+      binding: PhqBinding(),
+      name: AppRoutes.phqTwoQuestion,
+      page: () => PhqTwoQuestionsScreen(),
     ),
   ];
 }
